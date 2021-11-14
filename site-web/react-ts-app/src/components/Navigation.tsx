@@ -10,7 +10,7 @@ const Navigation = () => {
                 <li><NavLink to="/upload">Upload</NavLink></li>
                 <li><NavLink to="/history">History</NavLink></li>
                 <li><NavLink to="/analyze">Analyze</NavLink></li>
-                <li><NavLink to="/Login">Log in</NavLink></li>
+                <li><NavLink to="/login">Log in</NavLink></li>
             </ul>
 
         </div>

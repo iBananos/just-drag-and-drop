@@ -1,0 +1,131 @@
+$width:20%;
+
+.signup{
+    top:50px;
+    bottom: 0px;
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    .box1{
+        border-bottom-color: $color_text;
+        border-bottom-style: solid;
+        border-bottom-width: 3px;
+        border-left-color: $color_text;
+        border-left-style: solid;
+        border-left-width: 3px;
+        border-right-color: $color_text;
+        border-right-style: solid;
+        border-right-width: 3px;
+        border-top-color: $color_text;
+        border-top-style: solid;
+        border-top-width: 3px;
+        border-top-left-radius: 12.00px;
+        border-top-right-radius: 12.00px;
+        border-bottom-left-radius: 12.00px;
+        border-bottom-right-radius: 12.00px;
+        width: $width;
+        height: 69.00px;
+        left: 40%;
+        top: 200px;
+        position: fixed;
+    }
+    .box2{
+        border-bottom-color: $color_text;
+        border-bottom-style: solid;
+        border-bottom-width: 3px;
+        border-left-color: $color_text;
+        border-left-style: solid;
+        border-left-width: 3px;
+        border-right-color: $color_text;
+        border-right-style: solid;
+        border-right-width: 3px;
+        border-top-color: $color_text;
+        border-top-style: solid;
+        border-top-width: 3px;
+        border-top-left-radius: 12.00px;
+        border-top-right-radius: 12.00px;
+        border-bottom-left-radius: 12.00px;
+        border-bottom-right-radius: 12.00px;
+        width: $width;
+        height: 69.00px;
+        left: 40%;
+        top: 300px;
+        position: fixed;
+    }
+    .box3{
+        border-bottom-color: $color_text;
+        border-bottom-style: solid;
+        border-bottom-width: 3px;
+        border-left-color: $color_text;
+        border-left-style: solid;
+        border-left-width: 3px;
+        border-right-color: $color_text;
+        border-right-style: solid;
+        border-right-width: 3px;
+        border-top-color: $color_text;
+        border-top-style: solid;
+        border-top-width: 3px;
+        border-top-left-radius: 12.00px;
+        border-top-right-radius: 12.00px;
+        border-bottom-left-radius: 12.00px;
+        border-bottom-right-radius: 12.00px;
+        width: $width;
+        height: 69.00px;
+        left: 40%;
+        top: 400px;
+        position: fixed;
+    }
+    .phTitle{
+        position: absolute;
+        text-align: left;
+        line-height: 24.00px;
+        letter-spacing: -0.07px;
+        color: $color_text;
+        font-size: 12.00px;
+        font-weight: 400;
+        font-style: normal;
+        font-family: Poppins, Arial;
+        text-decoration: none;
+        width: 85%;
+        height: 17.00px;
+        left: 18.00px;
+        top: 10.50px;
+    }
+    .ph{
+        position: absolute;
+        //box-sizing: content-box;
+        //-ms-transform-origin: center;
+        //-webkit-transform-origin: center;
+        //transform-origin: center;
+        background-color: transparent;
+        border: none;
+        text-align: left;
+        line-height: 24.00px;
+        letter-spacing: 0.00px;
+        color: $color_text;
+        font-size: 14.00px;
+        font-weight: 500;
+        font-style: normal;
+        font-family: Poppins, Arial;
+        text-decoration: none;
+        width: 85%;
+        height: 20.00px;
+        left: 7%;
+        top: 33.00px;
+    }
+    .ph::placeholder{
+        color: rgb(51, 51, 51);
+    }
+
+    .signup{
+        top: 520px;
+        position: fixed;
+        color: $color_text;
+        width: $width;
+        height: 50px;
+        left: 40%;
+        border : none;
+    }
+
+
+}

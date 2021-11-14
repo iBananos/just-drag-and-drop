@@ -1,12 +1,11 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 
-const Login = () => {
+const Signup = () => {
     return (
-        <div className="login">
+        <div className="signup">
             <h1>Welcome !</h1>
-            <h2>Log in to your account</h2>
+            <h2>Sign up to create an account</h2>
             <form>
             <div className="box1">
                 <div className="phTitle" >Email address</div>
@@ -16,15 +15,15 @@ const Login = () => {
                 <div className="phTitle">Password</div>
                 <input type="password" className="ph" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"></input>
             </div>
-            <button className="signin">Log in</button>
+            <div className="box3">
+                <div className="phTitle">Confirmation password</div>
+                <input type="password" className="ph" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"></input>
+            </div>
+            <button className="signup">Sign up</button>
             </form>
-            <hr className="hr1"/>
-            <div className="or">Or</div>
-            <hr className="hr2"/>
-            <NavLink to="/signup"><button className="signup">Sign up</button></NavLink>
             <Navigation />
         </div>
     );
 };
 
-export default Login;
+export default Signup;

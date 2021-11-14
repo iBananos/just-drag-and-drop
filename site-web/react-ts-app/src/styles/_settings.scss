@@ -8,7 +8,7 @@ $color_green3: #99CC33;
 $color_blue3: #339999;
 $color_nav: #181925;
 /* BUTTON */
-$color_button: rgb(17, 19, 32);
+$color_button:  #171824;
 $color_shadow : rgba(1, 2, 5, 0.796);
 /* TEXT */
 $color_text: rgba(112, 112, 112, 1);
@@ -22,20 +22,23 @@ button{
     border-top-right-radius: 16.00px;
     border-bottom-left-radius: 16.00px;
     border-bottom-right-radius: 16.00px;
-    filter: drop-shadow(-5px -5px 15px ,$color_shadow);
-    width: 60.00px;
-    height: 60.00px;
-    left: 0.00px;
-    top: 0.00px;     
+    box-shadow: 0px 0px 30px black ;
+    &:hover{
+        box-shadow: 0px 0px 20px black ;
+        background-color: $color_back;
+    }
 }
 
 body{
     background: $color_back;
 }
 
-h1{
+h1,h2,h3{
     font-family: $font;
     color: $color_text;
+}
+
+h1{
     -webkit-text-stroke: 1.00px $color_text;
 }
 
@@ -46,3 +49,4 @@ h1{
     bottom: 0px;
     top:50px;
 }
+
