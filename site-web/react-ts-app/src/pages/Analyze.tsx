@@ -1,10 +1,14 @@
+import BarreLaterale from "../components/BarreLaterale";
 import Navigation from "../components/Navigation";
 
 const Analyze = () =>  {
     return (
         <div className="Analyze">
+            <BarreLaterale />
             <Navigation />
-            <h1>Analyze page</h1>
+            <div className="view">
+                <h1>Analyze page</h1>
+            </div>
         </div>
     )
 }

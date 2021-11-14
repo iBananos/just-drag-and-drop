@@ -1,11 +1,15 @@
+import BarreLaterale from "../components/BarreLaterale";
 import Navigation from "../components/Navigation";
 
 const History = () =>  {
     return (
         
         <div className="History">
+            <BarreLaterale />
             <Navigation />
-            <h1>History page</h1>
+            <div className="view">
+                <h1>History page</h1>
+            </div>
         </div>
     )
 }

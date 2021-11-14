@@ -1,11 +1,15 @@
 import Navigation from "../components/Navigation";
 import React from "react" 
+import BarreLaterale from "../components/BarreLaterale";
 const Home = () =>  {
     return (
         
         <div className="home">
+            <BarreLaterale />
             <Navigation />
-            <h1>Home page</h1>
+            <div className="view">
+                <h1>Home page</h1>
+            </div>
         </div>
     )
 }
