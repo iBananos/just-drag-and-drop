@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import mongoose from 'mongoose';
 import userRoutes from './routes/user';
+import uploadRoutes from './routes/upload';
 
 
 
@@ -29,6 +30,11 @@ app.use((req, res, next) => {
 
 // Routes d'authentification
 app.use('/api/auth', userRoutes);
+
+
+// Routes pour l'upload de base de données
+app.use('/upload', uploadRoutes)
+
 
 
 export default app;
