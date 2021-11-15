@@ -1,0 +1,30 @@
+.Upload{
+    .uploadZone{
+        background: transparent;
+        width: 60%;
+        height: 60%;
+        top: 20%;
+        left: 26%;
+        position: fixed;
+        border-top-left-radius: 16.00px;
+        border-top-right-radius: 16.00px;
+        border-bottom-left-radius: 16.00px;
+        border-bottom-right-radius: 16.00px;
+        border-style: dashed ;
+        border-width: 1em;
+        border-color: black;
+        text-align: center;
+        font-family: $font;
+        color: $color_text;
+    }
+    input{
+        background: transparent;
+        display: none;
+    }
+    .dropTitle{
+        padding-top: 19%;
+    }
+    .nameFile{
+        
+    }
+}

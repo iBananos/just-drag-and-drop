@@ -7,7 +7,7 @@ const Analyze = () =>  {
             <BarreLaterale />
             <Navigation />
             <div className="view">
-                <h1>Analyze page</h1>
+                <h1 className="title">Analyze page</h1>
             </div>
         </div>
     )

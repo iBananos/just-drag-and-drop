@@ -8,7 +8,7 @@ const History = () =>  {
             <BarreLaterale />
             <Navigation />
             <div className="view">
-                <h1>History page</h1>
+                <h1 className="title">History page</h1>
             </div>
         </div>
     )
