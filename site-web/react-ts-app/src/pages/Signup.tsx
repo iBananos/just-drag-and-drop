@@ -2,11 +2,15 @@ import React from 'react';
 import Navigation from '../components/Navigation';
 
 const Signup = () => {
+
+    
+
+
     return (
         <div className="signup">
             <h1>Welcome !</h1>
             <h2>Sign up to create an account</h2>
-            <form>
+            <form >
             <div className="box1">
                 <div className="phTitle" >Email address</div>
                 <input className="ph" placeholder="example@mail.com"></input>

@@ -1,5 +1,5 @@
 .Upload{
-    .uploadZone{
+    #drop-area{
         background: transparent;
         width: 60%;
         height: 60%;
@@ -16,7 +16,9 @@
         text-align: center;
         font-family: $font;
         color: $color_text;
-    }
+    }#drop-area.highlight {
+        border-color: red;
+      }
     input{
         background: transparent;
         display: none;
@@ -25,6 +27,39 @@
         padding-top: 19%;
     }
     .nameFile{
-        
+        top:50% ;
+        position:fixed;
+        left: 30%;
+    }
+    .progress-bar{
+        top:50% ;
+        position:fixed;
+        left: 30%;
+    }
+
+    #gallery{
+        width: 100px;
+        height: 100px;
+        top:60% ;
+        position:fixed;
+        left: 30%;
+
+    }
+    
+}
+.button{
+    display: inline-block;
+    padding: 10px;
+    border-top-left-radius: 16.00px;
+    border-top-right-radius: 16.00px;
+    border-bottom-left-radius: 16.00px;
+    border-bottom-right-radius: 16.00px;
+    background: $color_button;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0px 0px 30px black ;
+    &:hover{
+        box-shadow: 0px 0px 20px black ;
+        background-color: $color_back;
     }
 }
