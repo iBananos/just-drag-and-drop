@@ -30,7 +30,7 @@ export const signup : RequestHandler = (req : Request, res : Response, next : Ne
                 password: hash
             });
             user.save()
-            .then(() => res.status(201).json({ message: "Votre compte a bien été créé !" }))
+            .then(() => res.status(200).json({ message: "Votre compte a bien été créé !" }))
             .catch(() => res.status(400).json({ message: "Cette adresse e-mail est déjà utilisée" }));
         });
     });
