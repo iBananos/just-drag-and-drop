@@ -55,8 +55,9 @@ const Signup = () => {
                 <div className="phTitle">Confirmation password</div>
                 <input type="password" id="mpd2" className="ph" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"></input>
             </div>
-            <span className="msg" id="msg"></span> 
+            <p className="msg" id="msg"></p>
             <button className="signup" onClick={createAccount}>Sign up</button>
+             
             <Navigation />
         </div>
     );

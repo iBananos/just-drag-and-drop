@@ -1,5 +1,3 @@
-$width:20%;
-
 .signup{
     margin-top:100px;
     bottom: 0px;
@@ -25,11 +23,13 @@ $width:20%;
         border-bottom-right-radius: 12.00px;
         width: 300px;
         height: 69.00px;
-        left: 40%;
-        top: 200px;
-        position: fixed;
+        margin-top: 10px;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
     }
     .box2{
+        position: relative;
         border-bottom-color: $color_text;
         border-bottom-style: solid;
         border-bottom-width: 3px;
@@ -48,9 +48,9 @@ $width:20%;
         border-bottom-right-radius: 12.00px;
         width: 300px;
         height: 69.00px;
-        left: 40%;
-        top: 300px;
-        position: fixed;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
     }
     .box3{
         border-bottom-color: $color_text;
@@ -69,17 +69,18 @@ $width:20%;
         border-top-right-radius: 12.00px;
         border-bottom-left-radius: 12.00px;
         border-bottom-right-radius: 12.00px;
-        width: $width;
+        width: 300px;
+        position: relative;
         height: 69.00px;
-        left: 40%;
-        top: 400px;
-        position: fixed;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
     }
     .msg{
-        top: 485px;
-        position: fixed;
+        margin-top: 10px;
+        position: absolute;
+        margin-left: -120px;
         color: $color_error;
-        left: 41%;
         font-family:$font;
     }
     .phTitle{
@@ -125,12 +126,11 @@ $width:20%;
     }
 
     .signup{
-        top: 520px;
-        position: fixed;
+        margin-top: 40px;
+        position: relative;
         color: $color_text;
-        width: $width;
+        width: 300px;
         height: 50px;
-        left: 40%;
         border : none;
     }
 
