@@ -51,9 +51,9 @@ const Login = () => {
             </div> 
             <button className="signin" onClick={login}>Log in</button>
             <span className="msg" id="msg"></span>
-            <hr className="hr1"/>
+            <hr className="hr1"/><hr className="hr2"/>
             <div className="or">Or</div>
-            <hr className="hr2"/>
+            
             <NavLink to="/signup"><button className="signup">Sign up</button></NavLink>
             <Navigation />
         </div>

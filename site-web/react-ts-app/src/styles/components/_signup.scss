@@ -1,9 +1,9 @@
 $width:20%;
 
 .signup{
-    top:50px;
+    margin-top:100px;
     bottom: 0px;
-    position: fixed;
+    position: relative;
     width: 100%;
     text-align: center;
     .box1{
@@ -23,7 +23,7 @@ $width:20%;
         border-top-right-radius: 12.00px;
         border-bottom-left-radius: 12.00px;
         border-bottom-right-radius: 12.00px;
-        width: $width;
+        width: 300px;
         height: 69.00px;
         left: 40%;
         top: 200px;
@@ -46,7 +46,7 @@ $width:20%;
         border-top-right-radius: 12.00px;
         border-bottom-left-radius: 12.00px;
         border-bottom-right-radius: 12.00px;
-        width: $width;
+        width: 300px;
         height: 69.00px;
         left: 40%;
         top: 300px;
