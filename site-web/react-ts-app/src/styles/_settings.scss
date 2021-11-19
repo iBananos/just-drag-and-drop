@@ -12,7 +12,8 @@ $color_error : rgb(196, 25, 25);
 $color_button:  #171824;
 $color_shadow : rgba(1, 2, 5, 0.796);
 /* TEXT */
-$color_text: rgba(112, 112, 112, 1);
+$color_placeholder :rgb(51, 51, 51);
+$color_text: rgb(187, 164, 34);
 $font : Poppins, Arial;
 
 $logo : "./assets/Logo.png";
@@ -30,7 +31,9 @@ button{
         background-color: $color_back;
     }
 }
-
+input:focus {
+    outline: none;
+}
 body{
     background: $color_back;
 }
@@ -55,4 +58,12 @@ h1{
 .title{
     left: 17%;
     position:fixed;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px $color_back inset !important;
+    -webkit-text-fill-color: $color_text !important;
 }

@@ -92,11 +92,13 @@
     border-bottom-right-radius:16px ;
     border-top-right-radius:16px ;
     width: 250px;
-    color: white;
+    color: $color_text;
     border:none;
     position: fixed;
     height: 35px;
     background-color: black;
+}::placeholder{
+    color: $color_placeholder;
 }
 .msg{
     top: 78%;

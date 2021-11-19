@@ -98,7 +98,7 @@ $width:20%;
         top: 33.00px;
     }
     .ph::placeholder{
-        color: rgb(51, 51, 51);
+        color: $color_placeholder;
     }
 
     .signin{
@@ -124,7 +124,7 @@ $width:20%;
         display: block;
         height: 1px;
         border: 0;
-        border-top: 1px solid #ccc;
+        border-top: 1px solid $color_text;
         padding: 0;
         position: fixed;
     }

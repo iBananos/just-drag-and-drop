@@ -1,9 +1,7 @@
 import BarreLaterale from "../components/BarreLaterale";
 import Navigation from "../components/Navigation";
-import { useDropzone } from "react-dropzone";
-import React, { ChangeEventHandler, useState } from "react";
 
-const Upload = () => {
+const Upload = () => { 
   let files : any;
   window.onload=function(){
   var dropArea = (document.getElementById("drop-area") as HTMLInputElement)
