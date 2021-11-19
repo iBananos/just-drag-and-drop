@@ -2,7 +2,7 @@ import BarreLaterale from "../components/BarreLaterale";
 import Navigation from "../components/Navigation";
 
 const Upload = () => { 
-  let files : any;
+  let files : File;
   window.onload=function(){
   var dropArea = (document.getElementById("drop-area") as HTMLInputElement)
   // Prevent default drag behaviors
@@ -23,16 +23,16 @@ const Upload = () => {
   // Handle dropped files
   dropArea.addEventListener('drop', handleDrop, false)
 
-function preventDefaults (e:any) {
+function preventDefaults (e:Event) {
   e.preventDefault()
   e.stopPropagation()
 }
 
-function highlight(e :any) {
+function highlight(e :Event) {
   dropArea?.classList.add('highlight')
 }
 
-function unhighlight(e:any) {
+function unhighlight(e:Event) {
   dropArea?.classList.remove('highlight')
 }
 }

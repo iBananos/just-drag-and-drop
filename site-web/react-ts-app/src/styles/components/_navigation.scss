@@ -21,11 +21,12 @@
         color: $color_text;
         text-align: center;
         font-family: $font;
-        padding: 16px 16px;
+        
         text-decoration: none;
     }
     li a {
         display: block;
+        padding: 16px 16px;
         color: $color_text;
         text-align: center;
         font-family: $font;
