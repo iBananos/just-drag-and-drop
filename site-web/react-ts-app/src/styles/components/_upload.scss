@@ -2,7 +2,7 @@
     #drop-area{
         background: transparent;
         width: 60%;
-        height: 60%;
+        height: 50%;
         top: 20%;
         left: 26%;
         position: fixed;
@@ -19,7 +19,7 @@
     }#drop-area.highlight {
         border-color: red;
       }
-    input{
+      #drop-area input{
         background: transparent;
         display: none;
     }
@@ -27,9 +27,9 @@
         padding-top: 19%;
     }
     .nameFile{
-        top:50% ;
+        top:40% ;
         position:fixed;
-        left: 30%;
+        left: 40%;
     }
     .progress-bar{
         top:50% ;
@@ -62,4 +62,50 @@
         box-shadow: 0px 0px 20px black ;
         background-color: $color_back;
     }
+}
+.sendButton{
+    display: inline-block;
+    position: fixed;
+    padding: 10px;
+    left : 28%;
+    top: 77%;
+    border-top-left-radius: 16.00px;
+    border-top-right-radius: 16.00px;
+    border-bottom-left-radius: 16.00px;
+    border-bottom-right-radius: 16.00px;
+    color : $color_text;
+    background: $color_button;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0px 0px 30px black ;
+    &:hover{
+        box-shadow: 0px 0px 20px black ;
+        background-color: $color_back;
+    }
+}
+.sendFile{
+    top: 76.9%;
+    left: 29%;
+    width: 250px;
+    position: fixed;
+    height: 37px;
+    background-color: black;
+}
+.inputName{
+    top: 76.9%;
+    left: 32.5%;
+    border-bottom-right-radius:16px ;
+    border-top-right-radius:16px ;
+    width: 250px;
+    color: white;
+    border:none;
+    position: fixed;
+    height: 35px;
+    background-color: black;
+}
+.msg{
+    top: 78%;
+    position: fixed;
+    left: 48%;
+    font-family:$font;
 }

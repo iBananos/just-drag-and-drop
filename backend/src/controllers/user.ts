@@ -48,12 +48,12 @@ export const login : RequestHandler = (req : Request, res : Response, next : Nex
     User.findOne({ email: req.body.email })
         .then((user: any) => {
             if (!user) {
-                return res.status(200).json({ error: "Nom d'utilisateur ou mot de passe incorrect !" });
+                return res.status(400).json({ error: "Nom d'utilisateur ou mot de passe incorrect !" });
             }
             argon2i.verify(user.password, req.body.password)
                 .then(valid => {
                     if (!valid) {
-                        return res.status(200).json({ error: "Nom d'utilisateur ou mot de passe incorrect !" });
+                        return res.status(400).json({ error: "Nom d'utilisateur ou mot de passe incorrect !" });
                     }
                     
                     res.status(200).json({

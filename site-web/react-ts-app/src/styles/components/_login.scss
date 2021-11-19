@@ -52,6 +52,13 @@ $width:20%;
         top: 300px;
         position: fixed;
     }
+    .msg{
+        top: 385px;
+        position: fixed;
+        color: $color_error;
+        left: 41%;
+        font-family:$font;
+    }
     .phTitle{
         position: absolute;
         text-align: left;

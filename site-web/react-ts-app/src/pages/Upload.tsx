@@ -4,7 +4,7 @@ import React, { ChangeEventHandler, useState } from "react";
 
 const Upload = () => {
 let dropArea = document.getElementById("drop-area")
-
+let files : any;
 // Prevent default drag behaviors
 ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
   dropArea?.addEventListener(eventName, preventDefaults, false)   
@@ -62,32 +62,36 @@ function updateProgress(fileNumber:any, percent:any) {
   uploadProgress[fileNumber] = percent
   let total = uploadProgress.reduce((tot:any, curr:any) => tot + curr, 0) / uploadProgress.length
   console.debug('update', fileNumber, percent, total)
-  //progressBar.value = total.toString()
 }
 
 function handleFiles(event :any) {
-  console.log("HANFLEFILES")
   if(event.target.value !== undefined){
-    console.log("HANDLE OKOKOKOKOKOKOKOK")
-    console.log(event)
-    var files = event.target.files;
-    files = [...files]
-    initializeProgress(files.length)
-    console.log(files)
-    files.forEach(uploadFile)
-    files.forEach(previewFile)
+    files = event.target.files;
+    files = [...files];
+    console.log(files[0].name);
+    (document.getElementById('nameFile') as HTMLInputElement).innerHTML = files[0].name;
+    initializeProgress(files.length);
+    //files.forEach(uploadFile)
+  }
+}
+function sendFile(){
+  var name = (document.getElementById('inputName') as HTMLInputElement);
+  if(files){
+    if(name.value !== ""){
+      files.forEach(uploadFile)
+      setMsg("Base envoyée",'green');
+    }else{
+      setMsg("Veuillez donner un nom à la nouvelle base de données",'rgb(194, 22, 22)');
+  }}else{
+    setMsg("Veuillez déposer une base de données",'rgb(194, 22, 22)');
   }
 }
 
-function previewFile(file:any) {
-  let reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onloadend = function() {
-    let img = document.createElement('img');
-    img.setAttribute("src", reader.result as string); 
-    document.getElementById('gallery')?.appendChild(img);
-  }
+function setMsg(msg:string,color:string){
+  (document.getElementById("msg")as HTMLInputElement).style.color = color;
+    (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
 }
+
 
 function uploadFile(file:any, i:any) {
   var url = 'http://localhost:4000/upload'
@@ -125,13 +129,19 @@ function uploadFile(file:any, i:any) {
             <label className="button" htmlFor="fileElem">Select some files</label>
           </form>
             <progress id="progress-bar" max={100} value={0}></progress>
-            <div id="gallery" />
-          </div>
+            <p className="nameFile" id="nameFile"></p> 
+        </div>
+        <div className="sendFile">
+          <input type="text" className="inputName" id="inputName" placeholder="Database name..."></input>
+          <button className="sendButton" onClick={sendFile}>Send</button>
+        </div>
+        <span className="msg" id="msg"></span> 
+        </div>
+        
         <BarreLaterale />
         <Navigation />
         
       </div>
-    </div>
   );
 }
 

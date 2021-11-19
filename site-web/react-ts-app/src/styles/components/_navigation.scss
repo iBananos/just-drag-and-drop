@@ -17,8 +17,6 @@
     }
     li {
         float: left;
-    }
-    li a {
         display: block;
         color: white;
         text-align: center;
@@ -26,7 +24,14 @@
         padding: 16px 16px;
         text-decoration: none;
     }
-    li a:hover {
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        font-family: $font;
+        text-decoration: none;
+    }
+    li:hover {
         background-color: black;
     }
     .logo{
