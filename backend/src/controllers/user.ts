@@ -4,6 +4,28 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import { argon2i } from 'argon2-ffi';
 import type { RequestHandler, Request, Response, NextFunction } from "express";
+import { Console } from "console";
+
+
+
+
+
+function checkPassword(pwd : string) {
+    if (pwd.match( /[0-9]/g) && pwd.match( /[A-Z]/g) && 
+    pwd.match(/[a-z]/g) && pwd.match( /[^a-zA-Z\d]/g) && pwd.length >= 10) {
+        return true;
+    }
+    return false;
+}
+
+
+function checkMailAvailable(mail : string){
+    var expressionReguliere = /^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
+    if (expressionReguliere.test(mail)) {
+        return true;
+    }
+    return false;
+}
 
 
 /**
@@ -14,6 +36,16 @@ import type { RequestHandler, Request, Response, NextFunction } from "express";
  * @param next 
  */
 export const signup : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    if (!checkMailAvailable(req.body.email)) {
+        res.status(401).json({ message : "Veuillez entrer une adresse mail valide." });
+        return;
+    }
+
+    if (!checkPassword(req.body.password)) {
+        res.status(401).json({ message : "Le mot de passe n'est pas assez complexe" });
+        return;
+    }
+
     crypto.randomBytes(32, function(err, salt) {
         if(err) throw new Error(err.toString());
 
