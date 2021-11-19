@@ -3,61 +3,37 @@ import Navigation from '../components/Navigation';
 
 const Signup = () => {
 
-    function checkMDP(mdp1:string, mdp2:string){
-        var msg : string = "";
-        if (mdp1.match( /[0-9]/g) &&  mdp1.match( /[A-Z]/g) && 
-            mdp1.match(/[a-z]/g) &&  mdp1.match( /[^a-zA-Z\d]/g) && mdp1.length >= 10) {
-                if(mdp1 === mdp2){ // les mots de passes sont équivalents
-                    (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
-                    return true;
-                } else {
-                    msg = "Les mots de passes ne correspondent pas";
-                    (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
-                    return false;
-                }
-            }
-        msg = "Le mot de passe n'est pas assez complexe";
-        (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
-        return false;
-    }
-    
-    function checkMailAvailable(mail:string){
-        var msg : string = "";
-        var expressionReguliere = /^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
-        if(expressionReguliere.test(mail)){
-            (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
-            return true;
+    function createAccount(){
+        var mail = (document.getElementById('mail')as HTMLInputElement)?.value;
+        var mdp1 = (document.getElementById('mpd1')as HTMLInputElement)?.value;
+        var mdp2 = (document.getElementById('mpd2')as HTMLInputElement)?.value;
+
+        if (mdp1 === mdp2) { 
+            sendRequestSignUp(mail ,mdp1);
         }
-        msg = "Veuillez entrer une adresse mail valide.";
-        (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
-        return false;
+        else {
+            let msg : string = "Les mots de passes ne correspondent pas";
+            (document.getElementById("msg") as HTMLInputElement).innerHTML= msg;
+        }
     }
 
-    function createAccount(){
-        var mail  = (document.getElementById('mail')as HTMLInputElement)?.value;
-        var mdp1  = (document.getElementById('mpd1')as HTMLInputElement)?.value;
-        var mdp2  = (document.getElementById('mpd2')as HTMLInputElement)?.value;
-        if(checkMailAvailable(mail) && checkMDP(mdp1,mdp2) ){
-            sendRequestSignUp(mail,mdp1)
-        }
-        console.log("c'est pas bon")
-    }
     function sendRequestSignUp(mail:string, mdp:string) {
         var url = 'http://localhost:4000/api/auth/signup'
         var xhr = new XMLHttpRequest()
         xhr.open('POST', url, true)
         xhr.setRequestHeader("Content-Type", "application/json");
       
-      
         xhr.addEventListener('readystatechange', function(e) {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log("c'est bon") // TODO FAIRE LA PAGE DE REDIRECTION  
-          }
-          else if (xhr.readyState === 4 && xhr.status !== 200) {
-            var msg = "Cette adresse e-mail est déjà utilisée";
-            (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
-          }
-        })
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("c'est bon"); // TODO FAIRE LA PAGE DE REDIRECTION  
+                (document.getElementById("msg") as HTMLInputElement).innerHTML= "Compte crée !";
+            }
+            else if (xhr.readyState === 4 && xhr.status !== 200) {
+                var res = JSON.parse(this.response);
+                (document.getElementById("msg") as HTMLInputElement).innerHTML= res.message;
+            }
+        });
+
         var data = JSON.stringify({"email":mail,"password":mdp})
         xhr.send(data)
     }
