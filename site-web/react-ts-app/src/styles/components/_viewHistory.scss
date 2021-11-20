@@ -1,0 +1,27 @@
+.ViewHistory{
+    background: $color_nav;
+    width: 300px;
+    height: 100%;
+    position: fixed;
+    top: 50px;
+    right: 0px;
+    box-shadow: 0px 5px 10px black ;
+    color: $color_text;
+    font-family: $font;
+    p{
+        margin-left: 10px ;
+    }
+    button{
+        color: $color_text;
+        padding: 10px;
+        width: 120px;
+        height: 50px;
+        margin-left: 90px;
+        margin-right: 90px;
+        margin-top: 50px;
+        
+    }
+    .loadButton{
+        display: none;
+    }
+}
