@@ -1,4 +1,4 @@
-import React from 'react';
+import Navigation from "./Navigation";
 
 interface propsHistory {
     name? : string ;
