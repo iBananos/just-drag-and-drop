@@ -4,7 +4,7 @@
   "description": "package Serveur",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.ts",
+    "dev": "ts-node-dev src/index.ts",
     "start": "tsc && node build/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,15 +15,16 @@
     "@types/express": "^4.17.13",
     "@types/mongoose-unique-validator": "^1.0.5",
     "@types/node": "^16.11.7",
-    "nodemon": "^2.0.15",
-    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8",
     "tslint": "^5.12.1",
     "typescript": "^3.9.10"
   },
   "dependencies": {
+    "@types/cookie-parser": "^1.4.2",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/multer": "^1.4.7",
     "argon2-ffi": "^2.0.0",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",

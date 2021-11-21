@@ -3,10 +3,8 @@ import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import { argon2i } from 'argon2-ffi';
+import RefreshToken from '../models/refreshToken'
 import type { RequestHandler, Request, Response, NextFunction } from "express";
-import { Console } from "console";
-
-
 
 
 
@@ -47,7 +45,7 @@ export const signup : RequestHandler = (req : Request, res : Response, next : Ne
     }
 
     crypto.randomBytes(32, function(err, salt) {
-        if(err) throw new Error(err.toString());
+        if (err) throw new Error(err.toString());
 
         const options = {
             timeCost: 10,
@@ -87,14 +85,61 @@ export const login : RequestHandler = (req : Request, res : Response, next : Nex
                     if (!valid) {
                         return res.status(400).json({ error: "Nom d'utilisateur ou mot de passe incorrect !" });
                     }
-                    
+
+                    /* On créer le token CSRF */
+                    const xsrfToken = crypto.randomBytes(64).toString('hex');
+
+                    /* On créer le JWT avec le token CSRF dans le payload */
+                    const accessToken = jwt.sign(
+                        { userId: user._id, xsrfToken },
+                        `${process.env.TOKEN_SECRET}`,
+                        { expiresIn: `${process.env.TOKEN_EXPIRES}` }
+                    );
+
+
+                    /* On créer le refresh token et on le stocke en BDD */
+                    const refreshToken = crypto.randomBytes(128).toString('base64');
+                    const refreshTokenExpires = Date.now() + `${process.env.REFRESH_TOKEN_EXPIRES}`;
+
+                    RefreshToken.findOne({ userId: user._id })
+                        .then((refresh) => {
+                            if (refresh == null) {
+                                new RefreshToken({
+                                    token: refreshToken,
+                                    expires: refreshTokenExpires,
+                                    userId: user._id
+                                }).save();
+                            }
+                            else {
+                                RefreshToken.updateOne({ userId: user._id }, {token: refreshToken, expires: refreshTokenExpires})
+                                    .then(() => {})
+                                .catch(error => res.status(500).json({ error }));
+                            }
+                        })
+                    .catch(error => res.status(500).json({ error }));
+
+                    /* On créer le cookie contenant le JWT */
+                    res.cookie('access_token', accessToken, {
+                        httpOnly: true,
+                        secure: false,      /*!!!!!! True quand https !!!!!!*/
+                        maxAge: parseInt(process.env.TOKEN_EXPIRES!, 10)
+                    });
+
+
+                    /* On créer le cookie contenant le refresh token */
+                    res.cookie('refresh_token', refreshToken, {
+                        httpOnly: true,
+                        secure: false,      /*!!!!!! True quand https !!!!!!*/
+                        maxAge: parseInt(process.env.REFRESH_TOKEN_EXPIRES!, 10)
+                        //,path: 'api/auth/refresh'
+                    });
+
+
+                    /* On envoie une reponse JSON contenant les durées de vie des tokens et le token CSRF */
                     res.status(200).json({
-                        userId: user._id,
-                        token: jwt.sign(
-                            { userId: user._id },
-                            `${process.env.TOKEN_SECRET}`,
-                            { expiresIn: `${process.env.TOKEN_EXPIRES}` }
-                        )
+                        accessTokenExpires: `${process.env.TOKEN_EXPIRES}`,
+                        refreshTokenExpires: `${process.env.REFRESH_TOKEN_EXPIRES}`,
+                        xsrfToken
                     });
                 })
             .catch(error => res.status(500).json({ error }));
