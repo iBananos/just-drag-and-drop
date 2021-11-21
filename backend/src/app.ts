@@ -2,7 +2,9 @@ import "dotenv/config";
 import express from "express";
 import mongoose from 'mongoose';
 import userRoutes from './routes/user';
+import cookieParser from 'cookie-parser';
 import uploadRoutes from './routes/upload';
+
 
 
 
@@ -16,9 +18,11 @@ const app = express();
 
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({
     extended: true
 }));
+
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
