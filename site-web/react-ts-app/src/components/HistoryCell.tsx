@@ -1,4 +1,3 @@
-import Navigation from "./Navigation";
 
 interface propsHistory {
     name? : string ;
