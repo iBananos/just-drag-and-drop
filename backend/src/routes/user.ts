@@ -19,6 +19,10 @@ router.post("/signup", userCtrl.signup);
 router.post("/login", userCtrl.login);
 
 
+/**
+ * Route Refresh Token
+ */
+router.post('/refresh', userCtrl.refreshToken);
 
 
 

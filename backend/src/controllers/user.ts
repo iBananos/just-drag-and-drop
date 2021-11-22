@@ -4,26 +4,10 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import { argon2i } from 'argon2-ffi';
 import RefreshToken from '../models/refreshToken'
+
+import type { ObjectId, Document} from 'mongoose';
 import type { RequestHandler, Request, Response, NextFunction } from "express";
 
-
-
-function checkPassword(pwd : string) {
-    if (pwd.match( /[0-9]/g) && pwd.match( /[A-Z]/g) && 
-    pwd.match(/[a-z]/g) && pwd.match( /[^a-zA-Z\d]/g) && pwd.length >= 10) {
-        return true;
-    }
-    return false;
-}
-
-
-function checkMailAvailable(mail : string){
-    var expressionReguliere = /^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
-    if (expressionReguliere.test(mail)) {
-        return true;
-    }
-    return false;
-}
 
 
 /**
@@ -86,63 +70,143 @@ export const login : RequestHandler = (req : Request, res : Response, next : Nex
                         return res.status(400).json({ error: "Nom d'utilisateur ou mot de passe incorrect !" });
                     }
 
-                    /* On créer le token CSRF */
-                    const xsrfToken = crypto.randomBytes(64).toString('hex');
+                    /* Création des token */
+                    const {xsrfToken, accessToken, refreshToken} = generateToken(user._id);
 
-                    /* On créer le JWT avec le token CSRF dans le payload */
-                    const accessToken = jwt.sign(
-                        { userId: user._id, xsrfToken },
-                        `${process.env.TOKEN_SECRET}`,
-                        { expiresIn: `${process.env.TOKEN_EXPIRES}` }
-                    );
-
-
-                    /* On créer le refresh token et on le stocke en BDD */
-                    const refreshToken = crypto.randomBytes(128).toString('base64');
-                    const refreshTokenExpires = Date.now() + `${process.env.REFRESH_TOKEN_EXPIRES}`;
-
-                    RefreshToken.findOne({ userId: user._id })
-                        .then((refresh) => {
-                            if (refresh == null) {
-                                new RefreshToken({
-                                    token: refreshToken,
-                                    expires: refreshTokenExpires,
-                                    userId: user._id
-                                }).save();
-                            }
-                            else {
-                                RefreshToken.updateOne({ userId: user._id }, {token: refreshToken, expires: refreshTokenExpires})
-                                    .then(() => {})
-                                .catch(error => res.status(500).json({ error }));
-                            }
-                        })
-                    .catch(error => res.status(500).json({ error }));
-
-                    /* On créer le cookie contenant le JWT */
-                    res.cookie('access_token', accessToken, {
-                        httpOnly: true,
-                        secure: false,      /*!!!!!! True quand https !!!!!!*/
-                        maxAge: parseInt(process.env.TOKEN_EXPIRES!, 10)
-                    });
-
-
-                    /* On créer le cookie contenant le refresh token */
-                    res.cookie('refresh_token', refreshToken, {
-                        httpOnly: true,
-                        secure: false,      /*!!!!!! True quand https !!!!!!*/
-                        maxAge: parseInt(process.env.REFRESH_TOKEN_EXPIRES!, 10)
-                        //,path: 'api/auth/refresh'
-                    });
-
-
-                    /* On envoie une reponse JSON contenant les durées de vie des tokens et le token CSRF */
-                    res.status(200).json({
-                        accessTokenExpires: `${process.env.TOKEN_EXPIRES}`,
-                        refreshTokenExpires: `${process.env.REFRESH_TOKEN_EXPIRES}`,
-                        xsrfToken
-                    });
+                    /* Envoie des token */
+                    sendToken(res, xsrfToken, accessToken, refreshToken);
                 })
             .catch(error => res.status(500).json({ error }));
         })
     .catch(error => res.status(500).json({ error }));
 };
+
+
+
+/**
+ * Fonction permettant de régénérer les token à partir d’un refresh token valide.
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export const refreshToken : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
+    try {
+        const { cookies } = req;
+
+        /* On vérifie que le JWT est présent dans les cookies de la requête */
+        if (!cookies || !cookies.refresh_token)
+            return res.status(401).json({ message: 'Refresh Token non trouvé' });
+
+        RefreshToken.findOne({ refreshToken: cookies.refresh_token })
+            .then((result) => {
+                let oldRefreshToken : any = result?.toJSON();
+                
+                if (oldRefreshToken!.expires < new Date().getTime()) {
+                    res.status(500);
+                    return;
+                }
+                else {
+                    /* Création des token */
+                    const {xsrfToken, accessToken, refreshToken} = generateToken(oldRefreshToken.userId);
+
+                    /* Envoie des token */
+                    sendToken(res, xsrfToken, accessToken, refreshToken);
+                }
+            })
+        .catch(error => res.status(500).json({ error }));
+    }
+    catch (err) {
+        return res.status(500).json({ message: 'Internal error' });
+    }
+}
+
+
+
+function generateToken(user_id : ObjectId) {
+    /* On créer le token CSRF */
+    const xsrfToken = crypto.randomBytes(64).toString('hex');
+
+    /* On créer le JWT avec le token CSRF dans le payload */
+    const accessToken = jwt.sign(
+        { userId: user_id, xsrfToken },
+        `${process.env.TOKEN_SECRET}`,
+        { expiresIn: `${process.env.TOKEN_EXPIRES}` }
+    );
+
+
+    /* On créer le refresh token et on le stocke en BDD */
+    const refreshToken = crypto.randomBytes(128).toString('base64');
+    const refreshTokenExpires = Date.now() + `${process.env.REFRESH_TOKEN_EXPIRES}`;
+
+    RefreshToken.findOne({ userId: user_id })
+        .then((refresh) => {
+            if (refresh == null) {
+                new RefreshToken({
+                    refreshToken: refreshToken,
+                    expires: refreshTokenExpires,
+                    userId: user_id
+                }).save();
+            }
+            else {
+                RefreshToken.updateOne({ userId: user_id }, {refreshToken: refreshToken, expires: refreshTokenExpires})
+                    .then(() => {})
+                .catch(error => console.log(error));
+            }
+        })
+    .catch(error => console.log(error));
+
+    return {xsrfToken, accessToken, refreshToken};
+}
+
+
+/**
+ * Fonction permettant d'envoyer les tokens
+ * @param res 
+ * @param xsrfToken 
+ * @param accessToken 
+ * @param refreshToken 
+ */
+function sendToken(res : Response, xsrfToken : string, accessToken : string, refreshToken : string) {
+    /* On créer le cookie contenant le JWT */
+    res.cookie('access_token', accessToken, {
+        httpOnly: true,
+        secure: false,      /*!!!!!! True quand https !!!!!!*/
+        maxAge: parseInt(process.env.TOKEN_EXPIRES!, 10) * 1000
+    });
+
+
+    /* On créer le cookie contenant le refresh token */
+    res.cookie('refresh_token', refreshToken, {
+        httpOnly: true,
+        secure: false,      /*!!!!!! True quand https !!!!!!*/
+        maxAge: parseInt(process.env.REFRESH_TOKEN_EXPIRES!, 10) * 1000,
+        path: 'api/auth/refresh'
+    });
+
+
+    /* On envoie une reponse JSON contenant les durées de vie des tokens et le token CSRF */
+    res.status(200).json({
+        accessTokenExpires: `${process.env.TOKEN_EXPIRES}`,
+        refreshTokenExpires: `${process.env.REFRESH_TOKEN_EXPIRES}`,
+        xsrfToken
+    });
+}
+
+
+
+function checkPassword(pwd : string) {
+    if (pwd.match( /[0-9]/g) && pwd.match( /[A-Z]/g) && 
+    pwd.match(/[a-z]/g) && pwd.match( /[^a-zA-Z\d]/g) && pwd.length >= 10) {
+        return true;
+    }
+    return false;
+}
+
+
+function checkMailAvailable(mail : string){
+    var expressionReguliere = /^(([^<>()[]\.,;:s@]+(.[^<>()[]\.,;:s@]+)*)|(.+))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/;
+    if (expressionReguliere.test(mail)) {
+        return true;
+    }
+    return false;
+}
