@@ -10,20 +10,20 @@ const Navigation = () => {
     function UserNav() {
         return <ul>
         <li><NavLink onClick={window.location.reload} to="/">Home</NavLink></li>
-        <li><NavLink to="/upload">Upload</NavLink></li>
-        <li><NavLink to="/history">History</NavLink></li>
+        <li><NavLink onClick={window.location.reload} to="/upload">Upload</NavLink></li>
+        <li><NavLink onClick={window.location.reload} to="/history">History</NavLink></li>
         <li><NavLink onClick={window.location.reload} to="/analyze">Analyze</NavLink></li>
-        <li><NavLink to="/"><span onClick={deleteToken}>Disconnect</span></NavLink></li>
+        <li><NavLink onClick={window.location.reload} to="/"><span onClick={deleteToken}>Disconnect</span></NavLink></li>
         </ul>;
       }
       
     function GuestNav() {
         return <ul>
         <li><NavLink onClick={window.location.reload} to="/">Home</NavLink></li>
-        <li><NavLink to="/upload">Upload</NavLink></li>
-        <li><NavLink to="/history">History</NavLink></li>
+        <li><NavLink onClick={window.location.reload} to="/upload">Upload</NavLink></li>
+        <li><NavLink onClick={window.location.reload} to="/history">History</NavLink></li>
         <li><NavLink onClick={window.location.reload} to="/analyze">Analyze</NavLink></li>
-        <li><NavLink to="/login">Log in</NavLink></li>
+        <li><NavLink onClick={window.location.reload} to="/login">Log in</NavLink></li>
         </ul>
     }
 

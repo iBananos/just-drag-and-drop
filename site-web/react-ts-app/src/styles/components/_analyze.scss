@@ -3,5 +3,96 @@
     bottom: 0px;
     position: relative;
     width: 100%;
+    color: $color_text;
+    font-family: $font;
+}
+select{
+    background-color: transparent;
+    color: $color_text;
+    width: 200px;
     text-align: center;
+    height: 40px;
+    border: none;
+    border-radius: 16px;
+    border-color: $color_text;
+    box-shadow: 0px 0px 20px black ;
+}:focus {
+    outline: none;
+}
+select option{
+    background-color: $color_back;
+}
+.Algos1{
+    display: none;
+}
+.Algos2{
+    display: none;
+}
+.GradientBoosting{
+    display: none
+}
+.RandomForest{
+    
+    display: none
+}
+.Ridge{
+    display: none;
+    
+}
+.BayesianARDRegression{
+    
+    display: none
+}
+.LinearSVC{
+    
+    display: none
+}
+.AdaBoost{
+    
+    display: none
+}
+.GradientBoosting2{
+    
+    display: none
+}
+.RandomForest2{
+    
+    display: none
+}
+.LogisticRegression{
+    
+    display: none
+}
+input{
+}
+.inputNumber{
+    position: relative;
+    background-color: transparent;
+    color: $color_text;
+    width: 200px;
+    height: 40px;
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0px 0px 20px black ;
+    text-align: center;
+    outline: none;
+}
+
+.Parametre select{
+    margin-left: 70px;
+    background-color: transparent;
+    position: relative;
+    color: $color_text;
+    width: 200px;
+    height: 40px;
+    border: none;
+    border-radius: 16px;
+    border-color: $color_text;
+    box-shadow: 0px 0px 20px black ;
+}
+td{
+    height: 70px;
+    width: 200px;
+}
+.inputName{
 }
