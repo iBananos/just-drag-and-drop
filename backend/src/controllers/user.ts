@@ -5,7 +5,7 @@ import User from '../models/user';
 import { argon2i } from 'argon2-ffi';
 import RefreshToken from '../models/refreshToken'
 
-import type { ObjectId, Document} from 'mongoose';
+import type { ObjectId } from 'mongoose';
 import type { RequestHandler, Request, Response, NextFunction } from "express";
 
 
@@ -101,8 +101,8 @@ export const refreshToken : RequestHandler = async (req : Request, res : Respons
             .then((result) => {
                 let oldRefreshToken : any = result?.toJSON();
                 
-                if (oldRefreshToken!.expires < new Date().getTime()) {
-                    res.status(500);
+                if (oldRefreshToken!.expires > Date.now()) {
+                    res.status(500).json({ message: 'token expires' });
                     return;
                 }
                 else {
@@ -130,13 +130,13 @@ function generateToken(user_id : ObjectId) {
     const accessToken = jwt.sign(
         { userId: user_id, xsrfToken },
         `${process.env.TOKEN_SECRET}`,
-        { expiresIn: `${process.env.TOKEN_EXPIRES}` }
+        { expiresIn: parseInt(`${process.env.TOKEN_EXPIRES}`, 10) * 1000 }
     );
 
 
     /* On créer le refresh token et on le stocke en BDD */
     const refreshToken = crypto.randomBytes(128).toString('base64');
-    const refreshTokenExpires = Date.now() + `${process.env.REFRESH_TOKEN_EXPIRES}`;
+    const refreshTokenExpires = Date.now() + parseInt(`${process.env.REFRESH_TOKEN_EXPIRES}`, 10);
 
     RefreshToken.findOne({ userId: user_id })
         .then((refresh) => {
@@ -186,8 +186,8 @@ function sendToken(res : Response, xsrfToken : string, accessToken : string, ref
 
     /* On envoie une reponse JSON contenant les durées de vie des tokens et le token CSRF */
     res.status(200).json({
-        accessTokenExpires: `${process.env.TOKEN_EXPIRES}`,
-        refreshTokenExpires: `${process.env.REFRESH_TOKEN_EXPIRES}`,
+        accessTokenExpires: Date.now() + (parseInt(`${process.env.TOKEN_EXPIRES}`, 10) * 1000),
+        refreshTokenExpires: Date.now() + (parseInt(`${process.env.REFRESH_TOKEN_EXPIRES}`, 10) * 1000),
         xsrfToken
     });
 }
