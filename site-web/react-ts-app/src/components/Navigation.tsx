@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import logo from './Logo.png';
+import logo from '../assets/Logo.png';
 const Navigation = () => {
 
     function deleteToken(){
@@ -14,7 +14,7 @@ const Navigation = () => {
         <li><NavLink onClick={window.location.reload} to="/history">History</NavLink></li>
         <li><NavLink onClick={window.location.reload} to="/analyze">Analyze</NavLink></li>
         <li><NavLink onClick={window.location.reload} to="/"><span onClick={deleteToken}>Disconnect</span></NavLink></li>
-        </ul>;
+        </ul>
       }
       
     function GuestNav() {

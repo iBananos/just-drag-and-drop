@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
-import add from './add.svg';
+import add from "../assets/add.svg";
 const BarreLaterale = () => {
     return (
         <div className="barreLaterale">

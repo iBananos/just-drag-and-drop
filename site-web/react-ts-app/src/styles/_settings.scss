@@ -10,6 +10,7 @@ $color_nav: #181925;
 $color_error : rgb(196, 25, 25);
 /* BUTTON */
 $color_button:  #171824;
+$color_button_hover : rgb(187, 164, 34);
 $color_shadow : rgba(1, 2, 5, 0.796);
 /* TEXT */
 $color_placeholder :rgb(51, 51, 51);
@@ -20,15 +21,15 @@ $logo : "./assets/Logo.png";
 
 button{
     background-color: $color_button;
-    border-top-left-radius: 16.00px;
-    border-top-right-radius: 16.00px;
-    border-bottom-left-radius: 16.00px;
-    border-bottom-right-radius: 16.00px;
+    border-radius: 16.00px;
     box-shadow: 0px 0px 30px black ;
     border: none;
+    cursor: pointer;
+    color: $color_text;
     &:hover{
-        box-shadow: 0px 0px 20px black ;
-        background-color: $color_back;
+        background-color: $color_button_hover;
+        color: white;
+        box-shadow: 0px 0px 15px $color_button_hover ;
     }
 }
 input:focus {

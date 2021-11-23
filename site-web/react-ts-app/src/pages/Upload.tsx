@@ -105,6 +105,7 @@ function uploadFile(file:any) {
           </form>
             <p className="nameFile" id="nameFile"></p> 
         </div> 
+        
         <div className="sendFile">
           <input type="text" className="inputName" id="inputName" placeholder="Database name..."></input>
           <button className="sendButton" onClick={sendFile}>Send</button>

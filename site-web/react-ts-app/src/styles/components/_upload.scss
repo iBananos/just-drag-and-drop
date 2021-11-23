@@ -10,14 +10,15 @@
         border-top-right-radius: 16.00px;
         border-bottom-left-radius: 16.00px;
         border-bottom-right-radius: 16.00px;
-        border-style: dashed ;
-        border-width: 1em;
+        border-style:ridge ;
+        border-width: 0.5em;
         border-color: black;
         text-align: center;
         font-family: $font;
         color: $color_text;
     }#drop-area.highlight {
-        border-color: red;
+        border-color: $color_button_hover;
+        box-shadow: 0px 0px 20px $color_button_hover, inset 0px 0px 20px $color_button_hover ;
       }
       #drop-area input{
         background: transparent;
@@ -38,46 +39,36 @@
         top:60% ;
         position:fixed;
         left: 30%;
-
     }
     
 }
 .button{
     display: inline-block;
     padding: 10px;
-    border-top-left-radius: 16.00px;
-    border-top-right-radius: 16.00px;
-    border-bottom-left-radius: 16.00px;
-    border-bottom-right-radius: 16.00px;
+    border-radius: 16px;
     background: $color_button;
     cursor: pointer;
     border: none;
     box-shadow: 0px 0px 30px black ;
+    border: none;
+    color: $color_text;
     &:hover{
-        box-shadow: 0px 0px 20px black ;
-        background-color: $color_back;
+        background-color: $color_button_hover;
+        color: white;
+        box-shadow: 0px 0px 20px $color_button_hover ;
     }
 }
+
 .sendButton{
     display: inline-block;
     position: absolute;
     padding: 11px;
     margin-left : -30px;
     margin-top: -37px;
-    border-top-left-radius: 16.00px;
-    border-top-right-radius: 16.00px;
-    border-bottom-left-radius: 16.00px;
-    border-bottom-right-radius: 16.00px;
-    color : $color_text;
-    background: $color_button;
     cursor: pointer;
     border: none;
-    box-shadow: 0px 0px 30px black ;
-    &:hover{
-        box-shadow: 0px 0px 20px black ;
-        background-color: $color_back;
-    }
 }
+
 .sendFile{
     margin-top: 20px;
     margin-left: 15%;

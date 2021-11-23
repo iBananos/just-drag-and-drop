@@ -1,0 +1,49 @@
+.InputNumberComponent{
+    position: relative;
+    background-color: transparent;
+    color: $color_text;
+    width: 200px;
+    height: 40px;
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0px 0px 20px black ;
+    text-align: center;
+    outline: none;
+}
+
+
+.InputNumberComponent button{
+    width: 30px;
+    height: 30px;
+    color: $color_text;
+    box-shadow: none;
+    font-size: 1em;
+    background-color: $color_back;
+}
+.InputNumberComponent button:hover{
+    background-color: black;
+}
+.boutonMinus{
+    margin-top: 5px;
+}
+.boutonPlus{
+    margin-top: 5px;
+}
+
+.inputNumber{
+    position: relative;
+    background-color: transparent;
+    color: $color_text;
+    width: 100px;
+    height: 40px;
+    border-radius: 16px;
+    border: none;
+    text-align: center;
+    outline: none;
+    
+}
+.inputNumber::-webkit-inner-spin-button,
+.inputNumber::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

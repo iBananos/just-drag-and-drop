@@ -15,6 +15,10 @@
     text-align: left;
     font-family: $font;
     font-size: medium;
+    &:hover{
+        color: white;
+        box-shadow: 0px 0px 20px $color_button_hover ;
+    }
     p{
         white-space:nowrap;
         overflow: hidden;
