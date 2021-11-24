@@ -1,5 +1,6 @@
 import multer from 'multer';
 import express from "express";
+import { auth } from '../middleware/auth';
 import * as uploadCtrl from '../controllers/upload';
 
 // Création du router
@@ -13,6 +14,14 @@ const upload = multer({ dest: 'uploads/' });
  * Route Upload
  */
 router.post("/", upload.single('file'), uploadCtrl.saveFile);
+
+
+
+router.post("/parameters", auth, (req, res, next) => {
+    console.log(req);
+
+    res.send("ok");
+});
 
 
 

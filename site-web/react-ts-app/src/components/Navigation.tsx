@@ -27,7 +27,9 @@ const Navigation = () => {
     window.addEventListener('resize', gestionNav);
 
     function deleteToken(){
-        localStorage.removeItem("Token");
+        localStorage.removeItem("xsrfToken");
+        localStorage.removeItem("accessTokenExpires");
+        localStorage.removeItem("refreshTokenExpires");
         window.location.href = "/"
     }
 
@@ -52,7 +54,7 @@ const Navigation = () => {
     }
 
     function Nav() {
-        if(localStorage.getItem("Token")){
+        if(localStorage.getItem("xsrfToken") && localStorage.getItem("accessTokenExpires") && localStorage.getItem("refreshTokenExpires")){
           return <UserNav />;
         }
         return <GuestNav />;
