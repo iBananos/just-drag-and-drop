@@ -17,14 +17,18 @@ const Login = () => {
         var xhr = new XMLHttpRequest()
         xhr.open('POST', url, true)
         xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.withCredentials = true;
       
       
         xhr.addEventListener('readystatechange', function(e) {
           if (xhr.readyState === 4 && xhr.status === 200) {
             var msg = "";
             (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
-            var res = JSON.parse(this.response)
-            localStorage.setItem("Token",res.token);
+            var res = JSON.parse(this.response);
+
+            localStorage.setItem("xsrfToken", res.xsrfToken);
+            localStorage.setItem("accessTokenExpires", res.accessTokenExpires);
+            localStorage.setItem("refreshTokenExpires", res.refreshTokenExpires);
             (document.getElementById("login") as HTMLInputElement).setAttribute("display","none");
             window.location.href = "/"; 
           }

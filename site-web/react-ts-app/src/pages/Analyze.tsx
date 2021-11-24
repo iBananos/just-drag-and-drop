@@ -2,6 +2,7 @@ import BarreLaterale from "../components/BarreLaterale";
 import InputNumber from "../components/InputNumber";
 import Navigation from "../components/Navigation";
 import help from "../assets/help.png";
+import * as utils from "../Utils";
 
 const Analyze = () =>  {
     
@@ -124,7 +125,13 @@ const Analyze = () =>  {
                                             "max_iter" : (document.getElementById("max_iter9")as HTMLInputElement).value
                                         });
         }
-        console.log(requestAnalyze)
+        console.log(requestAnalyze);
+
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/upload/parameters', requestAnalyze, callbackRequest);
+    }
+
+    function callbackRequest(response : any) {
+        console.log(response);
     }
 
     return (
