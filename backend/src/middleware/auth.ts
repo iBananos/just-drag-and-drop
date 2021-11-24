@@ -23,8 +23,8 @@ export const auth : RequestHandler = (req : Request, res : Response, next : Next
     try {
         const { cookies, headers } = req;
 
-        console.log(cookies);
-        console.log(req);
+        //console.log(cookies);
+        //console.log(req);
 
         /* On vérifie que le JWT est présent dans les cookies de la requête */
         if (!cookies || !cookies.access_token)

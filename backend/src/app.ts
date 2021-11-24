@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import userRoutes from './routes/user';
 import cookieParser from 'cookie-parser';
 import uploadRoutes from './routes/upload';
-
+import analyzeRoutes from './routes/analyze';
 
 
 
@@ -39,6 +39,9 @@ app.use('/api/auth', userRoutes);
 
 // Routes pour l'upload de base de données
 app.use('/upload', uploadRoutes)
+
+// Routes pour les analyses de base de données
+app.use('/analyze', analyzeRoutes)
 
 
 

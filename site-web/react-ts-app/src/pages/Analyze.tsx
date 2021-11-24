@@ -127,7 +127,7 @@ const Analyze = () =>  {
         }
         console.log(requestAnalyze);
 
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/upload/parameters', requestAnalyze, callbackRequest);
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/parameters', requestAnalyze, callbackRequest);
     }
 
     function callbackRequest(response : any) {

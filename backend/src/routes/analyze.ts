@@ -1,19 +1,13 @@
 import multer from 'multer';
 import express from "express";
 import { auth } from '../middleware/auth';
-import * as uploadCtrl from '../controllers/upload';
+import * as analyzeCtrl from '../controllers/analyze';
 
 // Création du router
 const router = express.Router();
 
-// Création du multer
-const upload = multer({ dest: 'uploads/' });
 
-
-/**
- * Route Upload
- */
-router.post("/",  upload.single('file'), uploadCtrl.saveFile);
+router.post("/parameters", auth, analyzeCtrl.parameters);
 
 
 

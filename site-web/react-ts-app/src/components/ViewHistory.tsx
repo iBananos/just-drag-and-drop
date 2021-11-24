@@ -7,7 +7,7 @@ const ViewHistory = () => {
         var date = (document.getElementById("date")as HTMLInputElement).value;
         var database = (document.getElementById("database")as HTMLInputElement).value;
         if(title !== ""){
-
+            
         }
 
     }

@@ -53,9 +53,18 @@ const Navigation = () => {
     function UserNav() {
         return <ul>
         <li><NavLink onClick={window.location.reload} to="/">Home</NavLink></li>
-        <li><NavLink onClick={window.location.reload} to="/upload">Upload</NavLink></li>
-        <li><NavLink onClick={window.location.reload} to="/history">History</NavLink></li>
-        <li><NavLink onClick={window.location.reload} to="/analyze">Analyze</NavLink></li>
+        <li className="dropdown">
+            <div className="dropbtn">Database</div>
+            <div className="dropdown-content">
+                <NavLink onClick={window.location.reload} to="/upload">Upload</NavLink>
+                <NavLink onClick={window.location.reload} to="/database">My databases</NavLink>
+            </div></li>
+        <li className="dropdown">
+            <div className="dropbtn">Analyze</div>
+            <div className="dropdown-content">
+                <NavLink onClick={window.location.reload} to="/analyze">New analyze</NavLink>
+                <NavLink onClick={window.location.reload} to="/history">History</NavLink>
+            </div></li>
         <li><NavLink onClick={window.location.reload} to="/"><span onClick={deleteToken}>Disconnect</span></NavLink></li>
         </ul>
       }
@@ -63,9 +72,6 @@ const Navigation = () => {
     function GuestNav() {
         return <ul>
         <li><NavLink onClick={window.location.reload} to="/">Home</NavLink></li>
-        <li><NavLink onClick={window.location.reload} to="/upload">Upload</NavLink></li>
-        <li><NavLink onClick={window.location.reload} to="/history">History</NavLink></li>
-        <li><NavLink onClick={window.location.reload} to="/analyze">Analyze</NavLink></li>
         <li><NavLink onClick={window.location.reload} to="/login">Log in</NavLink></li>
         </ul>
     }

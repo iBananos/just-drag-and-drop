@@ -1,5 +1,6 @@
 import BarreLaterale from "../components/BarreLaterale";
 import Navigation from "../components/Navigation";
+import * as utils from "../Utils";
 
 const Upload = () => { 
   let files : File;
@@ -74,6 +75,9 @@ function setMsg(msg:string,color:string){
 
 
 function uploadFile(file:any) {
+  console.log("icicicici");
+  //utils.default.sendFileWithToken('POST', 'http://localhost:4000/upload', file, callbackRequest);
+  
   var url = 'http://localhost:4000/upload'
   var xhr = new XMLHttpRequest()
   var formData = new FormData()
@@ -91,6 +95,11 @@ function uploadFile(file:any) {
 
   formData.append('file', file)
   xhr.send(formData)
+  
+}
+
+function callbackRequest(){
+  console.log("recu")
 }
 
   return (
