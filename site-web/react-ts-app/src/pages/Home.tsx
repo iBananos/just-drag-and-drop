@@ -3,11 +3,12 @@ import React from "react"
 import BarreLaterale from "../components/BarreLaterale";
 import Chart from "../components/Chart";
 const Home = () =>  {
+    
     return (
         
         <div className="home">
             
-            <div className="view">
+            <div id="view" className="view">
                 <h1 className="title">Home page</h1>
                 
                 <Chart  type='bar' 

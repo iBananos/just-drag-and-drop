@@ -129,7 +129,7 @@ const Analyze = () =>  {
 
     return (
         <div className="Analyze">
-            <div className="view">
+            <div className="view" id="view">
                 <h1 className="title">Analyze page</h1>
                 <select name="database" className="SelectDB" onChange={enableCategory}>
                     <option value="" disabled selected>Choose a database</option>

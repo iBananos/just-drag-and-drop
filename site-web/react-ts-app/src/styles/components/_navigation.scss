@@ -1,11 +1,12 @@
 .navigation{
     background: $color_nav;
-    
+    float: left;
     height: 50px;
     position: fixed;
     top: 0px;
     left: 0px;
     right: 0px;
+    text-align: left;
     ul {
         list-style-type: none;
         position: fixed;
@@ -13,6 +14,7 @@
         padding: 0;
         height: 50px;
         right:0px;
+        top: 0%;
         overflow: hidden;
         background-color: $color_nav;
     }
@@ -41,16 +43,55 @@
         height: 40px;
         margin-top: 5px;
         width: 50px;
-        position: fixed;
-        left: 10px;
+        position: relative;
+        text-align: left;
+        float: left;
     }
     .company{
-        position:fixed;
-        margin-left: 70px;
+        text-align: left;
+        float: left;
+        position:relative;
+        margin-left: 10px;
         margin-top: 7px;
         color: $color_text;
         -webkit-text-stroke: 1.00px $color_text;
     }
     box-shadow: 0px 5px 10px black ;
    
+}
+.toggle {
+    text-align: left;
+    float: left;
+    padding-top: 5px;
+    margin-top: 10px;
+    margin-left: 12px;
+    cursor: pointer;
+}
+li.toggle:hover span.toggle-menu-bar {
+    background-color: #ddd;
+  }
+  
+.toggle-menu-bar {
+	display: block;
+	width: 25px;
+	height: 4px;
+	background-color: $color_text;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin: 0 auto 3px;
+  transition: background-color 0.2s;
+}
+.close{
+    text-align: left;
+    float: left;
+    margin-top: 12px;
+    margin-left: 12px;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+#close{
+    
+    display: none;
 }
