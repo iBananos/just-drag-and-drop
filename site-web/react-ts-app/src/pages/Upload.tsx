@@ -89,14 +89,13 @@ function uploadFile(file:any) {
     }
   })
 
-  formData.append('upload_preset', 'ujpu6gyk')
   formData.append('file', file)
   xhr.send(formData)
 }
 
   return (
     <div className="Upload">
-        <div className="view">
+        <div className="view" id="view">
         <div id="drop-area">
           <form className="my-form">
             <p>Upload multiple files with the file dialog or by dragging and dropping images onto the dashed region</p>

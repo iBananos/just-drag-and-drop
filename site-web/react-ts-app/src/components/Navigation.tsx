@@ -1,10 +1,12 @@
 import { NavLink } from "react-router-dom";
 import logo from '../assets/Logo.png';
 import close from "../assets/close.png";
+import * as utils from "../Utils";
 const Navigation = () => {
 
     function displayToggle(){
         (document.getElementById("barreLaterale")as HTMLElement).style.display = "block";
+        (document.getElementById("view") as HTMLElement).style.marginLeft = "200px";
         (document.getElementById("toggle")as HTMLElement).style.display = "none";
         (document.getElementById("close")as HTMLElement).style.display = "block";
     }
@@ -12,6 +14,7 @@ const Navigation = () => {
     function closeToggle(){
         (document.getElementById("barreLaterale")as HTMLElement).style.display = "none";
         (document.getElementById("toggle")as HTMLElement).style.display = "block";
+        (document.getElementById("view") as HTMLElement).style.marginLeft = "0";
         (document.getElementById("close")as HTMLElement).style.display = "none";
     }
 
@@ -21,10 +24,24 @@ const Navigation = () => {
         if(width > 750){
             (document.getElementById("company") as HTMLElement).style.display = "block";
         }else{
+            (document.getElementById("close")as HTMLElement).style.display = "none";
+            (document.getElementById("toggle")as HTMLElement).style.display = "block";
             (document.getElementById("company") as HTMLElement).style.display = "none";
         }
     }
     window.addEventListener('resize', gestionNav);
+    setInterval(checkTokenValidity,60000);
+
+    function checkTokenValidity(){
+        let xsrfToken = localStorage.getItem("xsrfToken");
+        let accessTokenExpires = localStorage.getItem("accessTokenExpires");
+        let refreshTokenExpires = localStorage.getItem("refreshTokenExpires");
+        if (xsrfToken && accessTokenExpires && refreshTokenExpires) {
+            if (parseInt(accessTokenExpires, 10) < Date.now()+300000 && parseInt(accessTokenExpires, 10) > Date.now() ){
+                utils.default.refreshToken();
+            } 
+        }
+    }
 
     function deleteToken(){
         localStorage.removeItem("xsrfToken");

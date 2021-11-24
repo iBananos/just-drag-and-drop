@@ -18,7 +18,7 @@ router.post("/", upload.single('file'), uploadCtrl.saveFile);
 
 
 router.post("/parameters", auth, (req, res, next) => {
-    console.log(req);
+    //console.log(req);
 
     res.send("ok");
 });

@@ -6,10 +6,7 @@ const BarreLaterale = () => {
     function gestionBarre(){
         var width = window.innerWidth;
         console.log(width)
-        if(width > 750){
-            (document.getElementById("barreLaterale") as HTMLElement).style.display = "block";
-            (document.getElementById("view") as HTMLElement).style.marginLeft = "200px";
-        }else{
+        if(width <750){
             (document.getElementById("barreLaterale") as HTMLElement).style.display = "none";
             (document.getElementById("view") as HTMLElement).style.marginLeft = "0";
         }

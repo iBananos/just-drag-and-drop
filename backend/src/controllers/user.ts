@@ -107,6 +107,7 @@ export const refreshToken : RequestHandler = async (req : Request, res : Respons
                 const {xsrfToken, accessToken, refreshToken} = generateToken(oldRefreshToken.userId);
 
                 /* Envoie des token */
+                console.log("NOUVEAU TOKEN ENVOYE")
                 sendToken(res, xsrfToken, accessToken, refreshToken);
             }
     }
@@ -131,7 +132,7 @@ function generateToken(user_id : ObjectId) {
     /* On créer le refresh token et on le stocke en BDD */
     const refreshToken = crypto.randomBytes(128).toString('base64');
     const refreshTokenExpires = Date.now() + parseInt(`${process.env.REFRESH_TOKEN_EXPIRES}`, 10);
-
+    
     RefreshToken.findOne({ userId: user_id })
         .then((refresh) => {
             if (refresh == null) {

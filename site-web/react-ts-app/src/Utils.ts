@@ -53,6 +53,7 @@ class Utils {
 
 
     public static refreshToken() {
+        console.log("TOKEN DE RAFRAICHISSEMENT DEMANDE")
         var xhr = new XMLHttpRequest()
         xhr.open('POST', 'http://localhost:4000/api/auth/refresh', true);
         xhr.withCredentials = true;
