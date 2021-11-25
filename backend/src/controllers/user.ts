@@ -1,4 +1,5 @@
 import "dotenv/config";
+import fs from 'fs';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
@@ -44,7 +45,16 @@ export const signup : RequestHandler = (req : Request, res : Response, next : Ne
                 password: hash
             });
             user.save()
-            .then(() => res.status(200).json({ message: "Votre compte a bien été créé !" }))
+            .then(async () => {
+                    res.status(200).json({ message: "Votre compte a bien été créé !" });
+
+                    const userId : any = await User.findOne({ email: req.body.email }).lean();
+                    let dir = 'uploads/' + userId._id;
+                    fs.mkdirSync(dir);
+                    fs.mkdirSync(dir + '/database');
+                    fs.mkdirSync(dir + '/analyse');
+                }
+            )
             .catch(() => res.status(400).json({ message: "Cette adresse e-mail est déjà utilisée" }));
         });
     });

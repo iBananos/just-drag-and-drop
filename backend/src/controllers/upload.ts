@@ -11,8 +11,7 @@ import type { RequestHandler, Request, Response, NextFunction } from "express";
  */
 export const saveFile : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     var src = fs.createReadStream(req.file!.path);
-    console.log(req.body.userId,"   ", req.headers )
-    var dest = fs.createWriteStream('uploads/' + req.body.userId +"/databases/"+ req.file!.originalname);
+    var dest = fs.createWriteStream('uploads/' + req.body.userId + '/database/' + req.file!.originalname);
     src.pipe(dest);
     src.on('end', () => {
         fs.unlink(req.file!.path, (err) => { 

@@ -13,7 +13,7 @@ const upload = multer({ dest: 'uploads/' });
 /**
  * Route Upload
  */
-router.post("/", auth, upload.single('file'), uploadCtrl.saveFile);
+router.post("/", upload.single('file'), auth, uploadCtrl.saveFile);
 
 
 
