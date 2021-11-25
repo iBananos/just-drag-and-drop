@@ -2,6 +2,18 @@
 
 Type : 	Développement
 
+## Lancement de l'application :
+```
+git clone https://github.com/iBananos/just-drag-and-drop
+```
+```
+cd just-drag-and-drop
+```
+```
+docker compose up
+```
+- Se rendre sur : http://localhost:3000
+
 ## Résumé : 
 
 Contexte:
