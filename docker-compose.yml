@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+    server:
+        build: ./backend
+        container_name: server
+        ports:
+            - 4000:4000
+
+        volumes:
+            - /backend/node_modules
+            - ./backend:/backend
+    
+        restart: always
+        expose: 
+            - 4000
+
+    client:
+        build: ./site-web/react-ts-app
+        container_name: client
+        ports:
+            - 3000:3000
+        
+        volumes:
+            - /site-web/react-ts-app/node_modules
+            - ./site-web/react-ts-app:/site-web/react-ts-app
+        
+        restart: always
+        expose: 
+            - 3000
+            
+        depends_on:
+            - server
