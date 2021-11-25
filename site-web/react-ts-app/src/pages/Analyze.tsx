@@ -6,7 +6,22 @@ import * as utils from "../Utils";
 
 const Analyze = () =>  {
     
+    window.onload= function(){
+        console.log("demande")
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/databases', "", requestDatabases);
+    }
 
+    function requestDatabases(response : any){
+        var listeData : JSON = JSON.parse(response)
+        console.log(listeData)
+        Object.entries(listeData).forEach(([key,value])=>{response=value}) ;
+        for(var i: number = 0 ; i < response.length; i++){
+            var option = document.createElement("option");
+            option.innerHTML = response[i];
+            option.value = response[i];
+            document.getElementById("SelectDB")?.appendChild(option);
+        }
+    }
     function displayParameter(ev :any){
         console.log(ev.target.value)
         var algo = ev.target.value;
@@ -61,28 +76,33 @@ const Analyze = () =>  {
     function sendRequest(ev :any){
         console.log(ev.target.value)
         var algo = ev.target.value
+        var database = (document.getElementById("SelectDB") as HTMLSelectElement).value
         var requestAnalyze : string ="";
         if(algo === "GradientBoosting"){
-            requestAnalyze = JSON.stringify({"algo":algo, 
+            requestAnalyze = JSON.stringify({"database" : database,
+                                            "algo":algo, 
                                             "learning_rate" : (document.getElementById("learning_rate1")as HTMLInputElement).value,
                                             "n_estimator" : (document.getElementById("n_estimator1")as HTMLInputElement).value,
                                             "max_depth" : (document.getElementById("max_depth1")as HTMLInputElement).value,
                                             "min_samples_split" : (document.getElementById("min_samples_split1")as HTMLInputElement).value
                                         });
         }else if(algo === "RandomForest"){
-            requestAnalyze = JSON.stringify({"algo":algo, 
+            requestAnalyze = JSON.stringify({"database" : database,
+                                            "algo":algo, 
                                             "n_estimators" : (document.getElementById("n_estimators2")as HTMLInputElement).value,
                                             "max_depth" : (document.getElementById("max_depth2")as HTMLInputElement).value,
                                             "min_samples_split" : (document.getElementById("min_samples_split2")as HTMLInputElement).value
                                         });
         }else if(algo === "Ridge"){
-            requestAnalyze = JSON.stringify({"algo":algo, 
+            requestAnalyze = JSON.stringify({"database" : database,
+                                            "algo":algo, 
                                             "tol" : (document.getElementById("tol3")as HTMLInputElement).value,
                                             "solver" : (document.getElementById("solver3")as HTMLSelectElement).value,
                                             "alpha" : (document.getElementById("alpha3")as HTMLInputElement).value
                                         });
         }else if(algo === "BayesianARDRegression"){
-            requestAnalyze = JSON.stringify({"algo":algo, 
+            requestAnalyze = JSON.stringify({"database" : database,
+                                            "algo":algo, 
                                             "n_iter" : (document.getElementById("n_iter4")as HTMLInputElement).value,
                                             "tol" : (document.getElementById("tol4")as HTMLInputElement).value,
                                             "alpha_1" : (document.getElementById("alpha_14")as HTMLInputElement).value,
@@ -91,33 +111,38 @@ const Analyze = () =>  {
                                             "lambda_2" : (document.getElementById("lambda_24")as HTMLInputElement).value
                                         });
         }else if(algo === "LinearSVC"){
-            requestAnalyze = JSON.stringify({"algo":algo, 
+            requestAnalyze = JSON.stringify({"database" : database,
+                                            "algo":algo, 
                                             "penalty" : (document.getElementById("penalty5")as HTMLSelectElement).value,
                                             "tol" : (document.getElementById("tol5")as HTMLInputElement).value,
                                             "C" : (document.getElementById("C5")as HTMLInputElement).value,
                                             "class_weight" : (document.getElementById("class_weight5")as HTMLSelectElement).value
                                         });
         }else if(algo === "AdaBoost"){
-            requestAnalyze = JSON.stringify({"algo":algo, 
+            requestAnalyze = JSON.stringify({"database" : database,
+                                            "algo":algo, 
                                             "n_estimators" : (document.getElementById("n_estimators6")as HTMLInputElement).value,
                                             "learning_rate" : (document.getElementById("learning_rate6")as HTMLInputElement).value
                                         });
         }else if(algo === "GradientBoosting2"){
-            requestAnalyze = JSON.stringify({"algo":algo, 
+            requestAnalyze = JSON.stringify({"database" : database,
+                                            "algo":algo, 
                                             "learning_rate" : (document.getElementById("learning_rate7")as HTMLInputElement).value,
                                             "n_estimators" : (document.getElementById("n_estimators7")as HTMLInputElement).value,
                                             "max_depth" : (document.getElementById("max_depth7")as HTMLInputElement).value,
                                             "min_samples_split" : (document.getElementById("min_samples_split7")as HTMLInputElement).value
                                         });
         }else if(algo === "RandomForest2"){
-            requestAnalyze = JSON.stringify({"algo":algo, 
+            requestAnalyze = JSON.stringify({"database" : database,
+                                            "algo":algo, 
                                             "n_estimators" : (document.getElementById("n_estimators8")as HTMLInputElement).value,
                                             "max_depth" : (document.getElementById("max_depth8")as HTMLInputElement).value,
                                             "min_samples_split" : (document.getElementById("min_samples_split8")as HTMLInputElement).value,
                                             "class_weight" : (document.getElementById("class_weight8")as HTMLSelectElement).value
                                         });
         }else if(algo === "LogisticRegression"){
-            requestAnalyze = JSON.stringify({"algo":algo, 
+            requestAnalyze = JSON.stringify({"database" : database,
+                                            "algo":algo, 
                                             "penalty" : (document.getElementById("penalty9")as HTMLSelectElement).value,
                                             "tol" : (document.getElementById("tol9")as HTMLInputElement).value,
                                             "c" : (document.getElementById("c9")as HTMLInputElement).value,
@@ -138,17 +163,11 @@ const Analyze = () =>  {
         <div className="Analyze">
             <div className="view" id="view">
                 <h1 className="title">Analyze page</h1>
-                <select name="database" className="SelectDB" onChange={enableCategory}>
-                    <option value="" disabled selected>Choose a database</option>
-                    <option value="database1">database1</option>
-                    <option value="database2">database2</option>
-                    <option value="database3">database3</option>
-                    <option value="database4">database4</option>
-                    <option value="database5">database5</option>
-                    <option value="database6">database6</option>
+                <select name="database" id="SelectDB"defaultValue="Choose a database" className="SelectDB" onChange={enableCategory}>
+                    <option value="Choose a database" disabled >Choose a database</option>
                 </select>
-                <select name="category" id="category"  onChange={displayAlgorithmes} className="SelectCat" disabled>
-                    <option value="" disabled selected>Choose a category</option>
+                <select name="category" id="category" defaultValue="Choose a category" onChange={displayAlgorithmes} className="SelectCat" disabled>
+                    <option value="Choose a category" disabled >Choose a category</option>
                     <option value="Regression">Regression</option>
                     <option value="Classification">Classification</option>
                 </select>
@@ -195,7 +214,7 @@ const Analyze = () =>  {
                 </div>
                 <div className="Parametre">
                 <div className="GradientBoosting" id="GradientBoosting">
-                <table>
+                <table><tbody>
                     <tr><td>learning_rate <img src={help} className="help" alt="" title="Learning rate shrinks the contribution of each tree by learning_rate.
 There is a trade-off between learning_rate and n_estimators."/></td><td><InputNumber  min="0"  step="0.1" defaultValue={0.1} id="learning_rate1"/></td>
                     <td>n_estimator <img src={help} className="help" alt="" title="The number of boosting stages to perform. Gradient boosting is fairly
@@ -207,11 +226,11 @@ robust to over-fitting so a large number usually results in better performance."
 - If int, then consider min_samples_split as the minimum number.
 - If float, then min_samples_split is a fraction and ceil(min_samples_split * n_samples) are the minimum number of samples for each split.
 "/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split1"/></td></tr>
-                </table>
+                </tbody></table>
                 <button value="GradientBoosting" onClick={sendRequest} className="boutonSend">Analyze</button>
                 </div>
                 <div className="RandomForest" id="RandomForest">
-                <table>
+                <table><tbody>
                     <tr><td>n_estimators <img src={help} className="help" alt="" title="The number of trees in the forest."/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators2"/></td><td>max_depth <img src={help} className="help" alt="" title="The maximum depth of the tree. If None, then nodes are expanded
 until all leaves are pure or until all leaves contain less than
 min_samples_split samples.
@@ -221,11 +240,11 @@ min_samples_split samples.
 - If float, then min_samples_split is a fraction and ceil(min_samples_split * n_samples) 
     are the minimum number of samples for each split.
 "/></td><td><InputNumber  min="0" step="2"defaultValue={2}  id="min_samples_split2"/></td></tr>
-                </table>
+                </tbody></table>
                 <button value="RandomForest" onClick={sendRequest} className="boutonSend">Analyze</button>
                 </div>
                 <div className="Ridge" id="Ridge">
-                <table>
+                <table><tbody>
                     <tr><td>tol <img src={help} className="help" alt="" title="Precision of the solution."/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol3"/></td><td>solver <img src={help} className="help" alt="" title="Solver to use in the computational routines:
 - ‘auto’ chooses the solver automatically based on the type of data.
 - ‘svd’ uses a Singular Value Decomposition of X to compute the Ridge coefficients. More stable for singular matrices than ‘cholesky’.
@@ -251,11 +270,11 @@ corresponds to 1 / (2C) in other linear models such
 as LogisticRegression or LinearSVC. If an array is passed, penalties are
 assumed to be specific to the targets. Hence they must correspond in
 number."/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="alpha3"/></td></tr>
-                    </table>
+                    </tbody></table>
                     <button value="Ridge" onClick={sendRequest} className="boutonSend">Analyze</button>
                 </div>
                 <div className="BayesianARDRegression" id="BayesianARDRegression">
-                <table>
+                <table><tbody>
                 <tr><td>n_iter <img src={help} className="help" alt="" title="Maximum number of iterations."/></td><td><InputNumber  min="0" step="300" defaultValue={300} id="n_iter4"/></td><td>tol <img src={help} className="help" alt="" title="Stop the algorithm if w has converged."/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol4"/></td></tr>
                 <tr><td>alpha_1 <img src={help} className="help" alt="" title="Hyper-parameter : shape parameter for the Gamma distribution prior
 over the alpha parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="alpha_14"/></td><td>alpha_2 <img src={help} className="help" alt="" title="Hyper-parameter : inverse scale parameter (rate parameter) for the
@@ -263,11 +282,11 @@ Gamma distribution prior over the alpha parameter."/></td><td><InputNumber  min=
                 <tr><td>lambda_1 <img src={help} className="help" alt="" title="Hyper-parameter : shape parameter for the Gamma distribution prior
 over the lambda parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="lambda_14"/></td><td>lambda_2 <img src={help} className="help" alt="" title="Hyper-parameter : inverse scale parameter (rate parameter) for the
 Gamma distribution prior over the lambda parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="lambda_24"/></td></tr>
-                    </table>
+                    </tbody></table>
                     <button value="BayesianARDRegression" onClick={sendRequest} className="boutonSend">Analyze</button>
                 </div>
                 <div className="LinearSVC" id="LinearSVC">
-                    <table>
+                    <table><tbody>
                     <tr><td>penalty <img src={help} className="help" alt="" title="Specifies the norm used in the penalization. The ‘l2’ penalty is the
 standard used in SVC. The ‘l1’ leads to coef_ vectors that are sparse."/></td><td><select  id="penalty5" name="penalty">
                         <option value="l2">l2</option>
@@ -281,27 +300,27 @@ frequencies in the input data as n_samples / (n_classes * np.bincount(y))."/></t
                         <option value="none">none</option>
                         <option value="dict">dict</option>
                         <option value="balanced">balanced</option></select></td></tr>
-                        </table>
+                        </tbody></table>
                         <button value="LinearSVC" onClick={sendRequest} className="boutonSend">Analyze</button>
                 </div>
                 <div className="AdaBoost" id="AdaBoost">
-                <table>
+                <table><tbody>
                 <tr><td>n_estimators <img src={help} className="help" alt="" title="The maximum number of estimators at which boosting is terminated.
 In case of perfect fit, the learning procedure is stopped early."/></td><td><InputNumber  min="0" step="50" defaultValue={50} id="n_estimators6"/></td><td>learning_rate <img src={help} className="help" alt="" title="Weight applied to each classifier at each boosting iteration. A higher
 learning rate increases the contribution of each classifier. There is a
 trade-off between the learning_rate and n_estimators parameters."/></td><td><InputNumber  min="0" step="1"  defaultValue={1} id="learning_rate6"/></td></tr>
-                    </table>
+                    </tbody></table>
                     <button value="AdaBoost" onClick={sendRequest} className="boutonSend">Analyze</button>
                 </div>
                 <div className="GradientBoosting2" id="GradientBoosting2">
-                <table>
+                <table><tbody>
                 <tr><td>learning_rate <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="0.1" defaultValue={0.1} id="learning_rate7"/></td><td>n_estimators <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators7"/></td></tr>
                 <tr><td>max_depth <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth7"/></td><td>min_samples_split <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split7"/></td></tr>
-                    </table>
+                    </tbody></table>
                     <button value="GradientBoosting2" onClick={sendRequest} className="boutonSend">Analyze</button>
                 </div>
                 <div className="RandomForest2" id="RandomForest2">
-                <table>
+                <table><tbody>
                 <tr><td>n_estimators <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators8"/></td><td>max_depth <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="1" defaultValue={3} id="max_depth8"/></td></tr>
                 <tr><td>min_samples_split <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split8"/></td><td>class_weight <img src={help} className="help" alt="" title="Weights associated with classes in the form
 {class_label: weight}. If not given, all classes are supposed to have
@@ -323,11 +342,11 @@ sample_weight is specified.
                         <option value="none">none</option>
                         <option value="balanced">balanced</option>
                         <option value="balanced_subsample">balanced_subsample</option></select></td></tr>
-                        </table>
+                        </tbody></table>
                         <button value="RandomForest2" onClick={sendRequest} className="boutonSend">Analyze</button>
                 </div>
                 <div className="LogisticRegression" id="LogisticRegression">
-                <table>
+                <table><tbody>
                 <tr><td>penalty <img src={help} className="help" alt="" title="Specify the norm
 of the penalty: 'none': no penalty is added; 'l2': add a L2 penalty term
 and it is the default choice; 'l1': add a L1 penalty term; 'elasticnet':
@@ -350,7 +369,7 @@ specified. New in version 0.17: class_weight=’balanced’"/></td><td><select  
                         <option value="dict">dict</option>
                         <option value="balanced">balanced</option></select></td></tr>
                         <tr><td>max_iter <img src={help} className="help" alt="" title="Maximum number of iterations taken for the solvers to converge."/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="max_iter9"/></td></tr>
-                    </table>
+                    </tbody></table>
                     <button value="LogisticRegression" onClick={sendRequest} className="boutonSend">Analyze</button>
                 </div>
                 </div>

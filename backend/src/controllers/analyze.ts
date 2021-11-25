@@ -1,6 +1,7 @@
 import fs from 'fs';
 import "dotenv/config";
 import type { RequestHandler, Request, Response, NextFunction } from "express";
+import * as Utils from '../utils';
 
 
 /**
@@ -12,6 +13,11 @@ import type { RequestHandler, Request, Response, NextFunction } from "express";
 export const parameters : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     console.log("param recu")
     res.send("ok");
+};
+
+export const databases : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    console.log("ICI")
+    res.send({"liste" : Utils.default.getNameFiles('uploads/' + req.body.userId + '/database/')});
 };
 
 
