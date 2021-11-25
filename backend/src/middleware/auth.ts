@@ -50,11 +50,14 @@ export const auth : RequestHandler = (req : Request, res : Response, next : Next
         const userId = decodedToken.userId;
         if (req.body.userId && req.body.userId !== userId) 
             return res.status(401).json({ message: 'UserID invalide'});
-        
-
+        req.body.userId = userId;
         return next();
     }
     catch (err) {
         return res.status(500).json({ message: 'Internal error' });
     }
+}
+
+export function getUser(){
+
 }

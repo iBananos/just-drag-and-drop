@@ -64,8 +64,8 @@ class Utils {
         var formData = new FormData()
         var xhr = new XMLHttpRequest()
         xhr.open(methode, url, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
         
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
 
         xhr.setRequestHeader("x-xsrf-token", localStorage.getItem("xsrfToken") || '{}');
         xhr.withCredentials = true;

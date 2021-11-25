@@ -76,26 +76,7 @@ function setMsg(msg:string,color:string){
 
 function uploadFile(file:any) {
   console.log("icicicici");
-  //utils.default.sendFileWithToken('POST', 'http://localhost:4000/upload', file, callbackRequest);
-  
-  var url = 'http://localhost:4000/upload'
-  var xhr = new XMLHttpRequest()
-  var formData = new FormData()
-  xhr.open('POST', url, true)
-  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
-
-
-  xhr.addEventListener('readystatechange', function(e) {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-    }
-    else if (xhr.readyState === 4 && xhr.status !== 200) {
-      // Error. Inform the user
-    }
-  })
-
-  formData.append('file', file)
-  xhr.send(formData)
-  
+  utils.default.sendFileWithToken('POST', 'http://localhost:4000/upload', file, callbackRequest);  
 }
 
 function callbackRequest(){
