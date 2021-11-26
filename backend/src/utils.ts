@@ -1,4 +1,4 @@
-import fs from "fs"
+import fs from "fs";
 
 class Utils {
     public  static getNameFiles(path : string){
@@ -13,6 +13,15 @@ class Utils {
         
     }
 
+    public static getInformations(path: string){
+        var listeInfo : JSON[] = [];
+        fs.readdirSync(path).forEach(file => {
+            var data = JSON.parse(fs.readFileSync(path+file, 'utf8'));
+            listeInfo.push(data);
+        });
+        console.log("laliste= apres ", listeInfo);
+        return listeInfo;
+    }
 }
 
 export default Utils;

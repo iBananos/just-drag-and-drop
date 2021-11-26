@@ -22,6 +22,7 @@ export const saveFile : RequestHandler = (req : Request, res : Response, next : 
         nomFichier= nomFichier+"("+acc+")";
         acc++;
     }
+    createInfoDatabase(req.body.userId,nomFichier,req.body.date,req.file?.size,req.file?.originalname.split(".")[1])
     var dest = fs.createWriteStream('uploads/' + req.body.userId + '/database/' + nomFichier+"."+req.file?.originalname.split(".")[1]);
     src.pipe(dest);
     src.on('end', () => {
@@ -36,3 +37,7 @@ export const saveFile : RequestHandler = (req : Request, res : Response, next : 
 };
 
 
+function createInfoDatabase(userId : string, name:string,date:string, size :any, extension : any){
+    var doc = JSON.stringify({"name":name,"date":date,"size":size,"extension":extension});
+    fs.writeFile('uploads/' + userId + '/databaseInfo/' + name+".json",doc, function (err) {});
+}

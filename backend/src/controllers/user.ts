@@ -53,6 +53,8 @@ export const signup : RequestHandler = (req : Request, res : Response, next : Ne
                     fs.mkdirSync(dir);
                     fs.mkdirSync(dir + '/database');
                     fs.mkdirSync(dir + '/analyse');
+                    fs.mkdirSync(dir + '/analyseInfo');
+                    fs.mkdirSync(dir + '/databaseInfo');
                 }
             )
             .catch(() => res.status(400).json({ message: "Cette adresse e-mail est déjà utilisée" }));

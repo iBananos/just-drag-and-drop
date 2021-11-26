@@ -11,5 +11,7 @@ router.post("/parameters", auth, analyzeCtrl.parameters);
 
 router.post("/databases", auth, analyzeCtrl.databases);
 
+router.post("/informations", auth, analyzeCtrl.informations);
+
 // Exportation du router
 export default router;

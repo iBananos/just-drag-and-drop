@@ -6,6 +6,8 @@ const ViewHistory = () => {
         var title = (document.getElementById("title")as HTMLInputElement).value;
         var date = (document.getElementById("date")as HTMLInputElement).value;
         var database = (document.getElementById("database")as HTMLInputElement).value;
+        var algo = (document.getElementById("algo")as HTMLInputElement).value;
+        var param = (document.getElementById("param")as HTMLInputElement).value;
         if(title !== ""){
             
         }
@@ -15,9 +17,11 @@ const ViewHistory = () => {
     return (
         <div id="ViewHistory" className="ViewHistory">
             <button className="loadButton" id="loadButton" onClick={loadAnalyze}>Load analyze</button>
-            <p id="title"></p>
-            <p id="date"></p>
-            <p id="database"></p>
+            <div id="title"></div>
+            <div id="date"></div>
+            <div id="database"></div>
+            <div id="algo"></div>
+            <div id="param"></div>
         </div>
     );
 };

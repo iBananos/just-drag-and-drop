@@ -54,7 +54,7 @@ class Utils {
         xhr.send(data);
     }
 
-    public static async sendFileWithToken(methode : string, url : string, data : File, name : string ,callback : any) {
+    public static async sendFileWithToken(methode : string, url : string, data : File, name : string , date :Date, callback : any) {
         if (!Utils.checkToken()){
             return false;
         }
@@ -79,6 +79,7 @@ class Utils {
             }
         });
         formData.append('name', name)
+        formData.append('date', date.toString())
         formData.append('file', data)
         xhr.send(formData)
     }
