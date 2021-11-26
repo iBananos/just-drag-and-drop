@@ -5,6 +5,7 @@ import History from './pages/History';
 import Upload from './pages/Upload';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Mydatabase from './pages/Mydatabase';
 function App() {
   return (
     <div className="App">
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>      
           <Route path="/analyze" element={<Analyze />}></Route>
+          <Route path="/mydatabase" element={<Mydatabase />} ></Route>
           <Route path="/history" element={<History />} ></Route>
           <Route path="/upload" element={<Upload />}></Route>
           <Route path="/login" element={<Login />}></Route>

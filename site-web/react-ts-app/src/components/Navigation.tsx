@@ -57,7 +57,7 @@ const Navigation = () => {
             <div className="dropbtn">Database</div>
             <div className="dropdown-content">
                 <NavLink onClick={window.location.reload} to="/upload">Upload</NavLink>
-                <NavLink onClick={window.location.reload} to="/database">My databases</NavLink>
+                <NavLink onClick={window.location.reload} to="/mydatabase">My databases</NavLink>
             </div></li>
         <li className="dropdown">
             <div className="dropbtn">Analyze</div>

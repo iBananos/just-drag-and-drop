@@ -54,7 +54,7 @@ class Utils {
         xhr.send(data);
     }
 
-    public static async sendFileWithToken(methode : string, url : string, data : File, callback : any) {
+    public static async sendFileWithToken(methode : string, url : string, data : File, name : string ,callback : any) {
         if (!Utils.checkToken()){
             return false;
         }
@@ -78,7 +78,7 @@ class Utils {
                 JSON.parse(this.response);
             }
         });
-
+        formData.append('name', name)
         formData.append('file', data)
         xhr.send(formData)
     }

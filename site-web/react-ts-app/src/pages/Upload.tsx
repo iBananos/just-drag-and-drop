@@ -60,7 +60,7 @@ function sendFile(){
   if(files){
     if(name.value !== ""){
       uploadFile(files)
-      setMsg("Base envoyée",'green');
+      
     }else{
       setMsg("Veuillez donner un nom à la nouvelle base de données",'rgb(194, 22, 22)');
   }}else{
@@ -75,12 +75,12 @@ function setMsg(msg:string,color:string){
 
 
 function uploadFile(file:any) {
-  console.log("icicicici");
-  utils.default.sendFileWithToken('POST', 'http://localhost:4000/upload', file, callbackRequest);  
+  var name = (document.getElementById('inputName') as HTMLInputElement).value;
+  utils.default.sendFileWithToken('POST', 'http://localhost:4000/upload', file, name, callbackRequest);  
 }
 
 function callbackRequest(){
-  console.log("recu")
+  setMsg("Base envoyée",'green');
 }
 
   return (

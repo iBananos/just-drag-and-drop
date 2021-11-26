@@ -1,0 +1,16 @@
+.Mydatabase{
+    color: $color_text;
+    text-align: left;
+}
+.gridCells{
+    position: relative;
+    margin-top:80px;
+}
+.cell{
+    width: 500px;
+    margin-bottom: 50px;
+    margin-left: 20px;
+    height: 60px;
+    border-radius: 16px;
+    box-shadow: 0px 0px 30px black ;
+}

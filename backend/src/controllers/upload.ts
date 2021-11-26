@@ -13,16 +13,16 @@ export const saveFile : RequestHandler = (req : Request, res : Response, next : 
     console.log(req.file!.path)
     var src = fs.createReadStream(req.file!.path);
     var listName = Utils.default.getNameFiles('uploads/' + req.body.userId + '/database/');
-    var nomFichier = req.file!.originalname.split(".");
+    var nomFichier = req.body.name;
     var acc= 1; 
-    while(listName.includes(nomFichier[0])){
+    while(listName.includes(nomFichier)){
         if(acc>1){
-            nomFichier[0] = nomFichier[0].split('(')[0]
+            nomFichier = nomFichier.split('(')[0]
         }
-        nomFichier[0] = nomFichier[0]+"("+acc+")";
+        nomFichier= nomFichier+"("+acc+")";
         acc++;
     }
-    var dest = fs.createWriteStream('uploads/' + req.body.userId + '/database/' + nomFichier[0]+"."+nomFichier[1]);
+    var dest = fs.createWriteStream('uploads/' + req.body.userId + '/database/' + nomFichier+"."+req.file?.originalname.split(".")[1]);
     src.pipe(dest);
     src.on('end', () => {
         fs.unlink(req.file!.path, (err) => { 
