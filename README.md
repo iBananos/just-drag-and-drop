@@ -45,5 +45,5 @@ Etudiants:
 
 - Nicolas Demolin (MAM5-SD), 
 - Christel Ralalasoa (MAM5-SD), 
-- Ralph El Chalfoun (SI5-WIA), 
+- Ralph El Chalfoun (M2-WIA), 
 - Jérémy HIRTH DAUMAS (M2-CASPAR) 
