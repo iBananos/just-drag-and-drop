@@ -11,8 +11,24 @@ import * as Utils from '../utils';
  * @param next 
  */
 export const parameters : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    console.log("param recu")
-    res.send("ok");
+    var listName = Utils.default.getNameFiles('uploads/' + req.body.userId + '/analyse/');
+    var nomFichier = req.body.nameAnalyze;
+    if(nomFichier==="") nomFichier ="analyze";
+    var acc= 1; 
+    while(listName.includes(nomFichier)){
+        if(acc>1){
+            nomFichier = nomFichier.split('(')[0]
+        }
+        nomFichier = nomFichier+"("+acc+")";
+        acc++;
+    }
+    fs.writeFile('uploads/' + req.body.userId + '/analyse/' + nomFichier+".json",JSON.stringify(req.body), function (err) {
+        if (err){
+            res.send('error'); 
+        }else{
+            res.send('complete');
+        }
+      });
 };
 
 export const databases : RequestHandler = (req : Request, res : Response, next : NextFunction) => {

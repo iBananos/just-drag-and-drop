@@ -136,9 +136,26 @@ table{
 .boutonSend{
     width: 200px;
     height: 40px;
-    margin-top: 50px;
+    margin-top: 100px;
 }
-
+.divinput{
+    width: 100%;
+    top: -110px;
+    position:relative;
+    text-align: center;
+    display: none;
+}
+.analyzeName{
+    border-radius:16px ;
+    width: 250px;
+    color: $color_text;
+    border:none;
+    
+    height: 35px;
+    background-color: black;
+}::placeholder{
+    color: $color_placeholder;
+}
 
 .help{
     height: 15px;

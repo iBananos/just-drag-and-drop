@@ -10,6 +10,7 @@ import * as Utils from "../utils"
  * @param next 
  */
 export const saveFile : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    console.log(req.file!.path)
     var src = fs.createReadStream(req.file!.path);
     var listName = Utils.default.getNameFiles('uploads/' + req.body.userId + '/database/');
     var nomFichier = req.file!.originalname.split(".");

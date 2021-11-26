@@ -34,6 +34,7 @@ const Analyze = () =>  {
         (document.getElementById("GradientBoosting2")as HTMLElement).style.display = "none";
         (document.getElementById("RandomForest2")as HTMLElement).style.display = "none";
         (document.getElementById("LogisticRegression")as HTMLElement).style.display = "none";
+        (document.getElementById('divinput') as HTMLInputElement).style.display = "block";
         if(algo === "GradientBoosting"){
             (document.getElementById("GradientBoosting")as HTMLElement).style.display = "block";
         }else if(algo === "RandomForest"){
@@ -78,8 +79,12 @@ const Analyze = () =>  {
         var algo = ev.target.value
         var database = (document.getElementById("SelectDB") as HTMLSelectElement).value
         var requestAnalyze : string ="";
+        var name = (document.getElementById("analyzeName") as HTMLInputElement).value;
+        
         if(algo === "GradientBoosting"){
-            requestAnalyze = JSON.stringify({"database" : database,
+            requestAnalyze = JSON.stringify({"nameAnalyze":name,
+                                            "database" : database,
+                                            "date":new Date(Date.now()),
                                             "algo":algo, 
                                             "learning_rate" : (document.getElementById("learning_rate1")as HTMLInputElement).value,
                                             "n_estimator" : (document.getElementById("n_estimator1")as HTMLInputElement).value,
@@ -87,21 +92,27 @@ const Analyze = () =>  {
                                             "min_samples_split" : (document.getElementById("min_samples_split1")as HTMLInputElement).value
                                         });
         }else if(algo === "RandomForest"){
-            requestAnalyze = JSON.stringify({"database" : database,
+            requestAnalyze = JSON.stringify({"nameAnalyze":name,
+                                            "database" : database,
+                                            "date":new Date(Date.now()),
                                             "algo":algo, 
                                             "n_estimators" : (document.getElementById("n_estimators2")as HTMLInputElement).value,
                                             "max_depth" : (document.getElementById("max_depth2")as HTMLInputElement).value,
                                             "min_samples_split" : (document.getElementById("min_samples_split2")as HTMLInputElement).value
                                         });
         }else if(algo === "Ridge"){
-            requestAnalyze = JSON.stringify({"database" : database,
+            requestAnalyze = JSON.stringify({"nameAnalyze":name,
+                                            "database" : database,
+                                            "date":new Date(Date.now()),
                                             "algo":algo, 
                                             "tol" : (document.getElementById("tol3")as HTMLInputElement).value,
                                             "solver" : (document.getElementById("solver3")as HTMLSelectElement).value,
                                             "alpha" : (document.getElementById("alpha3")as HTMLInputElement).value
                                         });
         }else if(algo === "BayesianARDRegression"){
-            requestAnalyze = JSON.stringify({"database" : database,
+            requestAnalyze = JSON.stringify({"nameAnalyze":name,
+                                            "database" : database,
+                                            "date":new Date(Date.now()),
                                             "algo":algo, 
                                             "n_iter" : (document.getElementById("n_iter4")as HTMLInputElement).value,
                                             "tol" : (document.getElementById("tol4")as HTMLInputElement).value,
@@ -111,7 +122,9 @@ const Analyze = () =>  {
                                             "lambda_2" : (document.getElementById("lambda_24")as HTMLInputElement).value
                                         });
         }else if(algo === "LinearSVC"){
-            requestAnalyze = JSON.stringify({"database" : database,
+            requestAnalyze = JSON.stringify({"nameAnalyze":name,
+                                            "database" : database,
+                                            "date":new Date(Date.now()),
                                             "algo":algo, 
                                             "penalty" : (document.getElementById("penalty5")as HTMLSelectElement).value,
                                             "tol" : (document.getElementById("tol5")as HTMLInputElement).value,
@@ -119,13 +132,17 @@ const Analyze = () =>  {
                                             "class_weight" : (document.getElementById("class_weight5")as HTMLSelectElement).value
                                         });
         }else if(algo === "AdaBoost"){
-            requestAnalyze = JSON.stringify({"database" : database,
+            requestAnalyze = JSON.stringify({"nameAnalyze":name,
+                                            "database" : database,
+                                            "date":new Date(Date.now()),
                                             "algo":algo, 
                                             "n_estimators" : (document.getElementById("n_estimators6")as HTMLInputElement).value,
                                             "learning_rate" : (document.getElementById("learning_rate6")as HTMLInputElement).value
                                         });
         }else if(algo === "GradientBoosting2"){
-            requestAnalyze = JSON.stringify({"database" : database,
+            requestAnalyze = JSON.stringify({"nameAnalyze":name,
+                                            "database" : database,
+                                            "date":new Date(Date.now()),
                                             "algo":algo, 
                                             "learning_rate" : (document.getElementById("learning_rate7")as HTMLInputElement).value,
                                             "n_estimators" : (document.getElementById("n_estimators7")as HTMLInputElement).value,
@@ -133,7 +150,9 @@ const Analyze = () =>  {
                                             "min_samples_split" : (document.getElementById("min_samples_split7")as HTMLInputElement).value
                                         });
         }else if(algo === "RandomForest2"){
-            requestAnalyze = JSON.stringify({"database" : database,
+            requestAnalyze = JSON.stringify({"nameAnalyze":name,
+                                            "database" : database,
+                                            "date":new Date(Date.now()),
                                             "algo":algo, 
                                             "n_estimators" : (document.getElementById("n_estimators8")as HTMLInputElement).value,
                                             "max_depth" : (document.getElementById("max_depth8")as HTMLInputElement).value,
@@ -141,7 +160,9 @@ const Analyze = () =>  {
                                             "class_weight" : (document.getElementById("class_weight8")as HTMLSelectElement).value
                                         });
         }else if(algo === "LogisticRegression"){
-            requestAnalyze = JSON.stringify({"database" : database,
+            requestAnalyze = JSON.stringify({"nameAnalyze":name,
+                                            "database" : database,
+                                            "date":new Date(Date.now()),
                                             "algo":algo, 
                                             "penalty" : (document.getElementById("penalty9")as HTMLSelectElement).value,
                                             "tol" : (document.getElementById("tol9")as HTMLInputElement).value,
@@ -372,6 +393,9 @@ specified. New in version 0.17: class_weight=’balanced’"/></td><td><select  
                     </tbody></table>
                     <button value="LogisticRegression" onClick={sendRequest} className="boutonSend">Analyze</button>
                 </div>
+                </div>
+                <div className="divinput" id="divinput">
+                    <input type="text" className="analyzeName" id="analyzeName" placeholder="Analyze name..."></input>
                 </div>
             </div>
             <BarreLaterale />

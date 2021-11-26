@@ -48,7 +48,7 @@ class Utils {
                 callback(this.response);
             }
             else if (xhr.readyState === 4 && xhr.status !== 200) {
-                var res = JSON.parse(this.response);
+                JSON.parse(this.response);
             }
         });
         xhr.send(data);
@@ -75,7 +75,7 @@ class Utils {
                 callback(this.response);
             }
             else if (xhr.readyState === 4 && xhr.status !== 200) {
-                var res = JSON.parse(this.response);
+                JSON.parse(this.response);
             }
         });
 
