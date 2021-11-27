@@ -38,7 +38,6 @@ const Navigation = () => {
         let refreshTokenExpires = localStorage.getItem("refreshTokenExpires");
         if (xsrfToken && accessTokenExpires && refreshTokenExpires) {
             if (parseInt(accessTokenExpires, 10) < Date.now()+30000 && parseInt(accessTokenExpires, 10) > Date.now() ){
-                console.log("demande de refresh")
                 utils.default.refreshToken();
             } 
         }
