@@ -30,14 +30,15 @@ const Navigation = () => {
         }
     }
     window.addEventListener('resize', gestionNav);
-    setInterval(checkTokenValidity,60000);
+    setInterval(checkTokenValidity,5000);
 
     function checkTokenValidity(){
         let xsrfToken = localStorage.getItem("xsrfToken");
         let accessTokenExpires = localStorage.getItem("accessTokenExpires");
         let refreshTokenExpires = localStorage.getItem("refreshTokenExpires");
         if (xsrfToken && accessTokenExpires && refreshTokenExpires) {
-            if (parseInt(accessTokenExpires, 10) < Date.now()+300000 && parseInt(accessTokenExpires, 10) > Date.now() ){
+            if (parseInt(accessTokenExpires, 10) < Date.now()+30000 && parseInt(accessTokenExpires, 10) > Date.now() ){
+                console.log("demande de refresh")
                 utils.default.refreshToken();
             } 
         }
@@ -65,7 +66,7 @@ const Navigation = () => {
                 <NavLink onClick={window.location.reload} to="/analyze">New analyze</NavLink>
                 <NavLink onClick={window.location.reload} to="/history">History</NavLink>
             </div></li>
-        <li><NavLink onClick={window.location.reload} to="/"><span onClick={deleteToken}>Disconnect</span></NavLink></li>
+        <li><NavLink onClick={deleteToken}  to="/">Disconnect</NavLink></li>
         </ul>
       }
       

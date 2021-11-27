@@ -118,16 +118,16 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
     
     X = (X-X.mean())/X.std()
     X_train, X_test, y_train, y_test =  train_test_split(X, y, test_size=0.2, random_state=42)
-    if analyze_choice == "regression" : 
+    if analyze_choice == "Regression" : 
         
         parameters = get_list_parameters(algo_choice,list_param)
         
-        if algo_choice == "Gradient Boosting" :
+        if algo_choice == "GradientBoosting" :
             model = GradientBoostingRegressor(learning_rate=parameters[0], n_estimators=parameters[1], max_depth=parameters[2], min_samples_split=parameters[3])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
-        elif algo_choice == "Random Forest" :
+        elif algo_choice == "RandomForest" :
             model = RandomForestClassifier(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2])
             model.fit(X_train,y_train)
             prediction = model.predict(X_test)
@@ -137,7 +137,7 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
             model.fit(X_train,y_train)
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
-        elif algo_choice == "Bayesian ARD Regression " :
+        elif algo_choice == "BayesianARDRegression" :
             model = ARDRegression(n_iter=parameters[0], tol=parameters[1],alpha_1=parameters[2], alpha_2=parameters[3], lambda_1=parameters[4], lambda_2=parametetrs[5])
             model.fit(X_train,y_train)
             prediction = model.predict(X_test)
@@ -154,7 +154,7 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         print(prediction_and_true)
         return prediction_and_true.to_csv(['prediction_true.csv'])
                              
-    elif analyze_choice == "classification" :
+    elif analyze_choice == "Classification" :
         target_name=pd.unique(df[pred].values.flatten())
         target_name=sorted(target_name)
     
@@ -168,15 +168,15 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
             model = AdaBoostClassifier(n_estimators=parameters[0], learning_rate=parameters[1])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
-        elif algo_choice == "Gradient Boosting" :
+        elif algo_choice == "GradientBoosting2" :
             model = GradientBoostingClassifier(learning_rate=parameters[0], n_estimators=parameters[1], max_depth=parameters[2], min_samples_split=parameters[3])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
-        elif algo_choice == "Random Forest" :
+        elif algo_choice == "RandomForest2" :
             model = RandomForestClassifier(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2], class_weight=parameters[3])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
-        elif algo_choice == "Logistic Regression" :
+        elif algo_choice == "LogisticRegression" :
             model = LogisticRegression(penalty=parameters[0], tol=parameters[1],C=parameters[2], class_weight=parameters[3], max_iter=parameters[4])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)

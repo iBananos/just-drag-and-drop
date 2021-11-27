@@ -1,3 +1,4 @@
+import { spawn } from "child_process";
 import fs from "fs";
 
 class Utils {
@@ -10,7 +11,15 @@ class Utils {
         })
         console.log(listName);
         return listName;
-        
+    }
+
+    public  static getDataFiles(path : string){
+        var listName: string[] = [];
+        fs.readdirSync(path).forEach(file => {
+                listName.push(file)
+        })
+        console.log(listName);
+        return listName;
     }
 
     public static getInformations(path: string){
@@ -21,6 +30,12 @@ class Utils {
         });
         console.log("laliste= apres ", listeInfo);
         return listeInfo;
+    }
+    
+    public static callPython(filename : string,features: any,pred:any,list_param:string[],analyze_choice:string,algo_choice:string){
+        console.log("AAAZERTYUHGFD")
+        //const pythonProcess = spawn('principal_fonction',["../../python/script.py",filename,features,pred,list_param,analyze_choice,algo_choice]);
+        //console.log(pythonProcess)
     }
 }
 

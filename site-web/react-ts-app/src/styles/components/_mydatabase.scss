@@ -3,14 +3,99 @@
     text-align: left;
 }
 .gridCells{
-    position: relative;
     margin-top:80px;
 }
 .cell{
+    span{
+        font-weight:bold;
+    }
+    hr{
+        margin-top: 15px;
+        color: $color_text;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid $color_text;
+        padding: 0;
+    }
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    background-color: transparent;
+}
+.titleBase{
+    position: relative;
     width: 500px;
-    margin-bottom: 50px;
-    margin-left: 20px;
-    height: 60px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 10px;
+    background-color: $color_back;
+    height: 30px;
+    overflow: hidden;
     border-radius: 16px;
-    box-shadow: 0px 0px 30px black ;
+    box-shadow: 0px 0px 20px black ;
+    
+}
+
+.titleOpen{
+    position: relative;
+    width: 500px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 10px;
+    background-color: $color_back;
+    height: 30px;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px black ;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-name: slidein;
+    
+}
+
+@keyframes slidein{
+    from{
+        height: 30px;
+    }
+    to{
+        height: 210px;
+    }
+}
+
+.titleClose{
+    position: relative;
+    width: 500px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 10px;
+    background-color: $color_back;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px black ;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-name: slideoff;
+    
+}
+
+@keyframes slideoff{
+    from{
+        height: 210px;
+    }
+    to{
+        height: 30px;
+    }
+}
+
+.imagedown{
+    position: absolute;
+    left: 520px;
+    float: left;
+    width: 15px;
+}
+
+.trash{
+    width: 15px;
+    margin-left: 480px;
 }

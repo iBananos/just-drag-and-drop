@@ -87,7 +87,7 @@ class Utils {
 
     public static refreshToken() {
         var xhr = new XMLHttpRequest()
-        xhr.open('POST', 'http://localhost:4000/api/auth/refresh', true);
+        xhr.open('POST', 'http://localhost:4000/refresh', true);
         xhr.withCredentials = true;
         xhr.addEventListener('readystatechange', function(e) {
             if (xhr.readyState === 4 && xhr.status === 200) {

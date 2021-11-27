@@ -41,3 +41,28 @@ function createInfoDatabase(userId : string, name:string,date:string, size :any,
     var doc = JSON.stringify({"name":name,"date":date,"size":size,"extension":extension});
     fs.writeFile('uploads/' + userId + '/databaseInfo/' + name+".json",doc, function (err) {});
 }
+
+export const getInfoDatabase : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    res.send({"liste" : Utils.default.getInformations('uploads/' + req.body.userId + '/dataBaseInfo/')});
+};
+
+export const deleteData : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    console.log(req.body.path);
+    fs.unlink("uploads/"+req.body.userId +"/database/"+req.body.path, function (err) {
+        if (err) {
+          console.error(err);
+          res.send("Erreur lors de la suppression");
+        } else {
+          console.log("File removed:", req.body.path);
+        }
+    })
+    fs.unlink("uploads/"+req.body.userId +"/databaseInfo/"+req.body.path.split(".")[0]+".json", function (err) {
+        if (err) {
+          console.error(err);
+          res.send("Erreur lors de la suppression");
+        } else {
+          console.log("File removed:", req.body.path);
+          res.send("Base supprimée");
+        }
+    })
+};

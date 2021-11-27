@@ -1,24 +1,83 @@
 import React from 'react';
 import BarreLaterale from '../components/BarreLaterale';
 import Navigation from '../components/Navigation';
-import * as utils from "../Utils"
+import * as utils from "../Utils";
+import downIcone from "../assets/down.png";
+import trashIcone from "../assets/trash.png";
 
 const Mydatabase = () => {
     window.onload= function(){
         console.log("demande")
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/databases', "", requestDatabases);
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/upload/getInfo', "", requestDatabases);
     }
+    function displayInfo(ev : any){
+        var id = ev.target.id.split("_")[0] ;
+        var div = document.getElementById(id) as HTMLDivElement;
+        if(div.className === "titleOpen"){
+            div.className = "titleClose";
+        }else{
+            div.className = "titleOpen";
+        }
+    }
+
     function requestDatabases(response : any){
-        var listeData : JSON = JSON.parse(response)
-        console.log(listeData)
-        Object.entries(listeData).forEach(([key,value])=>{response=value}) ;
-        for(var i: number = 0 ; i < response.length; i++){
+        var listData= JSON.parse(response).liste;
+        for(var i: number = 0 ; i < listData.length; i++){
+            var data = listData[i]
             var cell = document.createElement("div");
-            cell.id = response[i];
             cell.className = "cell"
-            cell.innerHTML = response[i];
+            var title = document.createElement("div");
+            
+            title.id = data.name;
+            title.className="titleBase";
+            var p = document.createElement("span");
+            p.innerHTML = data.name;
+            title.appendChild(p);
+            var image = document.createElement("img");
+            image.src = downIcone;
+            image.id = data.name+"_image";
+            image.alt = "";
+            image.className = "imagedown";
+            image.onclick = displayInfo;
+            title.appendChild(image);
+            var hr = document.createElement("hr");
+            title.appendChild(hr);
+
+            var date = document.createElement("p");
+            date.innerHTML = "Uploaded : " +data.date;
+            date.id=data.name+"_date";
+            var size = document.createElement("p");
+            size.innerHTML = "Size : " +data.size + " octets";
+            size.id=data.name+"_size";
+            var extension = document.createElement("p");
+            extension.innerHTML = "Type : " + data.extension;
+            extension.id = data.name+"_extension";
+            title.appendChild(date)
+            title.appendChild(size)
+            title.appendChild(extension)
+
+            var trash = document.createElement("img");
+            trash.src = trashIcone;
+            trash.id = data.name+"_trash";
+            trash.alt = "";
+            trash.className = "trash";
+            trash.onclick = deleteDatabase;
+
+            title.appendChild(trash);
+            cell.appendChild(title);
             document.getElementById("view")?.appendChild(cell);
         }
+    }
+    function deleteDatabase(ev : any){
+        var id = ev.target.id.split("_")[0] ;
+        var extension = ((document.getElementById(id+"_extension") as HTMLDivElement).innerHTML).split(" ")[2];
+        var file =  JSON.stringify({"path" : id+"."+extension});
+        (document.getElementById(id) as HTMLDivElement).style.display ="none";
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/upload/deleteData', file, callbackDelete);
+    }
+
+    function callbackDelete(response:Response){
+        console.log(response)
     }
 
     return (
