@@ -10,7 +10,6 @@ import * as Utils from "../utils";
  * @param next 
  */
 export const saveFile : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    console.log(req.file!.path)
     var src = fs.createReadStream(req.file!.path);
     var listName = Utils.default.getNameFiles('uploads/' + req.body.userId + '/database/');
     var nomFichier = req.body.name;
@@ -22,7 +21,8 @@ export const saveFile : RequestHandler = (req : Request, res : Response, next : 
         nomFichier= nomFichier+"("+acc+")";
         acc++;
     }
-    createInfoDatabase(req.body.userId,nomFichier,req.body.date,req.file?.size,req.file?.originalname.split(".")[1])
+    var colonnes:string[] = getColonneFromCSV(req.file?.path)
+    createInfoDatabase(req.body.userId,nomFichier,req.body.date,req.file?.size,req.file?.originalname.split(".")[1],colonnes)
     var dest = fs.createWriteStream('uploads/' + req.body.userId + '/database/' + nomFichier+"."+req.file?.originalname.split(".")[1]);
     src.pipe(dest);
     src.on('end', () => {
@@ -36,9 +36,14 @@ export const saveFile : RequestHandler = (req : Request, res : Response, next : 
     });
 };
 
+function getColonneFromCSV(path : any){
+    var colonnes:string[] = fs.readFileSync(path,"utf8").split('\n')[0].replace(/"/g, '').split(",");
+    return colonnes;
+}
 
-function createInfoDatabase(userId : string, name:string,date:string, size :any, extension : any){
-    var doc = JSON.stringify({"name":name,"date":date,"size":size,"extension":extension});
+
+function createInfoDatabase(userId : string, name:string,date:string, size :any, extension : any,colonnes :string[]){
+    var doc = JSON.stringify({"name":name,"date":date,"size":size,"extension":extension,"colonnes":colonnes});
     fs.writeFile('uploads/' + userId + '/databaseInfo/' + name+".json",doc, function (err) {});
 }
 
@@ -47,7 +52,6 @@ export const getInfoDatabase : RequestHandler = (req : Request, res : Response, 
 };
 
 export const deleteData : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    console.log(req.body.path);
     fs.unlink("uploads/"+req.body.userId +"/database/"+req.body.path, function (err) {
         if (err) {
           console.error(err);
@@ -68,8 +72,6 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
 };
 
 export const downloadData : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    console.log(req.body.path);
-
     var data = {"name": req.body.path,"file":fs.readFileSync("uploads/"+req.body.userId +"/database/"+req.body.path, 'utf8')}
     res.send(data);
 };

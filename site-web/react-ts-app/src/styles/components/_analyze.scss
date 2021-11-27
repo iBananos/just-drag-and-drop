@@ -8,22 +8,31 @@
     font-family: $font;
 }
 select{
+    cursor: pointer;
     background-color: transparent;
     color: $color_text;
     width: 200px;
     text-align: center;
-    height: 40px;
     border: none;
     border-radius: 16px;
     border-color: $color_text;
     box-shadow: 0px 0px 20px black ;
+    height: 40px;
 }:focus {
     outline: none;
 }
 .SelectDB{
-    
     margin-right: 50px;
 }
+.SelectCat{
+    margin-top: 10px;
+}
+.firstOne{
+    
+    margin-top: 20px;
+    margin-right: 50px;
+}
+
 select option{
     background-color: $color_back;
 }
@@ -160,4 +169,94 @@ table{
 .help{
     height: 15px;
     width: 15px;
+}
+
+
+.divSelectMultiple{
+    height: 40px;
+    overflow-y: hidden;
+    margin-top: 40px;
+    text-align: left;
+    background-color: transparent;
+    color: $color_text;
+    width: 210px;
+    margin-left: 50px;
+    border: none;
+    border-radius: 16px;
+    border-color: $color_text;
+    box-shadow: 0px 0px 20px black ;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.divSelectMultipleOpen{
+    overflow-y: scroll;
+    margin-top: 40px;
+    text-align: left;
+    background-color: transparent;
+    color: $color_text;
+    width: 210px;
+    margin-left: 50px;
+    border: none;
+    border-radius: 16px;
+    border-color: $color_text;
+    box-shadow: 0px 0px 20px black ;
+    margin-left: auto;
+    margin-right: auto;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-name: closeUp;
+}
+@keyframes closeUp{
+    from{
+        height: 40px;
+    }
+    to{
+        height: 200px;
+    }
+}
+
+
+.divSelectMultipleClose{
+    overflow-y: hidden;
+    margin-top: 40px;
+    text-align: left;
+    background-color: transparent;
+    color: $color_text;
+    width: 210px;
+    margin-left: 50px;
+    border: none;
+    border-radius: 16px;
+    border-color: $color_text;
+    box-shadow: 0px 0px 20px black ;
+    margin-left: auto;
+    margin-right: auto;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-name: openUp;
+}
+@keyframes openUp{
+    from{
+        height: 200px;
+    }
+    to{
+        height: 40px;
+    }
+}
+
+.selectLike{
+    cursor: pointer;
+    text-align: center;
+    background-color: transparent;
+    color: $color_text;
+    width: 200px;
+    height: 30px;
+    border: none;
+    border-color: $color_text;
+    padding-top: 10px;
+}
+
+.parametersCheckbox{
+    color: $color_text;
+    
 }

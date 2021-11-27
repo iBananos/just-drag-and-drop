@@ -3,27 +3,25 @@ import InputNumber from "../components/InputNumber";
 import Navigation from "../components/Navigation";
 import help from "../assets/help.png";
 import * as utils from "../Utils";
-
-const Analyze = () =>  {
-    
-    window.onload= function(){
-        console.log("demande")
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/databases', "", requestDatabases);
-    }
+var list : any[]= [];
+var expanded = false;
+const Analyze = () =>  {    
 
     function requestDatabases(response : any){
-        var listeData : JSON = JSON.parse(response)
-        console.log(listeData)
-        Object.entries(listeData).forEach(([key,value])=>{response=value}) ;
-        for(var i: number = 0 ; i < response.length; i++){
+        var listData= JSON.parse(response).liste;
+        for(var i: number = 0 ; i < listData.length; i++){
+
+            var data= listData[i];
+            list.push(data);
             var option = document.createElement("option");
-            option.innerHTML = response[i];
-            option.value = response[i];
+            option.innerHTML = data.name+"."+data.extension;
+            option.value = data.name+"."+data.extension;
             document.getElementById("SelectDB")?.appendChild(option);
         }
     }
+
+
     function displayParameter(ev :any){
-        console.log(ev.target.value)
         var algo = ev.target.value;
         var category = (document.getElementById("category") as HTMLSelectElement).value;
         (document.getElementById("GradientBoosting")as HTMLElement).style.display = "none";
@@ -62,7 +60,12 @@ const Analyze = () =>  {
          
     }
 
+    window.onload= function(){
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/databases', "", requestDatabases);
+    }
+
     function displayAlgorithmes(){
+        hideparams();
         var category = (document.getElementById("category") as HTMLSelectElement).value;
         var algos1 = (document.getElementById("Algos1") as HTMLDivElement);
         var algos2 = (document.getElementById("Algos2") as HTMLDivElement);
@@ -78,21 +81,111 @@ const Analyze = () =>  {
 
     function enableCategory(){
         (document.getElementById("category") as HTMLSelectElement).disabled = false;
+        createSelectorForColonnes();
     }
 
+    function createSelectorForColonnes(){
+        var base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
+        for(var i: number = 0 ; i < list.length; i++){
+            
+            if(list[i].name+"."+list[i].extension === base){
+                var colonnes = list[i].colonnes;
+                (document.getElementById("firstOne")as HTMLSelectElement).innerHTML = "";
+                var optiondefault = document.createElement("option");
+                optiondefault.innerHTML = "Choose a column";
+                optiondefault.value = "Choose a column";
+                optiondefault.disabled = true;
+                document.getElementById("firstOne")?.appendChild(optiondefault);
+                var fauxSelect =document.getElementById("divSelectMultiple") as HTMLDivElement;
+                fauxSelect.innerHTML = "";
+                var divSelect = document.createElement("div");
+                divSelect.className = "selectLike";
+                divSelect.onclick = developper;
+                divSelect.innerHTML = "Choose other parameters";
+                fauxSelect.appendChild(divSelect)
+                for(var y: number = 0 ; y < colonnes.length; y++){
+                    var option = document.createElement("option");
+                    option.innerHTML = colonnes[y];
+                    option.value = colonnes[y];
+                    document.getElementById("firstOne")?.appendChild(option);
+                }
+            }           
+        }
+        (document.getElementById("firstOne") as HTMLSelectElement).disabled = false;
+        
+    }
+
+    function enableSecondOne(){
+        createSelectorForOthersColonnes()
+    }
+
+    function createSelectorForOthersColonnes(){
+        var base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
+        var firstcolumn = (document.getElementById("firstOne")as HTMLSelectElement).value;
+        for(var i: number = 0 ; i < list.length; i++){
+            if(list[i].name+"."+list[i].extension === base){
+                var colonnes = list[i].colonnes;
+                var fauxSelect =document.getElementById("divSelectMultiple") as HTMLDivElement;
+                fauxSelect.innerHTML = "";
+                var divSelect = document.createElement("div");
+                divSelect.className = "selectLike";
+                divSelect.onclick = developper;
+                divSelect.innerHTML = "Choose other parameters";
+                fauxSelect.appendChild(divSelect)
+                for(var y: number = 0 ; y < colonnes.length; y++){
+                    if(colonnes[y] !== firstcolumn){
+                        /*
+                        <div className="selectLike"onClick={developper}>Choose other parameters</div>
+                        */
+                        var option = document.createElement("input");
+                        option.className = "otherParam";
+                        option.id = colonnes[y].toString();
+                        option.type = "checkbox";
+                        option.value = colonnes[y].toString();
+                        option.name = "params"
+
+                        var label = document.createElement('label');
+                        label.htmlFor = colonnes[y].toString();
+                        label.className ="parametersCheckbox";
+                        label.innerHTML = colonnes[y].toString();
+                        var br = document.createElement("br");
+
+                        fauxSelect.appendChild(option);
+                        fauxSelect.appendChild(label);
+                        fauxSelect.appendChild(br);
+                    }
+                }
+            }           
+        }
+    }
+
+
     function sendRequest(ev :any){
-        console.log(ev.target.value)
         var algo = ev.target.value
         var database = (document.getElementById("SelectDB") as HTMLSelectElement).value
         var requestAnalyze : string ="";
         var name = (document.getElementById("analyzeName") as HTMLInputElement).value;
         var date = new Date(Date.now()); 
         var category = (document.getElementById("category") as HTMLSelectElement).value;
+        var pred : string = (document.getElementById("firstOne") as HTMLSelectElement).value;
+        var features :string[]= []
+        for(var i: number = 0 ; i < list.length; i++){
+            if(list[i].name+"."+list[i].extension === database){
+                var colonnes = list[i].colonnes;
+                for(var y: number = 0 ; y < colonnes.length; y++){
+                    if((document.getElementById(colonnes[y]) as any)?.checked ===true){
+                        features.push(colonnes[y])
+                    }
+                }
+            }
+        }
         if(category === "Regression"){
             if(algo === "GradientBoosting"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
+                                                "pred":pred,
+                                                "feature":features,
                                                 "category":category,
                                                 "algo":algo, 
                                                 "params" : {
@@ -105,6 +198,8 @@ const Analyze = () =>  {
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
+                                                "pred":pred,
+                                                "feature":features,
                                                 "category":category,
                                                 "algo":algo, 
                                                 "params" : {
@@ -116,6 +211,8 @@ const Analyze = () =>  {
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
+                                                "pred":pred,
+                                                "feature":features,
                                                 "category":category,
                                                 "algo":algo, 
                                                 "params" : {
@@ -127,6 +224,8 @@ const Analyze = () =>  {
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
+                                                "pred":pred,
+                                                "feature":features,
                                                 "category":category,
                                                 "algo":algo, 
                                                 "params" : {
@@ -143,6 +242,8 @@ const Analyze = () =>  {
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
+                                                "pred":pred,
+                                                "feature":features,
                                                 "category":category,
                                                 "algo":algo, 
                                                 "params" : {
@@ -155,6 +256,8 @@ const Analyze = () =>  {
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
+                                                "pred":pred,
+                                                "feature":features,
                                                 "category":category,
                                                 "algo":algo, 
                                                 "params" : {
@@ -165,6 +268,8 @@ const Analyze = () =>  {
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
+                                                "pred":pred,
+                                                "feature":features,
                                                 "category":category,
                                                 "algo":algo, 
                                                 "params" : {
@@ -177,6 +282,8 @@ const Analyze = () =>  {
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
+                                                "pred":pred,
+                                                "feature":features,
                                                 "category":category,
                                                 "algo":algo, 
                                                 "n_estimators" : (document.getElementById("n_estimators8")as HTMLInputElement).value,
@@ -188,6 +295,8 @@ const Analyze = () =>  {
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
+                                                "pred":pred,
+                                                "feature":features,
                                                 "category":category,
                                                 "algo":algo, 
                                                 "params" : {
@@ -207,14 +316,37 @@ const Analyze = () =>  {
     function callbackRequest(response : any) {
         console.log(response);
     }
+    function developper(ev : any){
+        var div = document.getElementById("divSelectMultiple") as HTMLDivElement;
+        if(div.className === "divSelectMultipleOpen"){
+            div.className = "divSelectMultipleClose";
+        }else{
+            div.className = "divSelectMultipleOpen";
+        }
+    }
+
+    function hideparams(){
+        var div = document.getElementById("divSelectMultiple") as HTMLDivElement;
+        div.className = "divSelectMultipleClose";
+    }
 
     return (
+        
         <div className="Analyze">
             <div className="view" id="view">
                 <h1 className="title">Analyze page</h1>
                 <select name="database" id="SelectDB"defaultValue="Choose a database" className="SelectDB" onChange={enableCategory}>
                     <option value="Choose a database" disabled >Choose a database</option>
                 </select>
+              
+                <select name="firstOne" id="firstOne"defaultValue="Choose a column" className="firstOne" onChange={enableSecondOne} disabled>
+                    <option value="Choose a column" disabled >Choose a column</option>
+                </select>
+                <div id="divSelectMultiple" className="divSelectMultiple" >
+                    <div className="selectLike"onClick={developper}>Choose other parameters</div>
+                </div>
+                <br />
+                
                 <select name="category" id="category" defaultValue="Choose a category" onChange={displayAlgorithmes} className="SelectCat" disabled>
                     <option value="Choose a category" disabled >Choose a category</option>
                     <option value="Regression">Regression</option>

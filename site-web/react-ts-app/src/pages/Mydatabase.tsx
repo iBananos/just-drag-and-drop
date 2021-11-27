@@ -5,7 +5,6 @@ import * as utils from "../Utils";
 import downIcone from "../assets/down.png";
 import trashIcone from "../assets/trash.png";
 import downloadIcone from "../assets/download.png";
-import fs from "fs";
 
 const Mydatabase = () => {
     window.onload= function(){
@@ -114,8 +113,6 @@ const Mydatabase = () => {
     function callbackDownload(response : string){
         var data = JSON.parse(response)
         downloader(data.name,data.file)
-        //fs.writeFile('../../download/file.csv',"bonjour", function (err) {});
-        //downloadFile(response)
     }
     return (
         <div className="Mydatabase" id="Mydatabase">

@@ -26,25 +26,24 @@ export const parameters : RequestHandler = (req : Request, res : Response, next 
         if (err){
             res.send('error'); 
         }else{
-            console.log("IL SE PASSE UN TRUC ")
             var analyze_choice = req.body.category;
             var algo_choice = req.body.algo;
             var list_param : string[] = [];
             var filename= 'uploads/' + req.body.userId + '/database/' + req.body.database
+            var features = req.body.features;
+            var pred = req.body.pred;
             Object.entries(req.body.params).forEach(([key,value])=>{listName.push(value as string)}) ;
-            Utils.default.callPython(filename,"features","pred",list_param,analyze_choice,algo_choice)
+            Utils.default.callPython(filename,features,pred,list_param,analyze_choice,algo_choice)
             
         }
       });
 };
 
 export const databases : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    console.log("ICI")
-    res.send({"liste" : Utils.default.getDataFiles('uploads/' + req.body.userId + '/database/')});
+    res.send({"liste" : Utils.default.getDataFiles('uploads/' + req.body.userId + '/databaseInfo/')});
 };
 
 export const informations : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    console.log("ICI")
     res.send({"liste" : Utils.default.getInformations('uploads/' + req.body.userId + '/analyseInfo/')});
 };
 

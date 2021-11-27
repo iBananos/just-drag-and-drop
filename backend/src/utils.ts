@@ -5,20 +5,18 @@ class Utils {
     public  static getNameFiles(path : string){
         var listName: string[] = [];
         fs.readdirSync(path).forEach(file => {
-                console.log("FICHIER : " , file)
                 var name = file.split(".")
                 listName.push(name[0])
         })
-        console.log(listName);
         return listName;
     }
 
     public  static getDataFiles(path : string){
         var listName: string[] = [];
         fs.readdirSync(path).forEach(file => {
-                listName.push(file)
+            var data = JSON.parse(fs.readFileSync(path+file, 'utf8'));
+            listName.push(data)
         })
-        console.log(listName);
         return listName;
     }
 
@@ -28,7 +26,6 @@ class Utils {
             var data = JSON.parse(fs.readFileSync(path+file, 'utf8'));
             listeInfo.push(data);
         });
-        console.log("laliste= apres ", listeInfo);
         return listeInfo;
     }
     
