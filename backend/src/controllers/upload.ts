@@ -1,7 +1,7 @@
 import fs from 'fs';
 import "dotenv/config";
 import type { RequestHandler, Request, Response, NextFunction } from "express";
-import * as Utils from "../utils"
+import * as Utils from "../utils";
 
 /**
  * Fonction qui réceptionne le fichier (la base de donnée) et l'enregistre dans le serveur.
@@ -65,4 +65,11 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
           res.send("Base supprimée");
         }
     })
+};
+
+export const downloadData : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    console.log(req.body.path);
+
+    var data = {"name": req.body.path,"file":fs.readFileSync("uploads/"+req.body.userId +"/database/"+req.body.path, 'utf8')}
+    res.send(data);
 };

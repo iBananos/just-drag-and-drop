@@ -4,6 +4,8 @@ import Navigation from '../components/Navigation';
 import * as utils from "../Utils";
 import downIcone from "../assets/down.png";
 import trashIcone from "../assets/trash.png";
+import downloadIcone from "../assets/download.png";
+import fs from "fs";
 
 const Mydatabase = () => {
     window.onload= function(){
@@ -56,6 +58,13 @@ const Mydatabase = () => {
             title.appendChild(size)
             title.appendChild(extension)
 
+            var download = document.createElement("img");
+            download.src = downloadIcone;
+            download.id = data.name+"_download";
+            download.alt = "";
+            download.className = "download";
+            download.onclick = downloadBase;
+
             var trash = document.createElement("img");
             trash.src = trashIcone;
             trash.id = data.name+"_trash";
@@ -63,6 +72,7 @@ const Mydatabase = () => {
             trash.className = "trash";
             trash.onclick = deleteDatabase;
 
+            title.appendChild(download);
             title.appendChild(trash);
             cell.appendChild(title);
             document.getElementById("view")?.appendChild(cell);
@@ -80,6 +90,33 @@ const Mydatabase = () => {
         console.log(response)
     }
 
+    function downloadBase(ev : any){
+        var id = ev.target.id.split("_")[0] ;
+        var extension = ((document.getElementById(id+"_extension") as HTMLDivElement).innerHTML).split(" ")[2];
+        var file =  JSON.stringify({"path" : id+"."+extension});
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/upload/downloadData', file, callbackDownload);
+    }
+
+    function downloader(filename:string, text:string) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+          
+            element.style.display = 'none';
+            document.body.appendChild(element);
+          
+            element.click();
+          
+            document.body.removeChild(element);
+    }
+      
+
+    function callbackDownload(response : string){
+        var data = JSON.parse(response)
+        downloader(data.name,data.file)
+        //fs.writeFile('../../download/file.csv',"bonjour", function (err) {});
+        //downloadFile(response)
+    }
     return (
         <div className="Mydatabase" id="Mydatabase">
             <div className="view" id="view">
