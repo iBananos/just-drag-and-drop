@@ -5,6 +5,8 @@ import userRoutes from './routes/user';
 import cookieParser from 'cookie-parser';
 import uploadRoutes from './routes/upload';
 import analyzeRoutes from './routes/analyze';
+import middlewareError from './middleware/error';
+import HttpException from './utils/httpException';
 
 
 
@@ -38,10 +40,21 @@ app.use('/api/auth', userRoutes);
 
 
 // Routes pour l'upload de base de données
-app.use('/upload', uploadRoutes)
+app.use('/upload', uploadRoutes);
 
 // Routes pour les analyses de base de données
-app.use('/analyze', analyzeRoutes)
+app.use('/analyze', analyzeRoutes);
+
+
+
+// 404 error
+app.all('*', (req, res, next) => {
+    const err = new HttpException(404, 'app.ts', 'Page Not Found');
+    next(err);
+});
+
+// Error middleware
+app.use(middlewareError);
 
 
 

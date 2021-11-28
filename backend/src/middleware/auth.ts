@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
+import HttpException from '../utils/httpException';
 import type { RequestHandler, Request, Response, NextFunction } from "express";
 
 
@@ -19,22 +20,19 @@ interface Token {
  * @param next 
  * @returns 
  */
-export const auth : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+export const auth : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
     try {
         const { cookies, headers } = req;
 
-        //console.log(cookies);
-        //console.log(req);
-
         /* On vérifie que le JWT est présent dans les cookies de la requête */
         if (!cookies || !cookies.access_token)
-            return res.status(401).json({ message: 'Token non trouvé' });
+            throw new HttpException(401, "middleware/auth.ts", "Token non trouvé.");
 
         const accessToken = cookies.access_token;
 
         /* On vérifie que le token XSRF est présent dans les en-têtes de la requête */
         if (!headers || !headers['x-xsrf-token'])
-            return res.status(401).json({ message: 'Token XSRF non trouvé' });
+            throw new HttpException(401, "middleware/auth.ts", "Token XSRF non trouvé.");
 
         const xsrfToken = headers['x-xsrf-token'];
 
@@ -43,21 +41,18 @@ export const auth : RequestHandler = (req : Request, res : Response, next : Next
         const decodedToken = jwt.verify(accessToken, `${process.env.TOKEN_SECRET}`) as Token;
 
         /* On vérifie que le token XSRF correspond à celui présent dans le JWT  */
-        if (xsrfToken !== decodedToken.xsrfToken) 
-            return res.status(401).json({ message: 'Token XSRF invalide' });
+        if (xsrfToken !== decodedToken.xsrfToken)
+            throw new HttpException(401, "middleware/auth.ts", "Token XSRF invalide.");
 
         /* On vérifie l'userId du JWT */
-        const userId = decodedToken.userId;
-        if (req.body.userId && req.body.userId !== userId) 
-            return res.status(401).json({ message: 'UserID invalide'});
-        req.body.userId = userId;
-        return next();
+        const user : any = await User.findOne({ id: decodedToken.userId }).lean();
+        if (!user) 
+            throw new HttpException(401, "middleware/auth.ts", "L'authentification a échoué.");
+
+        req.body.userId = decodedToken.userId;
+        next();
     }
     catch (err) {
-        return res.status(500).json({ message: 'Internal error' });
+        next(err);
     }
-}
-
-export function getUser(){
-
 }

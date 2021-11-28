@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import { argon2i } from 'argon2-ffi';
 import RefreshToken from '../models/refreshToken'
+import HttpException from '../utils/httpException';
 
 import type { ObjectId } from 'mongoose';
 import type { RequestHandler, Request, Response, NextFunction } from "express";
@@ -19,33 +20,31 @@ import type { RequestHandler, Request, Response, NextFunction } from "express";
  * @param next 
  */
 export const signup : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    if (!checkMailAvailable(req.body.email)) {
-        res.status(401).json({ message : "Veuillez entrer une adresse mail valide." });
-        return;
-    }
+    try {
+        if (!checkMailAvailable(req.body.email)) {
+            throw new HttpException(401, "controllers/user.ts", "Veuillez entrer une adresse mail valide.");
+        }
 
-    if (!checkPassword(req.body.password)) {
-        res.status(401).json({ message : "Le mot de passe n'est pas assez complexe" });
-        return;
-    }
+        if (!checkPassword(req.body.password)) {
+            throw new HttpException(401, "controllers/user.ts", "Le mot de passe n'est pas assez complexe.");
+        }
 
-    crypto.randomBytes(32, function(err, salt) {
-        if (err) throw new Error(err.toString());
+        crypto.randomBytes(32, function(err, salt) {
+            if (err) throw new HttpException(500, "controllers/user.ts", err.toString());
 
-        const options = {
-            timeCost: 10,
-            memoryCost: 16384,
-            parallelism: 2,
-            hashLength: 64,
-          };
-     
-        argon2i.hash(req.body.password, salt, options).then(hash => {
-            const user = new User({
-                email: req.body.email,
-                password: hash
-            });
-            user.save()
-            .then(async () => {
+            const options = {
+                timeCost: 10,
+                memoryCost: 16384,
+                parallelism: 2,
+                hashLength: 64,
+            };
+        
+            argon2i.hash(req.body.password, salt, options).then(hash => {
+                const user = new User({
+                    email: req.body.email,
+                    password: hash
+                });
+                user.save().then(async () => {
                     res.status(200).json({ message: "Votre compte a bien été créé !" });
 
                     const userId : any = await User.findOne({ email: req.body.email }).lean();
@@ -55,11 +54,14 @@ export const signup : RequestHandler = (req : Request, res : Response, next : Ne
                     fs.mkdirSync(dir + '/analyse');
                     fs.mkdirSync(dir + '/analyseInfo');
                     fs.mkdirSync(dir + '/databaseInfo');
-                }
-            )
-            .catch(() => res.status(400).json({ message: "Cette adresse e-mail est déjà utilisée" }));
+                })
+                .catch(() => { throw new HttpException(401, "controllers/user.ts", "Cette adresse e-mail est déjà utilisée."); });
+            });
         });
-    });
+    }
+    catch (err) {
+        next(err);
+    }
 };
 
 
@@ -70,27 +72,27 @@ export const signup : RequestHandler = (req : Request, res : Response, next : Ne
  * @param res 
  * @param next 
  */
-export const login : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    User.findOne({ email: req.body.email })
-        .then((user: any) => {
-            if (!user) {
-                return res.status(400).json({ error: "Nom d'utilisateur ou mot de passe incorrect !" });
-            }
-            argon2i.verify(user.password, req.body.password)
-                .then(valid => {
-                    if (!valid) {
-                        return res.status(400).json({ error: "Nom d'utilisateur ou mot de passe incorrect !" });
-                    }
+export const login : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
+    try {
+        const user : any = await User.findOne({ email: req.body.email }).lean();
+        if (!user) {
+            throw new HttpException(401, "controllers/user.ts", "Nom d'utilisateur ou mot de passe incorrect !");
+        }
 
-                    /* Création des token */
-                    const {xsrfToken, accessToken, refreshToken} = generateToken(user._id);
+        const valid = await argon2i.verify(user.password, req.body.password);
+        if (!valid) {
+            throw new HttpException(401, "controllers/user.ts", "Nom d'utilisateur ou mot de passe incorrect !");
+        }
 
-                    /* Envoie des token */
-                    sendToken(res, xsrfToken, accessToken, refreshToken);
-                })
-            .catch(error => res.status(500).json({ error }));
-        })
-    .catch(error => res.status(500).json({ error }));
+        /* Création des token */
+        const {xsrfToken, accessToken, refreshToken} = generateToken(user._id);
+
+        /* Envoie des token */
+        sendToken(res, xsrfToken, accessToken, refreshToken);
+    }
+    catch (err) {
+        next(err);
+    }
 };
 
 
@@ -107,13 +109,11 @@ export const refreshToken : RequestHandler = async (req : Request, res : Respons
 
         /* On vérifie que le JWT est présent dans les cookies de la requête */
         if (!cookies || !cookies.refresh_token)
-            return res.status(401).json({ message: 'Refresh Token non trouvé' });
+            throw new HttpException(401, "controllers/user.ts", "Token Expires");
         
         const oldRefreshToken : any = await RefreshToken.findOne({ refreshToken: cookies.refresh_token }).lean();
-        if (oldRefreshToken!.expires < Date.now()) {
-            res.status(500).json({ message: 'token expires' });
-            return;
-        }
+        if (oldRefreshToken!.expires < Date.now())
+            throw new HttpException(401, "controllers/user.ts", "Token Expires");
         else {
             /* Création des token */
             const {xsrfToken, accessToken, refreshToken} = generateToken(oldRefreshToken.userId);
@@ -123,7 +123,7 @@ export const refreshToken : RequestHandler = async (req : Request, res : Respons
         }
     }
     catch (err) {
-        return res.status(500).json({ message: 'Internal error' });
+        next(err);
     }
 }
 
@@ -156,10 +156,10 @@ function generateToken(user_id : ObjectId) {
             else {
                 RefreshToken.updateOne({ userId: user_id }, {refreshToken: refreshToken, expires: refreshTokenExpires})
                     .then(() => {})
-                .catch(error => console.log(error));
+                .catch(error => { throw new HttpException(500, "controllers/user.ts", error); });
             }
         })
-    .catch(error => console.log(error));
+    .catch(error => { throw new HttpException(500, "controllers/user.ts", error); });
 
     return {xsrfToken, accessToken, refreshToken};
 }
