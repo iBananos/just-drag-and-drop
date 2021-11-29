@@ -21,6 +21,7 @@ interface Token {
  * @returns 
  */
 export const auth : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
+    
     try {
         const { cookies, headers } = req;
 
@@ -48,7 +49,7 @@ export const auth : RequestHandler = async (req : Request, res : Response, next 
         const user : any = await User.findOne({ id: decodedToken.userId }).lean();
         if (!user) 
             throw new HttpException(401, "middleware/auth.ts", "L'authentification a échoué.");
-
+        
         req.body.userId = decodedToken.userId;
         next();
     }

@@ -13,16 +13,16 @@ from sklearn.metrics import confusion_matrix
 
 def parse_data(filename):
 
-    if 'csv' in filename:
+    if '.csv' in filename:
             # Assume that the user uploaded a CSV or TXT file
         df = pd.read_csv(filename,index_col=0, delimiter=',', encoding="utf-8")
-    elif 'xlsx' in filename:
+    elif '.xlsx' in filename:
             # Assume that the user uploaded an excel file
         df = pd.read_excel(filename,index_col=0,encoding="utf-8")
-    elif 'txt' or 'tsv' in filename:
+    elif '.txt' or '.tsv' in filename:
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
         df = pd.read_csv(filename, delimiter = r'\s+',index_col=0, encoding="utf-8")
-    elif 'json' in filename:
+    elif '.json' in filename:
         df = pd.read_json(filename)
     else :
         print("There was an error while processing this file")
@@ -74,15 +74,15 @@ def get_parameters_default(algo_choice):
         list_parameters_default = ["l2",1e-14,1.0,None]
     elif algo_choice == "AdaBoost" :
         list_parameters_default = [50,1.0]
-    elif algo_choice == "Gradient Boosting" :
+    elif algo_choice == "GradientBoosting" :
         list_parameters_default = [0.1,100,3,2]
-    elif algo_choice == "Random Forest" :
+    elif algo_choice == "RandomForest" :
         list_parameters_default = [100,None,2,None]
-    elif algo_choice == "Logistic Regression" :
+    elif algo_choice == "LogisticRegression" :
         list_parameters_default = ["l2",1e-14,1.0,None,100]
     elif algo_choice == "Ridge" :
         list_parameters_default = [1e-13,"auto",1.0]
-    elif algo_choice == "Bayesian ARD Regression" :
+    elif algo_choice == "BayesianARDRegression" :
         list_parameters_default = [300,1e-3,1e-6,1e-6,1e-6,1e-6,]
     else : 
         print("choose an available algorithm")
@@ -93,12 +93,13 @@ def get_parameters_default(algo_choice):
 
 def get_list_parameters(algo_choice,list_parameters) : 
     list_parameters_default = get_parameters_default(algo_choice)
-    for i in range(len(list_parameters)) :
-        if list_parameters[i] == None : ###si c'est un param par default
-            list_parameters[i] = list_parameters_default[i]
-        else : 
-            list_parameters[i] = list_parameters[i] 
-    return list_parameters
+    #for i in range(len(list_parameters)) :
+    #    if list_parameters[i] == None : ###si c'est un param par default
+    #        list_parameters[i] = list_parameters_default[i]
+    #    else : 
+    #        list_parameters[i] = list_parameters[i] 
+    ##return list_parameters
+    return list_parameters_default
 
 
 def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_choice) :
@@ -148,11 +149,12 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         prediction=pd.DataFrame(prediction,columns=['prediction'])
         
         y_test=y_test.reset_index(drop=True)
-        print(prediction)
-        print(y_test)
+        #print(prediction)
+        #print(y_test)
         prediction_and_true=pd.concat([prediction,y_test],axis=1)
-        print(prediction_and_true)
-        return prediction_and_true.to_csv(['prediction_true.csv'])
+        #print(prediction_and_true.to_string())
+        return prediction_and_true 
+        #print(prediction_and_true).to_csv(['prediction_true.csv'])
                              
     elif analyze_choice == "Classification" :
         target_name=pd.unique(df[pred].values.flatten())
@@ -184,11 +186,23 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
             print("choose an available alogrithm")
                              
         confusion_matrix2 = confusion_matrix(y_test, prediction)
-        print(confusion_matrix2)
+        #print(confusion_matrix2)
         confusion_matrix2 = confusion_matrix2.astype(float)
-        print(target_name)
+        #print(target_name)
         return confusion_matrix2,target_name
                              
     else : 
         print("wrong choice")
+import sys
 
+filename = sys.argv[1]
+features = sys.argv[2]
+pred = sys.argv[3]
+list_param = sys.argv[4]
+analyze_choice = sys.argv[5]
+algo_choice = sys.argv[6]
+
+if __name__ == "__main__":
+    #print("HELLO world")
+    #print(filename,features.split(","),pred,list_param.split(","),analyze_choice,algo_choice)
+    print(principal_fonction(filename,features.split(","),pred,list_param,analyze_choice,algo_choice))

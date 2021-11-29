@@ -3,6 +3,8 @@ import InputNumber from "../components/InputNumber";
 import Navigation from "../components/Navigation";
 import help from "../assets/help.png";
 import * as utils from "../Utils";
+import Chart from "../components/Chart";
+import { NavLink } from "react-router-dom";
 var list : any[]= [];
 var expanded = false;
 const Analyze = () =>  {    
@@ -309,13 +311,15 @@ const Analyze = () =>  {
             }
         }
         console.log(requestAnalyze);
-
+        (document.getElementById("view") as HTMLDivElement).style.display = "none";
+        (document.getElementById("loading") as HTMLDivElement).style.display = "block";
         utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/parameters', requestAnalyze, callbackRequest);
     }
 
     function callbackRequest(response : any) {
-        console.log(response);
+        window.location.href = "http://localhost:3000/analyzeView?url="+response;
     }
+    
     function developper(ev : any){
         var div = document.getElementById("divSelectMultiple") as HTMLDivElement;
         if(div.className === "divSelectMultipleOpen"){
@@ -333,6 +337,15 @@ const Analyze = () =>  {
     return (
         
         <div className="Analyze">
+            <div id="loading" className="loading">
+            <div className="loading-content">
+            <div className="loading-content__center-part">
+            </div>
+            <div className="loading-content__loader">
+                <div className="loading-content__loader-content"></div>
+            </div>
+        </div>
+            </div>
             <div className="view" id="view">
                 <h1 className="title">Analyze page</h1>
                 <select name="database" id="SelectDB"defaultValue="Choose a database" className="SelectDB" onChange={enableCategory}>

@@ -260,3 +260,58 @@ table{
     color: $color_text;
     
 }
+
+.loading{
+    display: none;
+}
+
+.loading-content {
+    position: relative;
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    margin: 100px auto;
+    overflow: hidden;
+    background: $color_back;
+    box-shadow:  10px 10px 20px #000000,
+               -10px -10px 20px #000000;
+    animation: spin;
+    .loading-content__center-part {
+      position: relative;
+      top: 50%;
+      z-index: 999;
+      height: 160px;
+      width: 160px;
+      transform: translateY(-50%);
+      margin-left: 20px;
+      border-radius: 100%;
+      background: $color_back;
+      box-shadow: inset 5px 5px 20px #000000,
+              inset -5px -5px 20px #000000;
+    }
+    .loading-content__loader {
+      position: absolute;
+      left: 92.5px; /* (width of loading-content / 2) - (width of content__loader / 2) */
+      top: 0;
+      height: 100%;
+      width: 15px;
+      -webkit-animation: spin 3s infinite linear;
+      .loading-content__loader-content {
+        height: 40px; // loading-content - loading-content__center-part
+        width: 100%;
+        background-color: $color_text;
+        box-shadow: 0px 0 40px 60px $color_text;
+      }
+    }
+  }
+  
+  /* Spin endless */
+  @keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  

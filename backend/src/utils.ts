@@ -1,7 +1,8 @@
-import { spawn } from "child_process";
 import fs from "fs";
-
+import { exec } from 'child_process';
+var resultats: string = "";
 class Utils {
+    
     public  static getNameFiles(path : string){
         var listName: string[] = [];
         fs.readdirSync(path).forEach(file => {
@@ -29,11 +30,7 @@ class Utils {
         return listeInfo;
     }
     
-    public static callPython(filename : string,features: any,pred:any,list_param:string[],analyze_choice:string,algo_choice:string){
-        console.log("AAAZERTYUHGFD")
-        //const pythonProcess = spawn('principal_fonction',["../../python/script.py",filename,features,pred,list_param,analyze_choice,algo_choice]);
-        //console.log(pythonProcess)
-    }
+   
 }
 
 export default Utils;
