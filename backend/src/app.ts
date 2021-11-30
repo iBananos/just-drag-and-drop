@@ -1,4 +1,5 @@
 import "dotenv/config";
+import path from "path"
 import express from "express";
 import mongoose from 'mongoose';
 import userRoutes from './routes/user';
@@ -36,18 +37,30 @@ app.use((req, res, next) => {
 });
 
 
+// Demande a node de servire les fichier react
+//app.use(express.static(path.resolve(__dirname, '../../site-web/react-ts-app/build')));
+
+
 // Routes d'authentification
 app.use('/api/auth', userRoutes);
 
-
 // Routes pour l'upload de base de données
-app.use('/upload', uploadRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Routes pour les analyses de base de données
-app.use('/analyze', analyzeRoutes);
+app.use('/api/analyze', analyzeRoutes);
 
 // Routes pour les dataVisualisation de base de données
-app.use('/dataVisu', dataVisuRoutes);
+app.use('/api/dataVisu', dataVisuRoutes);
+
+
+// Toutes les autres demandes GET non traitées renverront sur application React
+/*
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../site-web/react-ts-app/build', 'index.html'));
+
+});
+*/
 
 
 // 404 error

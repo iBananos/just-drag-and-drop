@@ -77,7 +77,7 @@ function setMsg(msg:string,color:string){
 function uploadFile(file:any) {
   var name = (document.getElementById('inputName') as HTMLInputElement).value;
   var date = new Date(Date.now());
-  utils.default.sendFileWithToken('POST', 'http://localhost:4000/upload', file, name, date, callbackRequest);  
+  utils.default.sendFileWithToken('POST', 'http://localhost:4000/api/upload', file, name, date, callbackRequest);  
 }
 
 function callbackRequest(){

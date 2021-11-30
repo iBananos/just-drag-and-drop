@@ -63,7 +63,7 @@ const Analyze = () =>  {
     }
 
     window.onload= function(){
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/databases', "", requestDatabases);
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/analyze/databases', "", requestDatabases);
     }
 
     function displayAlgorithmes(){
@@ -309,7 +309,7 @@ const Analyze = () =>  {
         console.log(requestAnalyze);
         (document.getElementById("view") as HTMLDivElement).style.display = "none";
         (document.getElementById("loading") as HTMLDivElement).style.display = "block";
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/parameters', requestAnalyze, callbackRequest);
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/analyze/parameters', requestAnalyze, callbackRequest);
     }
 
     function callbackRequest(response : any) {

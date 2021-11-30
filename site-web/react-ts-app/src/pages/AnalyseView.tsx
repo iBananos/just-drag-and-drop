@@ -2,7 +2,7 @@ import React from 'react';
 import BarreLaterale from '../components/BarreLaterale';
 import Navigation from '../components/Navigation';
 import { Chart as ChartJS } from 'chart.js';
-import parse from "csv-parse/lib/es5";
+import parse from "csv-parse";
 import * as utils from "../Utils";
 import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
 
@@ -17,7 +17,7 @@ const AnalyseView = () => {
         const FileFromURL : any = params.get('url'); 
         TypeRequest = params.get('type'); 
         console.log(FileFromURL +" "+ TypeRequest)
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload);
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload);
     } 
 
     function callbackDownload(response:any){
@@ -26,7 +26,7 @@ const AnalyseView = () => {
         var dataCloud : any = [];
         
         if(TypeRequest === "prediction"){
-            parse(file, {},async (err, data) => {
+            parse.parse(file, {},async (err, data) => {
                 data.forEach((el :any) =>{
                     dataLine.push(parseFloat(el[0].replace(/\s\s+/g, ' ').split(" ")[1]));
                     dataCloud.push(parseFloat(el[0].replace(/\s\s+/g, ' ').split(" ")[2]));
@@ -40,7 +40,7 @@ const AnalyseView = () => {
             })
         }else{
             var dataColoration : any = [];
-            parse(file, {},async (err, data) => {
+            parse.parse(file, {},async (err, data) => {
                 data.forEach((el :any) =>{
                     dataLine.push(parseFloat(el[0].replace(/\s\s+/g, ' ').split(" ")[1]));
                     dataCloud.push(parseFloat(el[0].replace(/\s\s+/g, ' ').split(" ")[2]));

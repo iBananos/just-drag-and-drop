@@ -68,7 +68,7 @@ const History = () =>  {
     }
 
     window.onload= function(){
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/informations', "", createCells);
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/analyze/informations', "", createCells);
     }
 
     function createCells(response : any){
