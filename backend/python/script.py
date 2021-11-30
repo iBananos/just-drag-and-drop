@@ -155,7 +155,7 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         #print(prediction_and_true.to_string())
         prediction_and_true = prediction_and_true.sample(n=100)
         prediction_and_true['prediction'+','+pred]=prediction_and_true['prediction'].astype(str)+","+prediction_and_true[pred].astype(str)
-        print(prediction_and_true['prediction'+','+pred].to_string(index=False)) 
+        #print(prediction_and_true['prediction'+','+pred].to_string(index=False)) 
         #prediction_and_true = [prediction_and_true.columns.tolist()] + prediction_and_true.reset_index().values.tolist()
         return prediction_and_true['prediction'+','+pred].to_string(index=False)
         #print(prediction_and_true).to_csv(['prediction_true.csv'])
