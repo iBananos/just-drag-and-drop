@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import userRoutes from './routes/user';
 import cookieParser from 'cookie-parser';
 import uploadRoutes from './routes/upload';
+import dataVisuRoutes from './routes/dataVisu';
 import analyzeRoutes from './routes/analyze';
 import middlewareError from './middleware/error';
 import HttpException from './utils/httpException';
@@ -45,6 +46,8 @@ app.use('/upload', uploadRoutes);
 // Routes pour les analyses de base de données
 app.use('/analyze', analyzeRoutes);
 
+// Routes pour les dataVisualisation de base de données
+app.use('/dataVisu', dataVisuRoutes);
 
 
 // 404 error

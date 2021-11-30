@@ -2,6 +2,7 @@ import fs from 'fs';
 import "dotenv/config";
 import type { RequestHandler, Request, Response, NextFunction } from "express";
 import * as Utils from "../utils";
+import { exec } from 'child_process';
 
 /**
  * Fonction qui réceptionne le fichier (la base de donnée) et l'enregistre dans le serveur.
@@ -43,8 +44,21 @@ function getColonneFromCSV(path : any){
 
 
 function createInfoDatabase(userId : string, name:string,date:string, size :any, extension : any,colonnes :string[]){
-    var doc = JSON.stringify({"name":name,"date":date,"size":size,"extension":extension,"colonnes":colonnes});
-    fs.writeFile('uploads/' + userId + '/databaseInfo/' + name+".json",doc, function (err) {});
+    var filename ='uploads/' + userId + '/database/' + name+"."+extension;
+    exec('python3 python/getcolumn.py ' + filename, (error:any, stdout:any, stderr:any) => {
+        if (error) {
+          console.error(`error: ${error.message}`);
+          return;
+        }
+        if (stderr) {
+          console.error(`stderr: ${stderr}`);
+          return;
+        }
+        var colonnesString = stdout.replace(/'+/g,'').replace("]",'').replace("[",'').replace('\r\n','').split(" ")
+        var doc = JSON.stringify({"name":name,"date":date,"size":size,"extension":extension,"colonnes":colonnes,"colonnesString":colonnesString});
+        fs.writeFile('uploads/' + userId + '/databaseInfo/' + name+".json",doc, function (err) {});
+      });
+    
 }
 
 export const getInfoDatabase : RequestHandler = (req : Request, res : Response, next : NextFunction) => {

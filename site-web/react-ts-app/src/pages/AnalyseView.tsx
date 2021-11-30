@@ -10,55 +10,81 @@ ChartJS.register(    ArcElement,    LineElement,    BarElement,    PointElement,
   
 
 const AnalyseView = () => {
-
+    var TypeRequest : any;
     window.onload= () =>{
         const search = window.location.search; // returns the URL query String
         const params = new URLSearchParams(search); 
         const FileFromURL : any = params.get('url'); 
-        console.log(FileFromURL)
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/downloadAnalyze', JSON.stringify({"path":FileFromURL}), callbackDownload);
-    }
+        TypeRequest = params.get('type'); 
+        console.log(FileFromURL +" "+ TypeRequest)
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload);
+    } 
 
     function callbackDownload(response:any){
         var file = JSON.parse(response).file;
-        var list1 : any = [];
-            var list2 : any = [];
-        parse(file, {},(err, data) => {
-            // when all countries are available,then process the first one
-            // note: array element at index 0 contains the row of headers that we should skip
+        var dataLine : any = [];
+        var dataCloud : any = [];
+        
+        if(TypeRequest === "prediction"){
+            parse(file, {},async (err, data) => {
+                data.forEach((el :any) =>{
+                    dataLine.push(parseFloat(el[0].replace(/\s\s+/g, ' ').split(" ")[1]));
+                    dataCloud.push(parseFloat(el[0].replace(/\s\s+/g, ' ').split(" ")[2]));
+                });
+                dataCloud = dataCloud.slice(1)
+                dataLine = dataLine.slice(1)
+                var min = dataLine[0];
+                var max = dataLine[Object.keys(dataLine).length-1];
+                console.log(dataCloud, dataLine)
+                createChart(dataCloud,dataLine,"label",[min,max],"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)");
+            })
+        }else{
+            var dataColoration : any = [];
+            parse(file, {},async (err, data) => {
+                data.forEach((el :any) =>{
+                    dataLine.push(parseFloat(el[0].replace(/\s\s+/g, ' ').split(" ")[1]));
+                    dataCloud.push(parseFloat(el[0].replace(/\s\s+/g, ' ').split(" ")[2]));
+                    dataColoration.push(parseFloat(el[0].replace(/\s\s+/g, ' ').split(" ")[3]));
+                });
+                dataCloud = dataCloud.slice(1)
+                dataLine = dataLine.slice(1)
+                dataColoration = dataLine.slice(1)
+                var min = dataLine[0];
+                var max = dataLine[Object.keys(dataLine).length-1];
+                console.log(dataCloud, dataLine)
+                createChart2(dataCloud,dataLine,dataColoration,"label","rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)");
+            })
             
-            data.forEach((el :any) =>{
-                list1.push(el[0].replace(/\s\s+/g, ' ').split(" ")[1]);
-                list2.push(el[0].replace(/\s\s+/g, ' ').split(" ")[2]);
-            });
-            console.log("end");
-                
-        })
-        createChart("scatter",list2,"label",list1,"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)")
+
+        }
+        
+        
     }
 
-    function createChart(type:any,labels:any,label:any,data:any,backgroundColor:any,borderColor:any){
-        var canvas : HTMLCanvasElement = document.createElement("canvas");
-        canvas.id='mychart';
-        canvas.className='myChart';
-        canvas.style.width = "400"
-        canvas.style.height= "400"
-        var chart :HTMLElement = (document.getElementById('myChart') as HTMLElement)
-        chart.appendChild(canvas);
-        
+    function createChart(dataCloud:any,abscisseData:any,label:any,lineData:any,backgroundColor:any,borderColor:any){
         var ctx :any = (document.getElementById('myChart') as HTMLCanvasElement).getContext('2d');
         
         var myChart = new ChartJS(ctx , {
-            type: type,
+            type : 'scatter',
             data: {
-                labels: labels,
                 datasets: [{
-                    label: label,
-                    data: data,
+                    type: 'scatter',
+                    label: "Prediction",
+                    data: dataCloud,
                     backgroundColor: backgroundColor,
                     borderColor: borderColor,
                     borderWidth: 1
-                }]
+                },{
+                    label: "Referrence Line",
+                    type: "line",
+                    data: abscisseData,
+                    backgroundColor: backgroundColor,
+                    borderColor: borderColor,
+                    borderWidth: 1,
+                    fill: false,
+                    pointRadius: 0,
+                }],
+                labels: abscisseData,
             },
             options: {
                 maintainAspectRatio: false,
@@ -71,6 +97,41 @@ const AnalyseView = () => {
             
         });
         myChart.update();
+        return myChart;
+    }
+
+
+    function createChart2(dataCloud:any,abscisseData:any,dataColoration:any,label:any,backgroundColor:any,borderColor:any){
+        var ctx :any = (document.getElementById('myChart') as HTMLCanvasElement).getContext('2d');
+        
+        var myChart = new ChartJS(ctx , {
+            type : 'scatter',
+            data: {
+                datasets: [{
+                    type: 'scatter',
+                    label: "DataVisualisation",
+                    data: dataCloud,
+                    backgroundColor: backgroundColor,
+                    borderColor: borderColor,
+                    borderWidth: 1
+                }],
+                labels: abscisseData,
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+            
+        });
+        myChart.update();
+        return myChart;
+    }
+    function refreshChart(chart:ChartJS){
+        chart.update();
     }
 
     return (

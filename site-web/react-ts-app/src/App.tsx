@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Mydatabase from './pages/Mydatabase';
 import AnalyzeView from "./pages/AnalyseView";
+import DataVisu from "./pages/DataVisu";
 function App() {
   return (
     <div className="App">
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Home />}></Route>      
           <Route path="/analyze" element={<Analyze />}></Route>
           <Route path="/analyzeView" element={<AnalyzeView />}></Route>
+          <Route path="/dataVisu" element={<DataVisu />}></Route>
           <Route path="/mydatabase" element={<Mydatabase />} ></Route>
           <Route path="/history" element={<History />} ></Route>
           <Route path="/upload" element={<Upload />}></Route>

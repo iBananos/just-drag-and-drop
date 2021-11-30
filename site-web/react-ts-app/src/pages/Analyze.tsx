@@ -87,33 +87,34 @@ const Analyze = () =>  {
     }
 
     function createSelectorForColonnes(){
+        var firstOne = (document.getElementById("firstOne")as HTMLSelectElement)
         var base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
         for(var i: number = 0 ; i < list.length; i++){
             
             if(list[i].name+"."+list[i].extension === base){
                 var colonnes = list[i].colonnes;
-                (document.getElementById("firstOne")as HTMLSelectElement).innerHTML = "";
+                firstOne.innerHTML = "";
                 var optiondefault = document.createElement("option");
                 optiondefault.innerHTML = "Choose a column";
                 optiondefault.value = "Choose a column";
                 optiondefault.disabled = true;
+                optiondefault.defaultSelected = true;
                 document.getElementById("firstOne")?.appendChild(optiondefault);
                 var fauxSelect =document.getElementById("divSelectMultiple") as HTMLDivElement;
                 fauxSelect.innerHTML = "";
-                var divSelect = document.createElement("div");
-                divSelect.className = "selectLike";
-                divSelect.onclick = developper;
-                divSelect.innerHTML = "Choose other parameters";
-                fauxSelect.appendChild(divSelect)
+                
                 for(var y: number = 0 ; y < colonnes.length; y++){
-                    var option = document.createElement("option");
-                    option.innerHTML = colonnes[y];
-                    option.value = colonnes[y];
-                    document.getElementById("firstOne")?.appendChild(option);
+                    if(colonnes[y] !==""){
+                        var option = document.createElement("option");
+                        option.innerHTML = colonnes[y];
+                        option.value = colonnes[y];
+                        document.getElementById("firstOne")?.appendChild(option);   
+                    }
+                    
                 }
             }           
         }
-        (document.getElementById("firstOne") as HTMLSelectElement).disabled = false;
+        firstOne.disabled = false;
         
     }
 
@@ -123,22 +124,16 @@ const Analyze = () =>  {
 
     function createSelectorForOthersColonnes(){
         var base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
-        var firstcolumn = (document.getElementById("firstOne")as HTMLSelectElement).value;
+        var firstOne = (document.getElementById("firstOne")as HTMLSelectElement);
         for(var i: number = 0 ; i < list.length; i++){
             if(list[i].name+"."+list[i].extension === base){
                 var colonnes = list[i].colonnes;
                 var fauxSelect =document.getElementById("divSelectMultiple") as HTMLDivElement;
                 fauxSelect.innerHTML = "";
-                var divSelect = document.createElement("div");
-                divSelect.className = "selectLike";
-                divSelect.onclick = developper;
-                divSelect.innerHTML = "Choose other parameters";
-                fauxSelect.appendChild(divSelect)
+                
+                
                 for(var y: number = 0 ; y < colonnes.length; y++){
-                    if(colonnes[y] !== firstcolumn){
-                        /*
-                        <div className="selectLike"onClick={developper}>Choose other parameters</div>
-                        */
+                    if(colonnes[y] !== firstOne.value && colonnes[y]!==""){
                         var option = document.createElement("input");
                         option.className = "otherParam";
                         option.id = colonnes[y].toString();
@@ -157,6 +152,7 @@ const Analyze = () =>  {
                         fauxSelect.appendChild(br);
                     }
                 }
+                fauxSelect.style.height = "0";
             }           
         }
     }
@@ -317,7 +313,7 @@ const Analyze = () =>  {
     }
 
     function callbackRequest(response : any) {
-        window.location.href = "http://localhost:3000/analyzeView?url="+response;
+        window.location.href = "http://localhost:3000/analyzeView?type=prediction&url="+response;
     }
     
     function developper(ev : any){
@@ -352,11 +348,11 @@ const Analyze = () =>  {
                     <option value="Choose a database" disabled >Choose a database</option>
                 </select>
               
-                <select name="firstOne" id="firstOne"defaultValue="Choose a column" className="firstOne" onChange={enableSecondOne} disabled>
+                <select name="firstOne" id="firstOne"defaultValue="Choose a column" className="first" onChange={enableSecondOne} disabled>
                     <option value="Choose a column" disabled >Choose a column</option>
                 </select>
-                <div id="divSelectMultiple" className="divSelectMultiple" >
-                    <div className="selectLike"onClick={developper}>Choose other parameters</div>
+                <div className="boutonselect"onClick={developper}>Choose other parameters</div>
+                <div id="divSelectMultiple" className="divSelectMultiple">
                 </div>
                 <br />
                 

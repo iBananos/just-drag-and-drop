@@ -3,13 +3,10 @@ import React from 'react';
 const ViewHistory = () => {
 
     function loadAnalyze(){
-        var title = (document.getElementById("title")as HTMLInputElement).value;
-        var date = (document.getElementById("date")as HTMLInputElement).value;
-        var database = (document.getElementById("database")as HTMLInputElement).value;
-        var algo = (document.getElementById("algo")as HTMLInputElement).value;
-        var param = (document.getElementById("param")as HTMLInputElement).value;
-        if(title !== ""){
-            
+        var url =  (document.getElementById("informationRequesturl")as HTMLInputElement).innerHTML;
+        var type =  (document.getElementById("informationRequesttype")as HTMLInputElement).innerHTML;
+        if(type !== ""){
+            window.location.href = "http://localhost:3000/analyzeView?url="+url+"&type="+type
         }
 
     }
@@ -20,8 +17,14 @@ const ViewHistory = () => {
             <div id="title"></div>
             <div id="date"></div>
             <div id="database"></div>
+            <div id="type"></div>
+            <div id="first"></div>
+            <div id="second"></div>
+            <div id="third"></div>
             <div id="algo"></div>
             <div id="param"></div>
+            <div id="informationRequesturl" className="informationRequest"></div>
+            <div id="informationRequesttype" className="informationRequest"></div>
         </div>
     );
 };

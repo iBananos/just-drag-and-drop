@@ -22,15 +22,15 @@ select{
     outline: none;
 }
 .SelectDB{
-    margin-right: 50px;
+    margin-left: 25px;
+    margin-right: 25px;
 }
 .SelectCat{
-    margin-top: 10px;
+    margin-left: 25px;
+    margin-right: 25px;
 }
-.firstOne{
-    
+.first{
     margin-top: 20px;
-    margin-right: 50px;
 }
 
 select option{
@@ -173,9 +173,9 @@ table{
 
 
 .divSelectMultiple{
-    height: 40px;
+    padding-top: 40px;
+    margin-top: -40px;
     overflow-y: hidden;
-    margin-top: 40px;
     text-align: left;
     background-color: transparent;
     color: $color_text;
@@ -190,8 +190,9 @@ table{
 }
 
 .divSelectMultipleOpen{
+    padding-top: 40px;
+    margin-top: -40px;
     overflow-y: scroll;
-    margin-top: 40px;
     text-align: left;
     background-color: transparent;
     color: $color_text;
@@ -209,7 +210,7 @@ table{
 }
 @keyframes closeUp{
     from{
-        height: 40px;
+        height: 0px;
     }
     to{
         height: 200px;
@@ -218,8 +219,9 @@ table{
 
 
 .divSelectMultipleClose{
+    padding-top: 40px;
+    margin-top: -40px;
     overflow-y: hidden;
-    margin-top: 40px;
     text-align: left;
     background-color: transparent;
     color: $color_text;
@@ -240,25 +242,29 @@ table{
         height: 200px;
     }
     to{
-        height: 40px;
+        height: 0px;
     }
 }
-
-.selectLike{
+.boutonselect{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
     cursor: pointer;
     text-align: center;
     background-color: transparent;
     color: $color_text;
-    width: 200px;
-    height: 30px;
+    width: 210px;
+    border-radius: 16px;
+    height: 28px;
+    font-size: small;
     border: none;
     border-color: $color_text;
-    padding-top: 10px;
+    padding-top: 13px;
+    box-shadow:0px 0px 20px black  ;
 }
 
 .parametersCheckbox{
     color: $color_text;
-    
 }
 
 .loading{

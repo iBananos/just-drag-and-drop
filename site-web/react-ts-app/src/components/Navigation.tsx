@@ -63,6 +63,7 @@ const Navigation = () => {
             <div className="dropbtn">Analyze</div>
             <div className="dropdown-content">
                 <NavLink onClick={window.location.reload} to="/analyze">New analyze</NavLink>
+                <NavLink onClick={window.location.reload} to="/dataVisu">Data visualisation</NavLink>
                 <NavLink onClick={window.location.reload} to="/history">History</NavLink>
             </div></li>
         <li><NavLink onClick={deleteToken}  to="/">Disconnect</NavLink></li>

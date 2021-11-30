@@ -1,0 +1,33 @@
+.DataVisu{
+    text-align: center;
+}
+
+.firstOne{
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-top: 40px;
+}
+.dataVisuName{
+    border-radius:16px ;
+    width: 250px;
+    color: $color_text;
+    border:none;
+    
+    height: 35px;
+    background-color: black;
+}
+
+.divDataVisuName{
+    width: 100%;
+    margin-top: 50px;
+    position:relative;
+    text-align: center;
+}
+.boutonSend:disabled{
+    color:gray;
+    background-color: $color_back;
+    &:hover{
+        color: gray;
+        background-color: $color_back;
+    }
+}

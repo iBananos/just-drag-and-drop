@@ -17,26 +17,49 @@ const History = () =>  {
         var database = (document.getElementById("database")as HTMLDivElement);
         var algo = (document.getElementById("algo")as HTMLDivElement);
         var param = (document.getElementById("param")as HTMLDivElement);
-        if(id === undefined){
-            title.innerHTML = "";
-            date.innerHTML = "";
-            database.innerHTML = "";
-            algo.innerHTML = "";
-            param.innerHTML = "";
-            (document.getElementById("loadButton")as HTMLInputElement).style.display ="none";
-        }else{
-            title.innerHTML = "Title : " + list[id].nameAnalyze ;
-            date.innerHTML = "Date : " +  list[id].date;
-            database.innerHTML = "Database : "+  list[id].database;
-            algo.innerHTML = "Algorithme : " +  list[id].algo;
-            param.innerHTML = "Paramètres : ";
-            Object.entries(list[id].params).forEach(([key,value])=>{
-                console.log(list[id].params)
-                var p = document.createElement("p");
-                console.log(key + " : " + value)
-                p.innerHTML = key + " : " + value;
-                param.appendChild(p);
-            });
+        var type = (document.getElementById("type")as HTMLDivElement);
+        var first = (document.getElementById("first")as HTMLDivElement);
+        var second = (document.getElementById("second")as HTMLDivElement);
+        var third = (document.getElementById("third")as HTMLDivElement);
+        title.innerHTML = "";
+        date.innerHTML = "";
+        (document.getElementById("informationRequesttype")as HTMLDivElement).innerHTML ="";
+        (document.getElementById("informationRequesturl")as HTMLDivElement).innerHTML ="";
+        database.innerHTML = "";
+        algo.innerHTML = "";
+        param.innerHTML = "";
+        type.innerHTML = "";
+        first.innerHTML = "";
+        second.innerHTML = "";
+        third.innerHTML = "";
+        (document.getElementById("loadButton")as HTMLInputElement).style.display ="none";
+            
+        if(id !== undefined){
+            if(list[id].type ==="dataVisu"){
+                title.innerHTML = "Title : " + list[id].nameAnalyze ;
+                date.innerHTML = "Date : " +  list[id].date;
+                database.innerHTML = "Database : "+  list[id].database;
+                type.innerHTML = "Type : " +  list[id].type;
+                first.innerHTML = "First column : "+ list[id].firstOne;
+                second.innerHTML = "Second column : "+ list[id].secondOne;
+                third.innerHTML = "Third column : "+ list[id].thirdOne;
+            }else{
+                title.innerHTML = "Title : " + list[id].nameAnalyze ;
+                date.innerHTML = "Date : " +  list[id].date;
+                database.innerHTML = "Database : "+  list[id].database;
+                type.innerHTML = "Type : " +  list[id].type;
+                algo.innerHTML = "Algorithme : " +  list[id].algo;
+                param.innerHTML = "Paramètres : ";
+                Object.entries(list[id].params).forEach(([key,value])=>{
+                    console.log(list[id].params)
+                    var p = document.createElement("p");
+                    console.log(key + " : " + value)
+                    p.innerHTML = key + " : " + value;
+                    param.appendChild(p);
+                });
+            }
+            (document.getElementById("informationRequesturl")as HTMLDivElement).innerHTML =  list[id].nameAnalyze;
+            (document.getElementById("informationRequesttype")as HTMLDivElement).innerHTML = list[id].type;
             
             (document.getElementById("loadButton")as HTMLInputElement).style.display ="block";
         }
