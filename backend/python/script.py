@@ -154,10 +154,10 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         prediction_and_true=pd.concat([prediction,y_test],axis=1)
         #print(prediction_and_true.to_string())
         prediction_and_true = prediction_and_true.sample(n=100)
-        prediction_and_true['prediction'+','+Pred]=prediction_and_true['prediction'].astype(str)+","+prediction_and_true[Pred].astype(str)
-        print(prediction_and_true['prediction'+','+Pred].to_string(index=False)) 
+        prediction_and_true['prediction'+','+pred]=prediction_and_true['prediction'].astype(str)+","+prediction_and_true[pred].astype(str)
+        print(prediction_and_true['prediction'+','+pred].to_string(index=False)) 
         #prediction_and_true = [prediction_and_true.columns.tolist()] + prediction_and_true.reset_index().values.tolist()
-        return prediction_and_true['prediction'+','+Pred].to_string(index=False)
+        return prediction_and_true['prediction'+','+pred].to_string(index=False)
         #print(prediction_and_true).to_csv(['prediction_true.csv'])
                              
     elif analyze_choice == "Classification" :
