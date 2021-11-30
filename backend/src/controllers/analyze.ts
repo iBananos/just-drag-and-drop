@@ -51,7 +51,7 @@ export const  parameters : RequestHandler = (req : Request, res : Response, next
                     if (err){
                         res.send('error'); 
                     }else{
-                        res.send(nomFichier+".csv")
+                        res.send(nomFichier)
                     }
                 });
               });
@@ -72,7 +72,7 @@ export const informations : RequestHandler = (req : Request, res : Response, nex
 export const downloadAnalyze : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     var type = req.body.type
     if(type=="prediction"){
-        var data = {"name": req.body.path,"file":fs.readFileSync("uploads/"+req.body.userId +"/analyse/"+req.body.path, 'utf8')}
+        var data = {"name": req.body.path,"file":fs.readFileSync("uploads/"+req.body.userId +"/analyse/"+req.body.path+".csv", 'utf8')}
         res.send(data);
     }else if(type=="dataVisu"){
         var file = JSON.parse(fs.readFileSync("uploads/"+req.body.userId +"/dataVisuInfo/"+req.body.path+".json", 'utf8'));
