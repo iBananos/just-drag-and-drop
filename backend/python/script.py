@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import time
 from sklearn.svm import LinearSVC
-from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier, RandomForestClassifier, GradientBoostingRegressor
+from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier, RandomForestClassifier, GradientBoostingRegressor,RandomForestRegressor
 from sklearn.linear_model import LogisticRegression, Ridge, ARDRegression
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import LabelEncoder
