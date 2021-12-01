@@ -129,7 +129,7 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
         elif algo_choice == "RandomForest" :
-            model = RandomForestClassifier(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2])
+            model = RandomForestRegressor(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2])
             model.fit(X_train,y_train)
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
