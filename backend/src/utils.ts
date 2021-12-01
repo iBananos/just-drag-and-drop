@@ -20,7 +20,14 @@ class Utils {
         })
         return listName;
     }
-
+    public static getInformationsData(path: string){
+        var listeInfo : JSON[] = [];
+        fs.readdirSync(path).forEach(file => {
+            var data = JSON.parse(fs.readFileSync(path+file, 'utf8'));
+            listeInfo.push(data);
+        });
+        return listeInfo;
+    }
     public static getInformations(path: string){
         var listeInfo : JSON[] = [];
         fs.readdirSync(path+'/analyseInfo/').forEach(file => {

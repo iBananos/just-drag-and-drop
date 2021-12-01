@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 
 
 // Demande a node de servire les fichier react
-//app.use(express.static(path.resolve(__dirname, '../../site-web/react-ts-app/build')));
+app.use(express.static(path.resolve(__dirname, '../../site-web/react-ts-app/build')));
 
 
 // Routes d'authentification
@@ -55,12 +55,12 @@ app.use('/api/dataVisu', dataVisuRoutes);
 
 
 // Toutes les autres demandes GET non traitées renverront sur application React
-/*
+
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../site-web/react-ts-app/build', 'index.html'));
 
 });
-*/
+
 
 
 // 404 error

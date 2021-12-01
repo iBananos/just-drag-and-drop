@@ -27,7 +27,7 @@ def parse_data(filename):
 
 def principal_fonction(filename,first,second,third) :
     df = parse_data(filename)
-    return (df[[first,second,third]].sample(n=100).to_string())
+    return df[[first,second,third]].sample(n=100).to_csv(index=False)
    
 
 

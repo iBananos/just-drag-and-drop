@@ -62,7 +62,7 @@ function createInfoDatabase(userId : string, name:string,date:string, size :any,
 }
 
 export const getInfoDatabase : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    res.send({"liste" : Utils.default.getInformations('uploads/' + req.body.userId + '/dataBaseInfo/')});
+    res.send({"liste" : Utils.default.getInformationsData('uploads/' + req.body.userId + '/dataBaseInfo/')});
 };
 
 export const deleteData : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
