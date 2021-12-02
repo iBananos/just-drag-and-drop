@@ -74,23 +74,6 @@ export const downloadAnalyze : RequestHandler = (req : Request, res : Response, 
     if(type=="prediction"){
         var data = {"name": req.body.path,"file":fs.readFileSync("uploads/"+req.body.userId +"/analyse/"+req.body.path+".csv", 'utf8')}
         res.send(data);
-    }else if(type=="dataVisu"){
-        var file = JSON.parse(fs.readFileSync("uploads/"+req.body.userId +"/dataVisuInfo/"+req.body.path+".json", 'utf8'));
-        var filename = "uploads/"+req.body.userId +"/database/"+file.database ;
-        
-        exec('python3 python/datavisu.py '+filename+" "+file.firstOne+" "+file.secondOne+" "+file.thirdOne+" "+file.sample, (error:any, stdout:any, stderr:any) => {
-            if (error) {
-              console.error(`error: ${error.message}`);
-              return;
-            }
-          
-            if (stderr) {
-              console.error(`stderr: ${stderr}`);
-              return;
-            }
-            var data = {"name": req.body.path,"file":stdout}
-            res.send(data)
-        });
     }
     
 };

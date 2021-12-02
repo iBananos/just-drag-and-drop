@@ -177,13 +177,10 @@ const DataVisu = () =>  {
                                             "secondOne":secondOne,
                                             "thirdOne":thirdOne,
                                             "sample": sample});
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/dataVisu/parameters', requestAnalyze, callbackRequest);
+        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/dataVisu/parameters', requestAnalyze, callbackDownload);
         
     }
-    function callbackRequest(response : any) {
-        console.log("envoyé et bien fait")
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/analyze/downloadAnalyze', JSON.stringify({"type":"dataVisu","path":response}), callbackDownload);
-    }
+    
     function callbackDownload(response:any){
         id++;
         var file = JSON.parse(response).file;
