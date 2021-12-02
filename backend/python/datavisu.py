@@ -6,6 +6,7 @@ filename = sys.argv[1]
 first = sys.argv[2]
 second = sys.argv[3]
 third = sys.argv[4]
+sample = sys.argv[5]
 
 def parse_data(filename):
 
@@ -25,11 +26,15 @@ def parse_data(filename):
     
     return df
 
-def principal_fonction(filename,first,second,third) :
+def principal_fonction(filename,first,second,third,sample) :
     df = parse_data(filename)
-    return df[[first,second,third]].sample(n=100).to_csv(index=False)
+    index = df.index
+    number_of_rows = len(index)
+    number = float(number_of_rows)/float(100)*float(sample)
+    return df[[first,second,third]].sample(n=int(number)).to_csv(index=False)
+    #return df[[first,second,third]].to_csv(index=False)
    
 
 
 if __name__ == "__main__":
-    print(principal_fonction(filename,first,second,third))
+    print(principal_fonction(filename,first,second,third,sample))

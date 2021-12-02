@@ -78,7 +78,7 @@ export const downloadAnalyze : RequestHandler = (req : Request, res : Response, 
         var file = JSON.parse(fs.readFileSync("uploads/"+req.body.userId +"/dataVisuInfo/"+req.body.path+".json", 'utf8'));
         var filename = "uploads/"+req.body.userId +"/database/"+file.database ;
         
-        exec('python3 python/datavisu.py '+filename+" "+file.firstOne+" "+file.secondOne+" "+file.thirdOne, (error:any, stdout:any, stderr:any) => {
+        exec('python3 python/datavisu.py '+filename+" "+file.firstOne+" "+file.secondOne+" "+file.thirdOne+" "+file.sample, (error:any, stdout:any, stderr:any) => {
             if (error) {
               console.error(`error: ${error.message}`);
               return;

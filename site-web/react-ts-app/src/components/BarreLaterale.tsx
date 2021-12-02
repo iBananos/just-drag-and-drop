@@ -5,9 +5,8 @@ const BarreLaterale = () => {
 
     function gestionBarre(){
         var width = window.innerWidth;
-        console.log(width)
         if(width <750){
-            (document.getElementById("barreLaterale") as HTMLElement).style.display = "none";
+            (document.getElementById("barreLaterale") as HTMLElement).className = "closeBar";
             (document.getElementById("view") as HTMLElement).style.marginLeft = "0";
         }
     }
@@ -18,7 +17,7 @@ const BarreLaterale = () => {
                 <li><NavLink to="/upload"><img className="add1" src={add} alt="add a database" height="30px" width="30px"/>New Database</NavLink></li>
                 <li><NavLink to="/analyze"><img className="add2" src={add} alt="new analyze" height="30px" width="30px"/>New Analyze</NavLink></li>
             </ul>
-            </div>
+        </div>
     );
 };
 

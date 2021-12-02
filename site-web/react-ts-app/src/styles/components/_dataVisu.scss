@@ -3,8 +3,6 @@
 }
 
 .firstOne{
-    margin-left: 25px;
-    margin-right: 25px;
     margin-top: 40px;
 }
 .dataVisuName{
@@ -23,6 +21,9 @@
     position:relative;
     text-align: center;
 }
+.boutonSend{
+    margin-top: 40px;
+}
 .boutonSend:disabled{
     color:gray;
     background-color: $color_back;
@@ -30,4 +31,85 @@
         color: gray;
         background-color: $color_back;
     }
+}
+.indicSample{
+    margin-top: 40px;
+    margin-bottom: -20px;
+    color: $color_text;
+}
+
+.inputSample{
+    position: absolute;
+    margin-left: 200px;
+    margin-top: -15px;
+    font-family: $font;
+    color: $color_text;
+}
+.sample{
+    -webkit-appearance: none;
+    height: 5px;
+    border-radius: 16px;
+    background: $color_text;
+}
+.sample::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    border-radius: 16px;
+    height: 12px;
+    background: $color_text;
+    cursor: pointer;
+  }
+
+  
+.dataVisuBar{
+    margin-left: -8px;
+    height: 100%;
+    width: 250px;
+    box-shadow: inset 0px 0px 20px black ;
+    position: fixed;
+}
+
+.ChartsRes{
+    margin-left: 250px;
+    
+}
+
+.DashBoard{
+    margin-top: 30px;
+    vertical-align: center;
+    float: left;
+    width: 100%;
+    //background-color: rgba(226, 19, 19, 0.171);
+}
+
+.scatterBoard{
+    float: left;
+    //background-color: rgba(35, 106, 168, 0.281);
+    width: 75%;
+    height: 60%;
+}
+
+
+.doughnutBoard{
+    float: left;
+    //background-color: rgba(80, 238, 40, 0.295);
+    width: 25%;
+    height: 50%;
+}
+.polarBoard{
+    float: right;
+    //background-color: rgba(233, 17, 233, 0.267);
+    width: 25%;
+    height: 50%;
+}
+
+.indication{
+    color: $color_text;
+    font-family: $font;
+    margin-top: 40px;
+    float: left;
+    //background-color: rgba(0, 255, 213, 0.397);
+    width: 70%;
+    height: 40%;
 }

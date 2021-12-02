@@ -5,22 +5,21 @@ import * as utils from "../Utils";
 const Navigation = () => {
 
     function displayToggle(){
-        (document.getElementById("barreLaterale")as HTMLElement).style.display = "block";
-        (document.getElementById("view") as HTMLElement).style.marginLeft = "200px";
+        (document.getElementById("barreLaterale")as HTMLElement).className = "openBar";
+        //(document.getElementById("view") as HTMLElement).style.marginLeft = "200px";
         (document.getElementById("toggle")as HTMLElement).style.display = "none";
         (document.getElementById("close")as HTMLElement).style.display = "block";
     }
 
     function closeToggle(){
-        (document.getElementById("barreLaterale")as HTMLElement).style.display = "none";
+        (document.getElementById("barreLaterale")as HTMLElement).className = "closeBar";
         (document.getElementById("toggle")as HTMLElement).style.display = "block";
-        (document.getElementById("view") as HTMLElement).style.marginLeft = "0";
+        //(document.getElementById("view") as HTMLElement).style.marginLeft = "0";
         (document.getElementById("close")as HTMLElement).style.display = "none";
     }
 
     function gestionNav(){
         var width = window.innerWidth;
-        console.log(width)
         if(width > 750){
             (document.getElementById("company") as HTMLElement).style.display = "block";
         }else{
@@ -37,9 +36,14 @@ const Navigation = () => {
         let accessTokenExpires = localStorage.getItem("accessTokenExpires");
         let refreshTokenExpires = localStorage.getItem("refreshTokenExpires");
         if (xsrfToken && accessTokenExpires && refreshTokenExpires) {
-            if (parseInt(accessTokenExpires, 10) < Date.now()+30000 && parseInt(accessTokenExpires, 10) > Date.now() ){
-                utils.default.refreshToken();
-            } 
+            if (parseInt(accessTokenExpires, 10) > Date.now() ){
+                if(parseInt(accessTokenExpires, 10) < Date.now()+30000){
+                    utils.default.refreshToken();
+                }
+            }else{
+                deleteToken()
+            }
+            
         }
     }
 
@@ -95,7 +99,7 @@ const Navigation = () => {
             </li>
             </div>
             <img className="logo" src={logo} alt="JustDragAndDrop"/>
-            <h1 className="company" id="company">Just Drag & Drop</h1>
+            <h1 className="company" id="company">Scanylab</h1>
             <Nav />
         </div>
         

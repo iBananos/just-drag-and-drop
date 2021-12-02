@@ -11,7 +11,7 @@ import { exec, spawn } from "child_process";
  */
 export const  parameters : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     var listName = Utils.default.getNameFiles('uploads/' + req.body.userId + '/dataVisuInfo/');
-    var nomFichier = req.body.nameAnalyze;
+    var nomFichier = "dataVisu";
     if(nomFichier==="") nomFichier ="dataVisu";
     var acc= 1; 
     while(listName.includes(nomFichier)){
