@@ -11,7 +11,7 @@ import { exec, spawn } from "child_process";
  */
 export const  parameters : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     var filename = "uploads/"+req.body.userId +"/database/"+req.body.database ;
-    exec('python3 python/datavisu.py '+filename+" "+req.body.firstOne+" "+req.body.secondOne+" "+req.body.thirdOne+" "+req.body.sample, (error:any, stdout:any, stderr:any) => {
+    exec('python3 python/datavisu.py '+filename+' "'+req.body.firstOne+'" "'+req.body.secondOne+'" "'+req.body.thirdOne+'" '+req.body.sample, (error:any, stdout:any, stderr:any) => {
         if (error) {
             console.error(`error: ${error.message}`);
             return;

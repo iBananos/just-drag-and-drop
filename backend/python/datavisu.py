@@ -1,4 +1,5 @@
 import sys
+from numpy import False_, fabs
 import pandas as pd
 import time
 
@@ -12,7 +13,7 @@ def parse_data(filename):
 
     if '.csv' in filename:
             # Assume that the user uploaded a CSV or TXT file
-        df = pd.read_csv(filename,index_col=0, delimiter=',', encoding="utf-8")
+        df = pd.read_csv(filename,index_col=False, delimiter=',', encoding="utf-8")
     elif '.xlsx' in filename:
             # Assume that the user uploaded an excel file
         df = pd.read_excel(filename,index_col=0,encoding="utf-8")
@@ -31,6 +32,8 @@ def principal_fonction(filename,first,second,third,sample) :
     index = df.index
     number_of_rows = len(index)
     number = float(number_of_rows)/float(100)*float(sample)
+    if(third == 'AucuneColoration') : 
+        return df[[str(first),str(second)]].sample(n=int(number)).to_csv(index=False)
     return df[[first,second,third]].sample(n=int(number)).to_csv(index=False)
     #return df[[first,second,third]].to_csv(index=False)
    

@@ -1,5 +1,4 @@
 import fs from "fs";
-import { exec } from 'child_process';
 var resultats: string = "";
 class Utils {
     
@@ -32,10 +31,6 @@ class Utils {
         var listeInfo : JSON[] = [];
         fs.readdirSync(path+'/analyseInfo/').forEach(file => {
             var data = JSON.parse(fs.readFileSync(path+'/analyseInfo/'+file, 'utf8'));
-            listeInfo.push(data);
-        });
-        fs.readdirSync(path+'/dataVisuInfo/').forEach(file => {
-            var data = JSON.parse(fs.readFileSync(path+'/dataVisuInfo/'+file, 'utf8'));
             listeInfo.push(data);
         });
         return listeInfo;

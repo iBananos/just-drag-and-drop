@@ -70,11 +70,22 @@ const AnalyseView = () => {
                     y: {
                         beginAtZero: true
                     }
-                }
+                },
+                animation: {
+                    /*onComplete: function() {
+                      var a = document.createElement('a');
+                        a.href = myChart.toBase64Image();
+                        a.download = 'my_file_name.png';
+
+                        // Trigger the download
+                        a.click();
+                    }*/
+                  }
             }
             
         });
         myChart.update();
+        
         return myChart;
     }
 

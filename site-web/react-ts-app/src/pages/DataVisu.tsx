@@ -125,11 +125,16 @@ const DataVisu = () =>  {
                 var colonnes = list[i].colonnesString;
                 thirdcolumn.innerHTML = "";
                 var optiondefault3 = document.createElement("option");
-                optiondefault3.innerHTML = "Choose a column";
+                optiondefault3.innerHTML = "Choose a coloration";
                 optiondefault3.value = "Choose a column";
                 optiondefault3.disabled = true;
                 optiondefault3.defaultSelected = true;
                 thirdcolumn.appendChild(optiondefault3);
+                var optionNone3 = document.createElement("option");
+                optionNone3.innerHTML = "None";
+                optionNone3.value = "AucuneColoration";
+                optionNone3.style.color = 'red';
+                thirdcolumn.appendChild(optionNone3);
                 for(var y: number = 0 ; y < colonnes.length; y++){
                     if(firstcolumn.value !== colonnes[y] && secondcolumn.value !== colonnes[y] && colonnes[y]!==""){
                         var option = document.createElement("option");
@@ -180,8 +185,84 @@ const DataVisu = () =>  {
         utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/dataVisu/parameters', requestAnalyze, callbackDownload);
         
     }
-    
+
     function callbackDownload(response:any){
+        var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
+        if(thirdOne === "AucuneColoration"){
+            createDashBoard2column(response)
+        }else{
+            createDashBoard3column(response)
+        }
+    }
+
+    function createDashBoard2column(response:any){
+        id++;
+        var file = JSON.parse(response).file;
+        file = file.split('\n')
+        var newBoard = document.createElement("div");
+        newBoard.id = "newBoard_"+id;
+        newBoard.className = "DashBoard"
+        var newScatterBoard = document.createElement("div");
+        newScatterBoard.id = "scatterBoard_"+id;
+        newScatterBoard.className = "scatterBoard"
+        newBoard.appendChild(newScatterBoard);
+
+        var newIndication = document.createElement("div");
+        newIndication.id = "indication_"+id;
+        newIndication.className = "indication";
+        newIndication.innerHTML = file[0].split(',')[0] + " en fonction de " + file[0].split(',')[1] 
+        newBoard.appendChild(newIndication)
+
+        document.getElementById('ChartsRes')?.appendChild(newBoard)
+        
+        var data1 : any = [];
+        var data2 : any = [];
+            
+        file.forEach((el :any) =>{
+            el = el.split(",")
+            data1.push(parseFloat(el[0]));
+            data2.push(parseFloat(el[1]));
+        });
+          
+        
+        data1 = data1.slice(1)
+        data2 = data2.slice(1)
+        createScatter2Column(data1,data2)
+    }
+
+    function createScatter2Column(data1:any,data2:any){
+        var newCanvas = document.createElement('canvas');
+        newCanvas.className="scatter";
+        newCanvas.id="scatter_"+id;
+        document.getElementById('scatterBoard_'+id)?.appendChild(newCanvas)
+
+
+        var ctx :any = (document.getElementById('scatter_'+id) as HTMLCanvasElement).getContext('2d');
+        
+        var myChart = new Chart(ctx , {
+            type : 'scatter',
+            data: {
+                datasets: [{
+                    type: 'scatter',
+                    label: "Datavisu",
+                    data: data1,
+                    backgroundColor: "rgba(187, 164, 34, 0.5)",
+                    borderColor: "rgba(187, 164, 34,1)",
+                    borderWidth: 1
+                }],labels:data2
+            },
+            options: {
+                scales: {
+                },
+                responsive: true
+            } as any
+            
+        });
+        myChart.update();
+        return myChart;
+    }
+
+    function createDashBoard3column(response:any){
         id++;
         var file = JSON.parse(response).file;
         file = file.split('\n')
@@ -211,21 +292,16 @@ const DataVisu = () =>  {
         newIndication.innerHTML = file[0].split(',')[0] + " en fonction de " + file[0].split(',')[1] + " classé par " +  file[0].split(',')[2]
         newBoard.appendChild(newIndication)
 
-
         document.getElementById('ChartsRes')?.appendChild(newBoard)
-
-        
-        
         
         var data1 : any = [];
         var data2 : any = [];
         var data3 : any = [];
-        
             
         file.forEach((el :any) =>{
             el = el.split(",")
-            data1.push(parseFloat(el[1]));
-            data2.push(parseFloat(el[0]));
+            data1.push(parseFloat(el[0]));
+            data2.push(parseFloat(el[1]));
             if(el[2]!==undefined){
                 data3.push(el[2].replace(/\r/g,""));
             }
@@ -371,7 +447,6 @@ const DataVisu = () =>  {
         "rgba(22, 67, 206, 1)",
         "rgba(166, 22, 206, 1)",
         "rgba(197, 206, 22, 1)"]
-        
 
         for(var i : number = 0 ; i < thirdColumn.length;i++){
             var data : any[] = [];
@@ -550,12 +625,12 @@ const DataVisu = () =>  {
                     <option value="Choose a column" disabled >Choose a column</option>
                 </select><br />
                 <select name="thirdOne" id="thirdOne" defaultValue="Choose a column" className="firstOne" onChange={enableSubmit} disabled>
-                    <option value="Choose a column" disabled >Choose a column</option>
+                    <option value="Choose a column" disabled >Choose a coloration</option>
                 </select>
                 <br />
                     <div className="indicSample">Number of rows</div> <br />
                     <input type="range" id="sample" className="sample" onChange={updateSample} min="1" max="100" defaultValue="50"/>
-                    <div className="inputSample" id="inputSample"></div>
+                    <div className="inputSample" id="inputSample">50%</div>
                 <br />
                 <button  onClick={sendRequest} className="boutonSend" id="boutonSend" disabled>Analyze</button>
                 </div>

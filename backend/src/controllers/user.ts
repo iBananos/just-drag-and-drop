@@ -54,8 +54,6 @@ export const signup : RequestHandler = (req : Request, res : Response, next : Ne
                     fs.mkdirSync(dir + '/analyse');
                     fs.mkdirSync(dir + '/analyseInfo');
                     fs.mkdirSync(dir + '/databaseInfo');
-                    fs.mkdirSync(dir + '/dataVisu');
-                    fs.mkdirSync(dir + '/dataVisuInfo');
                 })
                 .catch(() => { throw new HttpException(401, "controllers/user.ts", "Cette adresse e-mail est déjà utilisée."); });
             });
