@@ -21,7 +21,7 @@
         box-shadow: 0px 0px 20px $color_button_hover, inset 0px 0px 20px $color_button_hover ;
       }
       #drop-area input{
-        background: transparent;
+        background: $color_back;
         display: none;
     }
     .dropTitle{
@@ -51,6 +51,7 @@
     cursor: pointer;
     transition: all 0.2s ease-out;
     border: none;
+    background-color: $color_back;
     box-shadow: 0px 0px 30px black ;
     border: none;
     color: $color_text;
@@ -66,6 +67,7 @@
     position: absolute;
     padding: 11px;
     background-color: $color_back;
+    box-shadow: none;
     margin-left : -30px;
     margin-top: -37px;
     cursor: pointer;
@@ -77,12 +79,14 @@
     margin-left: 15%;
     width: 400px;
     position: relative;
+    background-color: $color_back;
     height: 37px;
     padding-left: 30px;
     padding-right: 30px;
     border-radius: 16px;
-    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
-    backdrop-filter: blur($blur);
+    box-shadow: 0px 0px 30px black ;
+    -webkit-backdrop-filter: blur($blur/2); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur/2);
 }
 .inputName{
     margin-top: 0px;

@@ -9,7 +9,6 @@
 }
 select{
     cursor: pointer;
-    background-color: transparent;
     color: $color_text;
     width: 200px;
     text-align: center;
@@ -33,17 +32,13 @@ select{
     margin-top: 20px;
 }
 
-select option{
-    background-color: $color_back;
-    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
-    backdrop-filter: blur($blur);
-}
 .Algos1{
     margin-top: 30px;
     display: none;
     label{
         -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
         backdrop-filter: blur($blur);
+        background-color: $color_back;
     }
 }
 .Algos2{
@@ -52,6 +47,7 @@ select option{
     label{
         -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
         backdrop-filter: blur($blur);
+        background-color: $color_back;
     }
 }
 .GradientBoosting{
@@ -92,7 +88,7 @@ select option{
 }
 
 .Parametre select{
-    background-color: transparent;
+    background-color: $color_back;
     position: relative;
     color: $color_text;
     width: 200px;
@@ -196,7 +192,7 @@ table{
     backdrop-filter: blur($blur);
     overflow-y: scroll;
     text-align: left;
-    background-color: transparent;
+    background-color: $color_back;
     color: $color_text;
     width: 210px;
     margin-left: 50px;
@@ -225,7 +221,7 @@ table{
     backdrop-filter: blur($blur);
     overflow-y: hidden;
     text-align: left;
-    background-color: transparent;
+    background-color: $color_back;
     color: $color_text;
     width: 210px;
     margin-left: 50px;
@@ -255,7 +251,7 @@ table{
     margin-top: 30px;
     cursor: pointer;
     text-align: center;
-    background-color: transparent;
+    background-color: $color_back;
     color: $color_text;
     width: 210px;
     border-radius: 16px;

@@ -4,13 +4,13 @@
 
 .firstOne{
     margin-top: 40px;
+    
 }
 .dataVisuName{
     border-radius:16px ;
     width: 250px;
     color: $color_text;
     border:none;
-    
     height: 35px;
     background-color: black;
 }
@@ -89,6 +89,7 @@
 .DashBoard{
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
+    background-color: $color_back;
     margin-top: 15px;
     margin-bottom: 15px;
     vertical-align: center;
