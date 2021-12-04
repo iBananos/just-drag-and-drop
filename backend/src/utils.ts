@@ -1,47 +1,41 @@
 import fs from "fs";
-import { exec } from 'child_process';
-var resultats: string = "";
+import AESCipher from "./utils/aesCipher";
+
 class Utils {
     
-    public  static getNameFiles(path : string){
+
+    public static getNameFiles(userId : string, path : string){
         var listName: string[] = [];
+        const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
         fs.readdirSync(path).forEach(file => {
-                var name = file.split(".")
-                listName.push(name[0])
-        })
+            file = aesCipher.decrypt(file);
+            var name = file.split(".")
+            listName.push(name[0])
+        });
         return listName;
     }
 
-    public  static getDataFiles(path : string){
+    public static getDataFiles(userId : string, path : string){
         var listName: string[] = [];
+        const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
         fs.readdirSync(path).forEach(file => {
-            var data = JSON.parse(fs.readFileSync(path+file, 'utf8'));
+            var data = JSON.parse(aesCipher.decrypt(fs.readFileSync(path + file, 'utf8')));
             listName.push(data)
-        })
+        });
         return listName;
     }
-    public static getInformationsData(path: string){
-        var listeInfo : JSON[] = [];
+
+
+    public static findEncryptedFile(userId : string, path : string, target : string) {
+        let res;
+        const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
         fs.readdirSync(path).forEach(file => {
-            var data = JSON.parse(fs.readFileSync(path+file, 'utf8'));
-            listeInfo.push(data);
+            if (aesCipher.decrypt(file) == target) {
+                res = file;
+            }
         });
-        return listeInfo;
+        return res;
     }
-    public static getInformations(path: string){
-        var listeInfo : JSON[] = [];
-        fs.readdirSync(path+'/analyseInfo/').forEach(file => {
-            var data = JSON.parse(fs.readFileSync(path+'/analyseInfo/'+file, 'utf8'));
-            listeInfo.push(data);
-        });
-        fs.readdirSync(path+'/dataVisuInfo/').forEach(file => {
-            var data = JSON.parse(fs.readFileSync(path+'/dataVisuInfo/'+file, 'utf8'));
-            listeInfo.push(data);
-        });
-        return listeInfo;
-    }
-    
-   
 }
 
 export default Utils;

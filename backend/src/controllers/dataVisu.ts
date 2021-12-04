@@ -3,6 +3,7 @@ import "dotenv/config";
 import type { RequestHandler, Request, Response, NextFunction } from "express";
 import * as Utils from '../utils';
 import { exec, spawn } from "child_process";
+import AESCipher from '../utils/aesCipher';
 /**
  * Fonction qui réceptionne le fichier (la base de donnée) et l'enregistre dans le serveur.
  * @param req 
@@ -10,8 +11,12 @@ import { exec, spawn } from "child_process";
  * @param next 
  */
 export const  parameters : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    var filename = "uploads/"+req.body.userId +"/database/"+req.body.database ;
-    exec('python3 python/datavisu.py '+filename+" "+req.body.firstOne+" "+req.body.secondOne+" "+req.body.thirdOne+" "+req.body.sample, (error:any, stdout:any, stderr:any) => {
+    const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
+
+    let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/database/", req.body.database);
+    let filename = "uploads/" + req.body.userId + "/database/" + targetBase;
+    let extension = req.body.database.split(".")[1];
+    exec('python python/datavisu.py ' + filename + " " + extension + " " + req.body.firstOne + " " + req.body.secondOne + " " + req.body.thirdOne + " " + req.body.sample + " " + aesCipher.getKey() + " " + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
         if (error) {
             console.error(`error: ${error.message}`);
             return;
@@ -26,11 +31,11 @@ export const  parameters : RequestHandler = (req : Request, res : Response, next
 }
 
 export const databases : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    res.send({"liste" : Utils.default.getDataFiles('uploads/' + req.body.userId + '/databaseInfo/')});
+    //res.send({"liste" : Utils.default.getDataFiles('uploads/' + req.body.userId + '/databaseInfo/')});
 };
 
 export const informations : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    res.send({"liste" : Utils.default.getInformations('uploads/' + req.body.userId + '/analyseInfo/')});
+    //res.send({"liste" : Utils.default.getInformations('uploads/' + req.body.userId + '/analyseInfo/')});
 };
 
 export const downloadAnalyze : RequestHandler = (req : Request, res : Response, next : NextFunction) => {

@@ -55,7 +55,6 @@ app.use('/api/dataVisu', dataVisuRoutes);
 
 
 // Toutes les autres demandes GET non traitées renverront sur application React
-
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../../site-web/react-ts-app/build', 'index.html'));
 
