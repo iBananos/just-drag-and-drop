@@ -18,7 +18,7 @@ const Signup = () => {
     }
 
     function sendRequestSignUp(mail:string, mdp:string) {
-        var url = 'http://localhost:4000/api/auth/signup'
+        var url = 'http://locahost:4000/api/auth/signup'
         var xhr = new XMLHttpRequest()
         xhr.open('POST', url, true)
         xhr.setRequestHeader("Content-Type", "application/json");

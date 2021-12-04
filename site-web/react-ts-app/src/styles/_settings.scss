@@ -1,5 +1,6 @@
 /* PALETTE */ 
-$color_back: #14151F;
+$color_back: transparent;
+$color_trans: #8670700c;
 $color_green: #339999;
 $color_blue1: #006699;
 $color_blue2: #009999;
@@ -8,6 +9,7 @@ $color_green3: #99CC33;
 $color_blue3: #339999;
 $color_nav: #181925;
 $color_error : rgb(196, 25, 25);
+$blur : 15px;
 /* BUTTON */
 $color_button:  #171824;
 $color_button_hover : rgb(187, 164, 34);
@@ -20,12 +22,15 @@ $font : Poppins, Arial;
 $logo : "./assets/Logo.png";
 
 button{
-    background-color: $color_button;
+    background-color: $color_back;
     border-radius: 16.00px;
     box-shadow: 0px 0px 30px black ;
     border: none;
     cursor: pointer;
     color: $color_text;
+    transition: all 0.2s ease-out;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
     &:hover{
         background-color: $color_button_hover;
         color: white;
@@ -35,8 +40,16 @@ button{
 input:focus {
     outline: none;
 }
+
+select{
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
+}
 body{
-    background: $color_back;
+    background-color: black;
+    background-image: url("../assets/background.jpg");
+    background-size: cover;
+    background-attachment: fixed;
     font-family: $font;
 }
 
@@ -47,6 +60,10 @@ h1,h2,h3{
 
 h1{
     -webkit-text-stroke: 1.00px $color_text;
+}
+
+.div{
+
 }
 
 .view{

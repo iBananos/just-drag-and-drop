@@ -1,4 +1,3 @@
-import React from 'react';
 import BarreLaterale from '../components/BarreLaterale';
 import Navigation from '../components/Navigation';
 import { Chart} from 'chart.js';
@@ -24,7 +23,7 @@ const DataVisu = () =>  {
 
     window.onload= function(){
         
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/analyze/databases', "", requestDatabases);
+        utils.default.sendRequestWithToken('POST', '/api/analyze/databases', "", requestDatabases);
     }
 
 
@@ -182,7 +181,7 @@ const DataVisu = () =>  {
                                             "secondOne":secondOne,
                                             "thirdOne":thirdOne,
                                             "sample": sample});
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/dataVisu/parameters', requestAnalyze, callbackDownload);
+        utils.default.sendRequestWithToken('POST', '/api/dataVisu/parameters', requestAnalyze, callbackDownload);
         
     }
 

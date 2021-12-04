@@ -9,7 +9,7 @@ import downloadIcone from "../assets/download.png";
 const Mydatabase = () => {
     window.onload= function(){
         console.log("demande")
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/upload/getInfo', "", requestDatabases);
+        utils.default.sendRequestWithToken('POST', '/api/upload/getInfo', "", requestDatabases);
     }
     function displayInfo(ev : any){
         var id = ev.target.id.split("_")[0] ;
@@ -82,7 +82,7 @@ const Mydatabase = () => {
         var extension = ((document.getElementById(id+"_extension") as HTMLDivElement).innerHTML).split(" ")[2];
         var file =  JSON.stringify({"path" : id+"."+extension});
         (document.getElementById(id) as HTMLDivElement).style.display ="none";
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/upload/deleteData', file, callbackDelete);
+        utils.default.sendRequestWithToken('POST', '/api/upload/deleteData', file, callbackDelete);
     }
 
     function callbackDelete(response:Response){
@@ -93,7 +93,7 @@ const Mydatabase = () => {
         var id = ev.target.id.split("_")[0] ;
         var extension = ((document.getElementById(id+"_extension") as HTMLDivElement).innerHTML).split(" ")[2];
         var file =  JSON.stringify({"path" : id+"."+extension});
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/upload/downloadData', file, callbackDownload);
+        utils.default.sendRequestWithToken('POST', '/api/upload/downloadData', file, callbackDownload);
     }
 
     function downloader(filename:string, text:string) {

@@ -1,5 +1,7 @@
 .ViewHistory{
-    background: $color_nav;
+    background: $color_back;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
     width: 300px;
     height: 100%;
     position: fixed;

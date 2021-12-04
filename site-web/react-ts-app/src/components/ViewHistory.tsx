@@ -6,7 +6,7 @@ const ViewHistory = () => {
         var url =  (document.getElementById("informationRequesturl")as HTMLInputElement).innerHTML;
         var type =  (document.getElementById("informationRequesttype")as HTMLInputElement).innerHTML;
         if(type !== ""){
-            window.location.href = "http://localhost:3000/analyzeView?url="+url+"&type="+type
+            window.location.href = "/analyzeView?url="+url+"&type="+type
         }
 
     }

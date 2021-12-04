@@ -8,6 +8,7 @@ import Signup from './pages/Signup';
 import Mydatabase from './pages/Mydatabase';
 import AnalyzeView from "./pages/AnalyseView";
 import DataVisu from "./pages/DataVisu";
+import NotFound from './pages/NotFound';
 function App() {
   return (
     <div className="App">
@@ -23,6 +24,7 @@ function App() {
           <Route path="/upload" element={<Upload />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
+          <Route path="*" element={<NotFound/>}></Route>
         </Routes>
       </Router>
     </div>

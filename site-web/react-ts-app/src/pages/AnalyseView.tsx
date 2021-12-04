@@ -1,4 +1,3 @@
-import React from 'react';
 import BarreLaterale from '../components/BarreLaterale';
 import Navigation from '../components/Navigation';
 import { Chart} from 'chart.js';
@@ -16,7 +15,7 @@ const AnalyseView = () => {
         const FileFromURL : any = params.get('url'); 
         TypeRequest = params.get('type'); 
         console.log(FileFromURL +" "+ TypeRequest)
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload);
+        utils.default.sendRequestWithToken('POST', '/api/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload);
     } 
 
     function callbackDownload(response:any){
@@ -72,14 +71,14 @@ const AnalyseView = () => {
                     }
                 },
                 animation: {
-                    /*onComplete: function() {
+                    onComplete: function() {
                       var a = document.createElement('a');
                         a.href = myChart.toBase64Image();
                         a.download = 'my_file_name.png';
 
                         // Trigger the download
                         a.click();
-                    }*/
+                    }
                   }
             }
             

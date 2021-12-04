@@ -22,12 +22,23 @@
     text-align: center;
 }
 .boutonSend{
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
     margin-top: 40px;
+    margin-left: 25px;
+    margin-right: 25px;
+    
+    height: 40px;
+    width: 200px;
 }
 .boutonSend:disabled{
     color:gray;
+    
     background-color: $color_back;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
     &:hover{
+        cursor:default;
         color: gray;
         background-color: $color_back;
     }
@@ -76,11 +87,15 @@
 }
 
 .DashBoard{
-    margin-top: 30px;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
+    margin-top: 15px;
+    margin-bottom: 15px;
     vertical-align: center;
     float: left;
-    width: 100%;
-    box-shadow:  0px 10px 1px black ;
+    border-radius: 16px;
+    margin-left: 20px;
+    margin-right: 20px;
     //background-color: rgba(226, 19, 19, 0.171);
 }
 

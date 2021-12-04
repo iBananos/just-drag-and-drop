@@ -3,10 +3,7 @@ import InputNumber from "../components/InputNumber";
 import Navigation from "../components/Navigation";
 import help from "../assets/help.png";
 import * as utils from "../Utils";
-import Chart from "../components/Chart";
-import { NavLink } from "react-router-dom";
 var list : any[]= [];
-var expanded = false;
 const Analyze = () =>  {    
 
     function requestDatabases(response : any){
@@ -63,7 +60,7 @@ const Analyze = () =>  {
     }
 
     window.onload= function(){
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/analyze/databases', "", requestDatabases);
+        utils.default.sendRequestWithToken('POST', '/api/analyze/databases', "", requestDatabases);
     }
 
     function displayAlgorithmes(){
@@ -309,11 +306,11 @@ const Analyze = () =>  {
         console.log(requestAnalyze);
         (document.getElementById("view") as HTMLDivElement).style.display = "none";
         (document.getElementById("loading") as HTMLDivElement).style.display = "block";
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/analyze/parameters', requestAnalyze, callbackRequest);
+        utils.default.sendRequestWithToken('POST', '/api/analyze/parameters', requestAnalyze, callbackRequest);
     }
 
     function callbackRequest(response : any) {
-        window.location.href = "http://localhost:3000/analyzeView?type=prediction&url="+response;
+        window.location.href = "/analyzeView?type=prediction&url="+response;
     }
     
     function developper(ev : any){
@@ -353,6 +350,7 @@ const Analyze = () =>  {
                 </select>
                 <div className="boutonselect"onClick={developper}>Choose other parameters</div>
                 <div id="divSelectMultiple" className="divSelectMultiple">
+                
                 </div>
                 <br />
                 
@@ -417,7 +415,7 @@ robust to over-fitting so a large number usually results in better performance."
 - If float, then min_samples_split is a fraction and ceil(min_samples_split * n_samples) are the minimum number of samples for each split.
 "/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split1"/></td></tr>
                 </tbody></table>
-                <button value="GradientBoosting" onClick={sendRequest} className="boutonSend">Analyze</button>
+                <button value="GradientBoosting" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="RandomForest" id="RandomForest">
                 <table><tbody>
@@ -431,7 +429,7 @@ min_samples_split samples.
     are the minimum number of samples for each split.
 "/></td><td><InputNumber  min="0" step="2"defaultValue={2}  id="min_samples_split2"/></td></tr>
                 </tbody></table>
-                <button value="RandomForest" onClick={sendRequest} className="boutonSend">Analyze</button>
+                <button value="RandomForest" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="Ridge" id="Ridge">
                 <table><tbody>
@@ -461,7 +459,7 @@ as LogisticRegression or LinearSVC. If an array is passed, penalties are
 assumed to be specific to the targets. Hence they must correspond in
 number."/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="alpha3"/></td></tr>
                     </tbody></table>
-                    <button value="Ridge" onClick={sendRequest} className="boutonSend">Analyze</button>
+                    <button value="Ridge" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="BayesianARDRegression" id="BayesianARDRegression">
                 <table><tbody>
@@ -473,7 +471,7 @@ Gamma distribution prior over the alpha parameter."/></td><td><InputNumber  min=
 over the lambda parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="lambda_14"/></td><td>lambda_2 <img src={help} className="help" alt="" title="Hyper-parameter : inverse scale parameter (rate parameter) for the
 Gamma distribution prior over the lambda parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="lambda_24"/></td></tr>
                     </tbody></table>
-                    <button value="BayesianARDRegression" onClick={sendRequest} className="boutonSend">Analyze</button>
+                    <button value="BayesianARDRegression" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="LinearSVC" id="LinearSVC">
                     <table><tbody>
@@ -491,7 +489,7 @@ frequencies in the input data as n_samples / (n_classes * np.bincount(y))."/></t
                         <option value="dict">dict</option>
                         <option value="balanced">balanced</option></select></td></tr>
                         </tbody></table>
-                        <button value="LinearSVC" onClick={sendRequest} className="boutonSend">Analyze</button>
+                        <button value="LinearSVC" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="AdaBoost" id="AdaBoost">
                 <table><tbody>
@@ -500,14 +498,14 @@ In case of perfect fit, the learning procedure is stopped early."/></td><td><Inp
 learning rate increases the contribution of each classifier. There is a
 trade-off between the learning_rate and n_estimators parameters."/></td><td><InputNumber  min="0" step="1"  defaultValue={1} id="learning_rate6"/></td></tr>
                     </tbody></table>
-                    <button value="AdaBoost" onClick={sendRequest} className="boutonSend">Analyze</button>
+                    <button value="AdaBoost" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="GradientBoosting2" id="GradientBoosting2">
                 <table><tbody>
                 <tr><td>learning_rate <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="0.1" defaultValue={0.1} id="learning_rate7"/></td><td>n_estimators <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators7"/></td></tr>
                 <tr><td>max_depth <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth7"/></td><td>min_samples_split <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split7"/></td></tr>
                     </tbody></table>
-                    <button value="GradientBoosting2" onClick={sendRequest} className="boutonSend">Analyze</button>
+                    <button value="GradientBoosting2" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="RandomForest2" id="RandomForest2">
                 <table><tbody>
@@ -533,7 +531,7 @@ sample_weight is specified.
                         <option value="balanced">balanced</option>
                         <option value="balanced_subsample">balanced_subsample</option></select></td></tr>
                         </tbody></table>
-                        <button value="RandomForest2" onClick={sendRequest} className="boutonSend">Analyze</button>
+                        <button value="RandomForest2" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="LogisticRegression" id="LogisticRegression">
                 <table><tbody>
@@ -560,7 +558,7 @@ specified. New in version 0.17: class_weight=’balanced’"/></td><td><select  
                         <option value="balanced">balanced</option></select></td></tr>
                         <tr><td>max_iter <img src={help} className="help" alt="" title="Maximum number of iterations taken for the solvers to converge."/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="max_iter9"/></td></tr>
                     </tbody></table>
-                    <button value="LogisticRegression" onClick={sendRequest} className="boutonSend">Analyze</button>
+                    <button value="LogisticRegression" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
                 </div>
                 </div>
                 <div className="divinput" id="divinput">

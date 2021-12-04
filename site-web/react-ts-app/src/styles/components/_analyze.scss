@@ -35,17 +35,28 @@ select{
 
 select option{
     background-color: $color_back;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
 }
 .Algos1{
     margin-top: 30px;
     display: none;
+    label{
+        -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+        backdrop-filter: blur($blur);
+    }
 }
 .Algos2{
     margin-top: 30px;
     display: none;
+    label{
+        -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+        backdrop-filter: blur($blur);
+    }
 }
 .GradientBoosting{
     display: none
+    
 }
 .RandomForest{
     
@@ -142,7 +153,8 @@ table{
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
-.boutonSend{
+.boutonSendanalyze{
+    
     width: 200px;
     height: 40px;
     margin-top: 100px;
@@ -158,10 +170,13 @@ table{
     border-radius:16px ;
     width: 250px;
     color: $color_text;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
     border:none;
-    
+    margin-top: 0px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
     height: 35px;
-    background-color: black;
+    background-color: $color_back;
 }::placeholder{
     color: $color_placeholder;
 }
@@ -173,25 +188,12 @@ table{
 
 
 .divSelectMultiple{
-    padding-top: 40px;
-    margin-top: -40px;
-    overflow-y: hidden;
-    text-align: left;
-    background-color: transparent;
-    color: $color_text;
-    width: 210px;
-    margin-left: 50px;
-    border: none;
-    border-radius: 16px;
-    border-color: $color_text;
-    box-shadow: 0px 0px 20px black ;
-    margin-left: auto;
-    margin-right: auto;
+    display: none;
 }
 
 .divSelectMultipleOpen{
-    padding-top: 40px;
-    margin-top: -40px;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
     overflow-y: scroll;
     text-align: left;
     background-color: transparent;
@@ -219,8 +221,8 @@ table{
 
 
 .divSelectMultipleClose{
-    padding-top: 40px;
-    margin-top: -40px;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
     overflow-y: hidden;
     text-align: left;
     background-color: transparent;
@@ -246,6 +248,8 @@ table{
     }
 }
 .boutonselect{
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;

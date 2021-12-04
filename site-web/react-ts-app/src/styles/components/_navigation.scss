@@ -1,13 +1,18 @@
 .navigation{
-    background: $color_nav;
+    
     float: left;
     height: 50px;
     position: fixed;
     top: 0px;
     left: 0px;
     right: 0px;
+    overflow: none;
     text-align: left;
+    -webkit-backdrop-filter: blur(15px); /* assure la compatibilité avec safari */
+    backdrop-filter: blur(15px);
+    
     ul {
+      
         list-style-type: none;
         position: fixed;
         margin: 0;
@@ -15,7 +20,8 @@
         height: 50px;
         right:0px;
         top: 0%;
-        background-color: $color_nav;
+        -webkit-backdrop-filter: blur(15px); /* assure la compatibilité avec safari */
+        backdrop-filter: blur(15px);
     }
     li {
         float: left;
@@ -23,19 +29,20 @@
         color: $color_text;
         text-align: center;
         font-family: $font;
-        
+        transition: all 0.4s ease-in-out;
         text-decoration: none;
     }
     li a {
         display: block;
         padding: 16px 16px;
         color: $color_text;
+        transition: all 0.4s ease-in-out;
         text-align: center;
         font-family: $font;
         text-decoration: none;
     }
     li:hover {
-        background-color: black;
+        background-color: $color_trans;
     }
     .logo{
         margin-left:10px;
@@ -71,7 +78,7 @@
 	display: block;
 	width: 25px;
 	height: 4px;
-	background-color: $color_text;
+  background-color: $color_text;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
@@ -97,10 +104,11 @@
     text-align: center;
     padding: 16px 16px;
     text-decoration: none;
+    transition: all 0.4s ease-in-out;
   }
   
   li a:hover, .dropdown:hover .dropbtn {
-    background-color: black;
+    background-color: $color_trans;
   }
   
   li.dropdown {
@@ -125,7 +133,7 @@
     text-align: left;
   }
   
-  .dropdown-content a:hover {background-color: black;}
+  .dropdown-content a:hover {background-color: $color_trans;}
   
   .dropdown:hover .dropdown-content {
     display: block;

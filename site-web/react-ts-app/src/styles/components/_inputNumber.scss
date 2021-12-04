@@ -9,6 +9,8 @@
     box-shadow: 0px 0px 20px black ;
     text-align: center;
     outline: none;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+        backdrop-filter: blur($blur);
 }
 
 
@@ -19,6 +21,7 @@
     box-shadow: none;
     font-size: 1em;
     background-color: $color_back;
+    
 }
 .InputNumberComponent button:hover{
     background-color: black;

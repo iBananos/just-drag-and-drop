@@ -1,5 +1,3 @@
-import ReactDOM from "react-dom";
-import { Interface } from "readline";
 import BarreLaterale from "../components/BarreLaterale";
 import Navigation from "../components/Navigation";
 import ViewHistory from "../components/ViewHistory";
@@ -68,7 +66,8 @@ const History = () =>  {
     }
 
     window.onload= function(){
-        utils.default.sendRequestWithToken('POST', 'http://localhost:4000/api/analyze/informations', "", createCells);
+        console.log("FAFZEGRHSFGF")
+        utils.default.sendRequestWithToken('POST', '/api/analyze/informations', "", createCells);
     }
 
     function createCells(response : any){

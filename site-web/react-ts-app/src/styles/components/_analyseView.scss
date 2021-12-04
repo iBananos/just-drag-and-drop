@@ -1,0 +1,8 @@
+.Chart{
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
+    background-color: $color_back;
+    border-radius: 16px;
+    top: 50px;
+    position: relative;
+}

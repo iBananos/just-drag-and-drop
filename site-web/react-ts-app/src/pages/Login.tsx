@@ -12,7 +12,7 @@ const Login = () => {
     }
 
     function sendRequestLogin(mail:string, mdp:string) {
-        var url = 'http://localhost:4000/api/auth/login'
+        var url = '/api/auth/login'
         var xhr = new XMLHttpRequest()
         xhr.open('POST', url, true)
         xhr.setRequestHeader("Content-Type", "application/json");

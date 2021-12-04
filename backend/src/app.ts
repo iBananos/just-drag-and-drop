@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import uploadRoutes from './routes/upload';
 import dataVisuRoutes from './routes/dataVisu';
 import analyzeRoutes from './routes/analyze';
+import profileRoutes from './routes/profile';
 import middlewareError from './middleware/error';
 import HttpException from './utils/httpException';
 
@@ -29,7 +30,7 @@ app.use(express.urlencoded({
 
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization, x-xsrf-token');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -53,6 +54,9 @@ app.use('/api/analyze', analyzeRoutes);
 // Routes pour les dataVisualisation de base de données
 app.use('/api/dataVisu', dataVisuRoutes);
 
+
+// Routes pour les information sur le profile de l'utilisateur
+app.use('/api/profile', profileRoutes);
 
 // Toutes les autres demandes GET non traitées renverront sur application React
 

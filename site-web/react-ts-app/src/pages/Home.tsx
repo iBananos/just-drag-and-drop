@@ -1,5 +1,4 @@
 import Navigation from "../components/Navigation";
-import React from "react" 
 import BarreLaterale from "../components/BarreLaterale";
 import Chart from "../components/Chart";
 const Home = () =>  {

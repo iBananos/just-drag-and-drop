@@ -78,6 +78,7 @@ const Navigation = () => {
         return <ul>
         <li><NavLink onClick={window.location.reload} to="/">Home</NavLink></li>
         <li><NavLink onClick={window.location.reload} to="/login">Log in</NavLink></li>
+        <li><NavLink onClick={window.location.reload} to="/signup">Sign up</NavLink></li>
         </ul>
     }
 
@@ -88,16 +89,23 @@ const Navigation = () => {
         return <GuestNav />;
     }
 
+    function Profil(){
+        if(localStorage.getItem("xsrfToken") && localStorage.getItem("accessTokenExpires") && localStorage.getItem("refreshTokenExpires")){
+            return <div><div id="close" onClick={closeToggle}><img className="close" src={close} alt="" /></div> 
+                    <div onClick={displayToggle}>
+                                <li id="toggle" className="toggle" >
+                                    <span className="toggle-menu-bar"></span>
+                                    <span className="toggle-menu-bar"></span>
+                                    <span className="toggle-menu-bar"></span>
+                                </li>
+                            </div></div>
+        
+        }return <div></div>
+    }
+
     return (
         <div className="navigation">
-            <div id="close" onClick={closeToggle}><img className="close" src={close} alt="" /></div>
-            <div onClick={displayToggle}>
-            <li id="toggle" className="toggle" >
-                <span className="toggle-menu-bar"></span>
-                <span className="toggle-menu-bar"></span>
-                <span className="toggle-menu-bar"></span>
-            </li>
-            </div>
+            <Profil />
             <img className="logo" src={logo} alt="JustDragAndDrop"/>
             <h1 className="company" id="company">Scanylab</h1>
             <Nav />
