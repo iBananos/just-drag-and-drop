@@ -160,7 +160,14 @@ const DataVisu = () =>  {
     }
     
     function enableSubmit(){
+        var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
         (document.getElementById("boutonSend")as HTMLButtonElement).disabled = false;
+        if(thirdOne === "AucuneColoration"){
+            (document.getElementById("typeChart")as HTMLSelectElement).disabled = false;
+        }else{
+            (document.getElementById("typeChart")as HTMLButtonElement).disabled = true;
+        }
+        
         (document.getElementById("boutonSend")as HTMLButtonElement).onclick = sendRequest;
     }
 
@@ -226,7 +233,69 @@ const DataVisu = () =>  {
         
         data1 = data1.slice(1)
         data2 = data2.slice(1)
-        createScatter2Column(data1,data2)
+        var type  = (document.getElementById("typeChart")as HTMLSelectElement).value;
+        var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
+        if(thirdOne === "AucuneColoration" && type === "Line"){
+            createLine2Column(data1,data2)
+        }
+        else{
+            createScatter2Column(data1,data2)
+        }
+        
+    }
+
+    function createLine2Column(data1:any,data2:any){
+        var datas = orderData(data1,data2);
+        data1 = []
+        data2 = []
+        for(var i : number = 0 ; i < datas.length ; i++ ){
+            data1.push(datas[i].data1)
+            data2.push(datas[i].data2)
+        }
+        var newCanvas = document.createElement('canvas');
+        newCanvas.className="scatter";
+        newCanvas.id="scatter_"+id;
+        document.getElementById('scatterBoard_'+id)?.appendChild(newCanvas)
+
+
+        var ctx :any = (document.getElementById('scatter_'+id) as HTMLCanvasElement).getContext('2d');
+        
+        var myChart = new Chart(ctx , {
+            type : 'line',
+            data: {
+                datasets: [{
+                    type: 'line',
+                    label: "Datavisu",
+                    data: data1,
+                    backgroundColor: "rgba(187, 164, 34, 0.5)",
+                    borderColor: "rgba(187, 164, 34,1)",
+                    borderWidth: 1
+                }],labels:data2
+            },
+            options: {
+                scales: {
+                },
+                responsive: true
+            } as any
+            
+        });
+        myChart.update();
+        return myChart;
+    }
+
+    function orderData(data1:any,data2:any){
+        var datas : any[] = []
+        for(var i : number = 0 ; i < data1.length ; i++ ){
+            datas.push({"data1" : data1[i], "data2": data2[i]})
+        }
+        datas.sort(function (a, b) {
+            if (a.data2 < b.data2)
+                return -1;
+            if (a.data2 > b.data2 )
+                return 1;
+            return 0;
+         });
+         return datas;
     }
 
     function createScatter2Column(data1:any,data2:any){
@@ -597,6 +666,13 @@ const DataVisu = () =>  {
         var sample = document.getElementById("sample") as HTMLInputElement;
         inputSample.innerHTML =sample.value +"%";
     }
+
+    function showAdvanced(){
+        (document.getElementById("dataVisuContainer") as HTMLDivElement).className = "dataVisuContainerAdvanced";
+    }
+    function hideAdvanced(){
+        (document.getElementById("dataVisuContainer") as HTMLDivElement).className = "dataVisuContainerParam";
+    }
     
     return (
         
@@ -611,6 +687,8 @@ const DataVisu = () =>  {
         </div>
             </div>
             <div className="view" id="view">
+                <div className="dataVisuView">
+                <div id="dataVisuContainer" className="dataVisuContainer">
                 <div className="dataVisuBar">
                 <h1 className="title">Data Visualisation</h1>
                 <select name="database" id="SelectDB"defaultValue="Choose a database" className="SelectDB" onChange={enableFirstOne}>
@@ -627,13 +705,23 @@ const DataVisu = () =>  {
                     <option value="Choose a column" disabled >Choose a coloration</option>
                 </select>
                 <br />
-                    <div className="indicSample">Number of rows</div> <br />
+                    <div className="advanced" onClick={showAdvanced}>advanced 	&gt;</div>
+                    <div className="indicSample"  >Number of rows</div> <br />
                     <input type="range" id="sample" className="sample" onChange={updateSample} min="1" max="100" defaultValue="50"/>
                     <div className="inputSample" id="inputSample">50%</div>
                 <br />
                 <button  onClick={sendRequest} className="boutonSend" id="boutonSend" disabled>Analyze</button>
                 </div>
-
+                <div className="advancedBar">
+                <div className="return" onClick={hideAdvanced}>&lt; back </div>
+                <select name="firstOne" id="typeChart"defaultValue="Choose a chart" className="firstOne" disabled>
+                    <option value="Choose a chart" disabled >Choose a chart</option>
+                    <option value="Scatter" >Scatter Chart</option>
+                    <option value="Line" >Line Chart</option>
+                </select><br />
+                </div>
+                </div>
+                </div>
                 <div className="ChartsRes" id="ChartsRes">
 
                 </div>

@@ -1,5 +1,6 @@
 .DataVisu{
     text-align: center;
+    color: $color_text;
 }
 
 .firstOne{
@@ -71,16 +72,80 @@
     background: $color_text;
     cursor: pointer;
   }
-
+.dataVisuView{
+    width: 250px;
+    height: 100%;
+    margin-left: -8px;
+    position: fixed;
+    overflow: hidden;
+}
   
 .dataVisuBar{
     margin-left: -8px;
     height: 100%;
     width: 250px;
+    float: left;
+}
+
+.dataVisuContainer{
+    margin-left: 0px;
+    height: 100%;
     box-shadow: inset 0px 0px 20px black ;
-    position: fixed;
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
+    width: 500px;
+    float: left;
+}
+
+.dataVisuContainerAdvanced{
+    margin-left: 0px;
+    height: 100%;
+    box-shadow: inset 0px 0px 20px black ;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
+    width: 500px;
+    float: left;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-name: slideLeft;
+}
+
+@keyframes slideLeft{
+    from{
+        margin-left:0px;
+    }
+    to{
+        margin-left: -250px;
+    }
+}
+
+.dataVisuContainerParam{
+    margin-left: 0px;
+    height: 100%;
+    box-shadow: inset 0px 0px 20px black ;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
+    width: 500px;
+    float: left;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-name: slideRight;
+}
+
+@keyframes slideRight{
+    from{
+        margin-left:-250px;
+    }
+    to{
+        margin-left: 0px;
+    }
+}
+
+
+.advancedBar{
+    height: 100%;
+    float: left;
+    width: 250px;
 }
 
 .ChartsRes{
@@ -131,4 +196,21 @@
     //background-color: rgba(0, 255, 213, 0.397);
     width: 70%;
     height: 40%;
+}
+
+.advanced{
+    color : $color_text ;
+    font-size: small;
+    margin-top: 25px;
+    margin-left: 150px;
+    margin-bottom: -25px;
+    cursor: pointer;
+}
+
+.return{
+    font-size: small;
+    margin-top: 25px;
+    margin-left: -180px;
+    margin-bottom: -25px;
+    cursor: pointer;
 }
