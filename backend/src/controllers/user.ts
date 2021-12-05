@@ -42,7 +42,9 @@ export const signup : RequestHandler = (req : Request, res : Response, next : Ne
             argon2i.hash(req.body.password, salt, options).then(hash => {
                 const user = new User({
                     email: req.body.email,
-                    password: hash
+                    password: hash,
+                    name : req.body.name,
+                    surname : req.body.surname
                 });
                 user.save().then(async () => {
                     res.status(200).json({ message: "Votre compte a bien été créé !" });

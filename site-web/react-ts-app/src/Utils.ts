@@ -1,3 +1,10 @@
+var pathUrl =  window.location
+if(pathUrl.origin === "http://localhost:3000"){
+    var hostname =  "http://localhost:4000";
+}else{
+    var hostname = "";
+}
+
 class Utils {
     
     public static checkToken() {
@@ -36,7 +43,7 @@ class Utils {
         }
 
         var xhr = new XMLHttpRequest()
-        xhr.open(methode, url, true);
+        xhr.open(methode, hostname+url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         
 
@@ -63,7 +70,7 @@ class Utils {
         }
         var formData = new FormData()
         var xhr = new XMLHttpRequest()
-        xhr.open(methode, url, true);
+        xhr.open(methode, hostname+url, true);
         
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
 
@@ -87,7 +94,7 @@ class Utils {
 
     public static refreshToken() {
         var xhr = new XMLHttpRequest()
-        xhr.open('POST', '/api/auth/refresh', true);
+        xhr.open('POST', pathUrl+'/api/auth/refresh', true);
         xhr.withCredentials = true;
         xhr.addEventListener('readystatechange', function(e) {
             if (xhr.readyState === 4 && xhr.status === 200) {

@@ -1,15 +1,22 @@
 import React from 'react';
 import Navigation from '../components/Navigation';
-
+var pathUrl =  window.location
+if(pathUrl.origin === "http://localhost:3000"){
+    var hostname =  "http://localhost:4000";
+}else{
+    var hostname = "";
+}
 const Signup = () => {
 
     function createAccount(){
         var mail = (document.getElementById('mail')as HTMLInputElement)?.value;
         var mdp1 = (document.getElementById('mpd1')as HTMLInputElement)?.value;
         var mdp2 = (document.getElementById('mpd2')as HTMLInputElement)?.value;
+        var surname = (document.getElementById('surname')as HTMLInputElement)?.value;
+        var name = (document.getElementById('name')as HTMLInputElement)?.value;
 
         if (mdp1 === mdp2) { 
-            sendRequestSignUp(mail ,mdp1);
+            sendRequestSignUp(mail ,mdp1, name, surname);
         }
         else {
             let msg : string = "Les mots de passes ne correspondent pas";
@@ -17,8 +24,8 @@ const Signup = () => {
         }
     }
 
-    function sendRequestSignUp(mail:string, mdp:string) {
-        var url = 'http://locahost:4000/api/auth/signup'
+    function sendRequestSignUp(mail:string, mdp:string, name : string, surname : string) {
+        var url = hostname+'/api/auth/signup'
         var xhr = new XMLHttpRequest()
         xhr.open('POST', url, true)
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -26,7 +33,7 @@ const Signup = () => {
         xhr.addEventListener('readystatechange', function(e) {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 console.log("c'est bon"); // TODO FAIRE LA PAGE DE REDIRECTION  
-                (document.getElementById("msg") as HTMLInputElement).innerHTML= "Compte crée !";
+                window.location.href = "/";
             }
             else if (xhr.readyState === 4 && xhr.status !== 200) {
                 var res = JSON.parse(this.response);
@@ -34,7 +41,7 @@ const Signup = () => {
             }
         });
 
-        var data = JSON.stringify({"email":mail,"password":mdp})
+        var data = JSON.stringify({"email":mail,"password":mdp,"name":name,"surname":surname})
         xhr.send(data)
     }
 
@@ -43,6 +50,14 @@ const Signup = () => {
         <div className="signup">
             <h1>Welcome !</h1>
             <h2>Sign up to create an account</h2>
+            <div className="box1">
+                <div className="phTitle" >Name</div>
+                <input className="ph" id="name" placeholder="ex : Alexandre"></input>
+            </div>
+            <div className="box1">
+                <div className="phTitle" >Surname</div>
+                <input className="ph" id="surname" placeholder="ex : Dubois"></input>
+            </div>
             <div className="box1">
                 <div className="phTitle" >Email address</div>
                 <input className="ph" id="mail" placeholder="example@mail.com"></input>

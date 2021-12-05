@@ -20,11 +20,9 @@ const Navigation = () => {
 
     function gestionNav(){
         var width = window.innerWidth;
-        if(width > 750){
+        if(width > 450){
             (document.getElementById("company") as HTMLElement).style.display = "block";
         }else{
-            (document.getElementById("close")as HTMLElement).style.display = "none";
-            (document.getElementById("toggle")as HTMLElement).style.display = "block";
             (document.getElementById("company") as HTMLElement).style.display = "none";
         }
     }

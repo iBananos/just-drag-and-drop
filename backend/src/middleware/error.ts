@@ -7,8 +7,8 @@ export default function middlewareError(error : HttpException, req : Request, re
     console.log(`${error}`);
 
     /* Personalisation du message d'erreur si le code est 500 */
-    let { status, message } = error;
-    if (status === 500 || !message) {
+    let { status , message } = error;
+    if (status === 500 || !message || message === "CORS error") {
         message = "Oups un problème est survenu.";
     }
 

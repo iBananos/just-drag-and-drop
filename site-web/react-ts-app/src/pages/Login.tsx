@@ -3,6 +3,13 @@ import { NavLink } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import Home from './Home';
 
+var pathUrl =  window.location
+if(pathUrl.origin === "http://localhost:3000"){
+    var hostname =  "http://localhost:4000";
+}else{
+    var hostname = "";
+}
+
 const Login = () => {
 
     function login(){
@@ -12,7 +19,7 @@ const Login = () => {
     }
 
     function sendRequestLogin(mail:string, mdp:string) {
-        var url = '/api/auth/login'
+        var url = hostname+'/api/auth/login'
         var xhr = new XMLHttpRequest()
         xhr.open('POST', url, true)
         xhr.setRequestHeader("Content-Type", "application/json");
