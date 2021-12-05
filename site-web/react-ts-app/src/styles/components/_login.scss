@@ -114,7 +114,7 @@
     }
     hr{
         margin-top : 22px;
-        width : 8%;
+        width : 20%;
         display: block;
         height: 1px;
         border: 0;
@@ -123,10 +123,10 @@
         position: absolute;
     }
     .hr1{
-        margin-left: 52%;
+        margin-left: 49%;
     }
     .hr2{
-        margin-left : 40%
+        margin-left : 15%
     }
     .signup{
         margin-top: 10px;
@@ -136,4 +136,16 @@
         border : none;
     }
 
+}
+.blurLogin{
+    width: 300px;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -30px;
+    padding: 30px;
+    padding-top: 1px;
+    border-radius: 32px ;
+    background-color: $color_back;
 }

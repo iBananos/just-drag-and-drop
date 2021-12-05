@@ -6,10 +6,9 @@
     width: 180px;
     border-radius: 32px;
     height: 200px;
-    background-color: $color_back;
+    background-color: $color_history;
+
     box-shadow: 0px 0px 30px black ;
-    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
-    backdrop-filter: blur($blur);
     margin-top: 20px;
     margin-left: 20px;
     float: left;

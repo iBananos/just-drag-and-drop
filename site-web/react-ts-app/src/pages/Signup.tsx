@@ -48,6 +48,7 @@ const Signup = () => {
 
     return (
         <div className="signup">
+            <div className="blurSignup">
             <h1>Welcome !</h1>
             <h2>Sign up to create an account</h2>
             <div className="box1">
@@ -72,7 +73,7 @@ const Signup = () => {
             </div>
             <p className="msg" id="msg"></p>
             <button className="signup" onClick={createAccount}>Sign up</button>
-             
+             </div>
             <Navigation />
         </div>
     );

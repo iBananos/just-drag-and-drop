@@ -24,10 +24,6 @@ select{
     margin-left: 25px;
     margin-right: 25px;
 }
-.SelectCat{
-    margin-left: 25px;
-    margin-right: 25px;
-}
 .first{
     margin-top: 20px;
 }
@@ -86,7 +82,19 @@ select{
     
     display: none
 }
-
+.blurAnalyze{
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+        backdrop-filter: blur($blur);
+        background-color: $color_back;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 1px;
+    padding-bottom: 30px;
+    border-radius: 32px;
+}
 .Parametre select{
     background-color: $color_back;
     position: relative;

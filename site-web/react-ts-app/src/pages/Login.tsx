@@ -49,6 +49,7 @@ const Login = () => {
 
     return (
         <div id="login" className="login">
+            <div className="blurLogin">
             <h1>Welcome !</h1>
             <h2>Log in to your account</h2>
             <div className="box1">
@@ -63,8 +64,9 @@ const Login = () => {
             <span className="msg" id="msg"></span>
             <hr className="hr1"/><hr className="hr2"/>
             <div className="or">Or</div>
-            
             <NavLink to="/signup"><button className="signup">Sign up</button></NavLink>
+            </div>
+            
             <Navigation />
         </div>
     );

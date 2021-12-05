@@ -8,8 +8,9 @@
     right: 0px;
     overflow: none;
     text-align: left;
-    -webkit-backdrop-filter: blur(15px); /* assure la compatibilité avec safari */
-    backdrop-filter: blur(15px);
+    background-color: $color_back;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
     
     
     ul {

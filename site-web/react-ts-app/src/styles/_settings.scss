@@ -1,5 +1,5 @@
 /* PALETTE */ 
-$color_back: rgba(20, 20, 20, 0.445);
+$color_back: rgba(20, 20, 20, 0.103);
 $color_trans: #8670700c;
 $color_green: #339999;
 $color_yellow : rgb(187, 164, 34);
@@ -9,9 +9,10 @@ $color_green2: #CCFFCC;
 $color_green3: #99CC33;
 $color_blue3: #339999;
 $color_nav: #181925;
-$color_error : rgb(196, 25, 25);
-$blur : 100px;
-$color_theme :$color_yellow;
+$color_error : rgb(209, 52, 52);
+$blur : 10px;
+$color_history : rgba(24, 24, 24, 0.856);
+$color_theme : $color_yellow;
 /* BUTTON */
 $color_button:  #171824;
 $color_button_hover :$color_theme;
@@ -50,8 +51,9 @@ select{
 }
 body{
     background-color: black;
-    background-image: url("../assets/dark4.jpg");
+    background-image: url("../assets/dark.jpg");
     background-size: cover;
+    
     background-attachment: fixed;
     font-family: $font;
 }
@@ -63,10 +65,6 @@ h1,h2,h3{
 
 h1{
     -webkit-text-stroke: 1.00px $color_text;
-}
-
-.div{
-
 }
 
 .view{

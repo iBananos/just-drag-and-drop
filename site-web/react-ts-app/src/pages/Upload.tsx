@@ -87,6 +87,7 @@ function callbackRequest(){
   return (
     <div className="Upload">
         <div className="view" id="view">
+          
         <div id="drop-area">
           <form className="my-form">
             <p>Upload multiple files with the file dialog or by dragging and dropping images onto the dashed region</p>

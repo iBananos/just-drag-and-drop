@@ -22,18 +22,16 @@ const Analyze = () =>  {
 
     function displayParameter(ev :any){
         var algo = ev.target.value;
-        var category = (document.getElementById("category") as HTMLSelectElement).value;
         (document.getElementById("GradientBoosting")as HTMLElement).style.display = "none";
         (document.getElementById("RandomForest")as HTMLElement).style.display = "none";
         (document.getElementById("Ridge")as HTMLElement).style.display = "none";
-        (document.getElementById("BayesianARDRegression")as HTMLElement).style.display = "none";
+        //(document.getElementById("BayesianARDRegression")as HTMLElement).style.display = "none";
         (document.getElementById("LinearSVC")as HTMLElement).style.display = "none";
         (document.getElementById("AdaBoost")as HTMLElement).style.display = "none";
         (document.getElementById("GradientBoosting2")as HTMLElement).style.display = "none";
         (document.getElementById("RandomForest2")as HTMLElement).style.display = "none";
         (document.getElementById("LogisticRegression")as HTMLElement).style.display = "none";
         (document.getElementById('divinput') as HTMLInputElement).style.display = "block";
-        if(category === "Regression"){
             if(algo === "GradientBoosting"){
                 (document.getElementById("GradientBoosting")as HTMLElement).style.display = "block";
             }else if(algo === "RandomForest"){
@@ -43,7 +41,6 @@ const Analyze = () =>  {
             }else if(algo === "BayesianARDRegression"){
                 (document.getElementById("BayesianARDRegression")as HTMLElement).style.display = "block";
             }
-        }else{
             if(algo === "LinearSVC"){
                 (document.getElementById("LinearSVC")as HTMLElement).style.display = "block";
             }else if(algo === "AdaBoost"){
@@ -55,7 +52,6 @@ const Analyze = () =>  {
             }else if(algo === "LogisticRegression"){
                 (document.getElementById("LogisticRegression")as HTMLElement).style.display = "block";
             }
-        }
          
     }
 
@@ -64,22 +60,26 @@ const Analyze = () =>  {
     }
 
     function displayAlgorithmes(){
-        hideparams();
-        var category = (document.getElementById("category") as HTMLSelectElement).value;
+        var first = (document.getElementById("firstOne") as HTMLSelectElement).value;
+        var base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
         var algos1 = (document.getElementById("Algos1") as HTMLDivElement);
         var algos2 = (document.getElementById("Algos2") as HTMLDivElement);
-        if(category ==="Regression"){
-            algos1.style.display ="block";
-            algos2.style.display ="none";
-        }else{
-            algos1.style.display ="none";
-            algos2.style.display ="block";
+        for(var i: number = 0 ; i < list.length; i++){
+            if(list[i].name+"."+list[i].extension === base){
+                var colonnesString = list[i].colonnesString;
+                if(colonnesString.includes(first)){
+                    algos1.style.display ="none";
+                    algos2.style.display ="block";
+                }else{
+                    algos1.style.display ="block";
+                    algos2.style.display ="none";
+                }
+                return
+            }
         }
-
     }
 
     function enableCategory(){
-        (document.getElementById("category") as HTMLSelectElement).disabled = false;
         createSelectorForColonnes();
     }
 
@@ -116,6 +116,7 @@ const Analyze = () =>  {
     }
 
     function enableSecondOne(){
+        displayAlgorithmes()
         createSelectorForOthersColonnes()
     }
 
@@ -161,7 +162,6 @@ const Analyze = () =>  {
         var requestAnalyze : string ="";
         var name = (document.getElementById("analyzeName") as HTMLInputElement).value;
         var date = new Date(Date.now()); 
-        var category = (document.getElementById("category") as HTMLSelectElement).value;
         var pred : string = (document.getElementById("firstOne") as HTMLSelectElement).value;
         var features :string[]= []
         for(var i: number = 0 ; i < list.length; i++){
@@ -174,14 +174,13 @@ const Analyze = () =>  {
                 }
             }
         }
-        if(category === "Regression"){
             if(algo === "GradientBoosting"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
-                                                "category":category,
+                                                "category":"Regression",
                                                 "algo":algo, 
                                                 "params" : {
                                                     "learning_rate" : (document.getElementById("learning_rate1")as HTMLInputElement).value,
@@ -195,7 +194,7 @@ const Analyze = () =>  {
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
-                                                "category":category,
+                                                "category":"Regression",
                                                 "algo":algo, 
                                                 "params" : {
                                                     "n_estimators" : (document.getElementById("n_estimators2")as HTMLInputElement).value,
@@ -208,7 +207,7 @@ const Analyze = () =>  {
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
-                                                "category":category,
+                                                "category":"Regression",
                                                 "algo":algo, 
                                                 "params" : {
                                                     "tol" : (document.getElementById("tol3")as HTMLInputElement).value,
@@ -221,7 +220,7 @@ const Analyze = () =>  {
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
-                                                "category":category,
+                                                "category":"Regression",
                                                 "algo":algo, 
                                                 "params" : {
                                                     "n_iter" : (document.getElementById("n_iter4")as HTMLInputElement).value,
@@ -232,14 +231,13 @@ const Analyze = () =>  {
                                                     "lambda_2" : (document.getElementById("lambda_24")as HTMLInputElement).value
                                                 }});
             }
-     }else{
             if(algo === "LinearSVC"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
-                                                "category":category,
+                                                "category":"Classification",
                                                 "algo":algo, 
                                                 "params" : {
                                                     "penalty" : (document.getElementById("penalty5")as HTMLSelectElement).value,
@@ -253,7 +251,7 @@ const Analyze = () =>  {
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
-                                                "category":category,
+                                                "category":"Classification",
                                                 "algo":algo, 
                                                 "params" : {
                                                     "n_estimators" : (document.getElementById("n_estimators6")as HTMLInputElement).value,
@@ -265,7 +263,7 @@ const Analyze = () =>  {
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
-                                                "category":category,
+                                                "category":"Classification",
                                                 "algo":algo, 
                                                 "params" : {
                                                     "learning_rate" : (document.getElementById("learning_rate7")as HTMLInputElement).value,
@@ -279,7 +277,7 @@ const Analyze = () =>  {
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
-                                                "category":category,
+                                                "category":"Classification",
                                                 "algo":algo, 
                                                 "n_estimators" : (document.getElementById("n_estimators8")as HTMLInputElement).value,
                                                 "max_depth" : (document.getElementById("max_depth8")as HTMLInputElement).value,
@@ -292,7 +290,7 @@ const Analyze = () =>  {
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
-                                                "category":category,
+                                                "category":"Classification",
                                                 "algo":algo, 
                                                 "params" : {
                                                     "penalty" : (document.getElementById("penalty9")as HTMLSelectElement).value,
@@ -301,7 +299,6 @@ const Analyze = () =>  {
                                                     "class_weight" : (document.getElementById("class_weight9")as HTMLSelectElement).value,
                                                     "max_iter" : (document.getElementById("max_iter9")as HTMLInputElement).value
                                                 }});
-            }
         }
         console.log(requestAnalyze);
         (document.getElementById("view") as HTMLDivElement).style.display = "none";
@@ -340,6 +337,7 @@ const Analyze = () =>  {
         </div>
             </div>
             <div className="view" id="view">
+                <div className="blurAnalyze">
                 <h1 className="title">Analyze page</h1>
                 <select name="database" id="SelectDB"defaultValue="Choose a database" className="SelectDB" onChange={enableCategory}>
                     <option value="Choose a database" disabled >Choose a database</option>
@@ -354,15 +352,10 @@ const Analyze = () =>  {
                 </div>
                 <br />
                 
-                <select name="category" id="category" defaultValue="Choose a category" onChange={displayAlgorithmes} className="SelectCat" disabled>
-                    <option value="Choose a category" disabled >Choose a category</option>
-                    <option value="Regression">Regression</option>
-                    <option value="Classification">Classification</option>
-                </select>
                 <br />
                 <div className="Algos1" id="Algos1">
                     <input className="checkbox-tools" type="radio" onClick={displayParameter}value="GradientBoosting" name="algoPick" id="tool-1" />
-						<label className="for-checkbox-tools" htmlFor="tool-1" title="GRADIENT BOOOOSTING">
+						<label className="for-checkbox-tools" htmlFor="tool-1" >
                         Gradient Boosting
 						</label>
                     <input className="checkbox-tools" onClick={displayParameter}value="RandomForest" type="radio" name="algoPick" id="tool-2"/>
@@ -373,10 +366,7 @@ const Analyze = () =>  {
 					    <label className="for-checkbox-tools" htmlFor="tool-3">
                         Ridge
 						</label>
-                    <input className="checkbox-tools" onClick={displayParameter}value="BayesianARDRegression" type="radio" name="algoPick" id="tool-4"/>
-						<label className="for-checkbox-tools"htmlFor="tool-4" >
-                        Bayesian ARD Regression
-						</label>
+                    
                 </div>
                 <div className="Algos2" id="Algos2">    
                     <input className="checkbox-tools" onClick={displayParameter}value="LinearSVC" type="radio" name="algoPick" id="tool-5"/>
@@ -564,6 +554,7 @@ specified. New in version 0.17: class_weight=’balanced’"/></td><td><select  
                 <div className="divinput" id="divinput">
                     <input type="text" className="analyzeName" id="analyzeName" placeholder="Analyze name..."></input>
                 </div>
+            </div>
             </div>
             <BarreLaterale />
             <Navigation />

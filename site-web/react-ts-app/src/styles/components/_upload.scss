@@ -1,6 +1,8 @@
 .Upload{
     #drop-area{
-        background: transparent;
+        -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+        backdrop-filter: blur($blur);
+        background: $color_back;
         margin-top: 150px;
         height: 300px;
         margin-left: 10%;
@@ -61,7 +63,6 @@
         //box-shadow: 0px 0px 20px $color_button_hover ;
     }
 }
-
 .sendButton{
     display: inline-block;
     position: absolute;
