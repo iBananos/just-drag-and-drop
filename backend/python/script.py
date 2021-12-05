@@ -1,28 +1,42 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-import time
 from sklearn.svm import LinearSVC
 from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier, RandomForestClassifier, GradientBoostingRegressor,RandomForestRegressor
 from sklearn.linear_model import LogisticRegression, Ridge, ARDRegression
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import confusion_matrix
+from io import StringIO
+from aesCipher import AESCipher
+import time
+import sys
+
+
+filename = sys.argv[1]
+extension = sys.argv[2]
+features = sys.argv[3]
+pred = sys.argv[4]
+list_param = sys.argv[5]
+analyze_choice = sys.argv[6]
+algo_choice = sys.argv[7]
+key = sys.argv[8]
+toEncrypt = sys.argv[9]
 
 
 ####fonction pour pouvoir lire les databases et les transformer en dataframes
 
 def parse_data(filename):
 
-    if '.csv' in filename:
+    if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         df = pd.read_csv(filename,index_col=0, delimiter=',', encoding="utf-8")
-    elif '.xlsx' in filename:
+    elif extension == 'xlsx' :
             # Assume that the user uploaded an excel file
         df = pd.read_excel(filename,index_col=0,encoding="utf-8")
-    elif '.txt' or '.tsv' in filename:
+    elif extension == 'txt' or extension == 'tsv' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
         df = pd.read_csv(filename, delimiter = r'\s+',index_col=0, encoding="utf-8")
-    elif '.json' in filename:
+    elif extension == 'json' :
         df = pd.read_json(filename)
     else :
         print("There was an error while processing this file")
@@ -190,16 +204,21 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
                              
     else : 
         print("wrong choice")
-import sys
 
-filename = sys.argv[1]
-features = sys.argv[2]
-pred = sys.argv[3]
-list_param = sys.argv[4]
-analyze_choice = sys.argv[5]
-algo_choice = sys.argv[6]
+
+
+def decryptFile(filename) :
+    aesCipher = AESCipher(key)
+    encryptData = open(filename,'r').read()
+    csvPlainText = aesCipher.decrypt(encryptData)
+    return StringIO(csvPlainText)
+
 
 if __name__ == "__main__":
     #print("HELLO world")
     #print(filename,features.split(","),pred,list_param.split(","),analyze_choice,algo_choice)
-    print(principal_fonction(filename,features.split(","),pred,list_param,analyze_choice,algo_choice))
+    if toEncrypt == "true" :
+        data = decryptFile(filename)
+    else :
+        data = filename
+    print(principal_fonction(data, features.split(","), pred, list_param, analyze_choice, algo_choice))

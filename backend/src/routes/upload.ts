@@ -7,8 +7,7 @@ import * as uploadCtrl from '../controllers/upload';
 const router = express.Router();
 
 // Création du multer
-const upload = multer({ dest: 'uploads/' });
-
+const upload = multer({ storage: multer.memoryStorage() });
 
 /**
  * Route Upload
@@ -16,7 +15,9 @@ const upload = multer({ dest: 'uploads/' });
 router.post("/", upload.single('file'), auth, uploadCtrl.saveFile);
 
 router.post("/getInfo",  auth, uploadCtrl.getInfoDatabase);
+
 router.post("/deleteData",  auth, uploadCtrl.deleteData);
+
 router.post("/downloadData",  auth, uploadCtrl.downloadData);
 
 
