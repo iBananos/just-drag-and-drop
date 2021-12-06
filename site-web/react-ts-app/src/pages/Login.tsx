@@ -1,7 +1,6 @@
-import React from 'react';
+
 import { NavLink } from 'react-router-dom';
 import Navigation from '../components/Navigation';
-import Home from './Home';
 
 var pathUrl =  window.location
 if(pathUrl.origin === "http://localhost:3000"){

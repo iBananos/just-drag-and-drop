@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Navigation from '../components/Navigation';
 var pathUrl =  window.location
 if(pathUrl.origin === "http://localhost:3000"){

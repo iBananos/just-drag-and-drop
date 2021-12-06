@@ -1,4 +1,4 @@
-import React from 'react';
+
 import BarreLaterale from '../components/BarreLaterale';
 import Navigation from '../components/Navigation';
 import * as utils from "../Utils";
