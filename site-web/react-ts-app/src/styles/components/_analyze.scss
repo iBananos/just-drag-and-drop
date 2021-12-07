@@ -50,6 +50,14 @@ select{
     display: none
     
 }
+.Automatic{
+    display: none
+    
+}
+.Automatic2{
+    display: none
+    
+}
 .RandomForest{
     
     display: none
@@ -162,6 +170,19 @@ table{
     width: 200px;
     height: 40px;
     margin-top: 100px;
+}
+
+.boutonSendanalyze:disabled{
+    color:gray;
+    
+    background-color: $color_back;
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur($blur);
+    &:hover{
+        cursor:default;
+        color: gray;
+        background-color: $color_back;
+    }
 }
 .divinput{
     width: 100%;

@@ -22,17 +22,21 @@ const Analyze = () =>  {
 
     function displayParameter(ev :any){
         var algo = ev.target.value;
+        (document.getElementById("Automatic")as HTMLElement).style.display = "none";
         (document.getElementById("GradientBoosting")as HTMLElement).style.display = "none";
         (document.getElementById("RandomForest")as HTMLElement).style.display = "none";
         (document.getElementById("Ridge")as HTMLElement).style.display = "none";
         //(document.getElementById("BayesianARDRegression")as HTMLElement).style.display = "none";
+        (document.getElementById("Automatic2")as HTMLElement).style.display = "none";
         (document.getElementById("LinearSVC")as HTMLElement).style.display = "none";
         (document.getElementById("AdaBoost")as HTMLElement).style.display = "none";
         (document.getElementById("GradientBoosting2")as HTMLElement).style.display = "none";
         (document.getElementById("RandomForest2")as HTMLElement).style.display = "none";
         (document.getElementById("LogisticRegression")as HTMLElement).style.display = "none";
         (document.getElementById('divinput') as HTMLInputElement).style.display = "block";
-            if(algo === "GradientBoosting"){
+            if(algo === "Automatic"){
+                (document.getElementById("Automatic")as HTMLElement).style.display = "block";
+            }else if(algo === "GradientBoosting"){
                 (document.getElementById("GradientBoosting")as HTMLElement).style.display = "block";
             }else if(algo === "RandomForest"){
                 (document.getElementById("RandomForest")as HTMLElement).style.display = "block";
@@ -40,8 +44,9 @@ const Analyze = () =>  {
                 (document.getElementById("Ridge")as HTMLElement).style.display = "block";
             }else if(algo === "BayesianARDRegression"){
                 (document.getElementById("BayesianARDRegression")as HTMLElement).style.display = "block";
-            }
-            if(algo === "LinearSVC"){
+            }else if(algo === "Automatic2"){
+                (document.getElementById("Automatic2")as HTMLElement).style.display = "block";
+            }else if(algo === "LinearSVC"){
                 (document.getElementById("LinearSVC")as HTMLElement).style.display = "block";
             }else if(algo === "AdaBoost"){
                 (document.getElementById("AdaBoost")as HTMLElement).style.display = "block";
@@ -157,6 +162,7 @@ const Analyze = () =>  {
 
 
     function sendRequest(ev :any){
+        (document.getElementById("boutonSendanalyze") as HTMLButtonElement).disabled = true;
         var algo = ev.target.value
         var database = (document.getElementById("SelectDB") as HTMLSelectElement).value
         var requestAnalyze : string ="";
@@ -174,7 +180,18 @@ const Analyze = () =>  {
                 }
             }
         }
-            if(algo === "GradientBoosting"){
+        if(algo === "Automatic"){
+            requestAnalyze = JSON.stringify({"nameAnalyze":name,
+                                            "database" : database,
+                                            "date":date,
+                                            "pred":pred,
+                                            "feature":features,
+                                            "category":"Regression",
+                                            "algo":algo, 
+                                            "params" : {
+                                                
+                                            }});
+        }else if(algo === "GradientBoosting"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
@@ -214,6 +231,16 @@ const Analyze = () =>  {
                                                     "solver" : (document.getElementById("solver3")as HTMLSelectElement).value,
                                                     "alpha" : (document.getElementById("alpha3")as HTMLInputElement).value}
                                                 });
+            }else if(algo === "Automatic"){
+                requestAnalyze = JSON.stringify({"nameAnalyze":name,
+                                                "database" : database,
+                                                "date":date,
+                                                "pred":pred,
+                                                "feature":features,
+                                                "category":"Classification",
+                                                "algo":algo, 
+                                                "params" : {
+                                                }});
             }else if(algo === "BayesianARDRegression"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
@@ -301,7 +328,8 @@ const Analyze = () =>  {
                                                 }});
         }
         console.log(requestAnalyze);
-        (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "Sending request, please wait..."
+        (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "Sending request, please wait...";
+        
         utils.default.sendRequestWithToken('POST', '/api/analyze/parameters', requestAnalyze, callbackRequest);
         
         
@@ -309,11 +337,13 @@ const Analyze = () =>  {
 
     function callbackRequest(response : any) {
         if(response.split(".")[0] !== "ok"){
-            (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = response
+            (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = response;
+            (document.getElementById("boutonSendanalyze") as HTMLButtonElement).disabled = false;
         }else{
             (document.getElementById("view") as HTMLDivElement).style.display = "none";
             (document.getElementById("loading") as HTMLDivElement).style.display = "block";
-            window.location.href = "/analyzeView?type=prediction&url="+response.split(".")[1];
+            console.log(response)
+            //window.location.href = "/analyzeView?type=prediction&url="+response.split(".")[1];
         }
         
     }
@@ -362,6 +392,10 @@ const Analyze = () =>  {
                 
                 <br />
                 <div className="Algos1" id="Algos1">
+                    <input className="checkbox-tools" type="radio" onClick={displayParameter}value="Automatic" name="algoPick" id="tool-0" />
+						<label className="for-checkbox-tools" htmlFor="tool-0" >
+                        Automatic
+						</label>
                     <input className="checkbox-tools" type="radio" onClick={displayParameter}value="GradientBoosting" name="algoPick" id="tool-1" />
 						<label className="for-checkbox-tools" htmlFor="tool-1" >
                         Gradient Boosting
@@ -376,7 +410,11 @@ const Analyze = () =>  {
 						</label>
                     
                 </div>
-                <div className="Algos2" id="Algos2">    
+                <div className="Algos2" id="Algos2">  
+                    <input className="checkbox-tools" type="radio" onClick={displayParameter}value="Automatic2" name="algoPick" id="tool-10" />
+						<label className="for-checkbox-tools" htmlFor="tool-10" >
+                        Automatic
+						</label>  
                     <input className="checkbox-tools" onClick={displayParameter}value="LinearSVC" type="radio" name="algoPick" id="tool-5"/>
 						<label className="for-checkbox-tools" htmlFor="tool-5">
                         LinearSVC
@@ -399,6 +437,11 @@ const Analyze = () =>  {
 						</label>
                 </div>
                 <div className="Parametre">
+                <div className="Automatic" id="Automatic">
+                    <p>This is a beta option.</p>
+                <button value="Automatic" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
+                </div>
+
                 <div className="GradientBoosting" id="GradientBoosting">
                 <table><tbody>
                     <tr><td>learning_rate <img src={help} className="help" alt="" title="Learning rate shrinks the contribution of each tree by learning_rate.
@@ -413,7 +456,7 @@ robust to over-fitting so a large number usually results in better performance."
 - If float, then min_samples_split is a fraction and ceil(min_samples_split * n_samples) are the minimum number of samples for each split.
 "/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split1"/></td></tr>
                 </tbody></table>
-                <button value="GradientBoosting" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
+                <button value="GradientBoosting" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="RandomForest" id="RandomForest">
                 <table><tbody>
@@ -427,7 +470,7 @@ min_samples_split samples.
     are the minimum number of samples for each split.
 "/></td><td><InputNumber  min="0" step="2"defaultValue={2}  id="min_samples_split2"/></td></tr>
                 </tbody></table>
-                <button value="RandomForest" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
+                <button value="RandomForest" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="Ridge" id="Ridge">
                 <table><tbody>
@@ -457,7 +500,11 @@ as LogisticRegression or LinearSVC. If an array is passed, penalties are
 assumed to be specific to the targets. Hence they must correspond in
 number."/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="alpha3"/></td></tr>
                     </tbody></table>
-                    <button value="Ridge" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
+                    <button value="Ridge" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
+                </div>
+                <div className="Automatic2" id="Automatic2">
+                    <p>This is a beta option.</p>
+                <button value="Automatic2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="BayesianARDRegression" id="BayesianARDRegression">
                 <table><tbody>
@@ -469,7 +516,7 @@ Gamma distribution prior over the alpha parameter."/></td><td><InputNumber  min=
 over the lambda parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="lambda_14"/></td><td>lambda_2 <img src={help} className="help" alt="" title="Hyper-parameter : inverse scale parameter (rate parameter) for the
 Gamma distribution prior over the lambda parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="lambda_24"/></td></tr>
                     </tbody></table>
-                    <button value="BayesianARDRegression" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
+                    <button value="BayesianARDRegression" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="LinearSVC" id="LinearSVC">
                     <table><tbody>
@@ -487,7 +534,7 @@ frequencies in the input data as n_samples / (n_classes * np.bincount(y))."/></t
                         <option value="dict">dict</option>
                         <option value="balanced">balanced</option></select></td></tr>
                         </tbody></table>
-                        <button value="LinearSVC" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
+                        <button value="LinearSVC" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="AdaBoost" id="AdaBoost">
                 <table><tbody>
@@ -496,14 +543,14 @@ In case of perfect fit, the learning procedure is stopped early."/></td><td><Inp
 learning rate increases the contribution of each classifier. There is a
 trade-off between the learning_rate and n_estimators parameters."/></td><td><InputNumber  min="0" step="1"  defaultValue={1} id="learning_rate6"/></td></tr>
                     </tbody></table>
-                    <button value="AdaBoost" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
+                    <button value="AdaBoost" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="GradientBoosting2" id="GradientBoosting2">
                 <table><tbody>
                 <tr><td>learning_rate <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="0.1" defaultValue={0.1} id="learning_rate7"/></td><td>n_estimators <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators7"/></td></tr>
                 <tr><td>max_depth <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth7"/></td><td>min_samples_split <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split7"/></td></tr>
                     </tbody></table>
-                    <button value="GradientBoosting2" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
+                    <button value="GradientBoosting2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="RandomForest2" id="RandomForest2">
                 <table><tbody>
@@ -529,7 +576,7 @@ sample_weight is specified.
                         <option value="balanced">balanced</option>
                         <option value="balanced_subsample">balanced_subsample</option></select></td></tr>
                         </tbody></table>
-                        <button value="RandomForest2" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
+                        <button value="RandomForest2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="LogisticRegression" id="LogisticRegression">
                 <table><tbody>
@@ -556,7 +603,7 @@ specified. New in version 0.17: class_weight=’balanced’"/></td><td><select  
                         <option value="balanced">balanced</option></select></td></tr>
                         <tr><td>max_iter <img src={help} className="help" alt="" title="Maximum number of iterations taken for the solvers to converge."/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="max_iter9"/></td></tr>
                     </tbody></table>
-                    <button value="LogisticRegression" onClick={sendRequest} className="boutonSendanalyze">Analyze</button>
+                    <button value="LogisticRegression" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 </div>
                 <div className="divinput" id="divinput">

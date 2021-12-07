@@ -13,7 +13,10 @@ import { resolveSoa } from 'dns';
  */
  export const  parameters : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     var reponse = checkAnalyze(req)
-    
+    if(reponse !== 'ok' && reponse !== "Automatic" && reponse !== "Automatic2"){
+        res.send(reponse)
+        return
+    }
     var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/');
     var nomFichier = req.body.nameAnalyze;
     if (nomFichier === "") nomFichier = "analyze";
@@ -25,14 +28,10 @@ import { resolveSoa } from 'dns';
         nomFichier = nomFichier+"("+acc+")";
         acc++;
     }
-
     const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
     let nom = aesCipher.encrypt(Buffer.from(nomFichier + ".json"));
     req.body.nameAnalyze = nomFichier;
-    if(reponse !== 'ok'){
-        res.send(reponse)
-        return
-    }
+    
     req.body.type = "prediction";
     fs.writeFile('uploads/' + req.body.userId + '/analyseInfo/' + nom, aesCipher.encrypt(Buffer.from(JSON.stringify(req.body))), async function (err) {
         if (err) {
@@ -40,40 +39,58 @@ import { resolveSoa } from 'dns';
         } else{
             var analyze_choice = req.body.category;
             var algo_choice = req.body.algo;
-            var list_param : string[] = [];
+            
 
             let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/database/", req.body.database);
             var filename = 'uploads/' + req.body.userId + '/database/' + targetBase;
             var features = req.body.feature;
             console.log(req.body.feature);
             var pred = req.body.pred;
-            Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
-            //var resultats :any = await  Utils.default.callPython(filename,features,pred,list_param,analyze_choice,algo_choice)
-
             let extension = req.body.database.split(".")[1];
-
             
-            exec('python3 python/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
-                if (error) {
-                    console.error(`error: ${error.message}`);
-                    return;
-                }
-              
-                if (stderr) {
-                    console.error(`stderr: ${stderr}`);
-                    return;
-                }
-                
-                fs.writeFile('uploads/' + req.body.userId + '/analyse/' + aesCipher.encrypt(Buffer.from(nomFichier + ".csv")), aesCipher.encrypt(Buffer.from(stdout)), function (err) {
-                    if (err) {
-                        res.send('error'); 
-                    } else {
-                        res.send("ok."+nomFichier)
+            if( reponse === "Automatic" || reponse === "Automatic2"){
+                exec('python3 python/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+                    if (error) {
+                        console.error(`error: ${error.message}`);
+                        return;
                     }
-                });
-              });
-            
-            
+                  
+                    if (stderr) {
+                        console.error(`stderr: ${stderr}`);
+                        return;
+                    }
+                    
+                    fs.writeFile('uploads/' + req.body.userId + '/analyse/' + aesCipher.encrypt(Buffer.from(nomFichier + ".csv")), aesCipher.encrypt(Buffer.from(stdout)), function (err) {
+                        if (err) {
+                            res.send('error'); 
+                        } else {
+                            res.send("ok."+nomFichier)
+                        }
+                    });
+                  });
+            }else{
+                var list_param : string[] = [];
+                Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
+                exec('python3 python/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+                    if (error) {
+                        console.error(`error: ${error.message}`);
+                        return;
+                    }
+                  
+                    if (stderr) {
+                        console.error(`stderr: ${stderr}`);
+                        return;
+                    }
+                    
+                    fs.writeFile('uploads/' + req.body.userId + '/analyse/' + aesCipher.encrypt(Buffer.from(nomFichier + ".csv")), aesCipher.encrypt(Buffer.from(stdout)), function (err) {
+                        if (err) {
+                            res.send('error'); 
+                        } else {
+                            res.send("ok."+nomFichier)
+                        }
+                    });
+                  });
+            }
         }
     });
 };
@@ -119,9 +136,9 @@ function checkAnalyze(req:any){
 
     // vérif algo
     if(typeof algo_choice !== 'string') return "algo_choice n'est pas une string"
-    if(analyze_choice === 'Regression' && !['GradientBoosting','RandomForest','Ridge'].includes(algo_choice)) return "algo_choice n'est pas un algo valide pour une régression"
-    if(analyze_choice === 'Classification' && !['LinearSVC','AdaBoost','GradientBoosting2','RanddomForest2','LogisticRegression'].includes(algo_choice)) return "algo_choice n'est pas un algo valide pour une classification"
-
+    if(analyze_choice === 'Regression' && !['Automatic','GradientBoosting','RandomForest','Ridge'].includes(algo_choice)) return "algo_choice n'est pas un algo valide pour une régression"
+    if(analyze_choice === 'Classification' && !['Automatic2','LinearSVC','AdaBoost','GradientBoosting2','RanddomForest2','LogisticRegression'].includes(algo_choice)) return "algo_choice n'est pas un algo valide pour une classification"
+    if(algo_choice === "Automatic" || algo_choice === "Automatic2") return algo_choice;
     // vérif params
     if(verifParams(req.body.params,algo_choice,analyze_choice)) return "les params ne sont pas valide pour l'algo choisit"
 

@@ -10,14 +10,46 @@ from sklearn import linear_model
 from sklearn.preprocessing import LabelEncoder
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.model_selection import GridSearchCV,RandomizedSearchCV
+from aesCipher import AESCipher
+import time
+import sys
+from io import StringIO
+
+
+filename = sys.argv[1]
+extension = sys.argv[2]
+features = sys.argv[3]
+pred = sys.argv[4]
+key = sys.argv[5]
+toEncrypt = sys.argv[6]
+
+
+def parse_data(filename):
+
+    if extension == "csv" :
+            # Assume that the user uploaded a CSV or TXT file
+        df = pd.read_csv(filename,index_col=0, delimiter=',', encoding="utf-8")
+    elif extension == 'xlsx' :
+            # Assume that the user uploaded an excel file
+        df = pd.read_excel(filename,index_col=0,encoding="utf-8")
+    elif extension == 'txt' or extension == 'tsv' :
+            # Assume that the user upl, delimiter = r'\s+'oaded an excel file
+        df = pd.read_csv(filename, delimiter = r'\s+',index_col=0, encoding="utf-8")
+    elif extension == 'json' :
+        df = pd.read_json(filename)
+    else :
+        print("There was an error while processing this file")
+    
+    return df
+
 def autoselection(feature,predict,filename):
-    data=pd.read_csv(filename)
+    data=parse_data(filename)
     data=data.dropna()
     n=min(len(data),1000)
     dataselect=data.sample(n=n)
-    meta_feature=pd.read_csv('meta_featuretest.csv')
-    y=dataselect[predict]
+    #meta_feature=pd.read_csv('meta_featuretest.csv')
     X=dataselect[feature]
+    y=dataselect[predict]
     X=X.to_numpy()
     y=y.to_numpy()
     mfe = MFE(groups=["general", "statistical", "info-theory"])#features=["min","max","sd","attr_to_inst","mean","cat_to_num","nr_attr", "nr_bin", "nr_cat","nr_inst",'nr_num',"num_to_cat", "nr_class","attr_ent",'cor','cov',"nr_cor_attr",'mad',"nr_outliers","skewness"])
@@ -75,7 +107,7 @@ def autoselection(feature,predict,filename):
     for i,j in enumerate(algoselection.values):
         scoring=[]
         algobest=[]
-        print(j)
+        #print(j)
         if j==1:
             reg = linear_model.ElasticNet()
             reg.fit(X_train, y_train)
@@ -232,5 +264,20 @@ def autoselection(feature,predict,filename):
         SGDReg=linear_model.SGDRegressor()
         reg = GridSearchCV(SGDReg, SGD_params, cv=3)  
         reg.fit(X_train, y_train)
-    print(r2_score(y_test,reg.predict(X_test)))
+    #print(r2_score(y_test,reg.predict(X_test)))
     return reg.predict(X_test)
+
+def decryptFile(filename) :
+    aesCipher = AESCipher(key)
+    encryptData = open(filename,'r').read()
+    csvPlainText = aesCipher.decrypt(encryptData)
+    return StringIO(csvPlainText)
+
+
+if __name__ == "__main__":
+    if toEncrypt == "true" :
+        data = decryptFile(filename)
+    else :
+        data = filename
+    #print(features.split(","),pred,filename)
+    print(autoselection(features.split(","),pred,data))
