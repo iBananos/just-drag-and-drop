@@ -13,7 +13,7 @@ from sklearn.model_selection import GridSearchCV,RandomizedSearchCV
 def autoselection(feature,predict,filename):
     data=pd.read_csv(filename)
     data=data.dropna()
-    n=min(len(data),2000)
+    n=min(len(data),1000)
     dataselect=data.sample(n=n)
     meta_feature=pd.read_csv('meta_featuretest.csv')
     y=dataselect[predict]
@@ -21,7 +21,6 @@ def autoselection(feature,predict,filename):
     X=X.to_numpy()
     y=y.to_numpy()
     mfe = MFE(groups=["general", "statistical", "info-theory"])#features=["min","max","sd","attr_to_inst","mean","cat_to_num","nr_attr", "nr_bin", "nr_cat","nr_inst",'nr_num',"num_to_cat", "nr_class","attr_ent",'cor','cov',"nr_cor_attr",'mad',"nr_outliers","skewness"])
-    
     mfe.fit(X, y)
     ft = mfe.extract()
     df = pd.DataFrame(ft, columns=ft[0])
@@ -56,7 +55,10 @@ def autoselection(feature,predict,filename):
 
     algoselection2=testone[testone['pred2']==True]
     algoselection2=algoselection2['algo']
-
+    if len(algoselection2)==0:
+        testone['pred2']=[True,True,True,True,True,True,True]
+        algoselection2=testone[testone['pred2']==True]
+        algoselection2=algoselection2['algo']
     obj_df = data.select_dtypes(include=['object']).copy()
     lb_make = LabelEncoder()
     for i in range(len(obj_df.columns.values)):
@@ -70,41 +72,41 @@ def autoselection(feature,predict,filename):
     X = (X-X.mean())/X.std()
     y=data[predict]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    print(algoselection)
     for i,j in enumerate(algoselection.values):
         scoring=[]
         algobest=[]
-        if j==0:
+        print(j)
+        if j==1:
             reg = linear_model.ElasticNet()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('ElasticNet')
-        if j==1:
+        if j==2:
             reg = GradientBoostingRegressor()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('GradientBoostingRegressor')
-        if j==2:
+        if j==3:
             reg = KNeighborsRegressor()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('KNeighborsRegressor')
-        if j==3:
+        if j==4:
             reg = linear_model.Lasso()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('Lasso')
-        if j==4:
+        if j==5:
             reg = RandomForestRegressor()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('RandomForestRegressor')
-        if j==5:
+        if j==6:
             reg = linear_model.Ridge()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('Ridge')
-        if j==6:
+        if j==7:
             reg = linear_model.SGDRegressor()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
@@ -179,11 +181,10 @@ def autoselection(feature,predict,filename):
             'max_features': max_features}
 
         # Set up the random search with 4-fold cross validation
-        reg = RandomizedSearchCV(estimator=GradientBoostingRegressor,
+        reg = RandomizedSearchCV(estimator=GradientBoostingRegressor(),
                     param_distributions=hyperparameter_grid,
                     cv=3, n_iter=50,
                     scoring = 'neg_mean_absolute_error',n_jobs = 4,
-                    verbose = 5, 
                     return_train_score = True,
                     random_state=42)
         reg.fit(X_train, y_train)
@@ -233,6 +234,3 @@ def autoselection(feature,predict,filename):
         reg.fit(X_train, y_train)
     print(r2_score(y_test,reg.predict(X_test)))
     return reg.predict(X_test)
-autoselection(['depth','carat'],['price'],'data/bigdata/diamonds.csv')
-
-
