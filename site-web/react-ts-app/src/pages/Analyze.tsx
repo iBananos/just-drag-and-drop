@@ -301,13 +301,21 @@ const Analyze = () =>  {
                                                 }});
         }
         console.log(requestAnalyze);
-        (document.getElementById("view") as HTMLDivElement).style.display = "none";
-        (document.getElementById("loading") as HTMLDivElement).style.display = "block";
+        (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "Sending request, please wait..."
         utils.default.sendRequestWithToken('POST', '/api/analyze/parameters', requestAnalyze, callbackRequest);
+        
+        
     }
 
     function callbackRequest(response : any) {
-        window.location.href = "/analyzeView?type=prediction&url="+response;
+        if(response.split(".")[0] !== "ok"){
+            (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = response
+        }else{
+            (document.getElementById("view") as HTMLDivElement).style.display = "none";
+            (document.getElementById("loading") as HTMLDivElement).style.display = "block";
+            window.location.href = "/analyzeView?type=prediction&url="+response.split(".")[1];
+        }
+        
     }
     
     function developper(ev : any){
@@ -553,7 +561,9 @@ specified. New in version 0.17: class_weight=’balanced’"/></td><td><select  
                 </div>
                 <div className="divinput" id="divinput">
                     <input type="text" className="analyzeName" id="analyzeName" placeholder="Analyze name..."></input>
+                    <p id="reponseServeur"></p>
                 </div>
+
             </div>
             </div>
             <BarreLaterale />
