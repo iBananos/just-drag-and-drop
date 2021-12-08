@@ -1,224 +1,248 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.svm import LinearSVC
-from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier, RandomForestClassifier, GradientBoostingRegressor,RandomForestRegressor
-from sklearn.linear_model import LogisticRegression, Ridge, ARDRegression
-from sklearn.metrics import r2_score
+from pymfe.mfe import MFE
+import joblib
 from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import confusion_matrix
-from io import StringIO
-from aesCipher import AESCipher
-import time
-import sys
-
-
-filename = sys.argv[1]
-extension = sys.argv[2]
-features = sys.argv[3]
-pred = sys.argv[4]
-list_param = sys.argv[5]
-analyze_choice = sys.argv[6]
-algo_choice = sys.argv[7]
-key = sys.argv[8]
-toEncrypt = sys.argv[9]
-
-
-####fonction pour pouvoir lire les databases et les transformer en dataframes
-
-def parse_data(filename):
-
-    if extension == "csv" :
-            # Assume that the user uploaded a CSV or TXT file
-        df = pd.read_csv(filename,index_col=0, delimiter=',', encoding="utf-8")
-    elif extension == 'xlsx' :
-            # Assume that the user uploaded an excel file
-        df = pd.read_excel(filename,index_col=0,encoding="utf-8")
-    elif extension == 'txt' or extension == 'tsv' :
-            # Assume that the user upl, delimiter = r'\s+'oaded an excel file
-        df = pd.read_csv(filename, delimiter = r'\s+',index_col=0, encoding="utf-8")
-    elif extension == 'json' :
-        df = pd.read_json(filename)
-    else :
-        print("There was an error while processing this file")
-    
-    return df
-
-####fonction qui vérifie le type des colonnes et transforme les string en float si possible
-####(cette fonction est appelee dans correlation_matrix et get_describe, si tu veux pas l'utiliser,
-####faudra l'enlever aussi de ces deux fonctions mais tu me diras au pire (nico voulait que je te les envoie au cas ou))
-
-def check_type(filename) :
-    data=parse_data(filename)
-    obj_df = data.select_dtypes(include=['object']).copy()
-    for i in range(len(obj_df.columns.values)):
-        try:
-            obj_df[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]].astype(float)
-            data[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
-            return True
-        except:
-            obj_df[obj_df.columns.values[i]]=obj_df[obj_df.columns.values[i]]
-    return True
-
-###fonction qui retourne une liste contenant la matrice de correlation de la database
-
-def correlation_matrix(filename) : 
-    df = parse_data(filename)
-    if check_type(filename) == True : 
-        cm = df.corr()
-        list_corr = [cm.columns.tolist()] + cm.reset_index().values.tolist()
-    else :
-        print("issue with data types")
-    return list_corr
-
-###fonction qui retourne une liste contenant la description de la database
-
-def get_describe(filename,choice) :
-    df = parse_data(filename)
-    if check_type(filename) == True : 
-        des = df.describe()
-        list_des = [des.columns.tolist()] + des.reset_index().values.tolist()
-    else : 
-        print("issue with data types")
-    return list_des
-
-###fonction pour pouvoir récupérer les parametres par default
-
-def get_parameters_default(algo_choice):
-    if algo_choice == "LinearSVC":
-        list_parameters_default = ["l2",1e-14,1.0,None]
-    elif algo_choice == "AdaBoost" :
-        list_parameters_default = [50,1.0]
-    elif algo_choice == "GradientBoosting" :
-        list_parameters_default = [0.1,100,3,2]
-    elif algo_choice == "RandomForest" :
-        list_parameters_default = [100,None,2,None]
-    elif algo_choice == "LogisticRegression" :
-        list_parameters_default = ["l2",1e-14,1.0,None,100]
-    elif algo_choice == "Ridge" :
-        list_parameters_default = [1e-13,"auto",1.0]
-    elif algo_choice == "BayesianARDRegression" :
-        list_parameters_default = [300,1e-3,1e-6,1e-6,1e-6,1e-6,]
-    else : 
-        print("choose an available algorithm")
-    return list_parameters_default
-
-###fonction qui permet de recuperer la liste des parametres apres avoir verifie pour chaque parametre si c'est celui
-###par default ou non
-
-def get_list_parameters(algo_choice,list_parameters) : 
-    list_parameters_default = get_parameters_default(algo_choice)
-    #for i in range(len(list_parameters)) :
-    #    if list_parameters[i] == None : ###si c'est un param par default
-    #        list_parameters[i] = list_parameters_default[i]
-    #    else : 
-    #        list_parameters[i] = list_parameters[i] 
-    ##return list_parameters
-    return list_parameters_default
-
-
-def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_choice) :
-    df = parse_data(filename)
-    X=df[features]
-    y=df[pred]
-    df=pd.concat([X,y],axis=1)
-    df=df.dropna()
+import numpy as np
+from sklearn.ensemble import GradientBoostingRegressor,RandomForestRegressor 
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
+from sklearn import linear_model
+from sklearn.preprocessing import LabelEncoder
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.model_selection import GridSearchCV,RandomizedSearchCV
+def autoselection(feature,predict,filename):
+    data=pd.read_csv(filename)
+    n=min(len(data),1000)
+    dataselect=data.sample(n=n)
+    featurepredict=np.concatenate((predict, feature), axis=None)
+    dataselect=dataselect[featurepredict]
+    dataselect=dataselect.dropna()
+    y=dataselect[predict]
+    X=dataselect[feature]
+    X=X.to_numpy()
+    y=y.to_numpy()
+    #mfe = MFE(groups=["general", "statistical", "info-theory"])#features=["min","max","sd","attr_to_inst","mean","cat_to_num","nr_attr", "nr_bin", "nr_cat","nr_inst",'nr_num',"num_to_cat", "nr_class","attr_ent",'cor','cov',"nr_cor_attr",'mad',"nr_outliers","skewness"])
+    mfe=MFE(features=['attr_conc', 'attr_to_inst', 'cat_to_num','class_conc', 'cor', 'cov',  'eigenvalues', 'eq_num_attr', 'freq_class',  'g_mean', 'gravity', 'inst_to_attr','joint_ent','kurtosis', 'mad','max', 'mean', 'median', 'min', 'mut_inf', 'nr_attr', 'nr_bin', 'nr_class', 'nr_cor_attr','nr_inst', 'nr_norm', 'nr_num', 'nr_outliers', 'ns_ratio','range', 'sd', 'skewness', 'sparsity', 't_mean', 'var'])
+    mfe.fit(X, y)
+    ft = mfe.extract()
+    df = pd.DataFrame(ft, columns=ft[0])
+    df=df.replace([np.inf, -np.inf], np.nan)
+    df.values[1]=df.values[1].astype(float)
+    df=df.drop(df.index[[0]])
     df=df.reset_index(drop=True)
-    obj_df = df.select_dtypes(include=['object']).copy()
+    FirstModel = joblib.load('FirstTOP1.sav')
+    SecondaryModel = joblib.load('SecondaryTOP1.sav')
+    earlystop = joblib.load('Goodpredictor.sav')
+    index = [0, 0, 0, 0, 0, 0, 0]
+    algo = pd.DataFrame(['SGDRegressor','Lasso','Ridge','Gradient','RandomForest','ElasticNet','KNeighborsRegressor'], columns=['algo'],index=index)
+    testone=pd.concat([df,algo],axis=1)
+    for i,j in enumerate(testone.columns):
+        try:
+            testone[j]=testone[j].astype(float)
+        except:
+            break
+    obj_df = testone.select_dtypes(include=['object']).copy()
     lb_make = LabelEncoder()
     for i in range(len(obj_df.columns.values)):
-                obj_df[obj_df.columns.values[i]] = lb_make.fit_transform(obj_df[obj_df.columns.values[i]])
-                df[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
-    X=df[features]
-    y=df[pred]
+        obj_df[obj_df.columns.values[i]] = lb_make.fit_transform(obj_df[obj_df.columns.values[i]])
+        testone[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
+    testone=testone.fillna(-1)
+    print('eee')
+    stopcalcul=earlystop.predict(testone)
+    print(stopcalcul)
+    print(stopcalcul==True)
+    print(stopcalcul[0])
+    if stopcalcul[0]==False and stopcalcul[1]==False and stopcalcul[2]==False and stopcalcul[3]==False and stopcalcul[4]==False and stopcalcul[5]==False and stopcalcul[5]==False:
+        return 'You will not getting good prediction with your dataset'
+    print(testone.columns)
+    pred1=FirstModel.predict(testone)
+    testone['pred2']=SecondaryModel.predict(testone)
+    testone['pred']=pred1
+    algoselection=testone[testone['pred']==True]
+    algoselection=algoselection['algo']
+
+    algoselection2=testone[testone['pred2']==True]
+    algoselection2=algoselection2['algo']
+    if len(algoselection2)==0 and len(algoselection)==0:
+        print('warning its going to be long')
+        testone['pred2']=[True,True,True,True,True,True,True]
+        algoselection2=testone[testone['pred2']==True]
+        algoselection2=algoselection2['algo']
+    obj_df = data.select_dtypes(include=['object']).copy()
+    lb_make = LabelEncoder()
+    for i in range(len(obj_df.columns.values)):
+        try:
+            print('eee')
+            obj_df[obj_df.columns.values[i]] = lb_make.fit_transform(obj_df[obj_df.columns.values[i]])
+            data[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
+        except:
+            print(obj_df.columns.values[i]+' contient des NaN')
     
+    X=data[feature]
     X = (X-X.mean())/X.std()
-    X_train, X_test, y_train, y_test =  train_test_split(X, y, test_size=0.2, random_state=42)
-    if analyze_choice == "Regression" : 
-        
-        parameters = get_list_parameters(algo_choice,list_param)
-        
-        if algo_choice == "GradientBoosting" :
-            model = GradientBoostingRegressor(learning_rate=parameters[0], n_estimators=parameters[1], max_depth=parameters[2], min_samples_split=parameters[3])
-            model.fit(X_train, y_train)
-            prediction = model.predict(X_test)
-            score = r2_score(y_test,model.predict(X_test))
-        elif algo_choice == "RandomForest" :
-            model = RandomForestRegressor(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2])
-            model.fit(X_train,y_train)
-            prediction = model.predict(X_test)
-            score = r2_score(y_test,model.predict(X_test))
-        elif algo_choice == "Ridge" :
-            model = Ridge(tol=parameters[0], solver=parameters[1],alpha=parameters[2])
-            model.fit(X_train,y_train)
-            prediction = model.predict(X_test)
-            score = r2_score(y_test,model.predict(X_test))
-        elif algo_choice == "BayesianARDRegression" :
-            model = ARDRegression(n_iter=parameters[0], tol=parameters[1],alpha_1=parameters[2], alpha_2=parameters[3], lambda_1=parameters[4], lambda_2=parametetrs[5])
-            model.fit(X_train,y_train)
-            prediction = model.predict(X_test)
-            score = r2_score(y_test,model.predict(X_test))
-        else : 
-            print("choose an available alogrithm")
+    y=data[predict]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    for i,j in enumerate(algoselection.values):
+        scoring=[]
+        algobest=[]
+        print(j)
+        if j==1:
+            reg = linear_model.ElasticNet()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('ElasticNet')
+        if j==2:
+            reg = GradientBoostingRegressor()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('GradientBoostingRegressor')
+        if j==3:
+            reg = KNeighborsRegressor()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('KNeighborsRegressor')
+        if j==4:
+            reg = linear_model.Lasso()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('Lasso')
+        if j==5:
+            reg = RandomForestRegressor()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('RandomForestRegressor')
+        if j==6:
+            reg = linear_model.Ridge()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('Ridge')
+        if j==7:
+            reg = linear_model.SGDRegressor()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('SGDRegressor')
+    try:
+        alltesting = pd.DataFrame(scoring, columns=['r2'],index=algobest)
 
-        prediction=pd.DataFrame(prediction,columns=['prediction'])
-        
-        y_test=y_test.reset_index(drop=True)
-        prediction_and_true=pd.concat([prediction,y_test],axis=1)
-        prediction_and_true = prediction_and_true.sample(n=100)
-        return prediction_and_true.to_csv(index=False)
-                             
-    elif analyze_choice == "Classification" :
-        target_name=pd.unique(df[pred].values.flatten())
-        target_name=sorted(target_name)
-    
-        parameters = get_list_parameters(algo_choice,list_param)
-        
-        if algo_choice == "LinearSVC" :
-            model = LinearSVC(penalty=parameters[0], tol=parameters[1], C=parameters[2], class_weight=parameters[3])
-            model.fit(X_train, y_train)
-            prediction = model.predict(X_test)
-        elif algo_choice == "AdaBoost" :
-            model = AdaBoostClassifier(n_estimators=parameters[0], learning_rate=parameters[1])
-            model.fit(X_train, y_train)
-            prediction = model.predict(X_test)
-        elif algo_choice == "GradientBoosting2" :
-            model = GradientBoostingClassifier(learning_rate=parameters[0], n_estimators=parameters[1], max_depth=parameters[2], min_samples_split=parameters[3])
-            model.fit(X_train, y_train)
-            prediction = model.predict(X_test)
-        elif algo_choice == "RandomForest2" :
-            model = RandomForestClassifier(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2], class_weight=parameters[3])
-            model.fit(X_train, y_train)
-            prediction = model.predict(X_test)
-        elif algo_choice == "LogisticRegression" :
-            model = LogisticRegression(penalty=parameters[0], tol=parameters[1],C=parameters[2], class_weight=parameters[3], max_iter=parameters[4])
-            model.fit(X_train, y_train)
-            prediction = model.predict(X_test)
-        else : 
-            print("choose an available alogrithm")
-                             
-        confusion_matrix2 = confusion_matrix(y_test, prediction)
-        #print(confusion_matrix2)
-        confusion_matrix2 = confusion_matrix2.astype(float)
-        #print(target_name)
-        return confusion_matrix2,target_name
-                             
-    else : 
-        print("wrong choice")
+        bestalgo=alltesting.idxmax()[0]
+    except:
+        for i,j in enumerate(algoselection2.values):
+            scoring=[]
+            algobest=[]
+            print(j)
+        if j==1:
+            reg = linear_model.ElasticNet()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('ElasticNet')
+        if j==2:
+            reg = GradientBoostingRegressor()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('GradientBoostingRegressor')
+        if j==3:
+            reg = KNeighborsRegressor()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('KNeighborsRegressor')
+        if j==4:
+            reg = linear_model.Lasso()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('Lasso')
+        if j==5:
+            reg = RandomForestRegressor()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('RandomForestRegressor')
+        if j==6:
+            reg = linear_model.Ridge()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('Ridge')
+        if j==7:
+            reg = linear_model.SGDRegressor()
+            reg.fit(X_train, y_train)
+            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            algobest.append('SGDRegressor')
+        alltesting = pd.DataFrame(scoring, columns=['r2'],index=algobest)
+        bestalgo=alltesting.idxmax()[0]
 
+    if bestalgo=='ElasticNet':
+        parametersGrid = {"max_iter": [1, 5, 10,20],
+                      "alpha": [0.001, 0.01, 0.1, 1, 10, 100],
+                      "l1_ratio": np.arange(0.0, 1.0, 0.1)}
+        eNet = linear_model.ElasticNet()
+        reg = GridSearchCV(eNet, parametersGrid, scoring='neg_mean_squared_error', cv=3)
+        reg.fit(X_train, y_train)
+    if bestalgo=='GradientBoostingRegressor':
+        n_estimators = [100, 500, 900, 1100]
+        max_depth = [3, 5, 10, 15]
+        min_samples_leaf = [1, 2, 4, 8] 
+        min_samples_split = [2, 4, 6]
+        max_features = ['auto', 'sqrt', 'log2', None]
 
+        # Define the grid of hyperparameters to search
+        hyperparameter_grid = {
+            'n_estimators': n_estimators,
+            'max_depth': max_depth,
+            'min_samples_leaf': min_samples_leaf,
+            'min_samples_split': min_samples_split,
+            'max_features': max_features}
 
-def decryptFile(filename) :
-    aesCipher = AESCipher(key)
-    encryptData = open(filename,'r').read()
-    csvPlainText = aesCipher.decrypt(encryptData)
-    return StringIO(csvPlainText)
-
-
-if __name__ == "__main__":
-    #print("HELLO world")
-    #print(filename,features.split(","),pred,list_param.split(","),analyze_choice,algo_choice)
-    if toEncrypt == "true" :
-        data = decryptFile(filename)
-    else :
-        data = filename
-    print(principal_fonction(data, features.split(","), pred, list_param, analyze_choice, algo_choice))
+        # Set up the random search with 4-fold cross validation
+        reg = RandomizedSearchCV(estimator=GradientBoostingRegressor(),
+                    param_distributions=hyperparameter_grid,
+                    n_iter=10,
+                    scoring = 'neg_mean_absolute_error',
+                    random_state=42,n_jobs = -1)
+        reg.fit(X_train, y_train)
+    if bestalgo=='KNeighborsRegressor':
+        param_grid = {'n_neighbors': list(range(4,25)),
+              'weights': ['uniform', 'distance']}
+        knn = KNeighborsRegressor()
+        reg = GridSearchCV(knn, param_grid)
+        reg.fit(X_train, y_train)
+    if bestalgo=='Lasso':
+        lasso_params = {'alpha':[0.02, 0.03, 0.05, 0.08, 0.1, 0.15, 0.2, 0.3, 0.5, 0.8]}
+        Lasso=linear_model.Lasso()
+        reg = GridSearchCV(Lasso, lasso_params, cv=3)
+        reg.fit(X_train, y_train)
+    if bestalgo=='RandomForestRegressor':
+        # Number of trees in random forest
+        n_estimators = [int(x) for x in np.linspace(start = 100, stop = 400, num = 10)]
+        # Number of features to consider at every split
+        max_features = ['auto', 'sqrt']
+        # Maximum number of levels in tree
+        max_depth = [int(x) for x in np.linspace(100, 300, num = 11)]
+        max_depth.append(None)
+        # Minimum number of samples required to split a node
+        min_samples_split = [1,2, 5]
+        # Minimum number of samples required at each leaf node
+        min_samples_leaf = [1, 2,5]
+        # Method of selecting samples for training each tree
+        bootstrap = [True,False]
+        random_grid = {'n_estimators': n_estimators,
+                    'max_features': max_features,
+                    'max_depth': max_depth,
+                    'min_samples_split': min_samples_split,
+                    'min_samples_leaf': min_samples_leaf,
+                    'bootstrap': bootstrap}
+        rf=RandomForestRegressor()
+        reg = RandomizedSearchCV(estimator = rf, param_distributions = random_grid, n_iter = 10,n_jobs = -1)
+        reg.fit(X_train, y_train)
+    if bestalgo=='Ridge':  
+        ridge_params = {'alpha':[0.02, 0.03, 0.05, 0.08, 0.1, 0.15, 0.2, 0.3, 0.5, 0.8]}
+        Ridge=linear_model.Ridge()
+        reg = GridSearchCV(Ridge, ridge_params, cv=3) 
+        reg.fit(X_train, y_train)
+    if bestalgo=='SGDRegressor': 
+        SGD_params = {'alpha':[0.001,0.02, 0.03, 0.05, 0.08, 0.1, 0.15, 0.2, 0.3, 0.5, 0.8]}
+        SGDReg=linear_model.SGDRegressor()
+        reg = GridSearchCV(SGDReg, SGD_params, cv=3)  
+        reg.fit(X_train, y_train)
+    prediction=pd.DataFrame(reg.predict(X_test),columns=['prediction'])
+    y_test=y_test.reset_index(drop=True)
+    prediction_and_true=pd.concat([prediction,y_test],axis=1)
+    prediction_and_true = prediction_and_true.sample(n=100)
+    return prediction_and_true.to_csv(index=False)
