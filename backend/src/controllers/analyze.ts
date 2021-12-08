@@ -47,7 +47,7 @@ import { resolveSoa } from 'dns';
             console.log(req.body.feature);
             var pred = req.body.pred;
             let extension = req.body.database.split(".")[1];
-            
+
             if( reponse === "Automatic" || reponse === "Automatic2"){
                 exec('python3 python/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
@@ -93,6 +93,32 @@ import { resolveSoa } from 'dns';
             }
         }
     });
+};
+
+export const deleteData : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyse/", req.body.path + ".csv");
+    if (targetBase != undefined) {
+        fs.unlink("uploads/" + req.body.userId + "/analyse/" + targetBase, function (err) {
+            if (err) {
+                console.error(err);
+                res.send("Erreur lors de la suppression");
+            } else {
+                console.log("File removed:", req.body.path);
+            }
+        });
+    }
+
+    let targetInfo = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyseInfo/", req.body.path + ".json");
+    if (targetInfo != undefined) {
+        fs.unlink("uploads/" + req.body.userId + "/analyseInfo/" + targetInfo, function (err) {
+            if (err) {
+                console.error(err);
+                res.send("Erreur lors de la suppression");
+            } else {
+                res.send("Base supprimée");
+            }
+        });
+    }
 };
 
 function checkAnalyze(req:any){

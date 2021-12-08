@@ -17,13 +17,11 @@ const ViewHistory = () => {
             <div id="date"></div>
             <div id="database"></div>
             <div id="type"></div>
-            <div id="first"></div>
-            <div id="second"></div>
-            <div id="third"></div>
             <div id="algo"></div>
             <div id="param"></div>
             <div id="informationRequesturl" className="informationRequest"></div>
             <div id="informationRequesttype" className="informationRequest"></div>
+            <div id="trashDiv"></div>
         </div>
     );
 };

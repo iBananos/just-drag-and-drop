@@ -13,6 +13,8 @@ router.post("/databases", auth, analyzeCtrl.databases);
 
 router.post("/informations", auth, analyzeCtrl.informations);
 
+router.post("/deleteData", auth, analyzeCtrl.deleteData);
+
 router.post("/downloadAnalyze", auth, analyzeCtrl.downloadAnalyze);
 // Exportation du router
 export default router;
