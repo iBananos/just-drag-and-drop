@@ -65,10 +65,9 @@ def correlation_matrix(filename) :
     df = parse_data(filename)
     if check_type(filename) == True : 
         cm = df.corr()
-        list_corr = [cm.columns.tolist()] + cm.reset_index().values.tolist()
     else :
         print("issue with data types")
-    return list_corr
+    return cm.to_csv(index=False)
 
 ###fonction qui retourne une liste contenant la description de la database
 
@@ -198,9 +197,9 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
                              
         confusion_matrix2 = confusion_matrix(y_test, prediction)
         #print(confusion_matrix2)
-        confusion_matrix2 = confusion_matrix2.astype(float)
         #print(target_name)
-        return confusion_matrix2,target_name
+        matrixoutput=pd.DataFrame(confusion_matrix2,columns=target_name,index=target_name)
+        return matrixoutput.to_csv(index=False)
                              
     else : 
         print("wrong choice")
