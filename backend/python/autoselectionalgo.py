@@ -10,49 +10,19 @@ from sklearn import linear_model
 from sklearn.preprocessing import LabelEncoder
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.model_selection import GridSearchCV,RandomizedSearchCV
-from aesCipher import AESCipher
-import time
-import sys
-from io import StringIO
-
-
-filename = sys.argv[1]
-extension = sys.argv[2]
-features = sys.argv[3]
-pred = sys.argv[4]
-key = sys.argv[5]
-toEncrypt = sys.argv[6]
-
-
-def parse_data(filename):
-
-    if extension == "csv" :
-            # Assume that the user uploaded a CSV or TXT file
-        df = pd.read_csv(filename,index_col=0, delimiter=',', encoding="utf-8")
-    elif extension == 'xlsx' :
-            # Assume that the user uploaded an excel file
-        df = pd.read_excel(filename,index_col=0,encoding="utf-8")
-    elif extension == 'txt' or extension == 'tsv' :
-            # Assume that the user upl, delimiter = r'\s+'oaded an excel file
-        df = pd.read_csv(filename, delimiter = r'\s+',index_col=0, encoding="utf-8")
-    elif extension == 'json' :
-        df = pd.read_json(filename)
-    else :
-        print("There was an error while processing this file")
-    
-    return df
-
 def autoselection(feature,predict,filename):
-    data=parse_data(filename)
-    data=data.dropna()
+    data=pd.read_csv(filename)
     n=min(len(data),1000)
     dataselect=data.sample(n=n)
-    #meta_feature=pd.read_csv('meta_featuretest.csv')
-    X=dataselect[feature]
+    featurepredict=np.concatenate((predict, feature), axis=None)
+    dataselect=dataselect[featurepredict]
+    dataselect=dataselect.dropna()
     y=dataselect[predict]
+    X=dataselect[feature]
     X=X.to_numpy()
     y=y.to_numpy()
-    mfe = MFE(groups=["general", "statistical", "info-theory"])#features=["min","max","sd","attr_to_inst","mean","cat_to_num","nr_attr", "nr_bin", "nr_cat","nr_inst",'nr_num',"num_to_cat", "nr_class","attr_ent",'cor','cov',"nr_cor_attr",'mad',"nr_outliers","skewness"])
+    #mfe = MFE(groups=["general", "statistical", "info-theory"])#features=["min","max","sd","attr_to_inst","mean","cat_to_num","nr_attr", "nr_bin", "nr_cat","nr_inst",'nr_num',"num_to_cat", "nr_class","attr_ent",'cor','cov',"nr_cor_attr",'mad',"nr_outliers","skewness"])
+    mfe=MFE(features=['attr_conc', 'attr_to_inst', 'cat_to_num','class_conc', 'cor', 'cov',  'eigenvalues', 'eq_num_attr', 'freq_class',  'g_mean', 'gravity', 'inst_to_attr','joint_ent','kurtosis', 'mad','max', 'mean', 'median', 'min', 'mut_inf', 'nr_attr', 'nr_bin', 'nr_class', 'nr_cor_attr','nr_inst', 'nr_norm', 'nr_num', 'nr_outliers', 'ns_ratio','range', 'sd', 'skewness', 'sparsity', 't_mean', 'var'])
     mfe.fit(X, y)
     ft = mfe.extract()
     df = pd.DataFrame(ft, columns=ft[0])
@@ -62,6 +32,7 @@ def autoselection(feature,predict,filename):
     df=df.reset_index(drop=True)
     FirstModel = joblib.load('FirstTOP1.sav')
     SecondaryModel = joblib.load('SecondaryTOP1.sav')
+    earlystop = joblib.load('Goodpredictor.sav')
     index = [0, 0, 0, 0, 0, 0, 0]
     algo = pd.DataFrame(['SGDRegressor','Lasso','Ridge','Gradient','RandomForest','ElasticNet','KNeighborsRegressor'], columns=['algo'],index=index)
     testone=pd.concat([df,algo],axis=1)
@@ -76,9 +47,10 @@ def autoselection(feature,predict,filename):
         obj_df[obj_df.columns.values[i]] = lb_make.fit_transform(obj_df[obj_df.columns.values[i]])
         testone[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
     testone=testone.fillna(-1)
-    testone=testone.drop('sd_ratio',axis=1)
-    testone=testone.drop('num_to_cat',axis=1)
-    
+    stopcalcul=earlystop.predict(testone)
+    if stopcalcul[0]==False and stopcalcul[1]==False and stopcalcul[2]==False and stopcalcul[3]==False and stopcalcul[4]==False and stopcalcul[5]==False and stopcalcul[5]==False:
+        return 'You will not getting good prediction with your dataset'
+    print(testone.columns)
     pred1=FirstModel.predict(testone)
     testone['pred2']=SecondaryModel.predict(testone)
     testone['pred']=pred1
@@ -87,7 +59,8 @@ def autoselection(feature,predict,filename):
 
     algoselection2=testone[testone['pred2']==True]
     algoselection2=algoselection2['algo']
-    if len(algoselection2)==0:
+    if len(algoselection2)==0 and len(algoselection)==0:
+        print('warning its going to be long')
         testone['pred2']=[True,True,True,True,True,True,True]
         algoselection2=testone[testone['pred2']==True]
         algoselection2=algoselection2['algo']
@@ -95,6 +68,7 @@ def autoselection(feature,predict,filename):
     lb_make = LabelEncoder()
     for i in range(len(obj_df.columns.values)):
         try:
+            print('eee')
             obj_df[obj_df.columns.values[i]] = lb_make.fit_transform(obj_df[obj_df.columns.values[i]])
             data[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
         except:
@@ -107,7 +81,7 @@ def autoselection(feature,predict,filename):
     for i,j in enumerate(algoselection.values):
         scoring=[]
         algobest=[]
-        #print(j)
+        print(j)
         if j==1:
             reg = linear_model.ElasticNet()
             reg.fit(X_train, y_train)
@@ -151,6 +125,7 @@ def autoselection(feature,predict,filename):
         for i,j in enumerate(algoselection2.values):
             scoring=[]
             algobest=[]
+            print(j)
         if j==1:
             reg = linear_model.ElasticNet()
             reg.fit(X_train, y_train)
@@ -197,15 +172,14 @@ def autoselection(feature,predict,filename):
         reg = GridSearchCV(eNet, parametersGrid, scoring='neg_mean_squared_error', cv=3)
         reg.fit(X_train, y_train)
     if bestalgo=='GradientBoostingRegressor':
-        loss = ['ls', 'lad', 'huber']
-        n_estimators = [100, 500, 900, 1100, 1500]
-        max_depth = [2, 3, 5, 10, 15]
-        min_samples_leaf = [1, 2, 4, 6, 8] 
-        min_samples_split = [2, 4, 6, 10]
+        n_estimators = [100, 500, 900, 1100]
+        max_depth = [3, 5, 10, 15]
+        min_samples_leaf = [1, 2, 4, 8] 
+        min_samples_split = [2, 4, 6]
         max_features = ['auto', 'sqrt', 'log2', None]
 
         # Define the grid of hyperparameters to search
-        hyperparameter_grid = {'loss': loss,
+        hyperparameter_grid = {
             'n_estimators': n_estimators,
             'max_depth': max_depth,
             'min_samples_leaf': min_samples_leaf,
@@ -215,16 +189,15 @@ def autoselection(feature,predict,filename):
         # Set up the random search with 4-fold cross validation
         reg = RandomizedSearchCV(estimator=GradientBoostingRegressor(),
                     param_distributions=hyperparameter_grid,
-                    cv=3, n_iter=50,
-                    scoring = 'neg_mean_absolute_error',n_jobs = 4,
-                    return_train_score = True,
-                    random_state=42)
+                    n_iter=10,
+                    scoring = 'neg_mean_absolute_error',
+                    random_state=42,n_jobs = -1)
         reg.fit(X_train, y_train)
     if bestalgo=='KNeighborsRegressor':
         param_grid = {'n_neighbors': list(range(4,25)),
               'weights': ['uniform', 'distance']}
         knn = KNeighborsRegressor()
-        reg = GridSearchCV(knn, param_grid, cv=3)
+        reg = GridSearchCV(knn, param_grid)
         reg.fit(X_train, y_train)
     if bestalgo=='Lasso':
         lasso_params = {'alpha':[0.02, 0.03, 0.05, 0.08, 0.1, 0.15, 0.2, 0.3, 0.5, 0.8]}
@@ -252,7 +225,7 @@ def autoselection(feature,predict,filename):
                     'min_samples_leaf': min_samples_leaf,
                     'bootstrap': bootstrap}
         rf=RandomForestRegressor()
-        reg = RandomizedSearchCV(estimator = rf, param_distributions = random_grid, n_iter = 10, cv = 3)
+        reg = RandomizedSearchCV(estimator = rf, param_distributions = random_grid, n_iter = 10,n_jobs = -1)
         reg.fit(X_train, y_train)
     if bestalgo=='Ridge':  
         ridge_params = {'alpha':[0.02, 0.03, 0.05, 0.08, 0.1, 0.15, 0.2, 0.3, 0.5, 0.8]}
@@ -264,20 +237,8 @@ def autoselection(feature,predict,filename):
         SGDReg=linear_model.SGDRegressor()
         reg = GridSearchCV(SGDReg, SGD_params, cv=3)  
         reg.fit(X_train, y_train)
-    #print(r2_score(y_test,reg.predict(X_test)))
-    return reg.predict(X_test)
-
-def decryptFile(filename) :
-    aesCipher = AESCipher(key)
-    encryptData = open(filename,'r').read()
-    csvPlainText = aesCipher.decrypt(encryptData)
-    return StringIO(csvPlainText)
-
-
-if __name__ == "__main__":
-    if toEncrypt == "true" :
-        data = decryptFile(filename)
-    else :
-        data = filename
-    #print(features.split(","),pred,filename)
-    print(autoselection(features.split(","),pred,data))
+    prediction=pd.DataFrame(reg.predict(X_test),columns=['prediction'])
+    y_test=y_test.reset_index(drop=True)
+    prediction_and_true=pd.concat([prediction,y_test],axis=1)
+    prediction_and_true = prediction_and_true.sample(n=100)
+    return prediction_and_true.to_csv(index=False)
