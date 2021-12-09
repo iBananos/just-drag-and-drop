@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "chart.heatmap.js": "^0.0.1-alpha",
+    "chartjs-chart-matrix": "^1.1.1"
+  }
+}

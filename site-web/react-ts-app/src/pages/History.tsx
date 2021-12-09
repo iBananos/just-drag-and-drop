@@ -58,7 +58,7 @@ const History = () =>  {
 
                 });
             (document.getElementById("informationRequesturl")as HTMLDivElement).innerHTML =  list[id].nameAnalyze;
-            (document.getElementById("informationRequesttype")as HTMLDivElement).innerHTML = list[id].type;
+            (document.getElementById("informationRequesttype")as HTMLDivElement).innerHTML = list[id].category;
             
             (document.getElementById("loadButton")as HTMLInputElement).style.display ="block";
         }

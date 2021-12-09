@@ -64,7 +64,7 @@ import { resolveSoa } from 'dns';
                         if (err) {
                             res.send('error'); 
                         } else {
-                            res.send("ok."+nomFichier)
+                            res.send({"status" :"ok", "name": nomFichier, "category": req.body.category})
                         }
                     });
                   });
@@ -86,7 +86,7 @@ import { resolveSoa } from 'dns';
                         if (err) {
                             res.send('error'); 
                         } else {
-                            res.send("ok."+nomFichier)
+                            res.send({"status" :"ok", "name": nomFichier, "category": req.body.category})
                         }
                     });
                   });
@@ -230,7 +230,7 @@ export const informations : RequestHandler = (req : Request, res : Response, nex
 
 export const downloadAnalyze : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     var type = req.body.type
-    if (type == "prediction") {
+    if (type == "Classification" ||type == "Regression"  ) {
         const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
         let targetAnalyse = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyse/", req.body.path + ".csv");
         var data = {"name": req.body.path, "file": aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/analyse/" + targetAnalyse, 'utf8'))};

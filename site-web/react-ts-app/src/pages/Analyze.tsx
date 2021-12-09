@@ -336,14 +336,16 @@ const Analyze = () =>  {
     }
 
     function callbackRequest(response : any) {
-        if(response.split(".")[0] !== "ok"){
+        var reponse = JSON.parse(response)
+        if(reponse.status !== "ok"){
             (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = response;
             (document.getElementById("boutonSendanalyze") as HTMLButtonElement).disabled = false;
         }else{
             (document.getElementById("view") as HTMLDivElement).style.display = "none";
             (document.getElementById("loading") as HTMLDivElement).style.display = "block";
             console.log(response)
-            //window.location.href = "/analyzeView?type=prediction&url="+response.split(".")[1];
+            
+            window.location.href = "/analyzeView?type="+reponse.category+"&url="+reponse.name;
         }
         
     }

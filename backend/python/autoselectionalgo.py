@@ -10,8 +10,42 @@ from sklearn import linear_model
 from sklearn.preprocessing import LabelEncoder
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.model_selection import GridSearchCV,RandomizedSearchCV
+
+from aesCipher import AESCipher
+import time
+import sys
+from io import StringIO
+
+
+filename = sys.argv[1]
+extension = sys.argv[2]
+features = sys.argv[3]
+pred = sys.argv[4]
+key = sys.argv[5]
+toEncrypt = sys.argv[6]
+
+
+def parse_data(filename):
+
+    if extension == "csv" :
+            # Assume that the user uploaded a CSV or TXT file
+        df = pd.read_csv(filename,index_col=0, delimiter=',', encoding="utf-8")
+    elif extension == 'xlsx' :
+            # Assume that the user uploaded an excel file
+        df = pd.read_excel(filename,index_col=0,encoding="utf-8")
+    elif extension == 'txt' or extension == 'tsv' :
+            # Assume that the user upl, delimiter = r'\s+'oaded an excel file
+        df = pd.read_csv(filename, delimiter = r'\s+',index_col=0, encoding="utf-8")
+    elif extension == 'json' :
+        df = pd.read_json(filename)
+    else :
+        print("There was an error while processing this file")
+
+    return df
+
+
 def autoselection(feature,predict,filename):
-    data=pd.read_csv(filename)
+    data=parse_data(filename)
     n=min(len(data),1000)
     dataselect=data.sample(n=n)
     featurepredict=np.concatenate((predict, feature), axis=None)
@@ -50,7 +84,7 @@ def autoselection(feature,predict,filename):
     stopcalcul=earlystop.predict(testone)
     if stopcalcul[0]==False and stopcalcul[1]==False and stopcalcul[2]==False and stopcalcul[3]==False and stopcalcul[4]==False and stopcalcul[5]==False and stopcalcul[5]==False:
         return 'You will not getting good prediction with your dataset'
-    print(testone.columns)
+    #print(testone.columns)
     pred1=FirstModel.predict(testone)
     testone['pred2']=SecondaryModel.predict(testone)
     testone['pred']=pred1
@@ -60,7 +94,7 @@ def autoselection(feature,predict,filename):
     algoselection2=testone[testone['pred2']==True]
     algoselection2=algoselection2['algo']
     if len(algoselection2)==0 and len(algoselection)==0:
-        print('warning its going to be long')
+        #print('warning its going to be long')
         testone['pred2']=[True,True,True,True,True,True,True]
         algoselection2=testone[testone['pred2']==True]
         algoselection2=algoselection2['algo']
@@ -68,11 +102,11 @@ def autoselection(feature,predict,filename):
     lb_make = LabelEncoder()
     for i in range(len(obj_df.columns.values)):
         try:
-            print('eee')
+            #print('eee')
             obj_df[obj_df.columns.values[i]] = lb_make.fit_transform(obj_df[obj_df.columns.values[i]])
             data[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
         except:
-            print(obj_df.columns.values[i]+' contient des NaN')
+            return #print(obj_df.columns.values[i]+' contient des NaN')
     
     X=data[feature]
     X = (X-X.mean())/X.std()
@@ -81,7 +115,7 @@ def autoselection(feature,predict,filename):
     for i,j in enumerate(algoselection.values):
         scoring=[]
         algobest=[]
-        print(j)
+        #print(j)
         if j==1:
             reg = linear_model.ElasticNet()
             reg.fit(X_train, y_train)
@@ -125,7 +159,7 @@ def autoselection(feature,predict,filename):
         for i,j in enumerate(algoselection2.values):
             scoring=[]
             algobest=[]
-            print(j)
+            #print(j)
         if j==1:
             reg = linear_model.ElasticNet()
             reg.fit(X_train, y_train)
@@ -242,3 +276,18 @@ def autoselection(feature,predict,filename):
     prediction_and_true=pd.concat([prediction,y_test],axis=1)
     prediction_and_true = prediction_and_true.sample(n=100)
     return prediction_and_true.to_csv(index=False)
+
+def decryptFile(filename) :
+    aesCipher = AESCipher(key)
+    encryptData = open(filename,'r').read()
+    csvPlainText = aesCipher.decrypt(encryptData)
+    return StringIO(csvPlainText)
+
+
+if __name__ == "__main__":
+    if toEncrypt == "true" :
+        data = decryptFile(filename)
+    else :
+        data = filename
+    #print(features.split(","),pred,filename)
+    print(autoselection(features.split(","),pred,data))
