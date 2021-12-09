@@ -122,6 +122,9 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
     df=pd.concat([X,y],axis=1)
     df=df.dropna()
     df=df.reset_index(drop=True)
+    if analyze_choice == "Classification" :
+        target_name=pd.unique(df[pred].values.flatten())
+        target_name=sorted(target_name)
     obj_df = df.select_dtypes(include=['object']).copy()
     lb_make = LabelEncoder()
     for i in range(len(obj_df.columns.values)):
@@ -167,9 +170,6 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         return prediction_and_true.to_csv(index=False)
                              
     elif analyze_choice == "Classification" :
-        target_name=pd.unique(df[pred].values.flatten())
-        target_name=sorted(target_name)
-    
         parameters = get_list_parameters(algo_choice,list_param)
         
         if algo_choice == "LinearSVC" :
