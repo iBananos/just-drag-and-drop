@@ -75,10 +75,9 @@ def get_describe(filename,choice) :
     df = parse_data(filename)
     if check_type(filename) == True : 
         des = df.describe()
-        list_des = [des.columns.tolist()] + des.reset_index().values.tolist()
     else : 
         print("issue with data types")
-    return list_des
+    return des.to_csv()
 
 ###fonction pour pouvoir récupérer les parametres par default
 
@@ -140,22 +139,17 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         parameters = get_list_parameters(algo_choice,list_param)
         
         if algo_choice == "GradientBoosting" :
-            model = GradientBoostingRegressor(learning_rate=parameters[0], n_estimators=parameters[1], max_depth=parameters[2], min_samples_split=parameters[3])
+            model = GradientBoostingRegressor(learning_rate=float(parameters[0]), n_estimators=int(parameters[1]), max_depth=int(parameters[2]), min_samples_split=int(parameters[3]))
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
         elif algo_choice == "RandomForest" :
-            model = RandomForestRegressor(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2])
+            model = RandomForestRegressor(n_estimators=int(parameters[0]), max_depth=int(parameters[1]), min_samples_split=int(parameters[2]))
             model.fit(X_train,y_train)
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
         elif algo_choice == "Ridge" :
-            model = Ridge(tol=parameters[0], solver=parameters[1],alpha=parameters[2])
-            model.fit(X_train,y_train)
-            prediction = model.predict(X_test)
-            score = r2_score(y_test,model.predict(X_test))
-        elif algo_choice == "BayesianARDRegression" :
-            model = ARDRegression(n_iter=parameters[0], tol=parameters[1],alpha_1=parameters[2], alpha_2=parameters[3], lambda_1=parameters[4], lambda_2=parametetrs[5])
+            model = Ridge(tol=float(parameters[0]), solver=parameters[1],alpha=float(parameters[2]))
             model.fit(X_train,y_train)
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
@@ -173,23 +167,23 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         parameters = get_list_parameters(algo_choice,list_param)
         
         if algo_choice == "LinearSVC" :
-            model = LinearSVC(penalty=parameters[0], tol=parameters[1], C=parameters[2], class_weight=parameters[3])
+            model = LinearSVC(penalty=parameters[0], tol=float(parameters[1]), C=float(parameters[2]), class_weight=parameters[3])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
         elif algo_choice == "AdaBoost" :
-            model = AdaBoostClassifier(n_estimators=parameters[0], learning_rate=parameters[1])
+            model = AdaBoostClassifier(n_estimators=int(parameters[0]), learning_rate=float(parameters[1]))
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
         elif algo_choice == "GradientBoosting2" :
-            model = GradientBoostingClassifier(learning_rate=parameters[0], n_estimators=parameters[1], max_depth=parameters[2], min_samples_split=parameters[3])
+            model = GradientBoostingClassifier(learning_rate=float(parameters[0]), n_estimators=int(parameters[1]), max_depth=int(parameters[2]), min_samples_split=int(parameters[3]))
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
         elif algo_choice == "RandomForest2" :
-            model = RandomForestClassifier(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2], class_weight=parameters[3])
+            model = RandomForestClassifier(n_estimators=int(parameters[0]), max_depth=int(parameters[1]), min_samples_split=int(parameters[2]), class_weight=int(parameters[3]))
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
         elif algo_choice == "LogisticRegression" :
-            model = LogisticRegression(penalty=parameters[0], tol=parameters[1],C=parameters[2], class_weight=parameters[3], max_iter=parameters[4])
+            model = LogisticRegression(penalty=parameters[0], tol=float(parameters[1]),C=float(parameters[2]), class_weight=parameters[3], max_iter=int(parameters[4]))
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
         else : 
