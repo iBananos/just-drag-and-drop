@@ -8,7 +8,7 @@ import { color } from 'chart.js/helpers';
 import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
 
 Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip ,MatrixController, MatrixElement);
-  
+var maximum :number = 0 ;
 
 const AnalyseView = () => {
     var TypeRequest : any;
@@ -51,9 +51,11 @@ const AnalyseView = () => {
             });
             console.log(labels);
             var data : any = [];
+            
             for(var i : number = 1 ; i < acc+1 ; i++){
                 var line = file[i].split(",")
                 for(var j : number = 0 ; j < acc ; j++){
+                  if(line[j]>maximum) maximum = line[j] ;
                     var dataline = {'x': labels[i-1], 'y': labels[j], 'v': line[j]}
                     console.log(dataline)
                     data.push(dataline)
@@ -78,13 +80,16 @@ const AnalyseView = () => {
                     data: datas,
                     backgroundColor(context) {
                         const value = datas[context.dataIndex].v;
-                        const alpha = (value - 5) / 40;
-                        return color('green').alpha(alpha).rgbString();
+                        var colors  = createRainbowRGB(value, maximum);
+                        var colorString : string= "rgb("+colors[0]*255+","+colors[1]*255+","+colors[2]*255+")";
+                        return color(colorString).alpha(0.5).rgbString();
                       },
                       borderColor(context) {
                         const value = datas[context.dataIndex].v;
-                        const alpha = (value - 5) / 40;
-                        return color('darkgreen').alpha(alpha).rgbString();
+                        var colors  = createRainbowRGB(value, maximum);
+                        var colorString : string= "rgb("+colors[0]*255+","+colors[1]*255+","+colors[2]*255+")";
+                        //console.log( "rgb("+colors[0]*255+","+colors[1]*255+","+colors[2]*255+");");
+                        return color(colorString).alpha(1).rgbString();
                       },
                     borderWidth: 1,
                     width: ({chart}) => (chart.chartArea || {}).width / nbrow - 1,
@@ -146,6 +151,40 @@ const AnalyseView = () => {
         return myChart;
 
     }
+
+    function createRainbowRGB(x:any,max:any){
+      var ratio = max/255 
+      x = x*ratio;
+      let rouge;
+      let vert;
+      let bleu;
+      //if(x<255){
+          rouge = 1;
+          vert = x/255;
+          bleu = 0;
+      /*}else if(x<510){
+          rouge = (510-x) / 255;
+          vert = 1;
+          bleu = 0;
+      }else if(x<765){
+          rouge = 0;
+          vert = 1;
+          bleu = (x-510)/255;
+      }else{
+          rouge = 0;
+          vert = (1020-x)/255;
+          bleu = 1;
+      }/*else if(x<1275){
+          rouge =  (x-1020) / 255;
+          vert = 0;
+          bleu = 1;
+      }else{
+          rouge = 1;
+          vert = 0;
+          bleu = (1530-x)/255;
+      }*/
+      return [rouge , vert , bleu];
+  }
 
     function createChart(data2:any,abscisseData:any,label:any,lineData:any,backgroundColor:any,borderColor:any){
         var ctx :any = (document.getElementById('myChart') as HTMLCanvasElement).getContext('2d');

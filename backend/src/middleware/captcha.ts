@@ -9,11 +9,11 @@ export const captcha : RequestHandler = async (req : Request, res : Response, ne
         }
         else {
             /* En production : !!!!!!
-            const captcha = new Captcha();
+            */const captcha = new Captcha();
             req.session.captcha = captcha.getResponse();
             res.status(401).json({"message": "Captcha invalide !", "captcha": captcha.getData()});
-            */
-            next();
+            
+            //next();
         }
     }
     catch (err) {
