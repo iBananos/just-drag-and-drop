@@ -13,6 +13,7 @@
     "chart.heatmap.js": "^0.0.1-alpha",
     "chart.js": "^3.6.2",
     "chartjs-chart-matrix": "^1.1.1",
+    "color-helpers": "^2.0.0",
     "csv-parse": "^5.0.3",
     "forever": "^4.0.1",
     "node-sass": "^6.0.1",

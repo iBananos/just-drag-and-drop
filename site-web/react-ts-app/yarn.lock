@@ -4202,6 +4202,11 @@
   dependencies:
     "color-name" "~1.1.4"
 
+"color-helpers@^2.0.0":
+  "integrity" "sha512-bZUCVBDMOD54MRumel1+z3vw/tSJsueyeugclEemvy+DAnFB2XDhnode72hbIo355iaGWwCHxQHWJFSr4ZU8sw=="
+  "resolved" "https://registry.npmjs.org/color-helpers/-/color-helpers-2.0.0.tgz"
+  "version" "2.0.0"
+
 "color-id@^1.1.0":
   "integrity" "sha512-2iRtAn6dC/6/G7bBIo0uupVrIne1NsQJvJxZOBCzQOfk7jRq97feaDZ3RdzuHakRXXnHGNwglto3pqtRx1sX0g=="
   "resolved" "https://registry.npmjs.org/color-id/-/color-id-1.1.0.tgz"
