@@ -47,7 +47,7 @@ def parse_data(filename):
 def autoselection(feature,predict,filename):
     data=parse_data(filename)
     n=min(len(data),1000)
-    dataselect=data.sample(n=n)
+    dataselect=data.sample(frac=0.2)
     featurepredict=np.concatenate((predict, feature), axis=None)
     dataselect=dataselect[featurepredict]
     dataselect=dataselect.dropna()
