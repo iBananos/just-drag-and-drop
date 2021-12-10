@@ -86,7 +86,7 @@ def get_parameters_default(algo_choice):
         list_parameters_default = ["l2",1e-14,1.0,None]
     elif algo_choice == "AdaBoost" :
         list_parameters_default = [50,1.0]
-    elif algo_choice == "GradientBoosting" :
+    elif algo_choice == "GradientBoosting" or algo_choice == "GradientBoosting2" :
         list_parameters_default = [0.1,100,3,2]
     elif algo_choice == "RandomForest" :
         list_parameters_default = [100,None,2,None]
@@ -105,13 +105,34 @@ def get_parameters_default(algo_choice):
 
 def get_list_parameters(algo_choice,list_parameters) : 
     list_parameters_default = get_parameters_default(algo_choice)
-    #for i in range(len(list_parameters)) :
-    #    if list_parameters[i] == None : ###si c'est un param par default
-    #        list_parameters[i] = list_parameters_default[i]
-    #    else : 
-    #        list_parameters[i] = list_parameters[i] 
-    ##return list_parameters
-    return list_parameters_default
+    if algo_choice == "LinearSVC":
+        if list_parameters[3] == "none" : list_parameters[3] = None 
+        else : list_parameters[3] = int(list_parameters[3])
+        list_parameters = [list_parameters[0],float(list_parameters[1]),float(list_parameters[2]),list_parameters[3]]
+    elif algo_choice == "AdaBoost" :
+        list_parameters = [int(list_parameters[0]),float(list_parameters[1])]
+    elif algo_choice == "GradientBoosting" or algo_choice == "GradientBoosting2" :
+        list_parameters = [float(list_parameters[0]),int(list_parameters[1]),int(list_parameters[2]),int(list_parameters[3])]
+    elif algo_choice == "RandomForest" :
+        if int(list_parameters[1]) == 0 : list_parameters = [ int(list_parameters[0]),None, int(list_parameters[2])]
+        else : list_parameters = [ int(list_parameters[0]),int(list_parameters[1]), int(list_parameters[2])]
+        
+    elif algo_choice == "RandomForest2" :
+        if int(list_parameters[1]) == 0 : list_parameters[1] = None 
+        else : list_parameters[1] = int(list_parameters[1])
+        if list_parameters[3] == "none" : list_parameters[3] = None 
+        else : list_parameters[3] = list_parameters[3]
+        list_parameters = [ int(list_parameters[0]),list_parameters[1], int(list_parameters[2]),list_parameters[3]]
+    elif algo_choice == "LogisticRegression" :
+        if list_parameters[3] == "none" : list_parameters[3] = None 
+        else : list_parameters[3] = list_parameters[3]
+        list_parameters = [list_parameters[0],float(list_parameters[1]),float(list_parameters[2]),list_parameters[3],int(list_parameters[4])]
+    elif algo_choice == "Ridge" :
+        list_parameters = [float(list_parameters[0]),list_parameters[1],float(list_parameters[2])]
+    elif algo_choice == "BayesianARDRegression" :
+        list_parameters = [300,1e-3,1e-6,1e-6,1e-6,1e-6,]
+    return list_parameters
+    #return list_parameters_default
 
 
 def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_choice) :
@@ -138,18 +159,18 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         
         parameters = get_list_parameters(algo_choice,list_param)
         
-        if algo_choice == "GradientBoosting" :
-            model = GradientBoostingRegressor(learning_rate=float(parameters[0]), n_estimators=int(parameters[1]), max_depth=int(parameters[2]), min_samples_split=int(parameters[3]))
+        if algo_choice == "GradientBoosting"  :
+            model = GradientBoostingRegressor(learning_rate=parameters[0], n_estimators=parameters[1], max_depth=parameters[2], min_samples_split=parameters[3])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
         elif algo_choice == "RandomForest" :
-            model = RandomForestRegressor(n_estimators=int(parameters[0]), max_depth=int(parameters[1]), min_samples_split=int(parameters[2]))
+            model = RandomForestRegressor(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2])
             model.fit(X_train,y_train)
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
         elif algo_choice == "Ridge" :
-            model = Ridge(tol=float(parameters[0]), solver=parameters[1],alpha=float(parameters[2]))
+            model = Ridge(tol=parameters[0], solver=parameters[1],alpha=parameters[2])
             model.fit(X_train,y_train)
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
@@ -167,19 +188,19 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         parameters = get_list_parameters(algo_choice,list_param)
         
         if algo_choice == "LinearSVC" :
-            model = LinearSVC(penalty=parameters[0], tol=float(parameters[1]), C=float(parameters[2]), class_weight=parameters[3])
+            model = LinearSVC(penalty=parameters[0], tol=parameters[1], C=parameters[2], class_weight=parameters[3])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
         elif algo_choice == "AdaBoost" :
-            model = AdaBoostClassifier(n_estimators=int(parameters[0]), learning_rate=float(parameters[1]))
+            model = AdaBoostClassifier(n_estimators=parameters[0], learning_rate=parameters[1])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
         elif algo_choice == "GradientBoosting2" :
-            model = GradientBoostingClassifier(learning_rate=float(parameters[0]), n_estimators=int(parameters[1]), max_depth=int(parameters[2]), min_samples_split=int(parameters[3]))
+            model = GradientBoostingClassifier(learning_rate=parameters[0], n_estimators=parameters[1], max_depth=parameters[2], min_samples_split=parameters[3])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
         elif algo_choice == "RandomForest2" :
-            model = RandomForestClassifier(n_estimators=int(parameters[0]), max_depth=int(parameters[1]), min_samples_split=int(parameters[2]), class_weight=int(parameters[3]))
+            model = RandomForestClassifier(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2], class_weight=parameters[3])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
         elif algo_choice == "LogisticRegression" :
@@ -214,4 +235,4 @@ if __name__ == "__main__":
         data = decryptFile(filename)
     else :
         data = filename
-    print(principal_fonction(data, features.split(","), pred, list_param, analyze_choice, algo_choice))
+    print(principal_fonction(data, features.split(","), pred, list_param.split(","), analyze_choice, algo_choice))

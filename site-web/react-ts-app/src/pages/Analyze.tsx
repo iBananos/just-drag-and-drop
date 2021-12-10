@@ -162,7 +162,11 @@ const Analyze = () =>  {
 
 
     function sendRequest(ev :any){
-        (document.getElementById("boutonSendanalyze") as HTMLButtonElement).disabled = true;
+        var elements = document.getElementsByClassName("boutonSendanalyze");
+        for(var i = 0; i < elements.length; i++) {
+            (elements[i] as HTMLButtonElement).disabled = true;
+        }
+        //(document.getElementById("boutonSendanalyze") as HTMLButtonElement).disabled = true;
         var algo = ev.target.value
         var database = (document.getElementById("SelectDB") as HTMLSelectElement).value
         var requestAnalyze : string ="";
@@ -201,7 +205,7 @@ const Analyze = () =>  {
                                                 "algo":algo, 
                                                 "params" : {
                                                     "learning_rate" : (document.getElementById("learning_rate1")as HTMLInputElement).value,
-                                                    "n_estimator" : (document.getElementById("n_estimator1")as HTMLInputElement).value,
+                                                    "n_estimators" : (document.getElementById("n_estimators1")as HTMLInputElement).value,
                                                     "max_depth" : (document.getElementById("max_depth1")as HTMLInputElement).value,
                                                     "min_samples_split" : (document.getElementById("min_samples_split1")as HTMLInputElement).value
                                                 }});
@@ -336,16 +340,23 @@ const Analyze = () =>  {
     }
 
     function callbackRequest(response : any) {
+        console.log(response)
         var reponse = JSON.parse(response)
+        var elements = document.getElementsByClassName("boutonSendanalyze");
+        for(var i = 0; i < elements.length; i++) {
+            (elements[i] as HTMLButtonElement).disabled = false;
+        }
         if(reponse.status !== "ok"){
-            (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = response;
-            (document.getElementById("boutonSendanalyze") as HTMLButtonElement).disabled = false;
+            (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = reponse.status;
         }else{
-            (document.getElementById("view") as HTMLDivElement).style.display = "none";
-            (document.getElementById("loading") as HTMLDivElement).style.display = "block";
-            console.log(response)
-            
-            window.location.href = "/analyzeView?type="+reponse.category+"&url="+reponse.name;
+            //(document.getElementById("view") as HTMLDivElement).style.display = "none";
+            //(document.getElementById("loading") as HTMLDivElement).style.display = "block";
+            (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "Check the new tab for the result !";
+            window.open(
+                "/analyzeView?type="+reponse.category+"&url="+reponse.name,
+                '_blank' // <- This is what makes it open in a new window.
+              );
+            //window.location.href = "/analyzeView?type="+reponse.category+"&url="+reponse.name;
         }
         
     }
@@ -448,8 +459,8 @@ const Analyze = () =>  {
                 <table><tbody>
                     <tr><td>learning_rate <img src={help} className="help" alt="" title="Learning rate shrinks the contribution of each tree by learning_rate.
 There is a trade-off between learning_rate and n_estimators."/></td><td><InputNumber  min="0"  step="0.1" defaultValue={0.1} id="learning_rate1"/></td>
-                    <td>n_estimator <img src={help} className="help" alt="" title="The number of boosting stages to perform. Gradient boosting is fairly
-robust to over-fitting so a large number usually results in better performance."/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimator1"/></td></tr>
+                    <td>n_estimators <img src={help} className="help" alt="" title="The number of boosting stages to perform. Gradient boosting is fairly
+robust to over-fitting so a large number usually results in better performance."/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators1"/></td></tr>
                     <tr><td>max_depth <img src={help} className="help" alt="" title="Maximum depth of the individual regression estimators. 
                     The maximum depth limits the number of nodes in the tree. 
                     Tune this parameter for best performance; 
@@ -533,7 +544,6 @@ all classes are supposed to have weight one. The “balanced” mode uses the
 values of y to automatically adjust weights inversely proportional to class
 frequencies in the input data as n_samples / (n_classes * np.bincount(y))."/></td><td><select  id="class_weight5" name="class_weight">
                         <option value="none">none</option>
-                        <option value="dict">dict</option>
                         <option value="balanced">balanced</option></select></td></tr>
                         </tbody></table>
                         <button value="LinearSVC" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
@@ -576,7 +586,7 @@ sample_weight is specified.
 "/></td><td><select  id="class_weight8" name="class_weight">
                         <option value="none">none</option>
                         <option value="balanced">balanced</option>
-                        <option value="balanced_subsample">balanced_subsample</option></select></td></tr>
+                        </select></td></tr>
                         </tbody></table>
                         <button value="RandomForest2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
@@ -601,7 +611,6 @@ np.bincount(y)). Note that these weights will be multiplied with
 sample_weight (passed through the fit method) if sample_weight is
 specified. New in version 0.17: class_weight=’balanced’"/></td><td><select  id="class_weight9" name="class_weight">
                         <option value="none">none</option>
-                        <option value="dict">dict</option>
                         <option value="balanced">balanced</option></select></td></tr>
                         <tr><td>max_iter <img src={help} className="help" alt="" title="Maximum number of iterations taken for the solvers to converge."/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="max_iter9"/></td></tr>
                     </tbody></table>

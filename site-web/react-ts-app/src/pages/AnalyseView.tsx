@@ -18,6 +18,7 @@ const AnalyseView = () => {
         const FileFromURL : any = params.get('url'); 
         TypeRequest = params.get('type'); 
         console.log(FileFromURL +" "+ TypeRequest)
+        document.title =FileFromURL;
         utils.default.sendRequestWithToken('POST', '/api/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload);
     } 
 

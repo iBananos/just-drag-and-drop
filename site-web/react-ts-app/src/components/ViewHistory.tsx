@@ -5,7 +5,10 @@ const ViewHistory = () => {
         var url =  (document.getElementById("informationRequesturl")as HTMLInputElement).innerHTML;
         var type =  (document.getElementById("informationRequesttype")as HTMLInputElement).innerHTML;
         if(type !== ""){
-            window.location.href = "/analyzeView?url="+url+"&type="+type
+            window.open(
+                "/analyzeView?url="+url+"&type="+type,
+                '_blank' // <- This is what makes it open in a new window.
+              );
         }
 
     }
