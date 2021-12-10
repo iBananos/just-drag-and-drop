@@ -1,4 +1,5 @@
 import express from "express";
+import { captcha } from '../middleware/captcha';
 import * as userCtrl from '../controllers/user';
 
 // Création du router
@@ -10,7 +11,7 @@ const router = express.Router();
 /**
  * Route Signup
  */
-router.post("/signup", userCtrl.signup);
+router.post("/signup", captcha, userCtrl.signup);
 
 
 /**
@@ -23,6 +24,12 @@ router.post("/login", userCtrl.login);
  * Route Refresh Token
  */
 router.post('/refresh', userCtrl.refreshToken);
+
+
+/**
+ * Route Captcha
+ */
+router.post('/captcha', userCtrl.getCaptcha);
 
 
 

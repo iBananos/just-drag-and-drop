@@ -2,6 +2,7 @@ import "dotenv/config";
 import path from "path"
 import express from "express";
 import mongoose from 'mongoose';
+import session from 'express-session';
 import userRoutes from './routes/user';
 import cookieParser from 'cookie-parser';
 import uploadRoutes from './routes/upload';
@@ -24,9 +25,9 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(express.urlencoded({ extended: true }));
+app.use(session({ secret: `${process.env.SECRET_SESSION}`, resave: false, saveUninitialized: false }));
+
 
 
 app.use((req, res, next) => {

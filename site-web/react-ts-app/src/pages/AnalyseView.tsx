@@ -2,11 +2,12 @@ import BarreLaterale from '../components/BarreLaterale';
 import Navigation from '../components/Navigation';
 import { Chart} from 'chart.js';
 import * as utils from "../Utils";
-import { MatrixController, MatrixElement as Matrix } from 'chartjs-chart-matrix';
+import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
+import { color } from 'chart.js/helpers';
 
 import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
 
-Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip ,MatrixController, Matrix);
+Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip ,MatrixController, MatrixElement);
   
 
 const AnalyseView = () => {
@@ -17,6 +18,7 @@ const AnalyseView = () => {
         const FileFromURL : any = params.get('url'); 
         TypeRequest = params.get('type'); 
         console.log(FileFromURL +" "+ TypeRequest)
+        document.title =FileFromURL;
         utils.default.sendRequestWithToken('POST', '/api/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload);
     } 
 
@@ -50,33 +52,95 @@ const AnalyseView = () => {
             console.log(labels);
             var data : any = [];
             for(var i : number = 1 ; i < acc+1 ; i++){
-                
                 var line = file[i].split(",")
-                 console.log(line)
-                 data.push(line)
+                for(var j : number = 0 ; j < acc ; j++){
+                    var dataline = {'x': labels[i-1], 'y': labels[j], 'v': line[j]}
+                    console.log(dataline)
+                    data.push(dataline)
+                }
+                console.log(i, j)
             }
+            
 
-            createConfusionMatrix(labels,data)
+            createConfusionMatrix(labels,data,"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)",acc)
         }
     }
-    function createConfusionMatrix(labels:any,data:any){
+    function createConfusionMatrix(labels:any,datas:any,backgroundColor:any,borderColor:any,nbrow:number){
         var ctx :any = (document.getElementById('myChart') as HTMLCanvasElement).getContext('2d');
         
+        console.log(labels)
         var myChart = new Chart(ctx , {
             type : 'matrix',
             data: {
                 datasets: [{
                     type: 'matrix',
-                    label: "Prediction",
-                    data: data,
-                    //backgroundColor: backgroundColor,
-                    //borderColor: borderColor,
-                    borderWidth: 1
+                    label: "Matrix Confusion",
+                    data: datas,
+                    backgroundColor(context) {
+                        const value = datas[context.dataIndex].v;
+                        const alpha = (value - 5) / 40;
+                        return color('green').alpha(alpha).rgbString();
+                      },
+                      borderColor(context) {
+                        const value = datas[context.dataIndex].v;
+                        const alpha = (value - 5) / 40;
+                        return color('darkgreen').alpha(alpha).rgbString();
+                      },
+                    borderWidth: 1,
+                    width: ({chart}) => (chart.chartArea || {}).width / nbrow - 1,
+                    height: ({chart}) =>(chart.chartArea || {}).height / nbrow - 1
                 }],
-                labels: labels,
             },
-            
-        });
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: false,
+                    tooltip: {
+                      callbacks: {
+                        title() {
+                          return '';
+                        },
+                        label(context: any) {
+                          const v = context.dataset.data[context.dataIndex];
+                          return ['x: ' + v.x, 'y: ' + v.y, 'v: ' + v.v];
+                        }
+                      }
+                    }
+                  } as any,
+                scales: {
+                    x: {
+                      type: 'category',
+                      labels: labels,
+                      ticks: {
+                        display: true
+                      },
+                      grid: {
+                        display: false
+                      }
+                    },
+                    y: {
+                      type: 'category',
+                      labels: labels,
+                      offset: true,
+                      ticks: {
+                        display: true
+                      },
+                      grid: {
+                        display: false
+                      }
+                    }
+                  },
+                animation: {
+                    onComplete: function() {
+                      var a = document.createElement('a');
+                        a.href = myChart.toBase64Image();
+                        a.download = 'my_file_name.png';
+
+                        // Trigger the download
+                        //a.click();
+                    }
+                  }
+            }})
         myChart.update();
         
         return myChart;
@@ -122,7 +186,7 @@ const AnalyseView = () => {
                         a.download = 'my_file_name.png';
 
                         // Trigger the download
-                        a.click();
+                        //a.click();
                     }
                   }
             }

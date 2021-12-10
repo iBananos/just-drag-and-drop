@@ -14,7 +14,7 @@ import { resolveSoa } from 'dns';
  export const  parameters : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     var reponse = checkAnalyze(req)
     if(reponse !== 'ok' && reponse !== "Automatic" && reponse !== "Automatic2"){
-        res.send(reponse)
+        res.send({"status" :reponse, "name": "a", "category": "b"})
         return
     }
     var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/');

@@ -4,9 +4,9 @@ import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import { argon2i } from 'argon2-ffi';
+import Captcha from "../utils/captcha";
 import RefreshToken from '../models/refreshToken'
 import HttpException from '../utils/httpException';
-
 import type { ObjectId } from 'mongoose';
 import type { RequestHandler, Request, Response, NextFunction } from "express";
 
@@ -130,6 +130,19 @@ export const refreshToken : RequestHandler = async (req : Request, res : Respons
     catch (err) {
         next(err);
     }
+}
+
+
+declare module 'express-session' {
+    export interface Session {
+      captcha: string;
+    }
+  }
+
+export const getCaptcha : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
+    const captcha = new Captcha();
+    req.session.captcha = captcha.getResponse();
+    res.json({"captcha": captcha.getData()});
 }
 
 
