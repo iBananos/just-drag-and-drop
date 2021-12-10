@@ -64,9 +64,9 @@ def autoselection(feature,predict,filename):
     df.values[1]=df.values[1].astype(float)
     df=df.drop(df.index[[0]])
     df=df.reset_index(drop=True)
-    FirstModel = joblib.load('FirstTOP1.sav')
-    SecondaryModel = joblib.load('SecondaryTOP1.sav')
-    earlystop = joblib.load('Goodpredictor.sav')
+    FirstModel = joblib.load('python/FirstTOP1.sav')
+    SecondaryModel = joblib.load('python/SecondaryTOP1.sav')
+    earlystop = joblib.load('python/Goodpredictor.sav')
     index = [0, 0, 0, 0, 0, 0, 0]
     algo = pd.DataFrame(['SGDRegressor','Lasso','Ridge','Gradient','RandomForest','ElasticNet','KNeighborsRegressor'], columns=['algo'],index=index)
     testone=pd.concat([df,algo],axis=1)
