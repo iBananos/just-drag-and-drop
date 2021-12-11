@@ -1,23 +1,36 @@
-.Chart{
-    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
-    backdrop-filter: blur(1000px);
-    background-color: $color_back;
-    border-radius: 16px;
-    width: 100%;
-    height: 500px;
-    top: 50px;
+.containerGraph{
+    
+    width: 70%;
+    margin-right: auto;
+    margin-left: auto;
     position: relative;
+    top: 50px;
 }
 
+.Chart{
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur(30px);
+    background-color: $color_back;
+    border-radius: 16px;
+    width: 50%;
+    float: left;
+}
+.ChartBar{
+    -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+    backdrop-filter: blur(30px);
+    background-color: $color_back;
+    border-radius: 16px;
+    width: 50%;
+    float: left;
+}
 .myChartMatrixDiv{
     width: 92%;
-    height: 500px;
     float: left;
 }
 
 .BarRef{
     margin-top : 10px;
-    height: 480px;
+    height: 500px;
     margin-top: 10px;
     margin-bottom: 10px;
     background: linear-gradient( rgba(33,33,196,0.9),rgba(196,33,33,0.9));

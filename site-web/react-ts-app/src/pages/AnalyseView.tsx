@@ -28,6 +28,8 @@ const AnalyseView = () => {
         var file = JSON.parse(response).file;
         
         file = file.split('\n')
+        createChartBar(file[0].split(","),file[1].split(","))
+        file = file.slice(3)
         if(TypeRequest === "Regression"){
             var data1 : any = [];
             var data2 : any = [];
@@ -63,10 +65,52 @@ const AnalyseView = () => {
             
 
             createConfusionMatrix(labels,data,"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)",acc,maximum);
-            createRefBar(maximum)
+            createRefBar(maximum, (document.getElementById("myChartBar") as HTMLCanvasElement).style.height)
         }
     }
-    function createRefBar(maximum:any){
+
+    function createChartBar(labels:any,data:any){
+      var div = document.getElementById("ChartBar") as HTMLDivElement;
+      
+      
+      var myChartBar = document.createElement("canvas") as HTMLCanvasElement;
+      myChartBar.id= "myChartBar";
+      myChartBar.className= "myChartBar";
+      div.appendChild(myChartBar);
+      var ctx : any = (document.getElementById('myChartBar') as HTMLCanvasElement).getContext('2d');
+        
+      var myChart = new Chart(ctx , {
+        type : 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                type: 'bar',
+                data: data,
+                borderWidth: 1,
+                backgroundColor: "rgba(187, 164, 34,0.1)",
+                borderColor: "rgba(187, 164, 34,1)",
+            }],
+        },
+        options: {
+          aspectRatio : 1,
+          responsive: true,
+            animation: {
+                /*onComplete: function() {
+                  var a = document.createElement('a');
+                    a.href = myChart.toBase64Image();
+                    a.download = 'my_file_name.png';
+
+                    // Trigger the download
+                    //a.click();
+                }*/
+              }
+        }as any})
+    myChart.update();
+    
+    return myChart;
+
+    }
+    function createRefBar(maximum:any,height:any){
       var div = document.getElementById("Chart") as HTMLDivElement;
       var divRef = document.createElement("div");
       divRef.className = "BarRef"
@@ -95,8 +139,9 @@ const AnalyseView = () => {
       p0.className = "p0"
       p0.innerHTML = "0%";
       divRef.appendChild(p0)
-
+      divRef.style.height = height;
       div.appendChild(divRef)
+      
     }
     function createConfusionMatrix(labels:any,datas:any,backgroundColor:any,borderColor:any,nbrow:number,maximum:number){
 
@@ -137,6 +182,8 @@ const AnalyseView = () => {
                 }],
             },
             options: {
+              aspectRatio : 1,
+                responsive: true,
                 plugins: {
                     legend: false,
                     tooltip: {
@@ -173,7 +220,7 @@ const AnalyseView = () => {
                         display: false
                       }
                     }
-                  },maintainAspectRatio: false,
+                  },maintainAspectRatio: true,
                 animation: {
                     /*onComplete: function() {
                       var a = document.createElement('a');
@@ -186,7 +233,6 @@ const AnalyseView = () => {
                   }
             }})
         myChart.update();
-        
         return myChart;
 
     }
@@ -234,12 +280,8 @@ const AnalyseView = () => {
                 labels: abscisseData,
             },
             options: {
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
+              aspectRatio : 1,
+              responsive: true,
                 animation: {
                     /*onComplete: function() {
                       var a = document.createElement('a');
@@ -261,9 +303,10 @@ const AnalyseView = () => {
     return (
         <div id="AnalyseView" className="AnalyseView">
             <div className="view" id="view">
-            <div className="Chart" id="Chart">
-            
-                
+            <div className='containerGraph'>
+
+            <div className="Chart" id="Chart"></div>
+            <div className="ChartBar" id="ChartBar"></div>
             </div>
             </div>
             <BarreLaterale />
