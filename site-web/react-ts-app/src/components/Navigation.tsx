@@ -29,16 +29,20 @@ const Navigation = () => {
     window.addEventListener('resize', gestionNav);
     setInterval(checkTokenValidity,5000);
 
-    function checkTokenValidity(){
+    function checkTokenValidity() {
         let xsrfToken = localStorage.getItem("xsrfToken");
         let accessTokenExpires = localStorage.getItem("accessTokenExpires");
         let refreshTokenExpires = localStorage.getItem("refreshTokenExpires");
         if (xsrfToken && accessTokenExpires && refreshTokenExpires) {
-            if (parseInt(accessTokenExpires, 10) > Date.now() ){
-                if(parseInt(accessTokenExpires, 10) < Date.now()+30000){
+            if (parseInt(accessTokenExpires, 10) > Date.now()) {
+                if (parseInt(accessTokenExpires, 10) < Date.now()+30000) {
                     utils.default.refreshToken();
                 }
-            }else{
+            } 
+            else if (parseInt(refreshTokenExpires, 10) > Date.now()) {
+                utils.default.refreshToken();
+            }
+            else {
                 deleteToken()
             }
             

@@ -8,7 +8,6 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import confusion_matrix
 from io import StringIO
 from aesCipher import AESCipher
-import time
 import sys
 
 
@@ -89,6 +88,8 @@ def get_parameters_default(algo_choice):
     elif algo_choice == "GradientBoosting" or algo_choice == "GradientBoosting2" :
         list_parameters_default = [0.1,100,3,2]
     elif algo_choice == "RandomForest" :
+        list_parameters_default = [100,None,2]
+    elif algo_choice == "RandomForest2" :
         list_parameters_default = [100,None,2,None]
     elif algo_choice == "LogisticRegression" :
         list_parameters_default = ["l2",1e-14,1.0,None,100]
@@ -107,7 +108,7 @@ def get_list_parameters(algo_choice,list_parameters) :
     list_parameters_default = get_parameters_default(algo_choice)
     if algo_choice == "LinearSVC":
         if list_parameters[3] == "none" : list_parameters[3] = None 
-        else : list_parameters[3] = int(list_parameters[3])
+        else : list_parameters[3] = list_parameters[3]
         list_parameters = [list_parameters[0],float(list_parameters[1]),float(list_parameters[2]),list_parameters[3]]
     elif algo_choice == "AdaBoost" :
         list_parameters = [int(list_parameters[0]),float(list_parameters[1])]
@@ -164,24 +165,36 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
+             #get importance
+            importance = model.feature_importances_
         elif algo_choice == "RandomForest" :
             model = RandomForestRegressor(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2])
             model.fit(X_train,y_train)
             prediction = model.predict(X_test)
+             #get importance
+            importance = model.feature_importances_
             score = r2_score(y_test,model.predict(X_test))
         elif algo_choice == "Ridge" :
             model = Ridge(tol=parameters[0], solver=parameters[1],alpha=parameters[2])
             model.fit(X_train,y_train)
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
+             #get importance
+            importance = model.coef_
         else : 
             print("choose an available alogrithm")
 
+        importance=pd.DataFrame(importance,columns=['importance'])
+        features = pd.DataFrame(features, columns=['features'])
+        importance_frame = pd.concat([features,importance], axis=1)
+        importance_frame = importance_frame.T
+
         prediction=pd.DataFrame(prediction,columns=['prediction'])
-        
+
         y_test=y_test.reset_index(drop=True)
         prediction_and_true=pd.concat([prediction,y_test],axis=1)
         prediction_and_true = prediction_and_true.sample(n=100)
+        print(importance_frame.to_csv(header=False, index=False))
         return prediction_and_true.to_csv(index=False)
                              
     elif analyze_choice == "Classification" :
@@ -191,29 +204,45 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
             model = LinearSVC(penalty=parameters[0], tol=parameters[1], C=parameters[2], class_weight=parameters[3])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
+            #get importance
+            importance = model.coef_[0]
         elif algo_choice == "AdaBoost" :
             model = AdaBoostClassifier(n_estimators=parameters[0], learning_rate=parameters[1])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
+            # get importance
+            importance = model.feature_importances_
         elif algo_choice == "GradientBoosting2" :
             model = GradientBoostingClassifier(learning_rate=parameters[0], n_estimators=parameters[1], max_depth=parameters[2], min_samples_split=parameters[3])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
+            #get importance
+            importance = model.feature_importances_
         elif algo_choice == "RandomForest2" :
             model = RandomForestClassifier(n_estimators=parameters[0], max_depth=parameters[1], min_samples_split=parameters[2], class_weight=parameters[3])
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
+            # get importance
+            importance = model.feature_importances_
         elif algo_choice == "LogisticRegression" :
             model = LogisticRegression(penalty=parameters[0], tol=float(parameters[1]),C=float(parameters[2]), class_weight=parameters[3], max_iter=int(parameters[4]))
             model.fit(X_train, y_train)
             prediction = model.predict(X_test)
+            #get importance
+            importance = model.coef_[0]
         else : 
             print("choose an available alogrithm")
+
+        importance=pd.DataFrame(importance,columns=['importance'])
+        features = pd.DataFrame(features, columns=['features'])
+        importance_frame = pd.concat([features,importance], axis=1)
+        importance_frame = importance_frame.T
                              
         confusion_matrix2 = confusion_matrix(y_test, prediction)
         #print(confusion_matrix2)
         #print(target_name)
         matrixoutput=pd.DataFrame(confusion_matrix2,columns=target_name,index=target_name)
+        print(importance_frame.to_csv(header=False, index=False))
         return matrixoutput.to_csv(index=False)
                              
     else : 
@@ -229,8 +258,6 @@ def decryptFile(filename) :
 
 
 if __name__ == "__main__":
-    #print("HELLO world")
-    #print(filename,features.split(","),pred,list_param.split(","),analyze_choice,algo_choice)
     if toEncrypt == "true" :
         data = decryptFile(filename)
     else :

@@ -5,7 +5,7 @@ export default class AESCipher {
 
     encryptKey : Buffer;
 
-    toEncrypt : boolean = true;
+    toEncrypt : boolean = false;
 
 
     constructor(key : string, salt : string) {
