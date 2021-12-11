@@ -1,8 +1,8 @@
 var pathUrl =  window.location
-if(pathUrl.origin === "http://localhost:3000"){
-    var hostname =  "http://localhost:4000";
-}else{
-    var hostname = "";
+let hostname : string = "";
+
+if (pathUrl.origin === "http://localhost:3000"){
+    hostname =  "http://localhost:4000";
 }
 
 class Utils {
@@ -94,7 +94,7 @@ class Utils {
 
     public static refreshToken() {
         var xhr = new XMLHttpRequest()
-        xhr.open('POST', pathUrl+'/api/auth/refresh', true);
+        xhr.open('POST', hostname + '/api/auth/refresh', true);
         xhr.withCredentials = true;
         xhr.addEventListener('readystatechange', function(e) {
             if (xhr.readyState === 4 && xhr.status === 200) {
