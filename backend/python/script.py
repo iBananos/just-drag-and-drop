@@ -1,6 +1,4 @@
 import pandas as pd
-import matplotlib
-from matplotlib import pyplot
 from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC
 from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier, RandomForestClassifier, GradientBoostingRegressor,RandomForestRegressor
@@ -10,7 +8,6 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import confusion_matrix
 from io import StringIO
 from aesCipher import AESCipher
-import time
 import sys
 
 
@@ -257,8 +254,6 @@ def decryptFile(filename) :
 
 
 if __name__ == "__main__":
-    print("HELLO world")
-    print(filename,features.split(","),pred,list_param.split(","),analyze_choice,algo_choice)
     if toEncrypt == "true" :
         data = decryptFile(filename)
     else :

@@ -144,7 +144,7 @@ function checkAnalyze(req:any){
     console.log("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKkk")
     var list_param :any= [];
     console.log("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG")
-    Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value)});
+    Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value)}); // PROBLEME A CETTE LIGNE  TypeError: Cannot convert undefined or null to object
     console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWw")
     var pred = req.body.pred;
     console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBb")
