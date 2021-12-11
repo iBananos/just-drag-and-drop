@@ -8,7 +8,7 @@ import { color } from 'chart.js/helpers';
 import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
 
 Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip ,MatrixController, MatrixElement);
-var maximum :number = 0 ;
+
 
 const AnalyseView = () => {
     var TypeRequest : any;
@@ -17,7 +17,6 @@ const AnalyseView = () => {
         const params = new URLSearchParams(search); 
         const FileFromURL : any = params.get('url'); 
         TypeRequest = params.get('type'); 
-        console.log(FileFromURL +" "+ TypeRequest)
         document.title =FileFromURL;
         utils.default.sendRequestWithToken('POST', '/api/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload);
     } 
@@ -49,28 +48,70 @@ const AnalyseView = () => {
             labels.forEach((el :any) =>{
                 acc++
             });
-            console.log(labels);
             var data : any = [];
-            
+            var maximum :number = 0 ;
             for(var i : number = 1 ; i < acc+1 ; i++){
                 var line = file[i].split(",")
                 for(var j : number = 0 ; j < acc ; j++){
-                  if(line[j]>maximum) maximum = line[j] ;
-                    var dataline = {'x': labels[i-1], 'y': labels[j], 'v': line[j]}
-                    console.log(dataline)
-                    data.push(dataline)
+                  if(parseInt(line[j])>maximum) {
+                    maximum = parseInt(line[j]);
+                  }
+                  var dataline = {'x': labels[i-1], 'y': labels[j], 'v': parseInt(line[j])}
+                  data.push(dataline)
                 }
-                console.log(i, j)
             }
             
 
-            createConfusionMatrix(labels,data,"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)",acc)
+            createConfusionMatrix(labels,data,"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)",acc,maximum);
+            createRefBar(maximum)
         }
     }
-    function createConfusionMatrix(labels:any,datas:any,backgroundColor:any,borderColor:any,nbrow:number){
-        var ctx :any = (document.getElementById('myChart') as HTMLCanvasElement).getContext('2d');
+    function createRefBar(maximum:any){
+      var div = document.getElementById("Chart") as HTMLDivElement;
+      var divRef = document.createElement("div");
+      divRef.className = "BarRef"
+
+      var p100 = document.createElement("p");
+      p100.className = "p100"
+      p100.innerHTML = "100%";
+      divRef.appendChild(p100)
+
+      var p75 = document.createElement("p");
+      p75.className = "p75"
+      p75.innerHTML = "75%";
+      divRef.appendChild(p75)
+
+      var p50 = document.createElement("p");
+      p50.className = "p50"
+      p50.innerHTML = "50%";
+      divRef.appendChild(p50)
+
+      var p25 = document.createElement("p");
+      p25.className = "p25"
+      p25.innerHTML = "25%";
+      divRef.appendChild(p25)
+      
+      var p0 = document.createElement("p");
+      p0.className = "p0"
+      p0.innerHTML = "0%";
+      divRef.appendChild(p0)
+
+      div.appendChild(divRef)
+    }
+    function createConfusionMatrix(labels:any,datas:any,backgroundColor:any,borderColor:any,nbrow:number,maximum:number){
+
+      var div = document.getElementById("Chart") as HTMLDivElement;
+      var myChartMatrixDiv = document.createElement("div");
+      myChartMatrixDiv.className = "myChartMatrixDiv"
+      
+      
+      var myChartMatrix = document.createElement("canvas") as HTMLCanvasElement;
+      myChartMatrix.id= "myChartMatrix";
+      myChartMatrix.className= "myChartMatrix";
+      myChartMatrixDiv.appendChild(myChartMatrix)
+      div.appendChild(myChartMatrixDiv);
+      var ctx : any = (document.getElementById('myChartMatrix') as HTMLCanvasElement).getContext('2d');
         
-        console.log(labels)
         var myChart = new Chart(ctx , {
             type : 'matrix',
             data: {
@@ -81,14 +122,13 @@ const AnalyseView = () => {
                     backgroundColor(context) {
                         const value = datas[context.dataIndex].v;
                         var colors  = createRainbowRGB(value, maximum);
-                        var colorString : string= "rgb("+colors[0]*255+","+colors[1]*255+","+colors[2]*255+")";
-                        return color(colorString).alpha(0.5).rgbString();
+                        var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
+                        return color(colorString).alpha(0.8).rgbString();
                       },
                       borderColor(context) {
                         const value = datas[context.dataIndex].v;
                         var colors  = createRainbowRGB(value, maximum);
-                        var colorString : string= "rgb("+colors[0]*255+","+colors[1]*255+","+colors[2]*255+")";
-                        //console.log( "rgb("+colors[0]*255+","+colors[1]*255+","+colors[2]*255+");");
+                        var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
                         return color(colorString).alpha(1).rgbString();
                       },
                     borderWidth: 1,
@@ -97,7 +137,6 @@ const AnalyseView = () => {
                 }],
             },
             options: {
-                maintainAspectRatio: false,
                 plugins: {
                     legend: false,
                     tooltip: {
@@ -134,16 +173,16 @@ const AnalyseView = () => {
                         display: false
                       }
                     }
-                  },
+                  },maintainAspectRatio: false,
                 animation: {
-                    onComplete: function() {
+                    /*onComplete: function() {
                       var a = document.createElement('a');
                         a.href = myChart.toBase64Image();
                         a.download = 'my_file_name.png';
 
                         // Trigger the download
                         //a.click();
-                    }
+                    }*/
                   }
             }})
         myChart.update();
@@ -153,41 +192,24 @@ const AnalyseView = () => {
     }
 
     function createRainbowRGB(x:any,max:any){
-      var ratio = max/255 
-      x = x*ratio;
-      let rouge;
-      let vert;
-      let bleu;
-      //if(x<255){
-          rouge = 1;
-          vert = x/255;
-          bleu = 0;
-      /*}else if(x<510){
-          rouge = (510-x) / 255;
-          vert = 1;
-          bleu = 0;
-      }else if(x<765){
-          rouge = 0;
-          vert = 1;
-          bleu = (x-510)/255;
+      var percentFade  =  x/max*100;
+      if(percentFade<50){
+        var rouge = 196 ; 
+        var bleu = 33+196*percentFade/100;
       }else{
-          rouge = 0;
-          vert = (1020-x)/255;
-          bleu = 1;
-      }/*else if(x<1275){
-          rouge =  (x-1020) / 255;
-          vert = 0;
-          bleu = 1;
-      }else{
-          rouge = 1;
-          vert = 0;
-          bleu = (1530-x)/255;
-      }*/
-      return [rouge , vert , bleu];
+        var rouge = 33-196*percentFade/100; 
+        var bleu = 196 ;
+      }
+      return [rouge,33,bleu]
   }
 
     function createChart(data2:any,abscisseData:any,label:any,lineData:any,backgroundColor:any,borderColor:any){
-        var ctx :any = (document.getElementById('myChart') as HTMLCanvasElement).getContext('2d');
+      var myChartLine = document.createElement("canvas") as HTMLCanvasElement;
+      myChartLine.id= "myChartLine";
+      myChartLine.className= "myChartLine";
+      var div = document.getElementById("Chart") as HTMLDivElement;
+      div.appendChild(myChartLine);
+      var ctx : any = (document.getElementById('myChartLine') as HTMLCanvasElement).getContext('2d');
         
         var myChart = new Chart(ctx , {
             type : 'scatter',
@@ -219,14 +241,14 @@ const AnalyseView = () => {
                     }
                 },
                 animation: {
-                    onComplete: function() {
+                    /*onComplete: function() {
                       var a = document.createElement('a');
                         a.href = myChart.toBase64Image();
                         a.download = 'my_file_name.png';
 
                         // Trigger the download
                         //a.click();
-                    }
+                    }*/
                   }
             }
             
@@ -239,9 +261,9 @@ const AnalyseView = () => {
     return (
         <div id="AnalyseView" className="AnalyseView">
             <div className="view" id="view">
-            <div className="Chart">
+            <div className="Chart" id="Chart">
             
-                <canvas className="myChart" id="myChart" width="400" height="400"></canvas>
+                
             </div>
             </div>
             <BarreLaterale />
