@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib
-from matplotlib import pyplot
 from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC
 from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier, RandomForestClassifier, GradientBoostingRegressor,RandomForestRegressor
@@ -190,13 +189,15 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         importance=pd.DataFrame(importance,columns=['importance'])
         features = pd.DataFrame(features, columns=['features'])
         importance_frame = pd.concat([features,importance], axis=1)
+        importance_frame = importance_frame.T
 
         prediction=pd.DataFrame(prediction,columns=['prediction'])
-        
+
         y_test=y_test.reset_index(drop=True)
         prediction_and_true=pd.concat([prediction,y_test],axis=1)
         prediction_and_true = prediction_and_true.sample(n=100)
-        return prediction_and_true.to_csv(index=False), importance_frame.to_csv(index=False)
+        print(importance_frame.to_csv(header=False, index=False))
+        return prediction_and_true.to_csv(index=False)
                              
     elif analyze_choice == "Classification" :
         parameters = get_list_parameters(algo_choice,list_param)
@@ -237,12 +238,14 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         importance=pd.DataFrame(importance,columns=['importance'])
         features = pd.DataFrame(features, columns=['features'])
         importance_frame = pd.concat([features,importance], axis=1)
+        importance_frame = importance_frame.T
                              
         confusion_matrix2 = confusion_matrix(y_test, prediction)
         #print(confusion_matrix2)
         #print(target_name)
         matrixoutput=pd.DataFrame(confusion_matrix2,columns=target_name,index=target_name)
-        return matrixoutput.to_csv(index=False), importance_frame.to_csv(index=False)
+        print(importance_frame.to_csv(header=False, index=False))
+        return matrixoutput.to_csv(index=False)
                              
     else : 
         print("wrong choice")
@@ -257,8 +260,8 @@ def decryptFile(filename) :
 
 
 if __name__ == "__main__":
-    print("HELLO world")
-    print(filename,features.split(","),pred,list_param.split(","),analyze_choice,algo_choice)
+    #print("HELLO world")
+    #print(filename,features.split(","),pred,list_param.split(","),analyze_choice,algo_choice)
     if toEncrypt == "true" :
         data = decryptFile(filename)
     else :
