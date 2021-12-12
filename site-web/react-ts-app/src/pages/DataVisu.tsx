@@ -173,14 +173,12 @@ const DataVisu = () =>  {
 
     
     function sendRequest(ev :any){
-        console.log("envoie")
         var database = (document.getElementById("SelectDB") as HTMLSelectElement).value
         var firstOne = (document.getElementById("firstOne") as HTMLSelectElement).value
         var secondOne = (document.getElementById("secondOne") as HTMLSelectElement).value
         var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value
         var sample = (document.getElementById("sample") as HTMLInputElement).value
         var date = new Date(Date.now()); 
-        console.log(sample)
         var requestAnalyze = JSON.stringify({
                                             "database" : database,
                                             "date":date, 
@@ -213,11 +211,25 @@ const DataVisu = () =>  {
         newScatterBoard.className = "scatterBoard"
         newBoard.appendChild(newScatterBoard);
 
+        
+        var newhBaryBoard = document.createElement("div");
+        newhBaryBoard.id = "hBaryBoard_"+id;
+        newhBaryBoard.className = "hBaryBoard2"
+        newBoard.appendChild(newhBaryBoard)
+
+        
+        var newhBarxBoard = document.createElement("div");
+        newhBarxBoard.id = "hBarxBoard_"+id;
+        newhBarxBoard.className = "hBarxBoard2"
+        newBoard.appendChild(newhBarxBoard)
+
         var newIndication = document.createElement("div");
         newIndication.id = "indication_"+id;
         newIndication.className = "indication";
         newIndication.innerHTML = file[0].split(',')[0] + " en fonction de " + file[0].split(',')[1] 
         newBoard.appendChild(newIndication)
+
+        
 
         document.getElementById('ChartsRes')?.appendChild(newBoard)
         
@@ -241,6 +253,9 @@ const DataVisu = () =>  {
         else{
             createScatter2Column(data1,data2)
         }
+        
+        hBarx(data1,file[0].split(',')[0])
+        hBary(data2,file[0].split(',')[1])
         
     }
 
@@ -273,6 +288,7 @@ const DataVisu = () =>  {
                 }],labels:data2
             },
             options: {
+                aspectRatio : 1,
                 scales: {
                 },
                 responsive: true
@@ -320,6 +336,7 @@ const DataVisu = () =>  {
                 }],labels:data2
             },
             options: {
+                aspectRatio : 1,
                 scales: {
                 },
                 responsive: true
@@ -330,6 +347,8 @@ const DataVisu = () =>  {
         return myChart;
     }
 
+
+    
     function createDashBoard3column(response:any){
         id++;
         var file = JSON.parse(response).file;
@@ -353,6 +372,18 @@ const DataVisu = () =>  {
         newPolarBoard.id = "polarBoard_"+id;
         newPolarBoard.className = "polarBoard"
         newBoard.appendChild(newPolarBoard)
+
+        
+        var newhBaryBoard = document.createElement("div");
+        newhBaryBoard.id = "hBaryBoard_"+id;
+        newhBaryBoard.className = "hBaryBoard"
+        newBoard.appendChild(newhBaryBoard)
+
+        
+        var newhBarxBoard = document.createElement("div");
+        newhBarxBoard.id = "hBarxBoard_"+id;
+        newhBarxBoard.className = "hBarxBoard"
+        newBoard.appendChild(newhBarxBoard)
 
         var newIndication = document.createElement("div");
         newIndication.id = "indication_"+id;
@@ -382,6 +413,8 @@ const DataVisu = () =>  {
         createScatter(data1,data2,data3)
         createDoughnut(data3)
         createPolar(data1,data2,data3)
+        hBarx(data1,file[0].split(',')[1])
+        hBary(data2,file[0].split(',')[2])
         }
         
     function createScatter(data1:any,data2:any,data3:any){
@@ -407,8 +440,6 @@ const DataVisu = () =>  {
         var occurence : any[]= getOccurenceColumn(column,data3)
         var data : any[]= getAverageYByXByDataset(data1,data2,data3,column,occurence)
         var coloration = getColoration(data);
-
-        console.log(data)
         var backgroundColor = createColors(coloration,0.5);
         var borderColor = createColors(coloration,1)
         var myChart = new Chart(ctx , {
@@ -449,7 +480,6 @@ const DataVisu = () =>  {
     }
 
     function createDoughnut(data3:any){
-
         var newDoughnut = document.createElement('canvas');
         newDoughnut.className="doughnut";
         newDoughnut.id="doughnut_"+id;
@@ -461,7 +491,6 @@ const DataVisu = () =>  {
         var data : any[]= getOccurenceColumn(column,data3)
         var coloration = getColoration(data);
 
-        console.log(data)
         var backgroundColor = createColors(coloration,0.5);
         var borderColor = createColors(coloration,1)
         var myChart = new Chart(ctx , {
@@ -477,7 +506,7 @@ const DataVisu = () =>  {
                 }],labels:column
             },
             options: {
-                
+                aspectRatio : 1,
                 responsive: true
             } as any
             
@@ -485,6 +514,134 @@ const DataVisu = () =>  {
         myChart.update();
         return myChart;
     }
+    function hBarx(data3:any,label:string){
+
+        var newhBarx = document.createElement('canvas');
+        newhBarx.className="hBarx";
+        newhBarx.id="hBarx_"+id;
+        document.getElementById('hBarxBoard_'+id)?.appendChild(newhBarx)
+
+
+        var ctx :any = (document.getElementById('hBarx_'+id) as HTMLCanvasElement).getContext('2d');
+        var labels :any  = getLabelFromOneColumn(data3);
+        var data = getdataFromOneColumn(data3,labels);
+        labels = getLabelFromSteps(labels)
+        var myChart = new Chart(ctx , {
+            type : 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label : "Répartion des "+label,
+                    type: 'bar',
+                    data: data,
+                    borderWidth: 1,
+                    backgroundColor: "rgba(187, 164, 34,0.1)",
+                    borderColor: "rgba(187, 164, 34,1)",
+                }],
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            display: false //this will remove only the label
+                        }
+                    }]
+                },
+                aspectRatio : 1,
+                responsive: true
+            } as any
+            
+        });
+        myChart.update();
+        return myChart;
+    }
+
+    function getLabelFromOneColumn(data:any){
+        var min = data[0];
+        var max = data[0];
+        data.forEach((element:any) => {
+            if(min>element){
+                min= element
+            }else if(max<element){
+                max = element
+            }
+        });
+        var step = (max-min)/10;
+        var labels :any[]= []
+        for(var i :number = 0; i <= 10 ; i++){
+            labels.push((min+i*step).toExponential(1))
+        }
+        console.log(min+" "+max)
+        console.log(labels)
+        return labels
+    }
+
+    function getdataFromOneColumn(data:any,labels:any){
+        var datastat :any[] = [0,0,0,0,0,0,0,0,0,0] 
+        data.forEach((element:any) => {
+            for(var i :number = 1; i <= 10 ; i++){
+                if(element<labels[i]){
+                    datastat[i-1]++;
+                    break
+                }
+            }
+        });
+        console.log(datastat);
+        return datastat
+
+    }
+
+    function getLabelFromSteps(labels:any){
+        var labelSteps : string[] = []
+        for(var i :number = 1; i <= 10 ; i++){
+            labelSteps.push("["+labels[i-1]+","+labels[i]+"]")
+        }
+        return labelSteps
+    }
+
+    function hBary(data3:any,label:string){
+
+        var newhBary = document.createElement('canvas');
+        newhBary.className="hBary";
+        newhBary.id="hBary_"+id;
+        document.getElementById('hBaryBoard_'+id)?.appendChild(newhBary)
+
+
+        var ctx :any = (document.getElementById('hBary_'+id) as HTMLCanvasElement).getContext('2d');
+       
+        var labels :any  = getLabelFromOneColumn(data3);
+        var data = getdataFromOneColumn(data3,labels);
+        labels = getLabelFromSteps(labels)
+        var myChart = new Chart(ctx , {
+            type : 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label : "Répartion des "+label,
+                    type: 'bar',
+                    data: data,
+                    borderWidth: 1,
+                    backgroundColor: "rgba(187, 164, 34,0.1)",
+                    borderColor: "rgba(187, 164, 34,1)",
+                }],
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            display: false //this will remove only the label
+                        }
+                    }]
+                },
+                aspectRatio : 1,
+                responsive: true
+            } as any
+            
+        });
+        myChart.update();
+        return myChart;
+    }
+
 
     function getOccurenceColumn(column:any,data:any){
         var occurence : any[] = []
@@ -620,6 +777,7 @@ const DataVisu = () =>  {
                 }],labels:data2
             },
             options: {
+                aspectRatio : 1,
                 scales: {
                 },
                 responsive: true
@@ -630,36 +788,7 @@ const DataVisu = () =>  {
         return myChart;
     }
 
-    function createChart2bis(abscisseData:any,datasets:any){
-        var ctx :any = (document.getElementById('myChart') as HTMLCanvasElement).getContext('2d');
-        console.log(datasets)
-        var myChart = new Chart(ctx , {
-            type : 'scatter',
-            data: {
-                datasets: datasets
-            },
-            options: {
-               
-                maintainAspectRatio: false,
-                responsive: true,
-                legend: {
-                    display: false,
-                },
-                tooltips: {
-                    callbacks: {
-                        label: function(tooltipItem:any, data:any) {
-                            var dataset = data.datasets[tooltipItem.datasetIndex];
-                            var index = tooltipItem.index;
-                            return dataset.labels[index] + ': ' + dataset.data[index];
-                        }
-                    }
-        }
-            } as any
-            
-        });
-        myChart.update();
-        return myChart;
-    }
+
 
     function updateSample(){
         var inputSample = document.getElementById("inputSample") as HTMLDivElement;
