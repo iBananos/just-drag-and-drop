@@ -52,7 +52,7 @@ import { resolveSoa } from 'dns';
             let extension = req.body.database.split(".")[1];
             console.log("3333333333333333333333333333333")
             if( reponse === "Automatic" || reponse === "Automatic2"){
-                exec('python3 python/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+                exec('python python/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.log("444444444444444444444444444444444444'")
                         console.error(`error: ${error.message}`);
@@ -77,7 +77,7 @@ import { resolveSoa } from 'dns';
             }else{
                 var list_param : string[] = [];
                 Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
-                exec('python3 python/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+                exec('python python/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
