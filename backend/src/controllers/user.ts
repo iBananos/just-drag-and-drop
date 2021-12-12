@@ -7,6 +7,7 @@ import { argon2i } from 'argon2-ffi';
 import Captcha from "../utils/captcha";
 import RefreshToken from '../models/refreshToken'
 import HttpException from '../utils/httpException';
+import sendVerificationEmail from '../utils/verificationService';
 import type { ObjectId } from 'mongoose';
 import type { RequestHandler, Request, Response, NextFunction } from "express";
 
@@ -21,6 +22,10 @@ import type { RequestHandler, Request, Response, NextFunction } from "express";
  */
 export const signup : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     try {
+        if (!req.body.email || !req.body.name || !req.body.surname) {
+            throw new HttpException(401, "controllers/user.ts", "Il manque des informations.");
+        }
+
         if (!checkMailAvailable(req.body.email)) {
             throw new HttpException(401, "controllers/user.ts", "Veuillez entrer une adresse mail valide.");
         }
@@ -38,16 +43,22 @@ export const signup : RequestHandler = (req : Request, res : Response, next : Ne
                 parallelism: 2,
                 hashLength: 64,
             };
-        
+
+            let token = crypto.randomBytes(32);
             argon2i.hash(req.body.password, salt, options).then(hash => {
                 const user = new User({
                     email: req.body.email,
                     password: hash,
                     name : req.body.name,
-                    surname : req.body.surname
+                    surname : req.body.surname,
+                    isVerified : false,
+                    token: token.toString('hex')
                 });
                 user.save().then(async () => {
-                    res.status(200).json({ message: "Votre compte a bien été créé !" });
+                    // Vérification avec l'email
+                    let jwtTokenEmailVerify = jwt.sign({ email: req.body.email }, `${process.env.TOKEN_SECRET}`);
+                    
+                    await sendVerificationEmail(req.body.email, token.toString('hex'), jwtTokenEmailVerify)
 
                     const userId : any = await User.findOne({ email: req.body.email }).lean();
                     let dir = 'uploads/' + userId._id;
@@ -56,8 +67,11 @@ export const signup : RequestHandler = (req : Request, res : Response, next : Ne
                     fs.mkdirSync(dir + '/analyse');
                     fs.mkdirSync(dir + '/analyseInfo');
                     fs.mkdirSync(dir + '/databaseInfo');
+
+                    res.status(200).json({ message: "Votre compte a bien été créé !" });
                 })
                 .catch((err) => {
+                    console.log(err);
                     res.status(401).json({"message" : "Cette adresse e-mail est déjà utilisée."});
                     //throw new HttpException(401, "controllers/user.ts", "Cette adresse e-mail est déjà utilisée.");
                  });
@@ -129,6 +143,37 @@ export const refreshToken : RequestHandler = async (req : Request, res : Respons
     }
     catch (err) {
         next(err);
+    }
+}
+
+
+/**
+ * 
+ * @param req Fonction permettant de vérifier l'adresse email de l'utilisateur
+ * @param res 
+ * @param next 
+ */
+export const verification : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
+    try {
+        const { email, token } = req.query;
+        const foundUser : any = await User.findOne({ email: email }).lean();
+        if (foundUser.isVerified) {
+            return res.status(200).send('Vous avez déjà vérifié votre compte !');
+        }
+        else {
+            const foundToken = foundUser.token;
+            if (foundToken == token) {
+                await User.updateOne({ email: email }, { isVerified: true, $unset: { token: ""}});
+
+                return res.status(200).send('Votre compte a été vérifié avec succès !');
+            }
+            else {
+                throw new HttpException(500, "controllers/user.ts", "Token Expires");
+            }
+        }
+
+    } catch (err) {
+        throw new HttpException(500, "controllers/user.ts", "Email introuvable");
     }
 }
 
