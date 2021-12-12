@@ -50,7 +50,7 @@ const DataVisu = () =>  {
                 optiondefault2.disabled = true;
                 optiondefault2.defaultSelected = true;
                 var optiondefault3 = document.createElement("option");
-                optiondefault3.innerHTML = "Choose a column";
+                optiondefault3.innerHTML = "Choose a coloration";
                 optiondefault3.value = "Choose a column";
                 optiondefault3.disabled = true;
                 optiondefault3.defaultSelected = true;
@@ -127,9 +127,10 @@ const DataVisu = () =>  {
                 optiondefault3.innerHTML = "Choose a coloration";
                 optiondefault3.value = "Choose a column";
                 optiondefault3.disabled = true;
-                optiondefault3.defaultSelected = true;
+                
                 thirdcolumn.appendChild(optiondefault3);
                 var optionNone3 = document.createElement("option");
+                optionNone3.defaultSelected = true;
                 optionNone3.innerHTML = "None";
                 optionNone3.value = "AucuneColoration";
                 optionNone3.style.color = 'red';
@@ -145,7 +146,7 @@ const DataVisu = () =>  {
             }           
         }
         thirdcolumn.disabled = false;
-        (document.getElementById("boutonSend")as HTMLButtonElement).disabled = true;
+        (document.getElementById("boutonSend")as HTMLButtonElement).disabled = false;
     }
 
 
@@ -157,6 +158,7 @@ const DataVisu = () =>  {
     }
     function enableThirdOne(){
         createSelectorForThirdColonnes()
+        enableSubmit()
     }
     
     function enableSubmit(){
@@ -226,7 +228,9 @@ const DataVisu = () =>  {
         var newIndication = document.createElement("div");
         newIndication.id = "indication_"+id;
         newIndication.className = "indication";
-        newIndication.innerHTML = file[0].split(',')[0] + " en fonction de " + file[0].split(',')[1] 
+        var x = file[0].split(',')[0];
+        var y = file[0].split(',')[1];
+        newIndication.innerHTML = x + " en fonction de " +  y
         newBoard.appendChild(newIndication)
 
         
@@ -248,18 +252,18 @@ const DataVisu = () =>  {
         var type  = (document.getElementById("typeChart")as HTMLSelectElement).value;
         var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
         if(thirdOne === "AucuneColoration" && type === "Line"){
-            createLine2Column(data1,data2)
+            createLine2Column(data1,data2,x,y)
         }
         else{
-            createScatter2Column(data1,data2)
+            createScatter2Column(data1,data2,x,y)
         }
         
-        hBarx(data1,file[0].split(',')[0])
-        hBary(data2,file[0].split(',')[1])
+        hBarx(data1,x)
+        hBary(data2,y)
         
     }
 
-    function createLine2Column(data1:any,data2:any){
+    function createLine2Column(data1:any,data2:any,x:any,y:any){
         var datas = orderData(data1,data2);
         data1 = []
         data2 = []
@@ -288,6 +292,12 @@ const DataVisu = () =>  {
                 }],labels:data2
             },
             options: {
+                plugins: {
+                    title: {
+                      display: true,
+                      text: 'Datavisualisation de ' +x+' en fonction de ' +y+'.',
+                    }
+                  },
                 aspectRatio : 1,
                 scales: {
                 },
@@ -314,7 +324,7 @@ const DataVisu = () =>  {
          return datas;
     }
 
-    function createScatter2Column(data1:any,data2:any){
+    function createScatter2Column(data1:any,data2:any,x:any,y:any){
         var newCanvas = document.createElement('canvas');
         newCanvas.className="scatter";
         newCanvas.id="scatter_"+id;
@@ -336,6 +346,12 @@ const DataVisu = () =>  {
                 }],labels:data2
             },
             options: {
+                plugins: {
+                    title: {
+                      display: true,
+                      text: 'Datavisualisation de '+x +' en fonction de '+y+'.',
+                    }
+                  },
                 aspectRatio : 1,
                 scales: {
                 },
@@ -388,7 +404,10 @@ const DataVisu = () =>  {
         var newIndication = document.createElement("div");
         newIndication.id = "indication_"+id;
         newIndication.className = "indication";
-        newIndication.innerHTML = file[0].split(',')[0] + " en fonction de " + file[0].split(',')[1] + " classé par " +  file[0].split(',')[2]
+        var x = file[0].split(',')[0];
+        var y = file[0].split(',')[1];
+        var z = file[0].split(',')[2];
+        newIndication.innerHTML = x + " en fonction de " + y + " classé par " +  z
         newBoard.appendChild(newIndication)
 
         document.getElementById('ChartsRes')?.appendChild(newBoard)
@@ -410,23 +429,23 @@ const DataVisu = () =>  {
         data1 = data1.slice(1)
         data2 = data2.slice(1)
         data3 = data3.slice(1)
-        createScatter(data1,data2,data3)
-        createDoughnut(data3)
-        createPolar(data1,data2,data3)
-        hBarx(data1,file[0].split(',')[1])
-        hBary(data2,file[0].split(',')[2])
+        createScatter(data1,data2,data3,x,y,z)
+        createDoughnut(data3,z)
+        createPolar(data1,data2,data3,x,y,z)
+        hBarx(data1,x)
+        hBary(data2,y)
         }
         
-    function createScatter(data1:any,data2:any,data3:any){
+    function createScatter(data1:any,data2:any,data3:any,x:any,y:any,z:any){
         var datas = decomposeDataByThirdColumn(data1,data2,data3)
         var datasets = createsDatasets(datas,getThirdColumn(data3))
         data3 = getColoration(data3);
         //createChart2bis(data2,datasets); 
         var backgroundColor = createColors(data3,0.5);
         var borderColor = createColors(data3,1)
-        var mychart = createChart2(data1,data2,backgroundColor,borderColor);
+        var mychart = createChart2(data1,data2,backgroundColor,borderColor,x,y,z);
     }
-    function createPolar(data1:any,data2:any,data3:any){
+    function createPolar(data1:any,data2:any,data3:any,x:any,y:any,z:any){
         
         var newPolar = document.createElement('canvas');
         newPolar.className="polar";
@@ -455,7 +474,12 @@ const DataVisu = () =>  {
                 }],labels:column
             },
             options: {
-                
+                plugins: {
+                    title: {
+                      display: true,
+                      text: 'Moyenne de '+x + ' par ' + y+ ' en fonction de la coloration '+z+'.',
+                    }
+                  },
                 responsive: true
             } as any
             
@@ -479,7 +503,7 @@ const DataVisu = () =>  {
         return average;
     }
 
-    function createDoughnut(data3:any){
+    function createDoughnut(data3:any,z:any){
         var newDoughnut = document.createElement('canvas');
         newDoughnut.className="doughnut";
         newDoughnut.id="doughnut_"+id;
@@ -506,6 +530,12 @@ const DataVisu = () =>  {
                 }],labels:column
             },
             options: {
+                plugins: {
+                    title: {
+                      display: true,
+                      text: 'Répartition des ' +z+'.',
+                    }
+                  },
                 aspectRatio : 1,
                 responsive: true
             } as any
@@ -754,7 +784,7 @@ const DataVisu = () =>  {
     }
 
     
-    function createChart2(data1:any,data2:any,backgroundColor:any,borderColor:any){
+    function createChart2(data1:any,data2:any,backgroundColor:any,borderColor:any,x:any,y:any,z:any){
         
         var newCanvas = document.createElement('canvas');
         newCanvas.className="scatter";
@@ -777,6 +807,12 @@ const DataVisu = () =>  {
                 }],labels:data2
             },
             options: {
+                plugins: {
+                    title: {
+                      display: true,
+                      text: 'Datavisualisation de ' +x+' en fonction de ' +y+', coloré par '+ z+'.',
+                    }
+                  },
                 aspectRatio : 1,
                 scales: {
                 },
@@ -830,7 +866,7 @@ const DataVisu = () =>  {
                 <select name="secondOne" id="secondOne" defaultValue="Choose a column" className="firstOne" onChange={enableThirdOne} disabled>
                     <option value="Choose a column" disabled >Choose a column</option>
                 </select><br />
-                <select name="thirdOne" id="thirdOne" defaultValue="Choose a column" className="firstOne" onChange={enableSubmit} disabled>
+                <select name="thirdOne" id="thirdOne" defaultValue="Choose a column" className="firstOne" disabled>
                     <option value="Choose a column" disabled >Choose a coloration</option>
                 </select>
                 <br />
