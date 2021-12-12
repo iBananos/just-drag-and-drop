@@ -50,7 +50,7 @@ const DataVisu = () =>  {
                 optiondefault2.disabled = true;
                 optiondefault2.defaultSelected = true;
                 var optiondefault3 = document.createElement("option");
-                optiondefault3.innerHTML = "Choose a column";
+                optiondefault3.innerHTML = "Choose a coloration";
                 optiondefault3.value = "Choose a column";
                 optiondefault3.disabled = true;
                 optiondefault3.defaultSelected = true;
@@ -127,9 +127,10 @@ const DataVisu = () =>  {
                 optiondefault3.innerHTML = "Choose a coloration";
                 optiondefault3.value = "Choose a column";
                 optiondefault3.disabled = true;
-                optiondefault3.defaultSelected = true;
+                
                 thirdcolumn.appendChild(optiondefault3);
                 var optionNone3 = document.createElement("option");
+                optionNone3.defaultSelected = true;
                 optionNone3.innerHTML = "None";
                 optionNone3.value = "AucuneColoration";
                 optionNone3.style.color = 'red';
@@ -145,7 +146,7 @@ const DataVisu = () =>  {
             }           
         }
         thirdcolumn.disabled = false;
-        (document.getElementById("boutonSend")as HTMLButtonElement).disabled = true;
+        (document.getElementById("boutonSend")as HTMLButtonElement).disabled = false;
     }
 
 
@@ -157,6 +158,7 @@ const DataVisu = () =>  {
     }
     function enableThirdOne(){
         createSelectorForThirdColonnes()
+        enableSubmit()
     }
     
     function enableSubmit(){
@@ -173,14 +175,12 @@ const DataVisu = () =>  {
 
     
     function sendRequest(ev :any){
-        console.log("envoie")
         var database = (document.getElementById("SelectDB") as HTMLSelectElement).value
         var firstOne = (document.getElementById("firstOne") as HTMLSelectElement).value
         var secondOne = (document.getElementById("secondOne") as HTMLSelectElement).value
         var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value
         var sample = (document.getElementById("sample") as HTMLInputElement).value
         var date = new Date(Date.now()); 
-        console.log(sample)
         var requestAnalyze = JSON.stringify({
                                             "database" : database,
                                             "date":date, 
@@ -213,11 +213,27 @@ const DataVisu = () =>  {
         newScatterBoard.className = "scatterBoard"
         newBoard.appendChild(newScatterBoard);
 
+        
+        var newhBaryBoard = document.createElement("div");
+        newhBaryBoard.id = "hBaryBoard_"+id;
+        newhBaryBoard.className = "hBaryBoard2"
+        newBoard.appendChild(newhBaryBoard)
+
+        
+        var newhBarxBoard = document.createElement("div");
+        newhBarxBoard.id = "hBarxBoard_"+id;
+        newhBarxBoard.className = "hBarxBoard2"
+        newBoard.appendChild(newhBarxBoard)
+
         var newIndication = document.createElement("div");
         newIndication.id = "indication_"+id;
         newIndication.className = "indication";
-        newIndication.innerHTML = file[0].split(',')[0] + " en fonction de " + file[0].split(',')[1] 
+        var x = file[0].split(',')[0];
+        var y = file[0].split(',')[1];
+        newIndication.innerHTML = x + " en fonction de " +  y
         newBoard.appendChild(newIndication)
+
+        
 
         document.getElementById('ChartsRes')?.appendChild(newBoard)
         
@@ -236,15 +252,18 @@ const DataVisu = () =>  {
         var type  = (document.getElementById("typeChart")as HTMLSelectElement).value;
         var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
         if(thirdOne === "AucuneColoration" && type === "Line"){
-            createLine2Column(data1,data2)
+            createLine2Column(data1,data2,x,y)
         }
         else{
-            createScatter2Column(data1,data2)
+            createScatter2Column(data1,data2,x,y)
         }
+        
+        hBarx(data1,x)
+        hBary(data2,y)
         
     }
 
-    function createLine2Column(data1:any,data2:any){
+    function createLine2Column(data1:any,data2:any,x:any,y:any){
         var datas = orderData(data1,data2);
         data1 = []
         data2 = []
@@ -273,6 +292,13 @@ const DataVisu = () =>  {
                 }],labels:data2
             },
             options: {
+                plugins: {
+                    title: {
+                      display: true,
+                      text: 'Datavisualisation de ' +x+' en fonction de ' +y+'.',
+                    }
+                  },
+                aspectRatio : 1,
                 scales: {
                 },
                 responsive: true
@@ -298,7 +324,7 @@ const DataVisu = () =>  {
          return datas;
     }
 
-    function createScatter2Column(data1:any,data2:any){
+    function createScatter2Column(data1:any,data2:any,x:any,y:any){
         var newCanvas = document.createElement('canvas');
         newCanvas.className="scatter";
         newCanvas.id="scatter_"+id;
@@ -320,6 +346,13 @@ const DataVisu = () =>  {
                 }],labels:data2
             },
             options: {
+                plugins: {
+                    title: {
+                      display: true,
+                      text: 'Datavisualisation de '+x +' en fonction de '+y+'.',
+                    }
+                  },
+                aspectRatio : 1,
                 scales: {
                 },
                 responsive: true
@@ -330,6 +363,8 @@ const DataVisu = () =>  {
         return myChart;
     }
 
+
+    
     function createDashBoard3column(response:any){
         id++;
         var file = JSON.parse(response).file;
@@ -354,10 +389,25 @@ const DataVisu = () =>  {
         newPolarBoard.className = "polarBoard"
         newBoard.appendChild(newPolarBoard)
 
+        
+        var newhBaryBoard = document.createElement("div");
+        newhBaryBoard.id = "hBaryBoard_"+id;
+        newhBaryBoard.className = "hBaryBoard"
+        newBoard.appendChild(newhBaryBoard)
+
+        
+        var newhBarxBoard = document.createElement("div");
+        newhBarxBoard.id = "hBarxBoard_"+id;
+        newhBarxBoard.className = "hBarxBoard"
+        newBoard.appendChild(newhBarxBoard)
+
         var newIndication = document.createElement("div");
         newIndication.id = "indication_"+id;
         newIndication.className = "indication";
-        newIndication.innerHTML = file[0].split(',')[0] + " en fonction de " + file[0].split(',')[1] + " classé par " +  file[0].split(',')[2]
+        var x = file[0].split(',')[0];
+        var y = file[0].split(',')[1];
+        var z = file[0].split(',')[2];
+        newIndication.innerHTML = x + " en fonction de " + y + " classé par " +  z
         newBoard.appendChild(newIndication)
 
         document.getElementById('ChartsRes')?.appendChild(newBoard)
@@ -379,21 +429,23 @@ const DataVisu = () =>  {
         data1 = data1.slice(1)
         data2 = data2.slice(1)
         data3 = data3.slice(1)
-        createScatter(data1,data2,data3)
-        createDoughnut(data3)
-        createPolar(data1,data2,data3)
+        createScatter(data1,data2,data3,x,y,z)
+        createDoughnut(data3,z)
+        createPolar(data1,data2,data3,x,y,z)
+        hBarx(data1,x)
+        hBary(data2,y)
         }
         
-    function createScatter(data1:any,data2:any,data3:any){
+    function createScatter(data1:any,data2:any,data3:any,x:any,y:any,z:any){
         var datas = decomposeDataByThirdColumn(data1,data2,data3)
         var datasets = createsDatasets(datas,getThirdColumn(data3))
         data3 = getColoration(data3);
         //createChart2bis(data2,datasets); 
         var backgroundColor = createColors(data3,0.5);
         var borderColor = createColors(data3,1)
-        var mychart = createChart2(data1,data2,backgroundColor,borderColor);
+        var mychart = createChart2(data1,data2,backgroundColor,borderColor,x,y,z);
     }
-    function createPolar(data1:any,data2:any,data3:any){
+    function createPolar(data1:any,data2:any,data3:any,x:any,y:any,z:any){
         
         var newPolar = document.createElement('canvas');
         newPolar.className="polar";
@@ -407,8 +459,6 @@ const DataVisu = () =>  {
         var occurence : any[]= getOccurenceColumn(column,data3)
         var data : any[]= getAverageYByXByDataset(data1,data2,data3,column,occurence)
         var coloration = getColoration(data);
-
-        console.log(data)
         var backgroundColor = createColors(coloration,0.5);
         var borderColor = createColors(coloration,1)
         var myChart = new Chart(ctx , {
@@ -424,7 +474,12 @@ const DataVisu = () =>  {
                 }],labels:column
             },
             options: {
-                
+                plugins: {
+                    title: {
+                      display: true,
+                      text: 'Moyenne de '+x + ' par ' + y+ ' en fonction de la coloration '+z+'.',
+                    }
+                  },
                 responsive: true
             } as any
             
@@ -448,8 +503,7 @@ const DataVisu = () =>  {
         return average;
     }
 
-    function createDoughnut(data3:any){
-
+    function createDoughnut(data3:any,z:any){
         var newDoughnut = document.createElement('canvas');
         newDoughnut.className="doughnut";
         newDoughnut.id="doughnut_"+id;
@@ -461,7 +515,6 @@ const DataVisu = () =>  {
         var data : any[]= getOccurenceColumn(column,data3)
         var coloration = getColoration(data);
 
-        console.log(data)
         var backgroundColor = createColors(coloration,0.5);
         var borderColor = createColors(coloration,1)
         var myChart = new Chart(ctx , {
@@ -477,7 +530,13 @@ const DataVisu = () =>  {
                 }],labels:column
             },
             options: {
-                
+                plugins: {
+                    title: {
+                      display: true,
+                      text: 'Répartition des ' +z+'.',
+                    }
+                  },
+                aspectRatio : 1,
                 responsive: true
             } as any
             
@@ -485,6 +544,134 @@ const DataVisu = () =>  {
         myChart.update();
         return myChart;
     }
+    function hBarx(data3:any,label:string){
+
+        var newhBarx = document.createElement('canvas');
+        newhBarx.className="hBarx";
+        newhBarx.id="hBarx_"+id;
+        document.getElementById('hBarxBoard_'+id)?.appendChild(newhBarx)
+
+
+        var ctx :any = (document.getElementById('hBarx_'+id) as HTMLCanvasElement).getContext('2d');
+        var labels :any  = getLabelFromOneColumn(data3);
+        var data = getdataFromOneColumn(data3,labels);
+        labels = getLabelFromSteps(labels)
+        var myChart = new Chart(ctx , {
+            type : 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label : "Répartion des "+label,
+                    type: 'bar',
+                    data: data,
+                    borderWidth: 1,
+                    backgroundColor: "rgba(187, 164, 34,0.1)",
+                    borderColor: "rgba(187, 164, 34,1)",
+                }],
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            display: false //this will remove only the label
+                        }
+                    }]
+                },
+                aspectRatio : 1,
+                responsive: true
+            } as any
+            
+        });
+        myChart.update();
+        return myChart;
+    }
+
+    function getLabelFromOneColumn(data:any){
+        var min = data[0];
+        var max = data[0];
+        data.forEach((element:any) => {
+            if(min>element){
+                min= element
+            }else if(max<element){
+                max = element
+            }
+        });
+        var step = (max-min)/10;
+        var labels :any[]= []
+        for(var i :number = 0; i <= 10 ; i++){
+            labels.push((min+i*step).toExponential(1))
+        }
+        console.log(min+" "+max)
+        console.log(labels)
+        return labels
+    }
+
+    function getdataFromOneColumn(data:any,labels:any){
+        var datastat :any[] = [0,0,0,0,0,0,0,0,0,0] 
+        data.forEach((element:any) => {
+            for(var i :number = 1; i <= 10 ; i++){
+                if(element<labels[i]){
+                    datastat[i-1]++;
+                    break
+                }
+            }
+        });
+        console.log(datastat);
+        return datastat
+
+    }
+
+    function getLabelFromSteps(labels:any){
+        var labelSteps : string[] = []
+        for(var i :number = 1; i <= 10 ; i++){
+            labelSteps.push("["+labels[i-1]+","+labels[i]+"]")
+        }
+        return labelSteps
+    }
+
+    function hBary(data3:any,label:string){
+
+        var newhBary = document.createElement('canvas');
+        newhBary.className="hBary";
+        newhBary.id="hBary_"+id;
+        document.getElementById('hBaryBoard_'+id)?.appendChild(newhBary)
+
+
+        var ctx :any = (document.getElementById('hBary_'+id) as HTMLCanvasElement).getContext('2d');
+       
+        var labels :any  = getLabelFromOneColumn(data3);
+        var data = getdataFromOneColumn(data3,labels);
+        labels = getLabelFromSteps(labels)
+        var myChart = new Chart(ctx , {
+            type : 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label : "Répartion des "+label,
+                    type: 'bar',
+                    data: data,
+                    borderWidth: 1,
+                    backgroundColor: "rgba(187, 164, 34,0.1)",
+                    borderColor: "rgba(187, 164, 34,1)",
+                }],
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            display: false //this will remove only the label
+                        }
+                    }]
+                },
+                aspectRatio : 1,
+                responsive: true
+            } as any
+            
+        });
+        myChart.update();
+        return myChart;
+    }
+
 
     function getOccurenceColumn(column:any,data:any){
         var occurence : any[] = []
@@ -597,7 +784,7 @@ const DataVisu = () =>  {
     }
 
     
-    function createChart2(data1:any,data2:any,backgroundColor:any,borderColor:any){
+    function createChart2(data1:any,data2:any,backgroundColor:any,borderColor:any,x:any,y:any,z:any){
         
         var newCanvas = document.createElement('canvas');
         newCanvas.className="scatter";
@@ -620,6 +807,13 @@ const DataVisu = () =>  {
                 }],labels:data2
             },
             options: {
+                plugins: {
+                    title: {
+                      display: true,
+                      text: 'Datavisualisation de ' +x+' en fonction de ' +y+', coloré par '+ z+'.',
+                    }
+                  },
+                aspectRatio : 1,
                 scales: {
                 },
                 responsive: true
@@ -630,36 +824,7 @@ const DataVisu = () =>  {
         return myChart;
     }
 
-    function createChart2bis(abscisseData:any,datasets:any){
-        var ctx :any = (document.getElementById('myChart') as HTMLCanvasElement).getContext('2d');
-        console.log(datasets)
-        var myChart = new Chart(ctx , {
-            type : 'scatter',
-            data: {
-                datasets: datasets
-            },
-            options: {
-               
-                maintainAspectRatio: false,
-                responsive: true,
-                legend: {
-                    display: false,
-                },
-                tooltips: {
-                    callbacks: {
-                        label: function(tooltipItem:any, data:any) {
-                            var dataset = data.datasets[tooltipItem.datasetIndex];
-                            var index = tooltipItem.index;
-                            return dataset.labels[index] + ': ' + dataset.data[index];
-                        }
-                    }
-        }
-            } as any
-            
-        });
-        myChart.update();
-        return myChart;
-    }
+
 
     function updateSample(){
         var inputSample = document.getElementById("inputSample") as HTMLDivElement;
@@ -701,7 +866,7 @@ const DataVisu = () =>  {
                 <select name="secondOne" id="secondOne" defaultValue="Choose a column" className="firstOne" onChange={enableThirdOne} disabled>
                     <option value="Choose a column" disabled >Choose a column</option>
                 </select><br />
-                <select name="thirdOne" id="thirdOne" defaultValue="Choose a column" className="firstOne" onChange={enableSubmit} disabled>
+                <select name="thirdOne" id="thirdOne" defaultValue="Choose a column" className="firstOne" disabled>
                     <option value="Choose a column" disabled >Choose a coloration</option>
                 </select>
                 <br />
