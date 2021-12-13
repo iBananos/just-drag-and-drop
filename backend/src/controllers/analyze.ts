@@ -12,9 +12,7 @@ import { resolveSoa } from 'dns';
  * @param next 
  */
  export const  parameters : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
     var reponse = checkAnalyze(req)
-    console.log("000000000000000000000000000000000000")
     if(reponse !== 'ok' && reponse !== "Automatic" && reponse !== "Automatic2"){
         res.send({"status" :reponse, "name": "a", "category": "b"})
         return
@@ -33,11 +31,9 @@ import { resolveSoa } from 'dns';
     const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
     let nom = aesCipher.encrypt(Buffer.from(nomFichier + ".json"));
     req.body.nameAnalyze = nomFichier;
-    console.log("1111111111111111111111111111111111111111")
     req.body.type = "prediction";
     fs.writeFile('uploads/' + req.body.userId + '/analyseInfo/' + nom, aesCipher.encrypt(Buffer.from(JSON.stringify(req.body))), async function (err) {
         if (err) {
-            console.log("2222222222222222222222222222222222222222")
             res.send('error'); 
         } else{
             var analyze_choice = req.body.category;
@@ -47,27 +43,22 @@ import { resolveSoa } from 'dns';
             let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/database/", req.body.database);
             var filename = 'uploads/' + req.body.userId + '/database/' + targetBase;
             var features = req.body.feature;
-            console.log(req.body.feature);
             var pred = req.body.pred;
             let extension = req.body.database.split(".")[1];
-            console.log("3333333333333333333333333333333")
             if( reponse === "Automatic" || reponse === "Automatic2"){
                 exec('python3 python/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
-                        console.log("444444444444444444444444444444444444'")
                         console.error(`error: ${error.message}`);
                         return;
                     }
                   
                     if (stderr) {
-                        console.log("55555555555555555555555555555555555555555555")
                         console.error(`stderr: ${stderr}`);
                         return;
                     }
                     
                     fs.writeFile('uploads/' + req.body.userId + '/analyse/' + aesCipher.encrypt(Buffer.from(nomFichier + ".csv")), aesCipher.encrypt(Buffer.from(stdout)), function (err) {
                         if (err) {
-                            console.log("66666666666666666666666666666666666666666666666")
                             res.send('error'); 
                         } else {
                             res.send({"status" :"ok", "name": nomFichier, "category": req.body.category})
@@ -135,21 +126,13 @@ function checkAnalyze(req:any){
     const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
     filename = aesCipher.decrypt(filename);
     filename = filename.split(".")[0]
-    console.log("tttttttttttttttttttttttttttttttttttttttttt")
     var analyze_choice = req.body.category;
-    console.log("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM")
     var algo_choice = req.body.algo;
-    console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     var features = req.body.feature;
-    console.log("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKkk")
     var list_param :any= [];
-    console.log("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG")
     Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value)}); // PROBLEME A CETTE LIGNE  TypeError: Cannot convert undefined or null to object
-    console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWw")
     var pred = req.body.pred;
-    console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBb")
     var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/database/');
-    console.log("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
     // verif database
     if(typeof filename !== 'string') return "le nom de la database n'est pas un nom de fichier"
     if(!listName.includes(filename)) return "la database est inexistante"
@@ -177,7 +160,7 @@ function checkAnalyze(req:any){
     // vérif algo
     if(typeof algo_choice !== 'string') return "algo_choice n'est pas une string"
     if(analyze_choice === 'Regression' && !['Automatic','GradientBoosting','RandomForest','Ridge'].includes(algo_choice)) return "algo_choice n'est pas un algo valide pour une régression"
-    if(analyze_choice === 'Classification' && !['Automatic2','LinearSVC','AdaBoost','GradientBoosting2','RanddomForest2','LogisticRegression'].includes(algo_choice)) return "algo_choice n'est pas un algo valide pour une classification"
+    if(analyze_choice === 'Classification' && !['Automatic2','LinearSVC','AdaBoost','GradientBoosting2','RandomForest2','LogisticRegression'].includes(algo_choice)) return "algo_choice n'est pas un algo valide pour une classification"
     if(algo_choice === "Automatic" || algo_choice === "Automatic2") return algo_choice;
     // vérif params
     if(verifParams(req.body.params,algo_choice,analyze_choice)) return "les params ne sont pas valide pour l'algo choisit"
