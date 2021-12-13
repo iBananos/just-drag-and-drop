@@ -21,6 +21,12 @@ router.post("/login", userCtrl.login);
 
 
 /**
+ * Route vérification
+ */
+router.post("/verification", userCtrl.verification);
+
+
+/**
  * Route Refresh Token
  */
 router.post('/refresh', userCtrl.refreshToken);

@@ -39,7 +39,7 @@ const Navigation = () => {
                     utils.default.refreshToken();
                 }
             } 
-            else if (parseInt(refreshTokenExpires, 10) > Date.now()) {
+            else if (parseInt(refreshTokenExpires, 10) < Date.now()+30000) {
                 utils.default.refreshToken();
             }
             else {

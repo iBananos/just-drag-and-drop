@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 import User from '../models/user';
 import HttpException from '../utils/httpException';
 import type { RequestHandler, Request, Response, NextFunction } from "express";
@@ -46,7 +47,13 @@ export const auth : RequestHandler = async (req : Request, res : Response, next 
             throw new HttpException(401, "middleware/auth.ts", "Token XSRF invalide.");
 
         /* On vérifie l'userId du JWT */
-        const user : any = await User.findOne({ id: decodedToken.userId }).lean();
+        let id = new mongoose.Types.ObjectId(decodedToken.userId);
+        const user : any = await User.findOne({ _id: id }).lean();
+
+        if (user.isVerified == false) {
+            throw new HttpException(401, "middleware/auth.ts", "Vous devez d'abord confirmer votre adresse email.");
+        }
+
         if (!user) 
             throw new HttpException(401, "middleware/auth.ts", "L'authentification a échoué.");
         

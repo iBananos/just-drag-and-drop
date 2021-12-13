@@ -310,11 +310,12 @@ const Analyze = () =>  {
                                                 "feature":features,
                                                 "category":"Classification",
                                                 "algo":algo, 
-                                                "n_estimators" : (document.getElementById("n_estimators8")as HTMLInputElement).value,
-                                                "max_depth" : (document.getElementById("max_depth8")as HTMLInputElement).value,
-                                                "min_samples_split" : (document.getElementById("min_samples_split8")as HTMLInputElement).value,
-                                                "class_weight" : (document.getElementById("class_weight8")as HTMLSelectElement).value
-                                                });
+                                                "params" : {
+                                                    "n_estimators" : (document.getElementById("n_estimators8")as HTMLInputElement).value,
+                                                    "max_depth" : (document.getElementById("max_depth8")as HTMLInputElement).value,
+                                                    "min_samples_split" : (document.getElementById("min_samples_split8")as HTMLInputElement).value,
+                                                    "class_weight" : (document.getElementById("class_weight8")as HTMLSelectElement).value
+                                                }});
             }else if(algo === "LogisticRegression"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
