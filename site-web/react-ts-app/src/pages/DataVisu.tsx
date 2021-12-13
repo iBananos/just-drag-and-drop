@@ -3,6 +3,8 @@ import Navigation from '../components/Navigation';
 import { Chart} from 'chart.js';
 import * as utils from "../Utils";
 import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
+import trashIcone from "../assets/trash.png";
+import downloadIcone from "../assets/download.png";
 
 Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  );
 var id = 0;
@@ -208,6 +210,56 @@ const DataVisu = () =>  {
         var newBoard = document.createElement("div");
         newBoard.id = "newBoard_"+id;
         newBoard.className = "DashBoard"
+
+        var newIndication = document.createElement("div");
+        newIndication.id = "indication_"+id;
+        newIndication.className = "indication";
+        var x = file[0].split(',')[0];
+        var y = file[0].split(',')[1];
+        newIndication.innerHTML = x + " en fonction de " +  y
+        newBoard.appendChild(newIndication)
+
+        var download = document.createElement("img");
+            download.src = downloadIcone;
+            download.id = "download_"+id;
+            download.alt = "";
+            download.className = "downloadDash";
+            download.onclick  = (ev:any) => {
+                var thisId = ev.path[0].id.split("_")[1]
+                var canvas1 = (document.getElementById("scatter_"+thisId) as HTMLCanvasElement)
+    
+                var canvas4 = (document.getElementById("hBarx_"+thisId) as HTMLCanvasElement)
+    
+                var canvas5 = (document.getElementById("hBary_"+thisId) as HTMLCanvasElement)
+    
+                var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
+                canvasFinal.width = 1000;
+                canvasFinal.height= 500;
+                var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
+                ctxFinal.drawImage(canvas1, 0, 0,500,500);
+                ctxFinal.drawImage(canvas4, 500, 0,250,250);
+                ctxFinal.drawImage(canvas5, 750, 0,250,250);
+                var link = document.createElement('a');
+                link.download = "RESULT.png";
+                link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                link.click();
+    
+            };
+
+            newBoard.appendChild(download);
+        var trash = document.createElement("img");
+            trash.src = trashIcone;
+            trash.id = "trash_"+id;
+            trash.alt = "";
+            trash.className = "trashDash";
+            trash.onclick  = (ev:any) => {
+                //console.log(ev.path[0].id.split("_")[1])
+                var dashBoard = (document.getElementById("newBoard_"+ev.path[0].id.split("_")[1]) as HTMLDivElement);
+                dashBoard.innerHTML = "";
+                dashBoard.style.display = "none";
+            }
+            newBoard.appendChild(trash);
+
         var newScatterBoard = document.createElement("div");
         newScatterBoard.id = "scatterBoard_"+id;
         newScatterBoard.className = "scatterBoard"
@@ -225,13 +277,7 @@ const DataVisu = () =>  {
         newhBarxBoard.className = "hBarxBoard2"
         newBoard.appendChild(newhBarxBoard)
 
-        var newIndication = document.createElement("div");
-        newIndication.id = "indication_"+id;
-        newIndication.className = "indication";
-        var x = file[0].split(',')[0];
-        var y = file[0].split(',')[1];
-        newIndication.innerHTML = x + " en fonction de " +  y
-        newBoard.appendChild(newIndication)
+        
 
         
 
@@ -309,6 +355,8 @@ const DataVisu = () =>  {
         return myChart;
     }
 
+    
+
     function orderData(data1:any,data2:any){
         var datas : any[] = []
         for(var i : number = 0 ; i < data1.length ; i++ ){
@@ -363,15 +411,78 @@ const DataVisu = () =>  {
         return myChart;
     }
 
+    function downloadPDF(){
+       
+        
+       
+    }
 
     
     function createDashBoard3column(response:any){
         id++;
         var file = JSON.parse(response).file;
         file = file.split('\n')
-        var newBoard = document.createElement("div");
+        var newBoard = document.createElement("div") as any;
         newBoard.id = "newBoard_"+id;
         newBoard.className = "DashBoard"
+        
+        
+
+        var newIndication = document.createElement("div");
+        newIndication.id = "indication_"+id;
+        newIndication.className = "indication";
+        var x = file[0].split(',')[0];
+        var y = file[0].split(',')[1];
+        var z = file[0].split(',')[2];
+        newIndication.innerHTML = x + " en fonction de " + y + " classé par " +  z
+        newBoard.appendChild(newIndication)
+
+        var download = document.createElement("img");
+            download.src = downloadIcone;
+            download.id = "download_"+id;
+            download.alt = "";
+            download.className = "downloadDash";
+            download.onclick  = (ev:any) => {
+                var thisId = ev.path[0].id.split("_")[1]
+                var canvas1 = (document.getElementById("scatter_"+thisId) as HTMLCanvasElement)
+    
+                var canvas2 = (document.getElementById("doughnut_"+thisId) as HTMLCanvasElement)
+    
+                var canvas3 = (document.getElementById("polar_"+thisId) as HTMLCanvasElement)
+    
+                var canvas4 = (document.getElementById("hBarx_"+thisId) as HTMLCanvasElement)
+    
+                var canvas5 = (document.getElementById("hBary_"+thisId) as HTMLCanvasElement)
+    
+                var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
+                canvasFinal.width = 1000;
+                canvasFinal.height= 500;
+                var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
+                ctxFinal.drawImage(canvas1, 0, 0,500,500);
+                ctxFinal.drawImage(canvas2, 500, 0,250,250);
+                ctxFinal.drawImage(canvas3, 750, 0,250,250);
+                ctxFinal.drawImage(canvas4, 500, 250,250,250);
+                ctxFinal.drawImage(canvas5, 750, 250,250,250);
+                var link = document.createElement('a');
+                link.download = "RESULT.png";
+                link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                link.click();
+    
+            };
+
+            newBoard.appendChild(download);
+        var trash = document.createElement("img");
+            trash.src = trashIcone;
+            trash.id = "trash_"+id;
+            trash.alt = "";
+            trash.className = "trashDash";
+            trash.onclick  = (ev:any) => {
+                //console.log(ev.path[0].id.split("_")[1])
+                var dashBoard = (document.getElementById("newBoard_"+ev.path[0].id.split("_")[1]) as HTMLDivElement);
+                dashBoard.innerHTML = "";
+                dashBoard.style.display = "none";
+            }
+            newBoard.appendChild(trash);
 
         var newScatterBoard = document.createElement("div");
         newScatterBoard.id = "scatterBoard_"+id;
@@ -401,15 +512,6 @@ const DataVisu = () =>  {
         newhBarxBoard.className = "hBarxBoard"
         newBoard.appendChild(newhBarxBoard)
 
-        var newIndication = document.createElement("div");
-        newIndication.id = "indication_"+id;
-        newIndication.className = "indication";
-        var x = file[0].split(',')[0];
-        var y = file[0].split(',')[1];
-        var z = file[0].split(',')[2];
-        newIndication.innerHTML = x + " en fonction de " + y + " classé par " +  z
-        newBoard.appendChild(newIndication)
-
         document.getElementById('ChartsRes')?.appendChild(newBoard)
         
         var data1 : any = [];
@@ -438,8 +540,9 @@ const DataVisu = () =>  {
         
     function createScatter(data1:any,data2:any,data3:any,x:any,y:any,z:any){
         var datas = decomposeDataByThirdColumn(data1,data2,data3)
-        var datasets = createsDatasets(datas,getThirdColumn(data3))
-        data3 = getColoration(data3);
+        var column = getThirdColumn(data3);
+        var datasets = createsDatasets(datas,column)
+        data3 = getColoration(data3,column);
         //createChart2bis(data2,datasets); 
         var backgroundColor = createColors(data3,0.5);
         var borderColor = createColors(data3,1)
@@ -458,7 +561,7 @@ const DataVisu = () =>  {
 
         var occurence : any[]= getOccurenceColumn(column,data3)
         var data : any[]= getAverageYByXByDataset(data1,data2,data3,column,occurence)
-        var coloration = getColoration(data);
+        var coloration = getColoration(data,column);
         var backgroundColor = createColors(coloration,0.5);
         var borderColor = createColors(coloration,1)
         var myChart = new Chart(ctx , {
@@ -513,7 +616,7 @@ const DataVisu = () =>  {
         var ctx :any = (document.getElementById('doughnut_'+id) as HTMLCanvasElement).getContext('2d');
         var column = getThirdColumn(data3)
         var data : any[]= getOccurenceColumn(column,data3)
-        var coloration = getColoration(data);
+        var coloration = getColoration(data,column);
 
         var backgroundColor = createColors(coloration,0.5);
         var borderColor = createColors(coloration,1)
@@ -601,8 +704,6 @@ const DataVisu = () =>  {
         for(var i :number = 0; i <= 10 ; i++){
             labels.push((min+i*step).toExponential(1))
         }
-        console.log(min+" "+max)
-        console.log(labels)
         return labels
     }
 
@@ -616,7 +717,6 @@ const DataVisu = () =>  {
                 }
             }
         });
-        console.log(datastat);
         return datastat
 
     }
@@ -762,23 +862,50 @@ const DataVisu = () =>  {
         return(newArray)
     }
 
-    function getColoration(array: string[]){
+    function createRainbowRGB(nbColors:any){
+        var colors : any[] = []
+        for(var i :number = 0 ; i<nbColors;i++){
+            var percentFade  =  i/nbColors*100;
+            let rouge;
+            let vert;
+            let bleu;
+            if(percentFade<20){
+                rouge = 1;
+                vert = percentFade*5/100;
+                bleu = 0;
+            }else if(percentFade<40){
+                rouge = 1-((percentFade-20)*5)/100;
+                vert = 1;
+                bleu = 0;
+            }else if(percentFade<60){
+                rouge = 0;
+                vert = 1;
+                bleu = (percentFade-40)*5/100;
+            }else if (percentFade<80){
+                rouge = 0;
+                vert = 1-((percentFade-60)*5)/100;
+                bleu = 1;
+            }else{
+                rouge = (percentFade-80)*5/100;;
+                vert = 0;
+                bleu = 1;
+            }
+            console.log(percentFade)
+            console.log(colors)
+            colors.push({"r": rouge*255,"g": vert*255,"b": bleu*255})
+        }
+    return colors
+}
+    function getColoration(array: string[],column:any[]){
         var newArray : string[] = [];
         var coloration : any[] = [];
-
-        var colors = [
-        {"r": 206,"g": 22,"b": 22},
-        {"r": 206,"g": 143,"b": 22}, 
-        {"r": 22,"g": 206,"b": 54},
-        {"r": 22,"g": 206,"b": 193},
-        {"r": 22,"g": 67,"b": 206},
-        {"r": 166,"g": 22,"b": 206},
-        {"r": 197,"g": 206,"b": 22}]
+        var nbColors = column.length;
+        var colors :any = createRainbowRGB(nbColors)
         array.forEach((el :any) =>{
             if(!newArray.includes(el)){
                 newArray.push(el); 
             }
-            coloration.push(colors[newArray.indexOf(el)%7])
+            coloration.push(colors[newArray.indexOf(el)])
         })
         return coloration
     }
@@ -854,7 +981,7 @@ const DataVisu = () =>  {
             <div className="view" id="view">
                 <div className="dataVisuView">
                 <div id="dataVisuContainer" className="dataVisuContainer">
-                <div className="dataVisuBar">
+                <div className="dataVisuBar"  onClick={downloadPDF}>
                 <h1 className="title">Data Visualisation</h1>
                 <select name="database" id="SelectDB"defaultValue="Choose a database" className="SelectDB" onChange={enableFirstOne}>
                     <option value="Choose a database" disabled >Choose a database</option>
