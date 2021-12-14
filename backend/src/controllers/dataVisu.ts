@@ -16,7 +16,7 @@ export const  parameters : RequestHandler = (req : Request, res : Response, next
     let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/database/", req.body.database);
     let filename = "uploads/" + req.body.userId + "/database/" + targetBase;
     let extension = req.body.database.split(".")[1];
-    exec('python3 python/datavisu.py "' + filename + '" ' + extension + ' ' + req.body.firstOne + ' ' + req.body.secondOne + ' ' + req.body.thirdOne + ' ' + req.body.sample + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+    exec('python python/datavisu.py "' + filename + '" ' + extension + ' ' + req.body.firstOne + ' ' + req.body.secondOne + ' ' + req.body.thirdOne + ' ' + req.body.sample + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
         if (error) {
             console.error(`error: ${error.message}`);
             return;

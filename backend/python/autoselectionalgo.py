@@ -29,10 +29,13 @@ def parse_data(filename):
 
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
-        df = pd.read_csv(filename,index_col=0, delimiter=',', encoding="utf-8")
-    elif extension == 'xlsx' :
+        try:
+            df = pd.read_csv(filename,index_col=0, delimiter=',', encoding="utf-8")
+        except:
+            df = pd.read_csv(filename, delimiter=',', encoding="utf-8")
+    elif extension == 'xlsx' or extension == 'xls':
             # Assume that the user uploaded an excel file
-        df = pd.read_excel(filename,index_col=0,encoding="utf-8")
+        df = pd.read_excel(filename,index_col=0)
     elif extension == 'txt' or extension == 'tsv' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
         df = pd.read_csv(filename, delimiter = r'\s+',index_col=0, encoding="utf-8")
@@ -40,7 +43,7 @@ def parse_data(filename):
         df = pd.read_json(filename)
     else :
         print("There was an error while processing this file")
-
+    
     return df
 
 
@@ -64,9 +67,10 @@ def autoselection(feature,predict,filename):
     df.values[1]=df.values[1].astype(float)
     df=df.drop(df.index[[0]])
     df=df.reset_index(drop=True)
-    FirstModel = joblib.load('FirstTOP1.sav')
-    SecondaryModel = joblib.load('SecondaryTOP1.sav')
-    earlystop = joblib.load('Goodpredictor.sav')
+    FirstModel = joblib.load('python/FirstTOP1.sav')
+    SecondaryModel = joblib.load('python/SecondaryTOP1.sav')
+    earlystop = joblib.load('python/Goodpredictor.sav')
+    earlystop2 = joblib.load('python/SecondaryGoodPredictor.sav')
     index = [0, 0, 0, 0, 0, 0, 0]
     algo = pd.DataFrame(['SGDRegressor','Lasso','Ridge','Gradient','RandomForest','ElasticNet','KNeighborsRegressor'], columns=['algo'],index=index)
     testone=pd.concat([df,algo],axis=1)
@@ -82,7 +86,8 @@ def autoselection(feature,predict,filename):
         testone[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
     testone=testone.fillna(-1)
     stopcalcul=earlystop.predict(testone)
-    if stopcalcul[0]==False and stopcalcul[1]==False and stopcalcul[2]==False and stopcalcul[3]==False and stopcalcul[4]==False and stopcalcul[5]==False and stopcalcul[5]==False:
+    stopcalcul2=earlystop2.predict(testone)
+    if stopcalcul[0]==False and stopcalcul[1]==False and stopcalcul[2]==False and stopcalcul[3]==False and stopcalcul[4]==False and stopcalcul[5]==False and stopcalcul[6]==False and stopcalcul2[0]==False and stopcalcul2[1]==False and stopcalcul2[2]==False and stopcalcul2[3]==False and stopcalcul2[4]==False and stopcalcul2[5]==False and stopcalcul2[6]==False:
         return 'You will not getting good prediction with your dataset'
     #print(testone.columns)
     pred1=FirstModel.predict(testone)

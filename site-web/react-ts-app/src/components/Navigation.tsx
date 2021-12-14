@@ -27,27 +27,36 @@ const Navigation = () => {
         }
     }
     window.addEventListener('resize', gestionNav);
-    
+    var aenvoyer = false;
+    var timesent = Date.now();
     setInterval(checkTokenValidity,5000);
 
     function checkTokenValidity() {
-        console.log("ABCDEF")
-        let xsrfToken = localStorage.getItem("xsrfToken");
-        let accessTokenExpires = localStorage.getItem("accessTokenExpires");
-        let refreshTokenExpires = localStorage.getItem("refreshTokenExpires");
-        if (xsrfToken && accessTokenExpires && refreshTokenExpires) {
-            if (parseInt(accessTokenExpires, 10) > Date.now()) {
-                if (parseInt(accessTokenExpires, 10) < Date.now()+30000) {
+        if(!aenvoyer){
+            aenvoyer = true;
+            timesent = Date.now();
+            let xsrfToken = localStorage.getItem("xsrfToken");
+            let accessTokenExpires = localStorage.getItem("accessTokenExpires");
+            let refreshTokenExpires = localStorage.getItem("refreshTokenExpires");
+            if (xsrfToken && accessTokenExpires && refreshTokenExpires) {
+                if (parseInt(accessTokenExpires, 10) > Date.now()) {
+                    if (parseInt(accessTokenExpires, 10) < Date.now()+30000) {
+                        utils.default.refreshToken();
+                        
+                    }
+                } 
+                else if (parseInt(refreshTokenExpires, 10) < Date.now()+30000) {
                     utils.default.refreshToken();
                 }
-            } 
-            else if (parseInt(refreshTokenExpires, 10) < Date.now()+30000) {
-                utils.default.refreshToken();
-            }
-            else {
-                deleteToken()
+                else {
+                    deleteToken()
+                }
+                
             }
             
+        }if(Date.now() > timesent + 2000){
+            aenvoyer = false;
+            timesent = Date.now();
         }
     }
 

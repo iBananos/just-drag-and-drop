@@ -133,7 +133,7 @@ export const refreshToken : RequestHandler = async (req : Request, res : Respons
         const oldRefreshToken : any = await RefreshToken.findOne({ refreshToken: cookies.refresh_token }).lean();
         console.log(oldRefreshToken)
         
-        if (oldRefreshToken!.expires < Date.now())
+        if (oldRefreshToken.expires < Date.now())
             throw new HttpException(401, "controllers/user.ts", "Token Expires");
         else {
             /* Création des token */

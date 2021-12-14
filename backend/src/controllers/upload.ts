@@ -58,7 +58,7 @@ function getColonneFromCSV(userId : string, path : any) {
 
 function createInfoDatabase(userId : string, fileName : string, name : string, date : string, size : any, extension : any, colonnes : string[]){
     const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-    exec('python3 python/getcolumn.py "' + fileName + '" ' + extension + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error : any, stdout : any, stderr : any) => {
+    exec('python python/getcolumn.py "' + fileName + '" ' + extension + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error : any, stdout : any, stderr : any) => {
         if (error) {
             console.error(`error: ${error.message}`);
             return;
