@@ -132,7 +132,7 @@ export const refreshToken : RequestHandler = async (req : Request, res : Respons
         
         const oldRefreshToken : any = await RefreshToken.findOne({ refreshToken: cookies.refresh_token }).lean();
 
-        
+
         if (oldRefreshToken.expires < Date.now())
             throw new HttpException(401, "controllers/user.ts", "Token Expires");
         else {
@@ -159,6 +159,11 @@ export const verification : RequestHandler = async (req : Request, res : Respons
     try {
         const { email, token } = req.query;
         const foundUser : any = await User.findOne({ email: email }).lean();
+
+        if (!foundUser) {
+            throw new HttpException(500, "controllers/user.ts", "Email introuvable");
+        }
+
         if (foundUser.isVerified) {
             return res.status(200).send('Vous avez déjà vérifié votre compte !');
         }
@@ -175,7 +180,7 @@ export const verification : RequestHandler = async (req : Request, res : Respons
         }
 
     } catch (err) {
-        throw new HttpException(500, "controllers/user.ts", "Email introuvable");
+        next(err);
     }
 }
 

@@ -38,8 +38,8 @@ const Login = () => {
             window.location.href = "/"; 
           }
           else if (xhr.readyState === 4 && xhr.status !== 200) {
-            var msg = "L'adresse mail et/ou le mot de passe sont incorectes";
-            (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
+            var res = JSON.parse(this.response);
+            (document.getElementById("msg")as HTMLInputElement).innerHTML= res.message;
           }
         })
         var data = JSON.stringify({"email":mail,"password":mdp})
