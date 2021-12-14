@@ -9,6 +9,7 @@ const Verification = () => {
 
     window.onload = function() {
         getVerif();
+        startTimer();
     }
     
     function getVerif() {
@@ -17,10 +18,24 @@ const Verification = () => {
         fetch(url, { method: 'POST', body: urlencoded, redirect: 'follow' })
             .then(response => response.text())
             .then(result => {
-                console.log(result);
-                (document.getElementById("verif") as HTMLInputElement).innerHTML = result;
+                let res = JSON.parse(result);
+                (document.getElementById("verif") as HTMLInputElement).innerHTML = res.message;
             })
             .catch(error => console.log('error', error));
+
+        
+    }
+
+
+    function startTimer() {
+        var timer = 5;
+        setInterval(function () {
+            (document.getElementById("time") as HTMLInputElement).innerHTML = timer.toString();
+            if (--timer < 0) {
+                timer = 0;
+                document.location.href = "http://localhost:3000"; 
+            }
+        }, 1000);
     }
 
 
@@ -29,8 +44,8 @@ const Verification = () => {
         <div className="verification">
             <h1>Scanylab</h1>
 
-            <div id="verif">
-            </div>
+            <div id="verif"></div>
+            <div>Vous allez être redirigé automatiquement dans : <span id="time"></span></div>
         </div>
     );
 };

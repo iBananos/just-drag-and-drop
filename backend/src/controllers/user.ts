@@ -165,14 +165,14 @@ export const verification : RequestHandler = async (req : Request, res : Respons
         }
 
         if (foundUser.isVerified) {
-            return res.status(200).send('Vous avez déjà vérifié votre compte !');
+            return res.status(200).json({ "message" : "Vous avez déjà vérifié votre compte !" });
         }
         else {
             const foundToken = foundUser.token;
             if (foundToken == token) {
                 await User.updateOne({ email: email }, { isVerified: true, $unset: { token: ""}});
 
-                return res.status(200).send('Votre compte a été vérifié avec succès !');
+                return res.status(200).json({ "message" : "Votre compte a été vérifié avec succès !" });
             }
             else {
                 throw new HttpException(500, "controllers/user.ts", "Token Expires");
