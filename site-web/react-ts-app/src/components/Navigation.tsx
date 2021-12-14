@@ -27,9 +27,11 @@ const Navigation = () => {
         }
     }
     window.addEventListener('resize', gestionNav);
+    
     setInterval(checkTokenValidity,5000);
 
     function checkTokenValidity() {
+        console.log("ABCDEF")
         let xsrfToken = localStorage.getItem("xsrfToken");
         let accessTokenExpires = localStorage.getItem("accessTokenExpires");
         let refreshTokenExpires = localStorage.getItem("refreshTokenExpires");
