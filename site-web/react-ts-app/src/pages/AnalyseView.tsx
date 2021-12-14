@@ -51,21 +51,25 @@ const AnalyseView = () => {
                 acc++
             });
             var data : any = [];
-            var maximum :number = 0 ;
+            var totalPerColumn :number[] = [] ;
+            for(var x : number = 0 ; x < acc ; x++){
+
+              totalPerColumn.push(0)
+            }
+
             for(var i : number = 1 ; i < acc+1 ; i++){
                 var line = file[i].split(",")
                 for(var j : number = 0 ; j < acc ; j++){
-                  if(parseInt(line[j])>maximum) {
-                    maximum = parseInt(line[j]);
-                  }
+                  totalPerColumn[i-1] += parseInt(line[j]);
                   var dataline = {'x': labels[i-1], 'y': labels[j], 'v': parseInt(line[j])}
                   data.push(dataline)
+                  console.log(totalPerColumn)
                 }
             }
             
 
-            createConfusionMatrix(labels,data,"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)",acc,maximum);
-            createRefBar(maximum, (document.getElementById("myChartBar") as HTMLCanvasElement).style.height)
+            createConfusionMatrix(labels,data,"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)",acc,totalPerColumn);
+            createRefBar((document.getElementById("myChartBar") as HTMLCanvasElement).style.height)
         }
     }
 
@@ -110,7 +114,7 @@ const AnalyseView = () => {
     return myChart;
 
     }
-    function createRefBar(maximum:any,height:any){
+    function createRefBar(height:any){
       var div = document.getElementById("Chart") as HTMLDivElement;
       var divRef = document.createElement("div");
       divRef.className = "BarRef"
@@ -143,7 +147,7 @@ const AnalyseView = () => {
       div.appendChild(divRef)
       
     }
-    function createConfusionMatrix(labels:any,datas:any,backgroundColor:any,borderColor:any,nbrow:number,maximum:number){
+    function createConfusionMatrix(labels:any,datas:any,backgroundColor:any,borderColor:any,nbrow:number,totalPerColumn:number[]){
 
       var div = document.getElementById("Chart") as HTMLDivElement;
       var myChartMatrixDiv = document.createElement("div");
@@ -166,13 +170,13 @@ const AnalyseView = () => {
                     data: datas,
                     backgroundColor(context) {
                         const value = datas[context.dataIndex].v;
-                        var colors  = createRainbowRGB(value, maximum);
+                        var colors  = createRainbowRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
                         var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
                         return color(colorString).alpha(0.8).rgbString();
                       },
                       borderColor(context) {
                         const value = datas[context.dataIndex].v;
-                        var colors  = createRainbowRGB(value, maximum);
+                        var colors  = createRainbowRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
                         var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
                         return color(colorString).alpha(1).rgbString();
                       },
@@ -238,15 +242,17 @@ const AnalyseView = () => {
     }
 
     function createRainbowRGB(x:any,max:any){
-      var percentFade  =  x/max*100;
-      if(percentFade<50){
-        var rouge = 196 ; 
-        var bleu = 33+196*percentFade/100;
+      var percentFade  =  x/max;
+      if(percentFade<0.5){
+        var rouge = 33 + (166*percentFade*3); 
+        var bleu = 196 - (166*percentFade*3);
+        var vert = 33;
       }else{
-        var rouge = 33-196*percentFade/100; 
-        var bleu = 196 ;
+        var rouge = 196;
+        var bleu = 33;
+        var vert = 33+ (166*(percentFade-0.5)*2);
       }
-      return [rouge,33,bleu]
+      return [rouge,vert,bleu]
   }
 
     function createChart(data2:any,abscisseData:any,label:any,lineData:any,backgroundColor:any,borderColor:any){
