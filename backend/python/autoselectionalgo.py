@@ -15,7 +15,8 @@ from aesCipher import AESCipher
 import time
 import sys
 from io import StringIO
-
+import warnings
+warnings.filterwarnings("ignore")
 
 filename = sys.argv[1]
 extension = sys.argv[2]
@@ -210,6 +211,7 @@ def autoselection(feature,predict,filename):
         eNet = linear_model.ElasticNet()
         reg = GridSearchCV(eNet, parametersGrid, scoring='neg_mean_squared_error', cv=3)
         reg.fit(X_train, y_train)
+        
     if bestalgo=='GradientBoostingRegressor':
         n_estimators = [100, 500, 900, 1100]
         max_depth = [3, 5, 10, 15]
@@ -232,17 +234,21 @@ def autoselection(feature,predict,filename):
                     scoring = 'neg_mean_absolute_error',
                     random_state=42,n_jobs = -1)
         reg.fit(X_train, y_train)
+       
     if bestalgo=='KNeighborsRegressor':
         param_grid = {'n_neighbors': list(range(4,25)),
               'weights': ['uniform', 'distance']}
         knn = KNeighborsRegressor()
         reg = GridSearchCV(knn, param_grid)
         reg.fit(X_train, y_train)
+        
     if bestalgo=='Lasso':
         lasso_params = {'alpha':[0.02, 0.03, 0.05, 0.08, 0.1, 0.15, 0.2, 0.3, 0.5, 0.8]}
         Lasso=linear_model.Lasso()
         reg = GridSearchCV(Lasso, lasso_params, cv=3)
         reg.fit(X_train, y_train)
+       
+  
     if bestalgo=='RandomForestRegressor':
         # Number of trees in random forest
         n_estimators = [int(x) for x in np.linspace(start = 100, stop = 400, num = 10)]
@@ -266,20 +272,37 @@ def autoselection(feature,predict,filename):
         rf=RandomForestRegressor()
         reg = RandomizedSearchCV(estimator = rf, param_distributions = random_grid, n_iter = 10,n_jobs = -1)
         reg.fit(X_train, y_train)
+        
+
     if bestalgo=='Ridge':  
         ridge_params = {'alpha':[0.02, 0.03, 0.05, 0.08, 0.1, 0.15, 0.2, 0.3, 0.5, 0.8]}
         Ridge=linear_model.Ridge()
         reg = GridSearchCV(Ridge, ridge_params, cv=3) 
         reg.fit(X_train, y_train)
+       
+    
     if bestalgo=='SGDRegressor': 
         SGD_params = {'alpha':[0.001,0.02, 0.03, 0.05, 0.08, 0.1, 0.15, 0.2, 0.3, 0.5, 0.8]}
         SGDReg=linear_model.SGDRegressor()
         reg = GridSearchCV(SGDReg, SGD_params, cv=3)  
         reg.fit(X_train, y_train)
-    prediction=pd.DataFrame(reg.predict(X_test),columns=['prediction'])
+        
+    
+    
+    pred=reg.predict(X_test)
+    prediction=pd.DataFrame(pred,columns=['prediction'])
+    try:
+        importance = reg.best_estimator_.coef_
+    except:
+        importance = reg.best_estimator_.feature_importances_
+    importance=pd.DataFrame(importance,columns=['importance'])
+    features = pd.DataFrame(feature, columns=['features'])
+    importance_frame = pd.concat([features,importance], axis=1)
+    importance_frame = importance_frame.T
     y_test=y_test.reset_index(drop=True)
     prediction_and_true=pd.concat([prediction,y_test],axis=1)
     prediction_and_true = prediction_and_true.sample(n=100)
+    print(importance_frame.to_csv(header=False, index=False))
     return prediction_and_true.to_csv(index=False)
 
 def decryptFile(filename) :
