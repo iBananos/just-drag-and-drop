@@ -70,15 +70,27 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
                         console.error(`stderr: ${stderr}`);
                         return;
                     }
-                    
-                    fs.writeFile('uploads/' + req.body.userId + '/analyse/' + aesCipher.encrypt(Buffer.from(nomFichier + ".csv")), aesCipher.encrypt(Buffer.from(stdout)), function (err) {
-                        if (err) {
-                            res.send('error'); 
-                        } else {
-                            res.status(200).json({ "status" :"ok", "name": nomFichier, "category": req.body.category});
-                        }
-                    });
-                  });
+                    if(stdout.split("\n")[0].includes("You will not getting good prediction with your dataset")){
+                        fs.unlink('uploads/' + req.body.userId + '/analyseInfo/' + nom, function (err) {
+                            if (err) {
+                                console.error(err);
+                            } else {
+                                console.log("File removed:", req.body.path);
+                            }
+                            res.status(200).json({ "status" : "401", "message": stdout, "name": "a", "category": "b"});
+                            return;
+                        });
+                        
+                    }else{
+                        fs.writeFile('uploads/' + req.body.userId + '/analyse/' + aesCipher.encrypt(Buffer.from(nomFichier + ".csv")), aesCipher.encrypt(Buffer.from(stdout)), function (err) {
+                            if (err) {
+                                res.send('error'); 
+                            } else {
+                                res.status(200).json({ "status" :"ok", "name": nomFichier, "category": req.body.category});
+                            }
+                        });
+                      }   
+                    })            
             } else {
                 var list_param : string[] = [];
                 Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});

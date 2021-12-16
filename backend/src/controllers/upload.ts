@@ -32,6 +32,7 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
 
     var listName = Utils.default.getNameFiles(userId, 'uploads/' + userId + '/database/');
     var nomFichier : string = req.body.name;
+    nomFichier = nomFichier.replace(/ /g,"_").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"");
     var acc = 1; 
     while (listName.includes(nomFichier)) {
         if (acc > 1) {
