@@ -32,7 +32,9 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
 
     var listName = Utils.default.getNameFiles(userId, 'uploads/' + userId + '/database/');
     var nomFichier : string = req.body.name;
-    nomFichier = nomFichier.replace(/ /g,"_").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/./g,"");
+    console.log(nomFichier)
+    nomFichier = nomFichier.replace(/ /g,"_").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
+    console.log(nomFichier)
     var acc = 1; 
     while (listName.includes(nomFichier)) {
         if (acc > 1) {
@@ -45,7 +47,10 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
     const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
     let nom = aesCipher.encrypt(Buffer.from(nomFichier + "." + req.file?.originalname.split(".")[1]));
     let fileName = 'uploads/' + userId + '/database/' + nom;
+    
     fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
+
+
 
     var colonnes : string[] = getColonneFromCSV(userId, fileName);
     createInfoDatabase(userId, fileName, nomFichier, req.body.date, req.file?.size, req.file?.originalname.split(".")[1], colonnes);

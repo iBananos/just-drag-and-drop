@@ -90,6 +90,7 @@ const Navigation = () => {
     function GuestNav() {
         return <ul>
         <li><NavLink onClick={window.location.reload} to="/">Home</NavLink></li>
+        <li><NavLink onClick={window.location.reload} to="/demo">Demo</NavLink></li>
         <li><NavLink onClick={window.location.reload} to="/login">Log in</NavLink></li>
         <li><NavLink onClick={window.location.reload} to="/signup">Sign up</NavLink></li>
         </ul>

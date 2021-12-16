@@ -10,7 +10,7 @@ import AnalyzeView from "./pages/AnalyseView";
 import DataVisu from "./pages/DataVisu";
 import NotFound from './pages/NotFound';
 import Verification from './pages/Verification';
-
+import Demo from "./pages/Demo"
 function App() {
   return (
     <div className="App">
@@ -27,6 +27,7 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/verification" element={<Verification />}></Route>
+          <Route path="/demo" element={<Demo />}></Route>
           <Route path="*" element={<NotFound/>}></Route>
         </Routes>
       </Router>

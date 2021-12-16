@@ -34,7 +34,7 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
     }
     var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/');
     var nomFichier = req.body.nameAnalyze;
-    nomFichier = nomFichier.replace(/ /g,"_").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/./g,"");
+    nomFichier = nomFichier.replace(/ /g,"_").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
     if (nomFichier === "") nomFichier = "analyze";
     var acc = 1; 
     while (listName.includes(nomFichier)) {

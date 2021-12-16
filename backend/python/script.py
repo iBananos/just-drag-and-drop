@@ -266,3 +266,7 @@ if __name__ == "__main__":
     else :
         data = filename
     print(principal_fonction(data, features.split(","), pred, list_param.split(","), analyze_choice, algo_choice))
+
+
+
+    
