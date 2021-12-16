@@ -5,9 +5,9 @@ import * as utils from "../Utils";
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 import { color } from 'chart.js/helpers';
 
-import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
+import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale   } from 'chart.js';
 
-Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip ,MatrixController, MatrixElement);
+Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale);
 
 
 const AnalyseView = () => {
@@ -243,14 +243,17 @@ const AnalyseView = () => {
 
     function createRainbowRGB(x:any,max:any){
       var percentFade  =  x/max;
+      var rouge ; 
+      var bleu ;
+      var vert;
       if(percentFade<0.5){
-        var rouge = 33 + (166*percentFade*3); 
-        var bleu = 196 - (166*percentFade*3);
-        var vert = 33;
+        rouge = 33 + (166*percentFade*3); 
+        bleu = 196 - (166*percentFade*3);
+        vert = 33;
       }else{
-        var rouge = 196;
-        var bleu = 33;
-        var vert = 33+ (166*(percentFade-0.5)*2);
+        rouge = 196;
+        bleu = 33;
+        vert = 33+ (166*(percentFade-0.5)*2);
       }
       return [rouge,vert,bleu]
   }

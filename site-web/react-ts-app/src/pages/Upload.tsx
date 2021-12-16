@@ -80,8 +80,15 @@ function uploadFile(file:any) {
   utils.default.sendFileWithToken('POST', '/api/upload', file, name, date, callbackRequest);  
 }
 
-function callbackRequest(){
-  setMsg("Base envoyée",'green');
+function callbackRequest(result : any){
+  const res = JSON.parse(result);
+
+  if (res.status === "200") {
+    setMsg("Base envoyée", "green");
+  }
+  else {
+    setMsg(res.message, "rgb(194, 22, 22)");
+  }
 }
 
   return (
@@ -91,7 +98,7 @@ function callbackRequest(){
         <div id="drop-area">
           <form className="my-form">
             <p>Upload multiple files with the file dialog or by dragging and dropping images onto the dashed region</p>
-            <input type="file" id="fileElem" accept="csv/json" onChange={handleFiles}></input>
+            <input type="file" id="fileElem" accept=".csv,.json,.txt,.xlsx" onChange={handleFiles}></input>
             <label className="button" htmlFor="fileElem">Select some files</label>
           </form>
             <p className="nameFile" id="nameFile"></p> 

@@ -3,10 +3,9 @@ import { NavLink } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 
 var pathUrl =  window.location
+var hostname = "";
 if(pathUrl.origin === "http://localhost:3000"){
-    var hostname =  "http://localhost:4000";
-}else{
-    var hostname = "";
+    hostname =  "http://localhost:4000";
 }
 
 const Login = () => {
@@ -26,10 +25,11 @@ const Login = () => {
       
       
         xhr.addEventListener('readystatechange', function(e) {
+            var res;
           if (xhr.readyState === 4 && xhr.status === 200) {
             var msg = "";
             (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
-            var res = JSON.parse(this.response);
+            res = JSON.parse(this.response);
 
             localStorage.setItem("xsrfToken", res.xsrfToken);
             localStorage.setItem("accessTokenExpires", res.accessTokenExpires);
@@ -38,8 +38,8 @@ const Login = () => {
             window.location.href = "/"; 
           }
           else if (xhr.readyState === 4 && xhr.status !== 200) {
-            var msg = "L'adresse mail et/ou le mot de passe sont incorectes";
-            (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
+            res = JSON.parse(this.response);
+            (document.getElementById("msg")as HTMLInputElement).innerHTML= res.message;
           }
         })
         var data = JSON.stringify({"email":mail,"password":mdp})

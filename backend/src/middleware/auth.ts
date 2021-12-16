@@ -50,12 +50,13 @@ export const auth : RequestHandler = async (req : Request, res : Response, next 
         let id = new mongoose.Types.ObjectId(decodedToken.userId);
         const user : any = await User.findOne({ _id: id }).lean();
 
+        if (!user) {
+            throw new HttpException(401, "middleware/auth.ts", "L'authentification a échoué.");
+        }
+
         if (user.isVerified == false) {
             throw new HttpException(401, "middleware/auth.ts", "Vous devez d'abord confirmer votre adresse email.");
         }
-
-        if (!user) 
-            throw new HttpException(401, "middleware/auth.ts", "L'authentification a échoué.");
         
         req.body.userId = decodedToken.userId;
         next();

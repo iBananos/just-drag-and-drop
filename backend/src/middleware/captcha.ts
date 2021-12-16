@@ -1,4 +1,5 @@
 import Captcha from "../utils/captcha";
+import HttpException from '../utils/httpException';
 import type { RequestHandler, Request, Response, NextFunction } from "express";
 
 
@@ -17,6 +18,7 @@ export const captcha : RequestHandler = async (req : Request, res : Response, ne
         }
     }
     catch (err) {
-        next(err);
+        const error = new HttpException(500, 'middleware/captcha.ts', 'Erreur dans captcha');
+        next(error);
     }
 }

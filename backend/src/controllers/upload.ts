@@ -1,10 +1,13 @@
+import fs from 'fs';
 import "dotenv/config";
 import path from "path";
-import fs from 'fs';
-import type { RequestHandler, Request, Response, NextFunction } from "express";
+import mongoose from 'mongoose';
 import * as Utils from "../utils";
 import { exec } from 'child_process';
 import AESCipher from "../utils/aesCipher";
+import UserLimit from '../models/userLimit';
+import type { RequestHandler, Request, Response, NextFunction } from "express";
+
 
 /**
  * Fonction qui réceptionne le fichier (la base de donnée) et l'enregistre dans le serveur.
@@ -12,11 +15,24 @@ import AESCipher from "../utils/aesCipher";
  * @param res 
  * @param next 
  */
-export const saveFile : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+export const saveFile : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
+    // Vérification si l'user dispose d'assez de stockage
+    const objectId = new mongoose.Types.ObjectId(req.body.userId);
+    const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();
+    const limitedStorage = userLimit.limitedStorage;
+    const currentStorage = userLimit.currentStorage;
+    const newCurrentStorage = currentStorage + req.file?.size;
+
+    if (newCurrentStorage > limitedStorage) {
+        res.status(200).json({ "status": "401", "message": "Vous ne disposez plus d’assez de stockage, veuillez passer à un abonnement supérieur ou alors supprimer des bases déjà enregistrées." }); 
+        return;
+    }
+
     let userId : string = req.body.userId;
 
     var listName = Utils.default.getNameFiles(userId, 'uploads/' + userId + '/database/');
     var nomFichier : string = req.body.name;
+    nomFichier = nomFichier.replace(/ /g,"_").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/./g,"");
     var acc = 1; 
     while (listName.includes(nomFichier)) {
         if (acc > 1) {
@@ -31,12 +47,13 @@ export const saveFile : RequestHandler = (req : Request, res : Response, next : 
     let fileName = 'uploads/' + userId + '/database/' + nom;
     fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
 
-    console.log(fileName);
+    var colonnes : string[] = getColonneFromCSV(userId, fileName);
+    createInfoDatabase(userId, fileName, nomFichier, req.body.date, req.file?.size, req.file?.originalname.split(".")[1], colonnes);
 
-    var colonnes : string[] = getColonneFromCSV(userId, fileName)
-    createInfoDatabase(userId, fileName, nomFichier, req.body.date, req.file?.size, req.file?.originalname.split(".")[1], colonnes)
+    // Update du stockage utilisée
+    await UserLimit.updateOne({ userId: objectId }, { currentStorage: newCurrentStorage });
 
-    res.send('complete'); 
+    res.status(200).json({ "status": "200", "message": "complete" });
 };
 
 
@@ -93,12 +110,21 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
     }
 
     let targetInfo = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/databaseInfo/", req.body.path.split(".")[0] + ".json");
+
+    let size = Utils.default.getSizeFile(req.body.userId, "uploads/" + req.body.userId + "/databaseInfo/" + targetInfo);
     if (targetInfo != undefined) {
-        fs.unlink("uploads/" + req.body.userId + "/databaseInfo/" + targetInfo, function (err) {
+        fs.unlink("uploads/" + req.body.userId + "/databaseInfo/" + targetInfo, async function (err) {
             if (err) {
                 console.error(err);
                 res.send("Erreur lors de la suppression");
             } else {
+                // Update du stockage de l'utilisateur
+                const objectId = new mongoose.Types.ObjectId(req.body.userId);
+                const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();
+                const currentStorage = userLimit.currentStorage;
+                const newCurrentStorage = currentStorage - parseInt(size, 10);
+                await UserLimit.updateOne({ userId: objectId }, { currentStorage: newCurrentStorage });
+
                 res.send("Base supprimée");
             }
         });
