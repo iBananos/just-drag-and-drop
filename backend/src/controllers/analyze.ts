@@ -72,7 +72,7 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
                         console.error(`stderr: ${stderr}`);
                         return;
                     }
-                    if(stdout.split("\n")[0].includes("You will not getting good prediction with your dataset")){
+                    if(stdout.split("\n")[0].includes("You will not get good")){
                         fs.unlink('uploads/' + req.body.userId + '/analyseInfo/' + nom, function (err) {
                             if (err) {
                                 console.error(err);
