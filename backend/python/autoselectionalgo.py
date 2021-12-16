@@ -15,6 +15,10 @@ from aesCipher import AESCipher
 import time
 import sys
 from io import StringIO
+<<<<<<< HEAD
+
+=======
+>>>>>>> 406d1165a527ac40267a4d67f5d6bcec25c2e61f
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -89,7 +93,7 @@ def autoselection(feature,predict,filename):
     stopcalcul=earlystop.predict(testone)
     stopcalcul2=earlystop2.predict(testone)
     if stopcalcul[0]==False and stopcalcul[1]==False and stopcalcul[2]==False and stopcalcul[3]==False and stopcalcul[4]==False and stopcalcul[5]==False and stopcalcul[6]==False and stopcalcul2[0]==False and stopcalcul2[1]==False and stopcalcul2[2]==False and stopcalcul2[3]==False and stopcalcul2[4]==False and stopcalcul2[5]==False and stopcalcul2[6]==False:
-        return 'You will not getting good prediction with your dataset'
+        return 'You will not get good prediction with your dataset'
     #print(testone.columns)
     pred1=FirstModel.predict(testone)
     testone['pred2']=SecondaryModel.predict(testone)
