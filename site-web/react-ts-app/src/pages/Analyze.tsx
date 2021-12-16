@@ -235,7 +235,7 @@ const Analyze = () =>  {
                                                     "solver" : (document.getElementById("solver3")as HTMLSelectElement).value,
                                                     "alpha" : (document.getElementById("alpha3")as HTMLInputElement).value}
                                                 });
-            }else if(algo === "Automatic"){
+            }else if(algo === "Automatic2"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,

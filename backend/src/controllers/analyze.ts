@@ -29,7 +29,7 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
 
     var reponse = checkAnalyze(req);
     if (reponse !== 'ok' && reponse !== "Automatic" && reponse !== "Automatic2") {
-        res.status(200).json({ "status" : "401", "message": response, "name": "a", "category": "b"});
+        res.status(200).json({ "status" : "401", "message": reponse});
         return;
     }
     var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/');
@@ -161,6 +161,7 @@ function checkAnalyze(req:any){
     var filename :any = targetBase;
     const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
     filename = aesCipher.decrypt(filename);
+    console.log(filename)
     filename = filename.split(".")[0]
     var analyze_choice = req.body.category;
     var algo_choice = req.body.algo;
