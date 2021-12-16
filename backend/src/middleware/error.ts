@@ -13,5 +13,5 @@ export default function middlewareError(error : HttpException, req : Request, re
     }
 
     /* Envoie de l'erreur au client */
-    res.status(status).json({ message: message });
+    res.status(status).json({ status: status, message: message });
 }
