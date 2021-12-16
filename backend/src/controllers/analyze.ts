@@ -19,7 +19,8 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
     const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();
     const limitedAnalyse = userLimit.limitedAnalyse;
     const currentAnalyse = userLimit.currentAnalyse;
-    const newCurrentAnalyse = currentAnalyse + 1;
+    const newCurrentAnalyse = Utils.default.getNbFiles(req.body.userId, 'uploads/' + req.body.userId+"/analyse/");
+    console.log(newCurrentAnalyse)
 
     if (newCurrentAnalyse > limitedAnalyse) {
         res.status(200).json({ "status": "401", "message": "Vous ne disposez plus d’assez d'analyse, veuillez passer à un abonnement supérieur ou alors supprimer des analyses dans l'historique." }); 

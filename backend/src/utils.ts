@@ -26,6 +26,15 @@ class Utils {
         return listName;
     }
 
+    public static getNbFiles(userId : string, path : string){
+        const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
+        var acc : number = 0 ;
+        fs.readdirSync(path).forEach(file => {
+            acc++ ; 
+        });
+        return acc;
+    }
+
 
     public static findEncryptedFile(userId : string, path : string, target : string) {
         let res;
