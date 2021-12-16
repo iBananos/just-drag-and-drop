@@ -83,7 +83,7 @@ function uploadFile(file:any) {
 function callbackRequest(result : any){
   const res = JSON.parse(result);
 
-  if (res.status == "200") {
+  if (res.status === "200") {
     setMsg("Base envoyée", "green");
   }
   else {

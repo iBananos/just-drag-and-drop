@@ -163,8 +163,8 @@ const Analyze = () =>  {
 
     function sendRequest(ev :any){
         var elements = document.getElementsByClassName("boutonSendanalyze");
-        for(var i = 0; i < elements.length; i++) {
-            (elements[i] as HTMLButtonElement).disabled = true;
+        for(var x = 0; x < elements.length; x++) {
+            (elements[x] as HTMLButtonElement).disabled = true;
         }
         //(document.getElementById("boutonSendanalyze") as HTMLButtonElement).disabled = true;
         var algo = ev.target.value
@@ -369,11 +369,6 @@ const Analyze = () =>  {
         }else{
             div.className = "divSelectMultipleOpen";
         }
-    }
-
-    function hideparams(){
-        var div = document.getElementById("divSelectMultiple") as HTMLDivElement;
-        div.className = "divSelectMultipleClose";
     }
 
     return (

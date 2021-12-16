@@ -1,11 +1,10 @@
 import Navigation from '../components/Navigation';
 
 var pathUrl =  window.location
+var hostname = "";
 if (pathUrl.origin === "http://localhost:3000") {
-    var hostname =  "http://localhost:4000";
-} else {
-    var hostname = "";
-}
+    hostname =  "http://localhost:4000";
+} 
 
 
 
@@ -60,7 +59,7 @@ const Signup = () => {
                 var res = JSON.parse(this.response);
                 (document.getElementById("msg") as HTMLInputElement).innerHTML= res.message;
 
-                if (res.message == "Captcha invalide !") {
+                if (res.message === "Captcha invalide !") {
                     (document.getElementById("svg") as HTMLInputElement).innerHTML = res.captcha;
                 }
             }

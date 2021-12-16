@@ -539,14 +539,11 @@ const DataVisu = () =>  {
         }
         
     function createScatter(data1:any,data2:any,data3:any,x:any,y:any,z:any){
-        var datas = decomposeDataByThirdColumn(data1,data2,data3)
         var column = getThirdColumn(data3);
-        var datasets = createsDatasets(datas,column)
         data3 = getColoration(data3,column);
-        //createChart2bis(data2,datasets); 
         var backgroundColor = createColors(data3,0.5);
         var borderColor = createColors(data3,1)
-        var mychart = createChart2(data1,data2,backgroundColor,borderColor,x,y,z);
+        createChart2(data1,data2,backgroundColor,borderColor,x,y,z);
     }
     function createPolar(data1:any,data2:any,data3:any,x:any,y:any,z:any){
         
@@ -785,45 +782,7 @@ const DataVisu = () =>  {
         return occurence
     }
 
-    function createsDatasets(datas:any,thirdColumn:any){
-        var datasets :any = [];
-        var backgroundColor = ["rgba(206, 22, 22, 0.1)",
-        "rgba(206, 143, 22, 0.1)",
-        "rgba(22, 206, 54, 0.1)",
-        "rgba(22, 206, 193, 0.1)",
-        "rgba(22, 67, 206, 0.1)",
-        "rgba(166, 22, 206, 0.1)",
-        "rgba(197, 206, 22, 0.1)"]
-
-        var borderColor = ["rgba(206, 22, 22, 1)",
-        "rgba(206, 143, 22, 1)",
-        "rgba(22, 206, 54, 1)",
-        "rgba(22, 206, 193, 1)",
-        "rgba(22, 67, 206, 1)",
-        "rgba(166, 22, 206, 1)",
-        "rgba(197, 206, 22, 1)"]
-
-        for(var i : number = 0 ; i < thirdColumn.length;i++){
-            var data : any[] = [];
-            var labels : any[] = [];
-            for(var index : number = 0 ;index < datas[i].length;index++){
-                data.push(datas[i][index][0]);
-                labels.push(datas[i][index][1]);
-            
-            }
-            datasets.push({
-                type: 'scatter',
-                label: thirdColumn[i],
-                data: data,
-                backgroundColor: backgroundColor[i%7],
-                borderColor: borderColor[i%7],
-                borderWidth: 1,               
-                labels : labels,
-            } as any)
-        }
-        
-        return datasets;
-    }
+    
 
     function getThirdColumn(data:any){
         var newArray : string[] = [];
@@ -835,22 +794,6 @@ const DataVisu = () =>  {
         return newArray
     }
 
-    function decomposeDataByThirdColumn(data1:any,data2:any,data3:any){
-        var newArray : string[] = [];
-        var datas : any[6][] = [];
-        data3.forEach((el :any) =>{
-            if(!newArray.includes(el)){
-                newArray.push(el); 
-                var arrayVoid : any[] = [];
-                datas.push(arrayVoid)
-            }
-        })
-        for(var i : number = 0 ; i < data3.length;i++){
-            var insert = [data1[i],data2[i],data3[i]];
-            datas[newArray.indexOf(data3[i])].push(insert)
-        }
-        return  datas;
-    }
 
     function createColors(array: any[],opacity:number){
         var newArray : string[] = [];
