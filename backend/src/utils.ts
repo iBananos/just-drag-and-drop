@@ -37,6 +37,13 @@ class Utils {
         });
         return res;
     }
+
+
+    public static getSizeFile(userId : string, path : string) {
+        const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
+        let data = JSON.parse(aesCipher.decrypt(fs.readFileSync(path, 'utf8')));
+        return data.size;
+    }
 }
 
 export default Utils;

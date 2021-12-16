@@ -80,8 +80,15 @@ function uploadFile(file:any) {
   utils.default.sendFileWithToken('POST', '/api/upload', file, name, date, callbackRequest);  
 }
 
-function callbackRequest(){
-  setMsg("Base envoyée",'green');
+function callbackRequest(result : any){
+  const res = JSON.parse(result);
+
+  if (res.status == "200") {
+    setMsg("Base envoyée", "green");
+  }
+  else {
+    setMsg(res.message, "rgb(194, 22, 22)");
+  }
 }
 
   return (

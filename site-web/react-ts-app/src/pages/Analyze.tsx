@@ -341,15 +341,15 @@ const Analyze = () =>  {
     }
 
     function callbackRequest(response : any) {
-        console.log(response)
-        var reponse = JSON.parse(response)
+        console.log(response);
+        var reponse = JSON.parse(response);
         var elements = document.getElementsByClassName("boutonSendanalyze");
-        for(var i = 0; i < elements.length; i++) {
+        for (var i = 0; i < elements.length; i++) {
             (elements[i] as HTMLButtonElement).disabled = false;
         }
-        if(reponse.status !== "ok"){
-            (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = reponse.status;
-        }else{
+        if (reponse.status !== "ok") {
+            (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = reponse.message;
+        } else{
             //(document.getElementById("view") as HTMLDivElement).style.display = "none";
             //(document.getElementById("loading") as HTMLDivElement).style.display = "block";
             (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "Check the new tab for the result !";

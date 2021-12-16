@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import { argon2i } from 'argon2-ffi';
 import Captcha from "../utils/captcha";
+import UserLimit from '../models/userLimit';
 import RefreshToken from '../models/refreshToken'
 import HttpException from '../utils/httpException';
 import sendVerificationEmail from '../utils/verificationService';
@@ -20,7 +21,7 @@ import type { RequestHandler, Request, Response, NextFunction } from "express";
  * @param res 
  * @param next 
  */
-export const signup : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+export const signup : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
     try {
         if (!req.body.email || !req.body.name || !req.body.surname) {
             throw new HttpException(401, "controllers/user.ts", "Il manque des informations.");
@@ -34,49 +35,59 @@ export const signup : RequestHandler = (req : Request, res : Response, next : Ne
             throw new HttpException(401, "controllers/user.ts", "Le mot de passe n'est pas assez complexe.");
         }
 
-        crypto.randomBytes(32, function(err, salt) {
-            if (err) throw new HttpException(500, "controllers/user.ts", err.toString());
+        // Hachage du mot de passe
+        const salt = crypto.randomBytes(32);
+        const options = {
+            timeCost: 10,
+            memoryCost: 16384,
+            parallelism: 2,
+            hashLength: 64,
+        };
+        const hash = await argon2i.hash(req.body.password, salt, options);
 
-            const options = {
-                timeCost: 10,
-                memoryCost: 16384,
-                parallelism: 2,
-                hashLength: 64,
-            };
+        if (!hash) {
+            throw new HttpException(500, "controllers/user.ts", "Erreur dans le hachage dans signup.");
+        }
 
-            let token = crypto.randomBytes(32);
-            argon2i.hash(req.body.password, salt, options).then(hash => {
-                const user = new User({
-                    email: req.body.email,
-                    password: hash,
-                    name : req.body.name,
-                    surname : req.body.surname,
-                    isVerified : false,
-                    token: token.toString('hex')
-                });
-                user.save().then(async () => {
-                    // Vérification avec l'email
-                    let jwtTokenEmailVerify = jwt.sign({ email: req.body.email }, `${process.env.TOKEN_SECRET}`);
-                    
-                    await sendVerificationEmail(req.body.email, token.toString('hex'), jwtTokenEmailVerify)
-
-                    const userId : any = await User.findOne({ email: req.body.email }).lean();
-                    let dir = 'uploads/' + userId._id;
-                    fs.mkdirSync(dir);
-                    fs.mkdirSync(dir + '/database');
-                    fs.mkdirSync(dir + '/analyse');
-                    fs.mkdirSync(dir + '/analyseInfo');
-                    fs.mkdirSync(dir + '/databaseInfo');
-
-                    res.status(200).json({ message: "Votre compte a bien été créé !" });
-                })
-                .catch((err) => {
-                    console.log(err);
-                    res.status(401).json({"message" : "Cette adresse e-mail est déjà utilisée."});
-                    //throw new HttpException(401, "controllers/user.ts", "Cette adresse e-mail est déjà utilisée.");
-                 });
-            });
+        // Création de l'user dans la BD
+        const token = crypto.randomBytes(32);
+        const user = new User({
+            email: req.body.email,
+            password: hash,
+            name : req.body.name,
+            surname : req.body.surname,
+            isVerified : false,
+            token: token.toString('hex')
         });
+
+
+        user.save().then(async () => {
+            // Vérification avec l'email
+            let jwtTokenEmailVerify = jwt.sign({ email: req.body.email }, `${process.env.TOKEN_SECRET}`);
+            await sendVerificationEmail(req.body.email, token.toString('hex'), jwtTokenEmailVerify)
+
+            // Création des dossier dans le serveur propre a l'utilisateur
+            const userId : any = await User.findOne({ email: req.body.email }).lean();
+            let dir = 'uploads/' + userId._id;
+            fs.mkdirSync(dir);
+            fs.mkdirSync(dir + '/database');
+            fs.mkdirSync(dir + '/analyse');
+            fs.mkdirSync(dir + '/analyseInfo');
+            fs.mkdirSync(dir + '/databaseInfo');
+
+            // Création des limite d'upload par defaut pour l'utilisateur
+            const userLimit = new UserLimit({
+                userId: userId._id,
+                limitedStorage: process.env.DEFAULT_STORAGE,
+                currentStorage: 0,
+                limitedAnalyse: process.env.DEFAULT_ANALYSE,
+                currentAnalyse: 0
+            });
+            await userLimit.save();
+
+            res.status(200).json({ message: "Votre compte a bien été créé !" });
+        })
+        .catch(() => res.status(401).json({"message" : "Cette adresse e-mail est déjà utilisée."}));
     }
     catch (err) {
         next(err);

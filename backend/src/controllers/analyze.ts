@@ -1,29 +1,43 @@
 import fs from 'fs';
 import "dotenv/config";
-import type { RequestHandler, Request, Response, NextFunction } from "express";
+import mongoose from 'mongoose';
 import * as Utils from '../utils';
-import { exec, spawn } from "child_process";
 import AESCipher from '../utils/aesCipher';
-import { resolveSoa } from 'dns';
+import UserLimit from '../models/userLimit';
+import { exec, spawn } from "child_process";
+import { RequestHandler, Request, Response, NextFunction, response } from "express";
+
 /**
  * Fonction qui réceptionne le fichier (la base de donnée) et l'enregistre dans le serveur.
  * @param req 
  * @param res 
  * @param next 
  */
- export const  parameters : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    var reponse = checkAnalyze(req)
-    if(reponse !== 'ok' && reponse !== "Automatic" && reponse !== "Automatic2"){
-        res.send({"status" :reponse, "name": "a", "category": "b"})
-        return
+ export const  parameters : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
+    // Vérification si l'user dispose d'assez d'analyse disponible'
+    const objectId = new mongoose.Types.ObjectId(req.body.userId);
+    const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();
+    const limitedAnalyse = userLimit.limitedAnalyse;
+    const currentAnalyse = userLimit.currentAnalyse;
+    const newCurrentAnalyse = currentAnalyse + 1;
+
+    if (newCurrentAnalyse > limitedAnalyse) {
+        res.status(200).json({ "status": "401", "message": "Vous ne disposez plus d’assez d'analyse, veuillez passer à un abonnement supérieur ou alors supprimer des analyses dans l'historique." }); 
+        return;
+    }
+
+    var reponse = checkAnalyze(req);
+    if (reponse !== 'ok' && reponse !== "Automatic" && reponse !== "Automatic2") {
+        res.status(200).json({ "status" : "401", "message": response, "name": "a", "category": "b"});
+        return;
     }
     var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/');
     var nomFichier = req.body.nameAnalyze;
     if (nomFichier === "") nomFichier = "analyze";
     var acc = 1; 
-    while(listName.includes(nomFichier)){
-        if(acc > 1){
-            nomFichier = nomFichier.split('(')[0]
+    while (listName.includes(nomFichier)) {
+        if (acc > 1) {
+            nomFichier = nomFichier.split('(')[0];
         }
         nomFichier = nomFichier+"("+acc+")";
         acc++;
@@ -35,7 +49,7 @@ import { resolveSoa } from 'dns';
     fs.writeFile('uploads/' + req.body.userId + '/analyseInfo/' + nom, aesCipher.encrypt(Buffer.from(JSON.stringify(req.body))), async function (err) {
         if (err) {
             res.send('error'); 
-        } else{
+        } else {
             var analyze_choice = req.body.category;
             var algo_choice = req.body.algo;
             
@@ -45,7 +59,7 @@ import { resolveSoa } from 'dns';
             var features = req.body.feature;
             var pred = req.body.pred;
             let extension = req.body.database.split(".")[1];
-            if( reponse === "Automatic" || reponse === "Automatic2"){
+            if (reponse === "Automatic" || reponse === "Automatic2") {
                 exec('python python/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
@@ -61,11 +75,11 @@ import { resolveSoa } from 'dns';
                         if (err) {
                             res.send('error'); 
                         } else {
-                            res.send({"status" :"ok", "name": nomFichier, "category": req.body.category})
+                            res.status(200).json({ "status" :"ok", "name": nomFichier, "category": req.body.category});
                         }
                     });
                   });
-            }else{
+            } else {
                 var list_param : string[] = [];
                 Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
                 exec('python python/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
@@ -83,13 +97,16 @@ import { resolveSoa } from 'dns';
                         if (err) {
                             res.send('error'); 
                         } else {
-                            res.send({"status" :"ok", "name": nomFichier, "category": req.body.category})
+                            res.status(200).json({ "status" :"ok", "name": nomFichier, "category": req.body.category});
                         }
                     });
-                  });
+                });
             }
         }
     });
+
+    // Update des analyse utilisée
+    await UserLimit.updateOne({ userId: objectId }, { currentAnalyse: newCurrentAnalyse });
 };
 
 export const deleteData : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
@@ -107,11 +124,16 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
 
     let targetInfo = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyseInfo/", req.body.path + ".json");
     if (targetInfo != undefined) {
-        fs.unlink("uploads/" + req.body.userId + "/analyseInfo/" + targetInfo, function (err) {
+        fs.unlink("uploads/" + req.body.userId + "/analyseInfo/" + targetInfo, async function (err) {
             if (err) {
                 console.error(err);
                 res.send("Erreur lors de la suppression");
             } else {
+                // Update des analyse utilisée
+                const objectId = new mongoose.Types.ObjectId(req.body.userId);
+                const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();
+                const currentAnalyse = userLimit.currentAnalyse;
+                await UserLimit.updateOne({ userId: objectId }, { currentAnalyse: currentAnalyse - 1 });
                 res.send("Base supprimée");
             }
         });
