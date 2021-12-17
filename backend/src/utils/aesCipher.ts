@@ -27,7 +27,7 @@ export default class AESCipher {
             
             return initVector.toString('hex') + ";" + encryptedDataFinal;
         }
-        return text;
+        return text.toString();
     }
        
     public decrypt(text : string) {
@@ -53,11 +53,6 @@ export default class AESCipher {
     }
 
     public getToEncrypt() {
-        /*
-        if (this.toEncrypt == true)
-            return "true";
-        return "false";
-        */
        return this.toEncrypt;
     }
 }
