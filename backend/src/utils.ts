@@ -6,6 +6,7 @@ class Utils {
     
 
     public static getNameFiles(userId : string, path : string){
+        console.log(userId)
         var listName: string[] = [];
         const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
         fs.readdirSync(path).forEach(file => {
