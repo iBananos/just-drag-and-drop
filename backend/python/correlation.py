@@ -5,11 +5,8 @@ import sys
 
 filename = sys.argv[1]
 extension = sys.argv[2]
-list_param = sys.argv[5]
-analyze_choice = sys.argv[6]
-algo_choice = sys.argv[7]
-key = sys.argv[8]
-toEncrypt = sys.argv[9]
+key = sys.argv[3]
+toEncrypt = sys.argv[4]
 
 def parse_data(filename):
     

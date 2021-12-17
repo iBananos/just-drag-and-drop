@@ -15,10 +15,6 @@ from aesCipher import AESCipher
 import time
 import sys
 from io import StringIO
-<<<<<<< HEAD
-
-=======
->>>>>>> 406d1165a527ac40267a4d67f5d6bcec25c2e61f
 import warnings
 warnings.filterwarnings("ignore")
 

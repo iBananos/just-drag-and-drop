@@ -411,12 +411,6 @@ const DataVisu = () =>  {
         return myChart;
     }
 
-    function downloadPDF(){
-       
-        
-       
-    }
-
     
     function createDashBoard3column(response:any){
         id++;
@@ -924,7 +918,7 @@ const DataVisu = () =>  {
             <div className="view" id="view">
                 <div className="dataVisuView">
                 <div id="dataVisuContainer" className="dataVisuContainer">
-                <div className="dataVisuBar"  onClick={downloadPDF}>
+                <div className="dataVisuBar" >
                 <h1 className="title">Data Visualisation</h1>
                 <select name="database" id="SelectDB"defaultValue="Choose a database" className="SelectDB" onChange={enableFirstOne}>
                     <option value="Choose a database" disabled >Choose a database</option>
