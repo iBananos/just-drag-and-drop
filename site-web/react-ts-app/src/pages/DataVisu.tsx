@@ -155,6 +155,8 @@ const DataVisu = () =>  {
 
 
     function enableFirstOne(){
+        (document.getElementById("advanced") as HTMLButtonElement).disabled = false;
+        (document.getElementById("advanced")as HTMLButtonElement).onclick = showAdvanced;
         (document.getElementById("correlationMatrixButton") as HTMLButtonElement).disabled = false;
         (document.getElementById("correlationMatrixButton")as HTMLButtonElement).onclick = printCorrelation;
         createSelectorForColonnes()
@@ -1107,7 +1109,7 @@ const DataVisu = () =>  {
                     <option value="Choose a column" disabled >Choose a coloration</option>
                 </select>
                 <br />
-                    <div className="advanced" onClick={showAdvanced}>advanced 	&gt;</div>
+                    <button className="advanced" id="advanced" onClick={showAdvanced} disabled>advanced 	&gt;</button>
                     <div className="indicSample"  >Number of rows</div> <br />
                     <input type="range" id="sample" className="sample" onChange={updateSample} min="1" max="100" defaultValue="50"/>
                     <div className="inputSample" id="inputSample">50%</div>
@@ -1115,7 +1117,7 @@ const DataVisu = () =>  {
                 <button  onClick={sendRequest} className="boutonSend" id="boutonSend" disabled>Analyze</button>
                 </div>
                 <div className="advancedBar">
-                <div className="return" onClick={hideAdvanced}>&lt; back </div>
+                <button className="return" onClick={hideAdvanced}>&lt; back </button>
                 <select name="firstOne" id="typeChart"defaultValue="Choose a chart" className="firstOne" disabled>
                     <option value="Choose a chart" disabled >Choose a chart</option>
                     <option value="Scatter" >Scatter Chart</option>

@@ -247,18 +247,32 @@
     margin-top: 25px;
     margin-left: 150px;
     margin-bottom: -25px;
+    height: 20px;
     cursor: pointer;
+    &:disabled{
+        color:gray;
+        
+        background-color: $color_back;
+        -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
+        backdrop-filter: blur($blur);
+        &:hover{
+            cursor:default;
+            color: gray;
+            background-color: $color_back;
+        }
+    }
 }
 
 .return{
     font-size: small;
     margin-top: 25px;
     color : $color_text ;
-    width: 50px;
-    margin-left: 10px;
+    margin-right: 150px;
     height: 20px;
     cursor: pointer;
+    
 }
+
 
 .MatrixBoard{
     width: 99%;
