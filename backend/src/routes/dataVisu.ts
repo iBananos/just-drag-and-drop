@@ -11,7 +11,7 @@ const router = express.Router();
  */
 router.post("/parameters", auth, dataVisuCtrl.parameters);
 
-
+router.post("/matrix", auth, dataVisuCtrl.matrix);
 
 // Exportation du router
 export default router;

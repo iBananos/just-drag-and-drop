@@ -5,6 +5,7 @@ import * as utils from "../Utils";
 import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
 import trashIcone from "../assets/trash.png";
 import downloadIcone from "../assets/download.png";
+import { color } from 'chart.js/helpers';
 
 Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  );
 var id = 0;
@@ -30,6 +31,7 @@ const DataVisu = () =>  {
 
 
     function createSelectorForColonnes(){
+        
         var firstcolumn = (document.getElementById("firstOne")as HTMLSelectElement);
         var secondcolumn = (document.getElementById("secondOne")as HTMLSelectElement);
         var thirdcolumn = (document.getElementById("thirdOne")as HTMLSelectElement);
@@ -153,6 +155,8 @@ const DataVisu = () =>  {
 
 
     function enableFirstOne(){
+        (document.getElementById("correlationMatrixButton") as HTMLButtonElement).disabled = false;
+        (document.getElementById("correlationMatrixButton")as HTMLButtonElement).onclick = printCorrelation;
         createSelectorForColonnes()
     }
     function enableSecondOne(){
@@ -253,7 +257,6 @@ const DataVisu = () =>  {
             trash.alt = "";
             trash.className = "trashDash";
             trash.onclick  = (ev:any) => {
-                //console.log(ev.path[0].id.split("_")[1])
                 var dashBoard = (document.getElementById("newBoard_"+ev.path[0].id.split("_")[1]) as HTMLDivElement);
                 dashBoard.innerHTML = "";
                 dashBoard.style.display = "none";
@@ -471,7 +474,6 @@ const DataVisu = () =>  {
             trash.alt = "";
             trash.className = "trashDash";
             trash.onclick  = (ev:any) => {
-                //console.log(ev.path[0].id.split("_")[1])
                 var dashBoard = (document.getElementById("newBoard_"+ev.path[0].id.split("_")[1]) as HTMLDivElement);
                 dashBoard.innerHTML = "";
                 dashBoard.style.display = "none";
@@ -827,8 +829,6 @@ const DataVisu = () =>  {
                 vert = 0;
                 bleu = 1;
             }
-            console.log(percentFade)
-            console.log(colors)
             colors.push({"r": rouge*255,"g": vert*255,"b": bleu*255})
         }
     return colors
@@ -902,7 +902,180 @@ const DataVisu = () =>  {
     function hideAdvanced(){
         (document.getElementById("dataVisuContainer") as HTMLDivElement).className = "dataVisuContainerParam";
     }
+    function printCorrelation(){
+        var requestAnalyze = JSON.stringify({"database": (document.getElementById("SelectDB")as HTMLSelectElement).value});
+        utils.default.sendRequestWithToken('POST', '/api/dataVisu/matrix', requestAnalyze, callbackMatrix);
+    }
+
+    function callbackMatrix(reponse:any){
+        id++;
+        var newBoard = document.createElement("div") as any;
+        newBoard.id = "newBoard_"+id;
+        newBoard.className = "DashBoard";
+        var newIndication = document.createElement("div");
+        newIndication.id = "indication_"+id;
+        newIndication.className = "indication";
+        newIndication.innerHTML = "Matrice de corrélation";
+        newBoard.appendChild(newIndication)
+
+        var download = document.createElement("img");
+            download.src = downloadIcone;
+            download.id = "download_"+id;
+            download.alt = "";
+            download.className = "downloadDash";
+            download.onclick  = (ev:any) => {
+                var thisId = ev.path[0].id.split("_")[1]
+                var canvas1 = (document.getElementById("matrix_"+thisId) as HTMLCanvasElement)
+                var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
+                canvasFinal.width = 1000;
+                canvasFinal.height= 500;
+                var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
+                ctxFinal.drawImage(canvas1, 0, 0,1000,500);
+                var link = document.createElement('a');
+                link.download = "RESULT.png";
+                link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                link.click();
     
+            };
+
+            newBoard.appendChild(download);
+        var trash = document.createElement("img");
+            trash.src = trashIcone;
+            trash.id = "trash_"+id;
+            trash.alt = "";
+            trash.className = "trashDash";
+            trash.onclick  = (ev:any) => {
+                var dashBoard = (document.getElementById("newBoard_"+ev.path[0].id.split("_")[1]) as HTMLDivElement);
+                dashBoard.innerHTML = "";
+                dashBoard.style.display = "none";
+            }
+            newBoard.appendChild(trash);
+
+        var newMatrixBoard = document.createElement("div") as any;
+        newMatrixBoard.id = "matrixBoard_"+id;
+        newMatrixBoard.className = "MatrixBoard";
+        newBoard.appendChild(newMatrixBoard)
+        document.getElementById('ChartsRes')?.appendChild(newBoard)
+        var matrix = JSON.parse(reponse).file;
+        matrix = matrix.split("\n")
+        var labels :any[] = matrix[0].split(",");
+        var nbrow=0;
+        labels.forEach((element:any) => {
+            nbrow++;
+        });
+        var data :any[] = []
+        var totalPerColumn :number[] = [] ;
+            for(var x : number = 0 ; x < nbrow ; x++){
+
+              totalPerColumn.push(0)
+            }
+        for(var i : number = 1 ; i < nbrow+1 ; i++){
+            var line = matrix[i].split(",")
+                for(var j : number = 0 ; j < nbrow ; j++){
+                  totalPerColumn[i-1] += parseFloat(line[j]);
+                  var dataline = {'x': labels[i-1], 'y': labels[j], 'v': parseFloat(line[j])}
+                  data.push(dataline)
+                }
+        }
+        createCorrelationMatrix(labels,data,"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)",nbrow,totalPerColumn)
+
+    }
+
+    function createCorrelationMatrix(labels:any,datas:any,backgroundColor:any,borderColor:any,nbrow:number,totalPerColumn:number[]){
+        var newCanvas = document.createElement('canvas');
+        newCanvas.className="matrix";
+        newCanvas.id="matrix_"+id;
+        document.getElementById('matrixBoard_'+id)?.appendChild(newCanvas)
+
+
+        var ctx :any = (document.getElementById('matrix_'+id) as HTMLCanvasElement).getContext('2d');
+        
+        var myChart = new Chart(ctx , {
+              type : 'matrix',
+              data: {
+                  datasets: [{
+                      type: 'matrix',
+                      label: "Matrix Confusion",
+                      data: datas,
+                      backgroundColor(context) {
+                          const value = datas[context.dataIndex].v;
+                          var colors  = createMatrixRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
+                          var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
+                          return color(colorString).alpha(0.8).rgbString();
+                        },
+                        borderColor(context) {
+                          const value = datas[context.dataIndex].v;
+                          var colors  = createMatrixRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
+                          var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
+                          return color(colorString).alpha(1).rgbString();
+                        },
+                      borderWidth: 1,
+                      width: ({chart}) => (chart.chartArea || {}).width / nbrow - 1,
+                      height: ({chart}) =>(chart.chartArea || {}).height / nbrow - 1
+                  }],
+              },
+              options: {
+                  responsive: true,
+                  plugins: {
+                      legend: false,
+                      tooltip: {
+                        callbacks: {
+                          title() {
+                            return '';
+                          },
+                          label(context: any) {
+                            const v = context.dataset.data[context.dataIndex];
+                            return ['x: ' + v.x, 'y: ' + v.y, 'v: ' + v.v];
+                          }
+                        }
+                      }
+                    } as any,
+                  scales: {
+                      x: {
+                        type: 'category',
+                        labels: labels,
+                        ticks: {
+                          display: true
+                        },
+                        grid: {
+                          display: false
+                        }
+                      },
+                      y: {
+                        type: 'category',
+                        labels: labels,
+                        offset: true,
+                        ticks: {
+                          display: true
+                        },
+                        grid: {
+                          display: false
+                        }
+                      }
+                    },
+                    
+              }})
+          myChart.update();
+          return myChart;
+  
+      }
+
+    function createMatrixRGB(x:any,max:any){
+        var percentFade  =  (x+1)/2;
+        var rouge ; 
+        var bleu ;
+        var vert;
+        if(percentFade<0.5){
+          rouge = 33 + (166*percentFade*2); 
+          bleu = 196 - (166*percentFade*2);
+          vert = 33;
+        }else{
+          rouge = 196;
+          bleu = 33;
+          vert = 33+ (166*(percentFade-0.5)*2);
+        }
+        return [rouge,vert,bleu]
+    }
     return (
         
         <div className="DataVisu">
@@ -948,6 +1121,7 @@ const DataVisu = () =>  {
                     <option value="Scatter" >Scatter Chart</option>
                     <option value="Line" >Line Chart</option>
                 </select><br />
+                <button onClick={printCorrelation} className='boutonSend' id="correlationMatrixButton" disabled>Correlation Matrix</button>
                 </div>
                 </div>
                 </div>

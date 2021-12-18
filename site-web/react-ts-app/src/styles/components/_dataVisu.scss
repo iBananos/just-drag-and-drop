@@ -253,7 +253,14 @@
 .return{
     font-size: small;
     margin-top: 25px;
-    margin-left: -180px;
-    margin-bottom: -25px;
+    color : $color_text ;
+    width: 50px;
+    margin-left: 10px;
+    height: 20px;
     cursor: pointer;
+}
+
+.MatrixBoard{
+    width: 99%;
+    float: left;
 }
