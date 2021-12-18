@@ -55,4 +55,8 @@ export default class AESCipher {
     public getToEncrypt() {
        return this.toEncrypt;
     }
+
+    public setToEncrypt(toEncrypt : boolean) {
+        this.toEncrypt = toEncrypt;
+    }
 }
