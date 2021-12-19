@@ -208,44 +208,44 @@ function checkAnalyze(req:any){
 function verifParams(list_param:any,algo_choice:any,analyze_choice:any){
     if(analyze_choice === "Regression"){
         if(algo_choice === 'GradientBoosting'){
-            if(parseFloat(list_param.learning_rate) === NaN || parseFloat(list_param.learning_rate) < 0 ) return true
-            if(parseInt(list_param.n_estimators) === NaN || parseInt(list_param.n_estimators ) < 0 ) return true
-            if(parseInt(list_param.max_depth) === NaN || parseInt(list_param.max_depth) < 0 ) return true
-            if(parseInt(list_param.min_samples_split) === NaN || parseInt(list_param.min_samples_split) < 0 ) return true
+            if(isNaN(parseFloat(list_param.learning_rate)) || parseFloat(list_param.learning_rate) < 0 ) return true
+            if(isNaN(parseInt(list_param.n_estimators)) || parseInt(list_param.n_estimators ) < 0 ) return true
+            if(isNaN(parseInt(list_param.max_depth)) || parseInt(list_param.max_depth) < 0 ) return true
+            if(isNaN(parseInt(list_param.min_samples_split)) || parseInt(list_param.min_samples_split) < 0 ) return true
         }else if(algo_choice === 'RandomForest'){
-            if(parseInt(list_param.n_estimators) === NaN || parseInt(list_param.n_estimators ) < 0 ) return true
-            if(parseInt(list_param.max_depth) === NaN || parseInt(list_param.max_depth) < 0 ) return true
-            if(parseInt(list_param.min_samples_split) === NaN || parseInt(list_param.min_samples_split) < 0 ) return true
+            if(isNaN(parseInt(list_param.n_estimators)) || parseInt(list_param.n_estimators ) < 0 ) return true
+            if(isNaN(parseInt(list_param.max_depth)) || parseInt(list_param.max_depth) < 0 ) return true
+            if(isNaN(parseInt(list_param.min_samples_split)) || parseInt(list_param.min_samples_split) < 0 ) return true
         }else if(algo_choice === 'Ridge'){
-            if(parseFloat(list_param.n_estimators ) === NaN || parseFloat(list_param.n_estimators ) < 0 ) return true
+            if(isNaN(parseFloat(list_param.n_estimators)) || parseFloat(list_param.n_estimators ) < 0 ) return true
             if(!["auto","svd","cholesky",'lsqr',"sparse_cg","sag","saga","lbfgs"].includes(list_param.solver)) return true
-            if(parseInt(list_param.alpha) === NaN || parseInt(list_param.alpha) < 0 ) return true
+            if(isNaN(parseInt(list_param.alpha)) || parseInt(list_param.alpha) < 0 ) return true
         }
     }else{
         if(algo_choice === 'LinearSVC'){
-            if(parseFloat(list_param.tol) === NaN || parseFloat(list_param.tol) < 0 ) return true
+            if(isNaN(parseFloat(list_param.tol)) || parseFloat(list_param.tol) < 0 ) return true
             if(!["l1","l2"].includes(list_param.penalty)) return true
-            if(parseInt(list_param.C) === NaN || parseInt(list_param.C) < 0 ) return true
+            if(isNaN(parseInt(list_param.C)) || parseInt(list_param.C) < 0 ) return true
             if(!["none","dict","balanced"].includes(list_param.class_weight )) return true
         }else if(algo_choice === 'AdaBoost'){
-            if(parseInt(list_param.n_estimators ) === NaN || parseInt(list_param.n_estimators ) < 0 ) return true
-            if(parseInt(list_param.learning_rate) === NaN || parseInt(list_param.learning_rate) < 0 ) return true
+            if(isNaN(parseInt(list_param.n_estimators)) || parseInt(list_param.n_estimators ) < 0 ) return true
+            if(isNaN(parseInt(list_param.learning_rate)) || parseInt(list_param.learning_rate) < 0 ) return true
         }else if(algo_choice === 'GradientBoosting2'){
-            if(parseFloat(list_param.learning_rate) === NaN || parseFloat(list_param.learning_rate) < 0 ) return true
-            if(parseInt(list_param.n_estimators) === NaN || parseInt(list_param.n_estimators ) < 0 ) return true
-            if(parseInt(list_param.max_depth) === NaN || parseInt(list_param.max_depth) < 0 ) return true
-            if(parseInt(list_param.min_samples_split) === NaN || parseInt(list_param.min_samples_split) < 0 ) return true
+            if(isNaN(parseFloat(list_param.learning_rate)) || parseFloat(list_param.learning_rate) < 0 ) return true
+            if(isNaN(parseInt(list_param.n_estimators)) || parseInt(list_param.n_estimators ) < 0 ) return true
+            if(isNaN(parseInt(list_param.max_depth)) || parseInt(list_param.max_depth) < 0 ) return true
+            if(isNaN(parseInt(list_param.min_samples_split)) || parseInt(list_param.min_samples_split) < 0 ) return true
         }else if(algo_choice === 'RandomForest2'){
-            if(parseInt(list_param.n_estimators) === NaN || parseInt(list_param.n_estimators ) < 0 ) return true
-            if(parseInt(list_param.max_depth) === NaN || parseInt(list_param.max_depth) < 0 ) return true
-            if(parseInt(list_param.min_samples_split) === NaN || parseInt(list_param.min_samples_split) < 0 ) return true
+            if(isNaN(parseInt(list_param.n_estimators)) || parseInt(list_param.n_estimators ) < 0 ) return true
+            if(isNaN(parseInt(list_param.max_depth)) || parseInt(list_param.max_depth) < 0 ) return true
+            if(isNaN(parseInt(list_param.min_samples_split)) || parseInt(list_param.min_samples_split) < 0 ) return true
             if(!["none","balanced_subsample","balanced"].includes(list_param.class_weight )) return true
         }else if(algo_choice === 'LogisticRegression'){
             if(!["l1","l2","elasticnet","none"].includes(list_param.penalty)) return true
-            if(parseFloat(list_param.tol) === NaN || parseFloat(list_param.tol) < 0 ) return true
-            if(parseInt(list_param.c) === NaN || parseInt(list_param.c) < 0 ) return true
+            if(isNaN(parseFloat(list_param.tol)) || parseFloat(list_param.tol) < 0 ) return true
+            if(isNaN(parseInt(list_param.c)) || parseInt(list_param.c) < 0 ) return true
             if(!["none","dict","balanced"].includes(list_param.class_weight )) return true
-            if(parseInt(list_param.max_iter ) === NaN || parseInt(list_param.max_iter  ) < 0 ) return true
+            if(isNaN(parseInt(list_param.max_iter)) || parseInt(list_param.max_iter  ) < 0 ) return true
         }
     }
 
@@ -272,6 +272,3 @@ export const downloadAnalyze : RequestHandler = (req : Request, res : Response, 
     }
 
 };
-
-
-
