@@ -17,13 +17,22 @@ class Utils {
         return listName;
     }
 
-    public static getDataFiles(userId : string, path : string){
+    public static getDataFiles(userId : string, path : string, demo :boolean){
         var listName: string[] = [];
-        const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-        fs.readdirSync(path).forEach(file => {
-            var data = JSON.parse(aesCipher.decrypt(fs.readFileSync(path + file, 'utf8')));
-            listName.push(data)
-        });
+        if(!demo) {
+            const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
+            fs.readdirSync(path).forEach(file => {
+                var data = JSON.parse(aesCipher.decrypt(fs.readFileSync(path + file, 'utf8')));
+                listName.push(data)
+            });
+        }else{
+            fs.readdirSync(path).forEach(file => {
+                var data = JSON.parse(fs.readFileSync(path + file, 'utf8'));
+                listName.push(data)
+            });
+        }
+
+        
         return listName;
     }
 

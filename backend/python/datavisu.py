@@ -12,9 +12,15 @@ first = sys.argv[3]
 second = sys.argv[4]
 third = sys.argv[5]
 sample = sys.argv[6]
-key = sys.argv[7]
-toEncrypt = sys.argv[8]
+demo = sys.argv[7]
+if demo == "false" :
+    key = sys.argv[8]
+    toEncrypt = sys.argv[9]
+else : 
+    key = ""
+    toEncrypt = ""
 
+    
 def parse_data(filename):
 
     if extension == "csv" :
@@ -53,8 +59,9 @@ def decryptFile(filename) :
 
 
 if __name__ == "__main__":
-    if toEncrypt == "true" :
-        data = decryptFile(filename)
+    if demo == "false" : 
+        if toEncrypt == "true" :
+            data = decryptFile(filename)
     else :
         data = filename
     print(principal_fonction(data, first, second, third, sample))

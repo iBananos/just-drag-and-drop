@@ -5,8 +5,14 @@ import sys
 
 filename = sys.argv[1]
 extension = sys.argv[2]
-key = sys.argv[3]
-toEncrypt = sys.argv[4]
+demo = sys.argv[3]
+if demo == "false" :
+    key = sys.argv[4]
+    toEncrypt = sys.argv[5]
+else : 
+    key = ""
+    toEncrypt = ""
+
 
 def parse_data(filename):
     
@@ -56,8 +62,9 @@ def decryptFile(filename) :
     return StringIO(csvPlainText)
 
 if __name__ == "__main__":
-    if toEncrypt == "true" :
-        data = decryptFile(filename)
+    if demo == "false" : 
+        if toEncrypt == "true" :
+            data = decryptFile(filename)
     else :
         data = filename
     print(correlation_matrix(data))

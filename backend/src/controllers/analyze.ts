@@ -254,12 +254,17 @@ function verifParams(list_param:any,algo_choice:any,analyze_choice:any){
 
 
 export const databases : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    res.send({"liste" : Utils.default.getDataFiles(req.body.userId, 'uploads/' + req.body.userId + '/databaseInfo/')});
+    res.send({"liste" : Utils.default.getDataFiles(req.body.userId, 'uploads/' + req.body.userId + '/databaseInfo/',false)});
 };
+
+export const databasesDemo : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    res.send({"liste" : Utils.default.getDataFiles(req.body.userId, 'uploads/' + "demo"+ '/databaseInfo/',true)});
+};
+
 
 export const informations : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     //res.send({"liste" : Utils.default.getInformations('uploads/' + req.body.userId )});
-    res.send({"liste" : Utils.default.getDataFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/')});
+    res.send({"liste" : Utils.default.getDataFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/',false)});
 };
 
 export const downloadAnalyze : RequestHandler = (req : Request, res : Response, next : NextFunction) => {

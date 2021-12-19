@@ -23,10 +23,17 @@ const DataVisu = () =>  {
             document.getElementById("SelectDB")?.appendChild(option);
         }
     }
-
+    var demo : any;
     window.onload= function(){
+        const search = window.location.search; // returns the URL query String
+        const params = new URLSearchParams(search); 
+        demo = params.get('demo'); 
+        if(demo === "true"){
+            utils.default.sendRequestDemo('POST', '/api/analyze/databasesDemo', "", requestDatabases); 
+        }else{
+            utils.default.sendRequestWithToken('POST', '/api/analyze/databases', "", requestDatabases);
+        }
         
-        utils.default.sendRequestWithToken('POST', '/api/analyze/databases', "", requestDatabases);
     }
 
 
@@ -196,8 +203,13 @@ const DataVisu = () =>  {
                                             "secondOne":secondOne,
                                             "thirdOne":thirdOne,
                                             "sample": sample});
-        utils.default.sendRequestWithToken('POST', '/api/dataVisu/parameters', requestAnalyze, callbackDownload);
+                                            
         
+        if(demo === "true"){
+            utils.default.sendRequestDemo('POST', '/api/dataVisu/parametersDemo', requestAnalyze, callbackDownload); 
+        }else{
+            utils.default.sendRequestWithToken('POST', '/api/dataVisu/parameters', requestAnalyze, callbackDownload);
+        }
     }
 
     function callbackDownload(response:any){
@@ -906,7 +918,11 @@ const DataVisu = () =>  {
     }
     function printCorrelation(){
         var requestAnalyze = JSON.stringify({"database": (document.getElementById("SelectDB")as HTMLSelectElement).value});
-        utils.default.sendRequestWithToken('POST', '/api/dataVisu/matrix', requestAnalyze, callbackMatrix);
+        if(demo === "true"){
+            utils.default.sendRequestDemo('POST', '/api/dataVisu/matrixDemo', requestAnalyze, callbackMatrix); 
+        }else{
+            utils.default.sendRequestWithToken('POST', '/api/dataVisu/matrix', requestAnalyze, callbackMatrix);
+        }
     }
 
     function callbackMatrix(reponse:any){

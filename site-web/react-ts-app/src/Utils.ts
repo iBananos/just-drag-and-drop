@@ -60,6 +60,25 @@ class Utils {
         });
         xhr.send(data);
     }
+    public static async sendRequestDemo(methode : string, url : string, data : string, callback : any) {
+        var xhr = new XMLHttpRequest()
+        xhr.open(methode, hostname+url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        
+
+        //xhr.setRequestHeader("x-xsrf-token", localStorage.getItem("xsrfToken") || '{}');
+        xhr.withCredentials = true;
+      
+        xhr.addEventListener('readystatechange', function(e) {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                callback(this.response);
+            }
+            else if (xhr.readyState === 4 && xhr.status !== 200) {
+                JSON.parse(this.response);
+            }
+        });
+        xhr.send(data);
+    }
 
     public static async sendFileWithToken(methode : string, url : string, data : File, name : string , date :Date, callback : any) {
         if (!Utils.checkToken()){

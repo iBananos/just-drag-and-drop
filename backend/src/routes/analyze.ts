@@ -17,6 +17,7 @@ router.post("/deleteData", auth, analyzeCtrl.deleteData);
 
 router.post("/downloadAnalyze", auth, analyzeCtrl.downloadAnalyze);
 
+router.post("/databasesDemo", analyzeCtrl.databasesDemo);
 
 // Exportation du router
 export default router;
