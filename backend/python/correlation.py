@@ -65,6 +65,8 @@ if __name__ == "__main__":
     if demo == "false" : 
         if toEncrypt == "true" :
             data = decryptFile(filename)
+        else :
+            data = filename
     else :
         data = filename
     print(correlation_matrix(data))
