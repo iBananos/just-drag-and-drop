@@ -30,7 +30,7 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
 
     let userId : string = req.body.userId;
 
-    var listName = Utils.default.getNameFiles(userId, 'uploads/' + userId + '/database/');
+    var listName = Utils.default.getNameFiles(userId, 'uploads/' + userId + '/database/',false);
     var nomFichier : string = req.body.name;
     console.log(nomFichier)
     nomFichier = nomFichier.replace(/ /g,"_").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");

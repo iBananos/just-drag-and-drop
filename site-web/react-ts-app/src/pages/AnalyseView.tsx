@@ -12,13 +12,20 @@ Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,  
 
 const AnalyseView = () => {
     var TypeRequest : any;
+    var demo :any ;
     window.onload= () =>{
         const search = window.location.search; // returns the URL query String
         const params = new URLSearchParams(search); 
         const FileFromURL : any = params.get('url'); 
         TypeRequest = params.get('type'); 
         document.title =FileFromURL;
-        utils.default.sendRequestWithToken('POST', '/api/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload);
+        demo = params.get('demo'); 
+        if(demo === "true"){
+            utils.default.sendRequestDemo('POST', '/api/analyze/downloadAnalyzeDemo', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload); 
+        }else{
+            utils.default.sendRequestWithToken('POST', '/api/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload);
+        }
+        
     } 
 
     function callbackDownload(response:any){

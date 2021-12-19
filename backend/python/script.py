@@ -18,9 +18,14 @@ pred = sys.argv[4]
 list_param = sys.argv[5]
 analyze_choice = sys.argv[6]
 algo_choice = sys.argv[7]
-key = sys.argv[8]
-toEncrypt = sys.argv[9]
 
+demo = sys.argv[8]
+if demo == "false" :
+    key = sys.argv[9]
+    toEncrypt = sys.argv[10]
+else : 
+    key = ""
+    toEncrypt = ""
 
 ####fonction pour pouvoir lire les databases et les transformer en dataframes
 
@@ -261,8 +266,11 @@ def decryptFile(filename) :
 
 
 if __name__ == "__main__":
-    if toEncrypt == "true" :
-        data = decryptFile(filename)
+    if demo == "false" : 
+        if toEncrypt == "true" :
+            data = decryptFile(filename)
+        else :
+            data = filename
     else :
         data = filename
     print(principal_fonction(data, features.split(","), pred, list_param.split(","), analyze_choice, algo_choice))

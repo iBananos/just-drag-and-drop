@@ -5,15 +5,21 @@ import AESCipher from "./utils/aesCipher";
 class Utils {
     
 
-    public static getNameFiles(userId : string, path : string){
-        console.log(userId)
+    public static getNameFiles(userId : string, path : string,demo : boolean){
         var listName: string[] = [];
-        const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-        fs.readdirSync(path).forEach(file => {
-            file = aesCipher.decrypt(file);
-            var name = file.split(".")
-            listName.push(name[0])
-        });
+        if(!demo){
+            const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
+            fs.readdirSync(path).forEach(file => {
+                file = aesCipher.decrypt(file);
+                var name = file.split(".")
+                listName.push(name[0])
+            });
+        }else{
+            fs.readdirSync(path).forEach(file => {
+                var name = file.split(".")
+                listName.push(name[0])
+            });
+        }
         return listName;
     }
 

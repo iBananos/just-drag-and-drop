@@ -59,9 +59,17 @@ const Analyze = () =>  {
             }
          
     }
-
+    var demo:any;
     window.onload= function(){
-        utils.default.sendRequestWithToken('POST', '/api/analyze/databases', "", requestDatabases);
+        const search = window.location.search; // returns the URL query String
+        const params = new URLSearchParams(search); 
+        demo = params.get('demo'); 
+        if(demo === "true"){
+            utils.default.sendRequestDemo('POST', '/api/analyze/databasesDemo', "", requestDatabases); 
+        }else{
+            utils.default.sendRequestWithToken('POST', '/api/analyze/databases', "", requestDatabases);
+        }
+        
     }
 
     function displayAlgorithmes(){
@@ -335,8 +343,12 @@ const Analyze = () =>  {
         console.log(requestAnalyze);
         (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "Sending request, please wait...";
         
-        utils.default.sendRequestWithToken('POST', '/api/analyze/parameters', requestAnalyze, callbackRequest);
         
+        if(demo === "true"){
+            utils.default.sendRequestDemo('POST', '/api/analyze/parametersDemo', requestAnalyze, callbackRequest); 
+        }else{
+            utils.default.sendRequestWithToken('POST', '/api/analyze/parameters', requestAnalyze, callbackRequest);
+        }
         
     }
 
@@ -354,7 +366,7 @@ const Analyze = () =>  {
             //(document.getElementById("loading") as HTMLDivElement).style.display = "block";
             (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "Check the new tab for the result !";
             window.open(
-                "/analyzeView?type="+reponse.category+"&url="+reponse.name,
+                "/analyzeView?type="+reponse.category+"&url="+reponse.name+"&demo="+demo,
                 '_blank' // <- This is what makes it open in a new window.
               );
             //window.location.href = "/analyzeView?type="+reponse.category+"&url="+reponse.name;

@@ -5,9 +5,9 @@ import * as Utils from "../src/utils";
 describe('Test des utilitaires d\'Utils', () => {
 
     test('Test de la méthode getNameFiles()', async() => {
-        expect(Utils.default.getNameFiles("demo",'uploads/' +"demo"+ '/database/')).not.toBeNull();
-        expect(Utils.default.getNameFiles("demo",'uploads/' +"demo"+ '/database/').length).toBe(1);
-        expect(Utils.default.getNameFiles("demo",'uploads/' +"demo"+ '/database/')).toEqual(['diamonds']);
+        expect(Utils.default.getNameFiles("demo",'uploads/' +"demo"+ '/database/',true)).not.toBeNull();
+        expect(Utils.default.getNameFiles("demo",'uploads/' +"demo"+ '/database/',true).length).toBe(1);
+        expect(Utils.default.getNameFiles("demo",'uploads/' +"demo"+ '/database/',true)).toEqual(['diamonds']);
     });
 
 

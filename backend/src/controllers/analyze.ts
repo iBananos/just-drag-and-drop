@@ -27,12 +27,12 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
         return;
     }
 
-    var reponse = checkAnalyze(req);
+    var reponse = checkAnalyze(req,false);
     if (reponse !== 'ok' && reponse !== "Automatic" && reponse !== "Automatic2") {
         res.status(200).json({ "status" : "401", "message": reponse});
         return;
     }
-    var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/');
+    var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/',false);
     var nomFichier = req.body.nameAnalyze;
     nomFichier = nomFichier.replace(/ /g,"_").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
     if (nomFichier === "") nomFichier = "analyze";
@@ -62,7 +62,7 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
             var pred = req.body.pred;
             let extension = req.body.database.split(".")[1];
             if (reponse === "Automatic" || reponse === "Automatic2") {
-                exec('python python/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+                exec('python python/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
@@ -96,7 +96,7 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
             } else {
                 var list_param : string[] = [];
                 Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
-                exec('python python/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+                exec('python python/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
@@ -121,6 +121,99 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
 
     // Update des analyse utilisée
     await UserLimit.updateOne({ userId: objectId }, { currentAnalyse: newCurrentAnalyse });
+};
+
+export const  parametersDemo : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
+
+    var reponse = checkAnalyze(req,true);
+    if (reponse !== 'ok' && reponse !== "Automatic" && reponse !== "Automatic2") {
+        res.status(200).json({ "status" : "401", "message": reponse});
+        return;
+    }
+    var listName = Utils.default.getNameFiles("demo", 'uploads/' + "demo" + '/analyseInfo/',true);
+    var nomFichier = req.body.nameAnalyze;
+    nomFichier = nomFichier.replace(/ /g,"_").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
+    if (nomFichier === "") nomFichier = "analyze";
+    var acc = 1; 
+    while (listName.includes(nomFichier)) {
+        if (acc > 1) {
+            nomFichier = nomFichier.split('(')[0];
+        }
+        nomFichier = nomFichier+"("+acc+")";
+        acc++;
+    }
+    req.body.nameAnalyze = nomFichier;
+    nomFichier =nomFichier ;
+    req.body.type = "prediction";
+    fs.writeFile('uploads/' + "demo" + '/analyseInfo/' + nomFichier + ".json" , JSON.stringify(req.body), async function (err) {
+        if (err) {
+            res.send('error'); 
+        } else {
+            var analyze_choice = req.body.category;
+            var algo_choice = req.body.algo;
+            
+            var filename = 'uploads/' + "demo" + '/database/' + req.body.database;
+            var features = req.body.feature;
+            var pred = req.body.pred;
+            let extension = req.body.database.split(".")[1];
+            if (reponse === "Automatic" || reponse === "Automatic2") {
+                exec('python python/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' true ', (error:any, stdout:any, stderr:any) => {
+                    if (error) {
+                        console.error(`error: ${error.message}`);
+                        return;
+                    }
+                  
+                    if (stderr) {
+                        console.error(`stderr: ${stderr}`);
+                        return;
+                    }
+                    if(stdout.split("\n")[0].includes("You will not get good")){
+                        fs.unlink('uploads/' + "demo" + '/analyseInfo/' + nomFichier +'.json', function (err) {
+                            if (err) {
+                                console.error(err);
+                            } else {
+                                console.log("File removed:", req.body.path);
+                            }
+                            res.status(200).json({ "status" : "401", "message": stdout, "name": "a", "category": "b"});
+                            return;
+                        });
+                        
+                    }else{
+                        fs.writeFile('uploads/' + "demo" + '/analyse/' + nomFichier + ".csv", stdout, function (err) {
+                            if (err) {
+                                res.send('error'); 
+                            } else {
+                                res.status(200).json({ "status" :"ok", "name": nomFichier, "category": req.body.category});
+                            }
+                        });
+                      }   
+                    })            
+            } else {
+                var list_param : string[] = [];
+                Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
+                exec('python python/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' true' , (error:any, stdout:any, stderr:any) => {
+                    if (error) {
+                        console.error(`error: ${error.message}`);
+                        return;
+                    }
+                  
+                    if (stderr) {
+                        console.error(`stderr: ${stderr}`);
+                        return;
+                    }
+                    
+                    fs.writeFile('uploads/' + "demo" + '/analyse/' + nomFichier + ".csv", stdout, function (err) {
+                        if (err) {
+                            res.send('error'); 
+                        } else {
+                            res.status(200).json({ "status" :"ok", "name": nomFichier, "category": req.body.category});
+                        }
+                    });
+                });
+            }
+        }
+    });
+
 };
 
 export const deleteData : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
@@ -154,14 +247,23 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
     }
 };
 
-function checkAnalyze(req:any){
-    
-    //var name = file.split(".")
-    let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/database/", req.body.database);
-    var filename :any = targetBase;
-    const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
-    filename = aesCipher.decrypt(filename);
-    console.log(filename)
+function checkAnalyze(req:any,demo:boolean){
+    var filename :any;
+    var userID :any;
+    if(!demo){
+        userID = req.body.userId;
+    }else{
+        userID = "demo";
+    }
+    const aesCipher =  new AESCipher(userID, `${process.env.KEY_ENCRYPT}`);
+    if(!demo){
+        let targetBase = Utils.default.findEncryptedFile(userID, "uploads/" + userID + "/database/", req.body.database);
+        filename  = targetBase;
+        filename = aesCipher.decrypt(filename);
+    }else{
+        
+        filename = req.body.database
+    }
     filename = filename.split(".")[0]
     var analyze_choice = req.body.category;
     var algo_choice = req.body.algo;
@@ -169,14 +271,20 @@ function checkAnalyze(req:any){
     var list_param :any= [];
     Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value)}); // PROBLEME A CETTE LIGNE  TypeError: Cannot convert undefined or null to object
     var pred = req.body.pred;
-    var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/database/');
+    var listName = Utils.default.getNameFiles(userID, 'uploads/' + userID + '/database/',demo);
     // verif database
     if(typeof filename !== 'string') return "le nom de la database n'est pas un nom de fichier"
     if(!listName.includes(filename)) return "la database est inexistante"
 
     // verif pred
-    let targetAnalyse :any = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/databaseInfo/", req.body.database.split(".")[0] + ".json");    
-    var data = JSON.parse(aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/databaseInfo/" + targetAnalyse, 'utf8')));
+    var data :any;
+    if(!demo){
+        let targetAnalyse :any= Utils.default.findEncryptedFile(userID, "uploads/" + userID + "/databaseInfo/", req.body.database.split(".")[0] + ".json");  
+        data= JSON.parse(aesCipher.decrypt(fs.readFileSync("uploads/" + userID + "/databaseInfo/" + targetAnalyse, 'utf8')));
+    }else{
+        data = JSON.parse(fs.readFileSync("uploads/" + userID + "/databaseInfo/" +  req.body.database.split(".")[0] + ".json", 'utf8'));
+    }
+    
     if(typeof pred !== 'string') return "pred n'a pas une nom de colonne"
     if(!data.colonnes.includes(pred)) return "la colonne prédiction est inexistante"
     // vérif feature
@@ -274,6 +382,27 @@ export const downloadAnalyze : RequestHandler = (req : Request, res : Response, 
         let targetAnalyse = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyse/", req.body.path + ".csv");
         var data = {"name": req.body.path, "file": aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/analyse/" + targetAnalyse, 'utf8'))};
         res.send(data);
+    }
+
+};
+
+export const downloadAnalyzeDemo : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    var type = req.body.type
+    if (type == "Classification" ||type == "Regression"  ) {
+        var data = {"name": req.body.path, "file": fs.readFileSync("uploads/" + "demo" + "/analyse/" + req.body.path + ".csv", 'utf8')};
+        res.send(data);
+        fs.unlink("uploads/" + "demo"+ "/analyseInfo/" + req.body.path + ".json", async function (err) {
+            if (err) {
+            
+            } else {
+            }
+        });
+        fs.unlink("uploads/" + "demo"+ "/analyse/" + req.body.path + ".csv", async function (err) {
+            if (err) {
+            
+            } else {
+            }
+        });
     }
 
 };
