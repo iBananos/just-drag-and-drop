@@ -23,7 +23,7 @@ import type { RequestHandler, Request, Response, NextFunction } from "express";
  */
 export const signup : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
     try {
-        if (!req.body.email || !req.body.name || !req.body.surname) {
+        if (!req.body.email || !req.body.password || !req.body.name || !req.body.surname) {
             throw new HttpException(401, "controllers/user.ts", "Il manque des informations.");
         }
 
