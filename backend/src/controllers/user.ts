@@ -74,6 +74,7 @@ export const signup : RequestHandler = async (req : Request, res : Response, nex
             fs.mkdirSync(dir + '/analyse');
             fs.mkdirSync(dir + '/analyseInfo');
             fs.mkdirSync(dir + '/databaseInfo');
+            fs.mkdirSync(dir + '/analysePreview');
 
             // Création des limite d'upload par defaut pour l'utilisateur
             const userLimit = new UserLimit({
