@@ -6,6 +6,7 @@ import trashIcone from "../assets/trash.png";
 const History = () =>  {
 
     var list : any[]= [];
+    var listImg : any[]= [];
     function deleteAnalyze(ev : any){
         var id = ev.target.id.split("_")[0] ;
         var file =  JSON.stringify({"path" : id});
@@ -17,6 +18,7 @@ const History = () =>  {
     function askForView(ev:any){
         var id : number = parseInt(ev.target.id,10) ;
         var title = (document.getElementById("title")as HTMLDivElement);
+        var img = (document.getElementById("ViewImage")as HTMLDivElement);
         var date = (document.getElementById("date")as HTMLDivElement);
         var database = (document.getElementById("database")as HTMLDivElement);
         var algo = (document.getElementById("algo")as HTMLDivElement);
@@ -24,7 +26,7 @@ const History = () =>  {
         var type = (document.getElementById("type")as HTMLDivElement);
         var trashdiv = (document.getElementById("trashDiv")as HTMLDivElement);
         trashdiv.innerHTML = "";
-        
+        img.innerHTML = "";
         title.innerHTML = "";
         date.innerHTML = "";
         (document.getElementById("informationRequesttype")as HTMLDivElement).innerHTML ="";
@@ -36,6 +38,11 @@ const History = () =>  {
         (document.getElementById("loadButton")as HTMLInputElement).style.display ="none";
             
         if(id !== undefined){
+                var image = document.createElement("img");
+                image.className = "previewView";
+                image.src=listImg[id];
+                img.appendChild(image)
+                title.innerHTML = "Title : " + list[id].nameAnalyze ;
                 title.innerHTML = "Title : " + list[id].nameAnalyze ;
                 date.innerHTML = "Date : " +  list[id].date;
                 database.innerHTML = "Database : "+  list[id].database;
@@ -73,15 +80,25 @@ const History = () =>  {
 
     function createCells(response : any){
         var listData= JSON.parse(response).liste;
+        var listImages= JSON.parse(response).images;
+        console.log(listImages)
         for(var i: number = 0 ; i < listData.length; i++){
 
             var data= listData[i]
             list.push(data);
+            var dataImg= listImages[i]
+            listImg.push(dataImg);
             
             var cell = document.createElement("div");
             cell.className ="HistoryCell"; 
             cell.id = i.toString();
             cell.onclick = askForView;
+
+            var img = document.createElement("img");
+            img.className = "preview";
+            img.id=i.toString();
+            img.src=listImages[i]
+            cell.appendChild(img)
 
             var p = document.createElement("p");
             p.className = "title";

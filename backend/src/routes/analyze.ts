@@ -20,6 +20,7 @@ router.post("/deleteData", auth, analyzeCtrl.deleteData);
 router.post("/downloadAnalyze", auth, analyzeCtrl.downloadAnalyze);
 router.post("/downloadAnalyzeDemo", analyzeCtrl.downloadAnalyzeDemo);
 
+router.post("/sendPreview", auth, analyzeCtrl.sendPreview);
 
 
 // Exportation du router

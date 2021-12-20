@@ -372,18 +372,65 @@ export const databasesDemo : RequestHandler = (req : Request, res : Response, ne
 
 export const informations : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     //res.send({"liste" : Utils.default.getInformations('uploads/' + req.body.userId )});
-    res.send({"liste" : Utils.default.getDataFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/',false)});
+    res.send({"liste" : Utils.default.getDataFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/',false),"images":Utils.default.getPreviewFiles(req.body.userId, 'uploads/' + req.body.userId + '/analysePreview/',false)});
 };
+
+export const sendPreview : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
+    fs.writeFile('uploads/' + req.body.userId + '/analysePreview/' + aesCipher.encrypt(Buffer.from(req.body.path + ".txt")), aesCipher.encrypt(Buffer.from(req.body.image)), function (err) {
+        if (err) { 
+        } else {
+            console.log("image saved")
+            fs.writeFile('uploads/' + req.body.userId + '/analyse/' + aesCipher.encrypt(Buffer.from(req.body.path + ".csv")), aesCipher.encrypt(Buffer.from(req.body.file)), function (err) {
+                if (err) {
+                } else {
+                    console.log("analyse saved")
+                    fs.writeFile('uploads/' + req.body.userId + '/analyseInfo/' + aesCipher.encrypt(Buffer.from(req.body.path + ".json")), aesCipher.encrypt(Buffer.from(req.body.param)), function (err) {
+                        if (err) {
+                        } else {
+                            console.log("analyse info saved")
+                            res.send("ok")
+                        }
+                    });
+                }
+            });
+        }
+    });
+    
+    
+    
+};
+
 
 export const downloadAnalyze : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     var type = req.body.type
     if (type == "Classification" ||type == "Regression"  ) {
         const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
-        let targetAnalyse = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyse/", req.body.path + ".csv");
-        var data = {"name": req.body.path, "file": aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/analyse/" + targetAnalyse, 'utf8'))};
+        let targetAnalyseCSV = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyse/", req.body.path + ".csv");
+        let targetAnalyseJSON = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyseInfo/", req.body.path + ".json");
+        var data = {"name": req.body.path,"param":aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/analyseInfo/" + targetAnalyseJSON, 'utf8')), "file": aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/analyse/" + targetAnalyseCSV, 'utf8'))};
         res.send(data);
+        console.log("okay")
+        if(req.body.fromHistory === "false"){
+            console.log("uploads/" + req.body.userId + "/analyse/" + targetAnalyseCSV )
+            console.log("uploads/" + req.body.userId + "/analyseInfo/" + targetAnalyseJSON )
+            fs.unlink("uploads/" + req.body.userId + "/analyseInfo/" + targetAnalyseJSON , async function (err) {
+                if (err) {
+                
+                } else {
+                    console.log("okay111")
+                }
+            });
+            fs.unlink("uploads/" + req.body.userId + "/analyse/" + targetAnalyseCSV , async function (err) {
+                if (err) {
+                
+                } else {
+                    console.log("okay2222")
+                }
+            });
+        }
+        
     }
-
 };
 
 export const downloadAnalyzeDemo : RequestHandler = (req : Request, res : Response, next : NextFunction) => {

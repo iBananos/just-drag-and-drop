@@ -42,6 +42,25 @@ class Utils {
         return listName;
     }
 
+    public static getPreviewFiles(userId : string, path : string, demo :boolean){
+        var listName: string[] = [];
+        if(!demo) {
+            const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
+            fs.readdirSync(path).forEach(file => {
+                var data = (aesCipher.decrypt(fs.readFileSync(path + file, 'utf8')));
+                listName.push(data)
+            });
+        }else{
+            fs.readdirSync(path).forEach(file => {
+                var data = fs.readFileSync(path + file, 'utf8');
+                listName.push(data)
+            });
+        }
+
+        
+        return listName;
+    }
+
     public static getNbFiles(userId : string, path : string){
         const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
         var acc : number = 0 ;

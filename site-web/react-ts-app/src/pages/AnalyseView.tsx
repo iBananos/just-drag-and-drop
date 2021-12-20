@@ -4,7 +4,8 @@ import { Chart} from 'chart.js';
 import * as utils from "../Utils";
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 import { color } from 'chart.js/helpers';
-
+import saveIcone from "../assets/save.png";
+import downloadIcone from "../assets/download.png";
 import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
 
 Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip ,MatrixController, MatrixElement);
@@ -13,17 +14,20 @@ Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,  
 const AnalyseView = () => {
     var TypeRequest : any;
     var demo :any ;
+    var FileFromURL : any;
+    var fromHistory :any;
     window.onload= () =>{
         const search = window.location.search; // returns the URL query String
         const params = new URLSearchParams(search); 
-        const FileFromURL : any = params.get('url'); 
+        FileFromURL = params.get('url'); 
         TypeRequest = params.get('type'); 
+        fromHistory = params.get('history'); 
         document.title =FileFromURL;
         demo = params.get('demo'); 
         if(demo === "true"){
             utils.default.sendRequestDemo('POST', '/api/analyze/downloadAnalyzeDemo', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload); 
         }else{
-            utils.default.sendRequestWithToken('POST', '/api/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL}), callbackDownload);
+            utils.default.sendRequestWithToken('POST', '/api/analyze/downloadAnalyze', JSON.stringify({"type":TypeRequest,"path":FileFromURL,"fromHistory":fromHistory}), callbackDownload);
         }
         
     } 
@@ -31,8 +35,73 @@ const AnalyseView = () => {
     function callbackDownload(response:any){
         const search = window.location.search;
         const params = new URLSearchParams(search); 
-        TypeRequest = params.get('type'); 
         var file = JSON.parse(response).file;
+        var param = JSON.parse(response).param;
+        TypeRequest = params.get('type'); 
+        var newBoard = document.getElementById('containerGraph') as HTMLDivElement;
+        var newIndication = document.createElement("div");
+        newIndication.id = "indication";
+        newIndication.className = "indication";
+        newIndication.innerHTML = "baabbababa";
+        
+        newBoard.appendChild(newIndication)
+
+        if(demo !== "true" && fromHistory !== "true"){
+          var save = document.createElement("img");
+          save.src = saveIcone;
+          save.id = "save";
+          save.alt = "";
+          save.className = "saveDash";
+          save.onclick  = (ev:any) => {
+            var canvas1;
+            if(TypeRequest === "Regression"){
+              canvas1 = (document.getElementById("myChartLine") as HTMLCanvasElement)
+            }else{
+              canvas1 = (document.getElementById("myChartMatrix") as HTMLCanvasElement)
+            }
+              var canvas4 = (document.getElementById("myChartBar") as HTMLCanvasElement)
+              var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
+              canvasFinal.width = 1000;
+              canvasFinal.height= 500;
+              var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
+              ctxFinal.drawImage(canvas1, 0, 0,500,500);
+              ctxFinal.drawImage(canvas4, 500, 0,500,500);
+                var image = canvasFinal.toDataURL("image/jpeg");
+                console.log(file)
+                console.log(param)
+                var datasend = JSON.stringify({"image":image,"path":FileFromURL,"param":param,"file":JSON.parse(response).file});
+                utils.default.sendRequestWithToken('POST', '/api/analyze/sendPreview', datasend, callbackSend);
+          };
+          newBoard.appendChild(save);
+      }
+        var download = document.createElement("img");
+            download.src = downloadIcone;
+            download.id = "download";
+            download.alt = "";
+            download.className = "downloadDash";
+            download.onclick  = (ev:any) => {
+              var canvas1;
+              if(TypeRequest === "Regression"){
+                canvas1 = (document.getElementById("myChartLine") as HTMLCanvasElement)
+              }else{
+                canvas1 = (document.getElementById("myChartMatrix") as HTMLCanvasElement)
+              }
+                var canvas4 = (document.getElementById("myChartBar") as HTMLCanvasElement)
+                var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
+                canvasFinal.width = 1000;
+                canvasFinal.height= 500;
+                var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
+                ctxFinal.drawImage(canvas1, 0, 0,500,500);
+                ctxFinal.drawImage(canvas4, 500, 0,500,500);
+                var link = document.createElement('a');
+                link.download = "RESULT.png";
+                link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
+                link.click();
+            };
+
+            newBoard.appendChild(download);
+        
+        
         
         file = file.split('\n')
         createChartBar(file[0].split(","),file[1].split(","))
@@ -78,6 +147,10 @@ const AnalyseView = () => {
             createConfusionMatrix(labels,data,"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)",acc,totalPerColumn);
             createRefBar((document.getElementById("myChartBar") as HTMLCanvasElement).style.height)
         }
+    }
+
+    function callbackSend(){
+      console.log("Analyse sauvegardée");
     }
 
     function createChartBar(labels:any,data:any){
@@ -319,7 +392,7 @@ const AnalyseView = () => {
     return (
         <div id="AnalyseView" className="AnalyseView">
             <div className="view" id="view">
-            <div className='containerGraph'>
+            <div className='containerGraph' id="containerGraph">
 
             <div className="Chart" id="Chart"></div>
             <div className="ChartBar" id="ChartBar"></div>

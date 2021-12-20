@@ -366,7 +366,7 @@ const Analyze = () =>  {
             //(document.getElementById("loading") as HTMLDivElement).style.display = "block";
             (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "Check the new tab for the result !";
             window.open(
-                "/analyzeView?type="+reponse.category+"&url="+reponse.name+"&demo="+demo,
+                "/analyzeView?type="+reponse.category+"&url="+reponse.name+"&demo="+demo+"&history=false",
                 '_blank' // <- This is what makes it open in a new window.
               );
             //window.location.href = "/analyzeView?type="+reponse.category+"&url="+reponse.name;

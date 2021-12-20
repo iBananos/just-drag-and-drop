@@ -6,7 +6,7 @@ const ViewHistory = () => {
         var type =  (document.getElementById("informationRequesttype")as HTMLInputElement).innerHTML;
         if(type !== ""){
             window.open(
-                "/analyzeView?url="+url+"&type="+type,
+                "/analyzeView?url="+url+"&type="+type+"&history=true",
                 '_blank' // <- This is what makes it open in a new window.
               );
         }
@@ -15,6 +15,7 @@ const ViewHistory = () => {
 
     return (
         <div id="ViewHistory" className="ViewHistory">
+            <div id="ViewImage" className="ViewImage"></div>
             <button className="loadButton" id="loadButton" onClick={loadAnalyze}>Load analyze</button>
             <div id="title"></div>
             <div id="date"></div>
