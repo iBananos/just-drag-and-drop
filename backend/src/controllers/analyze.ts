@@ -62,7 +62,7 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
             var pred = req.body.pred;
             let extension = req.body.database.split(".")[1];
             if (reponse === "Automatic" || reponse === "Automatic2") {
-                exec('python python/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+                exec('python python_script/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
@@ -96,7 +96,7 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
             } else {
                 var list_param : string[] = [];
                 Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
-                exec('python python/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+                exec('python python_script/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
@@ -157,7 +157,7 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
             var pred = req.body.pred;
             let extension = req.body.database.split(".")[1];
             if (reponse === "Automatic" || reponse === "Automatic2") {
-                exec('python python/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' true ', (error:any, stdout:any, stderr:any) => {
+                exec('python python_script/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' true ', (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
@@ -191,7 +191,7 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
             } else {
                 var list_param : string[] = [];
                 Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
-                exec('python python/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' true' , (error:any, stdout:any, stderr:any) => {
+                exec('python python_script/script.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' true' , (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
