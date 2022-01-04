@@ -33,7 +33,12 @@ def parse_data(data):
 
 def principal_fonction(data) :
     df = parse_data(data)
+    dataexclude=df.select_dtypes(exclude=['object'])
     obj_df = df.select_dtypes(include=['object']).copy()
+    for i in range(len(dataexclude.columns.values)):
+        if len(dataexclude[dataexclude.columns.values[i]].unique())<50:
+            dataexclude[dataexclude.columns.values[i]]=dataexclude[dataexclude.columns.values[i]].astype(str)
+            obj_df = pd.concat([obj_df,dataexclude[dataexclude.columns.values[i]]],axis=1)
     return (obj_df.columns.values)
 
 
