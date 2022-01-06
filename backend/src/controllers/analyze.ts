@@ -34,7 +34,7 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
     }
     var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/',false);
     var nomFichier = req.body.nameAnalyze;
-    nomFichier = nomFichier.replace(/ /g,"_").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
+    nomFichier = nomFichier.replace(/ /g,"-").replace(/_/g,"-").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
     if (nomFichier === "") nomFichier = "analyze";
     var acc = 1; 
     while (listName.includes(nomFichier)) {
@@ -132,7 +132,7 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
     }
     var listName = Utils.default.getNameFiles("demo", 'uploads/' + "demo" + '/analyseInfo/',true);
     var nomFichier = req.body.nameAnalyze;
-    nomFichier = nomFichier.replace(/ /g,"_").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
+    nomFichier = nomFichier.replace(/ /g,"-").replace(/_/g,"-").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
     if (nomFichier === "") nomFichier = "analyze";
     var acc = 1; 
     while (listName.includes(nomFichier)) {
@@ -217,7 +217,10 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
 };
 
 export const deleteData : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    console.log("onveutdelete")
+    console.log(req.body.userId+ " uploads/" + req.body.userId + "/analyse/", req.body.path + ".csv")
     let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyse/", req.body.path + ".csv");
+    console.log(targetBase)
     if (targetBase != undefined) {
         fs.unlink("uploads/" + req.body.userId + "/analyse/" + targetBase, function (err) {
             if (err) {

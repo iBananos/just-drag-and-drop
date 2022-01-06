@@ -1,5 +1,5 @@
 /* PALETTE */ 
-$color_back: rgba(20, 20, 20, 0.103);
+$color_back: rgba(20, 20, 20, 0.705);
 $color_trans: #8670700c;
 $color_green: #339999;
 $color_yellow : rgb(187, 164, 34);
@@ -10,7 +10,7 @@ $color_green3: #99CC33;
 $color_blue3: #339999;
 $color_nav: #181925;
 $color_error : rgb(209, 52, 52);
-$blur : 10px;
+$blur : 40px;
 $color_history : rgba(24, 24, 24, 0.856);
 $color_theme : $color_yellow;
 /* BUTTON */
@@ -51,7 +51,7 @@ select{
 }
 body{
     background-color: black;
-    background-image: url("../assets/dark.jpg");
+    background-image: url("../assets/background2.png");
     background-size: cover;
     
     background-attachment: fixed;

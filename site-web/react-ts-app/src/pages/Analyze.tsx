@@ -168,14 +168,14 @@ const Analyze = () =>  {
         }
     }
 
-
+    var algoSend:string;
     function sendRequest(ev :any){
         var elements = document.getElementsByClassName("boutonSendanalyze");
         for(var x = 0; x < elements.length; x++) {
             (elements[x] as HTMLButtonElement).disabled = true;
         }
         //(document.getElementById("boutonSendanalyze") as HTMLButtonElement).disabled = true;
-        var algo = ev.target.value
+        algoSend = ev.target.value
         var database = (document.getElementById("SelectDB") as HTMLSelectElement).value
         var requestAnalyze : string ="";
         var name = (document.getElementById("analyzeName") as HTMLInputElement).value;
@@ -192,75 +192,75 @@ const Analyze = () =>  {
                 }
             }
         }
-        if(algo === "Automatic"){
+        if(algoSend === "Automatic"){
             requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                             "database" : database,
                                             "date":date,
                                             "pred":pred,
                                             "feature":features,
                                             "category":"Regression",
-                                            "algo":algo, 
+                                            "algo":algoSend, 
                                             "params" : {
                                                 
                                             }});
-        }else if(algo === "GradientBoosting"){
+        }else if(algoSend === "GradientBoosting"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
                                                 "category":"Regression",
-                                                "algo":algo, 
+                                                "algo":algoSend, 
                                                 "params" : {
                                                     "learning_rate" : (document.getElementById("learning_rate1")as HTMLInputElement).value,
                                                     "n_estimators" : (document.getElementById("n_estimators1")as HTMLInputElement).value,
                                                     "max_depth" : (document.getElementById("max_depth1")as HTMLInputElement).value,
                                                     "min_samples_split" : (document.getElementById("min_samples_split1")as HTMLInputElement).value
                                                 }});
-            }else if(algo === "RandomForest"){
+            }else if(algoSend === "RandomForest"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
                                                 "category":"Regression",
-                                                "algo":algo, 
+                                                "algo":algoSend, 
                                                 "params" : {
                                                     "n_estimators" : (document.getElementById("n_estimators2")as HTMLInputElement).value,
                                                     "max_depth" : (document.getElementById("max_depth2")as HTMLInputElement).value,
                                                     "min_samples_split" : (document.getElementById("min_samples_split2")as HTMLInputElement).value
                                                 }});
-            }else if(algo === "Ridge"){
+            }else if(algoSend === "Ridge"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
                                                 "category":"Regression",
-                                                "algo":algo, 
+                                                "algo":algoSend, 
                                                 "params" : {
                                                     "tol" : (document.getElementById("tol3")as HTMLInputElement).value,
                                                     "solver" : (document.getElementById("solver3")as HTMLSelectElement).value,
                                                     "alpha" : (document.getElementById("alpha3")as HTMLInputElement).value}
                                                 });
-            }else if(algo === "Automatic2"){
+            }else if(algoSend === "Automatic2"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
                                                 "category":"Classification",
-                                                "algo":algo, 
+                                                "algo":algoSend, 
                                                 "params" : {
                                                 }});
-            }else if(algo === "BayesianARDRegression"){
+            }else if(algoSend === "BayesianARDRegression"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
                                                 "category":"Regression",
-                                                "algo":algo, 
+                                                "algo":algoSend, 
                                                 "params" : {
                                                     "n_iter" : (document.getElementById("n_iter4")as HTMLInputElement).value,
                                                     "tol" : (document.getElementById("tol4")as HTMLInputElement).value,
@@ -270,68 +270,68 @@ const Analyze = () =>  {
                                                     "lambda_2" : (document.getElementById("lambda_24")as HTMLInputElement).value
                                                 }});
             }
-            if(algo === "LinearSVC"){
+            if(algoSend === "LinearSVC"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
                                                 "category":"Classification",
-                                                "algo":algo, 
+                                                "algo":algoSend, 
                                                 "params" : {
                                                     "penalty" : (document.getElementById("penalty5")as HTMLSelectElement).value,
                                                     "tol" : (document.getElementById("tol5")as HTMLInputElement).value,
                                                     "C" : (document.getElementById("C5")as HTMLInputElement).value,
                                                     "class_weight" : (document.getElementById("class_weight5")as HTMLSelectElement).value
                                                 }});
-            }else if(algo === "AdaBoost"){
+            }else if(algoSend === "AdaBoost"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
                                                 "category":"Classification",
-                                                "algo":algo, 
+                                                "algo":algoSend, 
                                                 "params" : {
                                                     "n_estimators" : (document.getElementById("n_estimators6")as HTMLInputElement).value,
                                                     "learning_rate" : (document.getElementById("learning_rate6")as HTMLInputElement).value
                                                 }});
-            }else if(algo === "GradientBoosting2"){
+            }else if(algoSend === "GradientBoosting2"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
                                                 "category":"Classification",
-                                                "algo":algo, 
+                                                "algo":algoSend, 
                                                 "params" : {
                                                     "learning_rate" : (document.getElementById("learning_rate7")as HTMLInputElement).value,
                                                     "n_estimators" : (document.getElementById("n_estimators7")as HTMLInputElement).value,
                                                     "max_depth" : (document.getElementById("max_depth7")as HTMLInputElement).value,
                                                     "min_samples_split" : (document.getElementById("min_samples_split7")as HTMLInputElement).value
                                                 }});
-            }else if(algo === "RandomForest2"){
+            }else if(algoSend === "RandomForest2"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
                                                 "category":"Classification",
-                                                "algo":algo, 
+                                                "algo":algoSend, 
                                                 "params" : {
                                                     "n_estimators" : (document.getElementById("n_estimators8")as HTMLInputElement).value,
                                                     "max_depth" : (document.getElementById("max_depth8")as HTMLInputElement).value,
                                                     "min_samples_split" : (document.getElementById("min_samples_split8")as HTMLInputElement).value,
                                                     "class_weight" : (document.getElementById("class_weight8")as HTMLSelectElement).value
                                                 }});
-            }else if(algo === "LogisticRegression"){
+            }else if(algoSend === "LogisticRegression"){
                 requestAnalyze = JSON.stringify({"nameAnalyze":name,
                                                 "database" : database,
                                                 "date":date,
                                                 "pred":pred,
                                                 "feature":features,
                                                 "category":"Classification",
-                                                "algo":algo, 
+                                                "algo":algoSend, 
                                                 "params" : {
                                                     "penalty" : (document.getElementById("penalty9")as HTMLSelectElement).value,
                                                     "tol" : (document.getElementById("tol9")as HTMLInputElement).value,
@@ -356,6 +356,10 @@ const Analyze = () =>  {
         console.log(response);
         var reponse = JSON.parse(response);
         var elements = document.getElementsByClassName("boutonSendanalyze");
+        var auto = "false";
+        if(algoSend === "Automatic"){
+            auto = "true"
+        }
         for (var i = 0; i < elements.length; i++) {
             (elements[i] as HTMLButtonElement).disabled = false;
         }
@@ -366,7 +370,7 @@ const Analyze = () =>  {
             //(document.getElementById("loading") as HTMLDivElement).style.display = "block";
             (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "Check the new tab for the result !";
             window.open(
-                "/analyzeView?type="+reponse.category+"&url="+reponse.name+"&demo="+demo+"&history=false",
+                "/analyzeView?type="+reponse.category+"&url="+reponse.name+"&demo="+demo+"&history=false&auto="+auto,
                 '_blank' // <- This is what makes it open in a new window.
               );
             //window.location.href = "/analyzeView?type="+reponse.category+"&url="+reponse.name;

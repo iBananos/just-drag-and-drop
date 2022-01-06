@@ -16,12 +16,14 @@ const AnalyseView = () => {
     var demo :any ;
     var FileFromURL : any;
     var fromHistory :any;
+    var automatic :any;
     window.onload= () =>{
         const search = window.location.search; // returns the URL query String
         const params = new URLSearchParams(search); 
         FileFromURL = params.get('url'); 
         TypeRequest = params.get('type'); 
         fromHistory = params.get('history'); 
+        automatic = params.get('auto');
         document.title =FileFromURL;
         demo = params.get('demo'); 
         if(demo === "true"){
@@ -104,6 +106,19 @@ const AnalyseView = () => {
         
         
         file = file.split('\n')
+        if(automatic === "true"){
+          var algo = file[0]
+          var parametre_auto : any= file[1].replace("{",'').replace("}",'').replace(/'+/g,"").split(",")
+          var message =  "Algorithme choisit par le serveur : <br>   <p STYLE='padding:0 0 0 20px;'> " + algo +"</p> <br> Paramètre optimaux choisis par le serveur : <br> <p STYLE='padding:0 0 0 20px;'>  "
+          for (var key in parametre_auto) {
+               message+=parametre_auto[key] +'<br>';
+         }
+         message+='</p>'
+          var indication = document.getElementById('indication') as HTMLElement
+          indication.innerHTML =message
+
+          file = file.slice(2)
+        }
         createChartBar(file[0].split(","),file[1].split(","))
         file = file.slice(3)
         if(TypeRequest === "Regression"){

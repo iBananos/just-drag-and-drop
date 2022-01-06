@@ -5,8 +5,15 @@ const ViewHistory = () => {
         var url =  (document.getElementById("informationRequesturl")as HTMLInputElement).innerHTML;
         var type =  (document.getElementById("informationRequesttype")as HTMLInputElement).innerHTML;
         if(type !== ""){
+            var algo = (document.getElementById("algo") as HTMLElement).innerHTML
+            var auto;
+            if(algo === "Algorithme : Automatic"){
+                auto = "true"
+            }else{
+                auto = "false"
+            }
             window.open(
-                "/analyzeView?url="+url+"&type="+type+"&history=true",
+                "/analyzeView?url="+url+"&type="+type+"&history=true"+"&auto="+auto,
                 '_blank' // <- This is what makes it open in a new window.
               );
         }

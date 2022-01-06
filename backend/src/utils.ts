@@ -75,7 +75,7 @@ class Utils {
         let res;
         const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
         fs.readdirSync(path).forEach(file => {
-            if (aesCipher.decrypt(file) == target) {
+            if (aesCipher.decrypt(file) === target) {
                 res = file;
             }
         });

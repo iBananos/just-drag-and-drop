@@ -32,4 +32,4 @@ describe('Test des utilitaires d\'Utils', () => {
         expect(Utils.default.getSizeFile("demo",'uploads/' +"demo"+ '/databaseInfo/' + "diamonds.json")).not.toBeNull();
         expect(Utils.default.getSizeFile("demo",'uploads/' +"demo"+ '/databaseInfo/'+ "diamonds.json")).toBe(3192560);
         });
-});
+});1
