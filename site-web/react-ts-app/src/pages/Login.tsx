@@ -1,7 +1,7 @@
 
 import { NavLink } from 'react-router-dom';
 import Navigation from '../components/Navigation';
-
+import * as utils from "../Utils";
 var pathUrl =  window.location
 var hostname = "";
 if(pathUrl.origin === "http://localhost:3000"){
@@ -35,11 +35,12 @@ const Login = () => {
             localStorage.setItem("accessTokenExpires", res.accessTokenExpires);
             localStorage.setItem("refreshTokenExpires", res.refreshTokenExpires);
             (document.getElementById("login") as HTMLInputElement).setAttribute("display","none");
-            window.location.href = "/"; 
+            window.location.href = "/?status=connected"; 
           }
           else if (xhr.readyState === 4 && xhr.status !== 200) {
             res = JSON.parse(this.response);
-            (document.getElementById("msg")as HTMLInputElement).innerHTML= res.message;
+            utils.default.doAlert("danger",res.message);
+            //(document.getElementById("msg")as HTMLInputElement).innerHTML= res.message;
           }
         })
         var data = JSON.stringify({"email":mail,"password":mdp})

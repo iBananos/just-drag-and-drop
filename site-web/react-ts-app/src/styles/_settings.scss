@@ -43,7 +43,6 @@ button{
 input:focus {
     outline: none;
 }
-
 select{
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);

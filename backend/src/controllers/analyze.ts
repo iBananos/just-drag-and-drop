@@ -248,6 +248,23 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
             }
         });
     }
+
+    let targetPreview = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analysePreview/", req.body.path + ".txt");
+    if (targetPreview != undefined) {
+        fs.unlink("uploads/" + req.body.userId + "/analysePreview/" + targetPreview, async function (err) {
+            if (err) {
+                console.error(err);
+                res.send("Erreur lors de la suppression");
+            } else {
+                // Update des analyse utilisée
+                const objectId = new mongoose.Types.ObjectId(req.body.userId);
+                const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();
+                const currentAnalyse = userLimit.currentAnalyse;
+                await UserLimit.updateOne({ userId: objectId }, { currentAnalyse: currentAnalyse - 1 });
+                res.send("Base supprimée");
+            }
+        });
+    }
 };
 
 function checkAnalyze(req:any,demo:boolean){

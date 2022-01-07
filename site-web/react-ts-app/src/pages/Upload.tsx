@@ -62,16 +62,15 @@ function sendFile(){
       uploadFile(files)
       
     }else{
-      setMsg("Veuillez donner un nom à la nouvelle base de données",'rgb(194, 22, 22)');
+      utils.default.doAlert("warning","Please give the new database a name");
+
+      
   }}else{
-    setMsg("Veuillez déposer une base de données",'rgb(194, 22, 22)');
+    utils.default.doAlert("warning","Please drop a database");
   }
 }
 
-function setMsg(msg:string,color:string){
-  (document.getElementById("msg")as HTMLInputElement).style.color = color;
-    (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
-}
+
 
 
 function uploadFile(file:any) {
@@ -84,10 +83,10 @@ function callbackRequest(result : any){
   const res = JSON.parse(result);
 
   if (res.status === "200") {
-    setMsg("Base envoyée", "green");
+    utils.default.doAlert("success","Base sent, you can found it in My database !");
   }
   else {
-    setMsg(res.message, "rgb(194, 22, 22)");
+    utils.default.doAlert("error",res.message);
   }
 }
 

@@ -364,10 +364,12 @@ const Analyze = () =>  {
             (elements[i] as HTMLButtonElement).disabled = false;
         }
         if (reponse.status !== "ok") {
-            (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = reponse.message;
+            utils.default.doAlert("warning",reponse.message);
+            (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "";
         } else{
             //(document.getElementById("view") as HTMLDivElement).style.display = "none";
             //(document.getElementById("loading") as HTMLDivElement).style.display = "block";
+            utils.default.doAlert("success","Check the new tab for the result !");
             (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "Check the new tab for the result !";
             window.open(
                 "/analyzeView?type="+reponse.category+"&url="+reponse.name+"&demo="+demo+"&history=false&auto="+auto,

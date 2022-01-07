@@ -80,6 +80,43 @@ class Utils {
         xhr.send(data);
     }
 
+    public static doAlert(type : string, msg : string){
+        var containeralerte = document.getElementById('containerAlert') as HTMLDivElement
+        var alerte = document.createElement("div")
+        alerte.id ="alert"
+        var alerteHead = document.createElement("span")
+        alerteHead.id ="alertHead"
+        alerteHead.className = "alertHead"
+        var alerteMsg = document.createElement("span")
+        alerteMsg.id ="alertMsg"
+        
+        if(type==="warning"){
+            alerte.className = "alert-warning"
+            alerteHead.innerHTML = "Warning ! "
+        }else if (type==="info"){
+            alerte.className = "alert-info"
+            alerteHead.innerHTML = "Information ! "
+        }else if (type==="success"){
+            alerte.className = "alert-success"
+            alerteHead.innerHTML = "Success ! "
+        }else if (type==="danger"){
+            alerte.className = "alert-danger"
+            alerteHead.innerHTML = "Error ! "
+        }else if (type==="primary"){
+            alerte.className = "alert-primary"
+            alerteHead.innerHTML = "? ! "
+        }
+        alerteMsg.innerHTML = msg
+        alerte.appendChild(alerteHead)
+        alerte.appendChild(alerteMsg)
+        containeralerte.appendChild(alerte)
+        setTimeout(() => {
+            alerteHead.innerHTML = ""
+            alerteMsg.innerHTML = ""
+            alerte.className =""
+        }, 4000);
+    }
+
     public static async sendFileWithToken(methode : string, url : string, data : File, name : string , date :Date, callback : any) {
         if (!Utils.checkToken()){
             return false;

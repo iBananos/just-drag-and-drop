@@ -1,5 +1,6 @@
 import Navigation from '../components/Navigation';
 
+import * as utils from "../Utils";
 var pathUrl =  window.location
 var hostname = "";
 if (pathUrl.origin === "http://localhost:3000") {
@@ -40,7 +41,8 @@ const Signup = () => {
         }
         else {
             let msg : string = "Les mots de passes ne correspondent pas";
-            (document.getElementById("msg") as HTMLInputElement).innerHTML= msg;
+            //(document.getElementById("msg") as HTMLInputElement).innerHTML= msg;
+            utils.default.doAlert("danger",msg);
         }
     }
 
@@ -57,10 +59,13 @@ const Signup = () => {
             }
             else if (xhr.readyState === 4 && xhr.status !== 200) {
                 var res = JSON.parse(this.response);
-                (document.getElementById("msg") as HTMLInputElement).innerHTML= res.message;
-
+                //(document.getElementById("msg") as HTMLInputElement).innerHTML= res.message;
+                
                 if (res.message === "Captcha invalide !") {
                     (document.getElementById("svg") as HTMLInputElement).innerHTML = res.captcha;
+                    utils.default.doAlert("warning",res.message);
+                }else{
+                    utils.default.doAlert("danger",res.message);
                 }
             }
         });

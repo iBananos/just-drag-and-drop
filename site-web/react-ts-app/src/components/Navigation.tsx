@@ -64,7 +64,8 @@ const Navigation = () => {
         localStorage.removeItem("xsrfToken");
         localStorage.removeItem("accessTokenExpires");
         localStorage.removeItem("refreshTokenExpires");
-        window.location.href = "/"
+        
+        window.location.href = "/?status=disconnected"
     }
 
     function UserNav() {
@@ -119,8 +120,10 @@ const Navigation = () => {
 
     return (
         <div className="navigation">
+            <div className="containerAlert"  id="containerAlert">
+            </div>
             <Profil />
-            <img className="logo" src={logo} alt="JustDragAndDrop"/>
+            <img className="logo" src={logo} alt="JustDragAndDrop" />
             <h1 className="company" id="company">Scanylab</h1>
             <Nav />
         </div>

@@ -1,7 +1,17 @@
 import Navigation from "../components/Navigation";
 import BarreLaterale from "../components/BarreLaterale";
+import * as utils from "../Utils";
 const Home = () =>  {
-    
+    window.onload= () =>{
+        const search = window.location.search; // returns the URL query String
+        const params = new URLSearchParams(search); 
+        var status = params.get('status');
+        if(status==="disconnected"){
+            utils.default.doAlert("info","You have been disconnect !");
+        }else if(status==="connected"){
+            utils.default.doAlert("success","You are connected !");
+        }
+    }
     return (
         
         <div className="home">

@@ -99,6 +99,7 @@ const AnalyseView = () => {
                 link.download = "RESULT.png";
                 link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
                 link.click();
+                utils.default.doAlert("success","Downloaded !");
             };
 
             newBoard.appendChild(download);
@@ -166,6 +167,7 @@ const AnalyseView = () => {
 
     function callbackSend(){
       console.log("Analyse sauvegardée");
+      utils.default.doAlert("success","Your analysis has been successfully saved ! It is available in History.");
     }
 
     function createChartBar(labels:any,data:any){
