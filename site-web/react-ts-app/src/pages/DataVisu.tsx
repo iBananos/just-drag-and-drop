@@ -970,6 +970,11 @@ const DataVisu = () =>  {
             }
         newBoard.appendChild(trash);
 
+        
+        var newMatrixBoard = document.createElement("div") as any;
+        newMatrixBoard.id = "matrixBoard_"+id;
+        newMatrixBoard.className = "MatrixBoard";
+        newBoard.appendChild(newMatrixBoard)
         var divbarre = document.createElement("div")
         divbarre.className = "divBarre"
         
@@ -987,10 +992,6 @@ const DataVisu = () =>  {
         p2.style.float = "left"
         divbarre.append(p2)
         newBoard.appendChild(divbarre)
-        var newMatrixBoard = document.createElement("div") as any;
-        newMatrixBoard.id = "matrixBoard_"+id;
-        newMatrixBoard.className = "MatrixBoard";
-        newBoard.appendChild(newMatrixBoard)
         document.getElementById('ChartsRes')?.appendChild(newBoard)
         var matrix = JSON.parse(reponse).file;
         matrix = matrix.split("\n")
