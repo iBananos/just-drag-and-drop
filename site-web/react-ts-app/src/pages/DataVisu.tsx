@@ -251,12 +251,12 @@ const DataVisu = () =>  {
                 var canvas5 = (document.getElementById("hBary_"+thisId) as HTMLCanvasElement)
     
                 var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
-                canvasFinal.width = 1000;
-                canvasFinal.height= 500;
+                canvasFinal.width = 2000;
+                canvasFinal.height= 1000;
                 var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
-                ctxFinal.drawImage(canvas1, 0, 0,500,500);
-                ctxFinal.drawImage(canvas4, 500, 0,250,250);
-                ctxFinal.drawImage(canvas5, 750, 0,250,250);
+                ctxFinal.drawImage(canvas1, 0, 0,1000,1000);
+                ctxFinal.drawImage(canvas4, 1000, 0,500,500);
+                ctxFinal.drawImage(canvas5, 1500, 0,500,500);
                 var link = document.createElement('a');
                 link.download = "RESULT.png";
                 link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
@@ -466,14 +466,14 @@ const DataVisu = () =>  {
                 var canvas5 = (document.getElementById("hBary_"+thisId) as HTMLCanvasElement)
     
                 var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
-                canvasFinal.width = 1000;
-                canvasFinal.height= 500;
+                canvasFinal.width = 2000;
+                canvasFinal.height= 1000;
                 var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
-                ctxFinal.drawImage(canvas1, 0, 0,500,500);
-                ctxFinal.drawImage(canvas2, 500, 0,250,250);
-                ctxFinal.drawImage(canvas3, 750, 0,250,250);
-                ctxFinal.drawImage(canvas4, 500, 250,250,250);
-                ctxFinal.drawImage(canvas5, 750, 250,250,250);
+                ctxFinal.drawImage(canvas1, 0, 0,1000,1000);
+                ctxFinal.drawImage(canvas2, 1000, 0,500,500);
+                ctxFinal.drawImage(canvas3, 1500, 0,500,500);
+                ctxFinal.drawImage(canvas4, 1000, 500,500,500);
+                ctxFinal.drawImage(canvas5, 1500, 500,500,500);
                 var link = document.createElement('a');
                 link.download = "RESULT.png";
                 link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
@@ -935,6 +935,7 @@ const DataVisu = () =>  {
         newIndication.className = "indication";
         newIndication.innerHTML = "Matrice de corrélation";
         newBoard.appendChild(newIndication)
+       
 
         var download = document.createElement("img");
             download.src = downloadIcone;
@@ -945,10 +946,10 @@ const DataVisu = () =>  {
                 var thisId = ev.path[0].id.split("_")[1]
                 var canvas1 = (document.getElementById("matrix_"+thisId) as HTMLCanvasElement)
                 var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
-                canvasFinal.width = 1000;
-                canvasFinal.height= 500;
+                canvasFinal.width = 2000;
+                canvasFinal.height= 1000;
                 var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
-                ctxFinal.drawImage(canvas1, 0, 0,1000,500);
+                ctxFinal.drawImage(canvas1, 0, 0,2000,1000);
                 var link = document.createElement('a');
                 link.download = "RESULT.png";
                 link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
@@ -967,8 +968,25 @@ const DataVisu = () =>  {
                 dashBoard.innerHTML = "";
                 dashBoard.style.display = "none";
             }
-            newBoard.appendChild(trash);
+        newBoard.appendChild(trash);
 
+        var divbarre = document.createElement("div")
+        divbarre.className = "divBarre"
+        
+        var p1 = document.createElement("p")
+        p1.innerHTML = "-1"
+        p1.style.float = "left"
+        divbarre.append(p1)
+        var barreColor = document.createElement("div");
+        barreColor.id = "barreColor_"+id;
+        barreColor.className = "barreColor"
+        barreColor.innerHTML ="0"
+        divbarre.append(barreColor)
+        var p2 = document.createElement("p")
+        p2.innerHTML = "1"
+        p2.style.float = "left"
+        divbarre.append(p2)
+        newBoard.appendChild(divbarre)
         var newMatrixBoard = document.createElement("div") as any;
         newMatrixBoard.id = "matrixBoard_"+id;
         newMatrixBoard.className = "MatrixBoard";
