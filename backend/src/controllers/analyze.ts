@@ -61,8 +61,15 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
             var features = req.body.feature;
             var pred = req.body.pred;
             let extension = req.body.database.split(".")[1];
+            var algo;
+            if(reponse === "Automatic" ){
+                algo = "python_script/autoselectionalgo.py"
+            }else if ( reponse === "Automatic2"){
+                algo = "python_script/autoselection_class.py"
+            }
+             
             if (reponse === "Automatic" || reponse === "Automatic2") {
-                exec('python python_script/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+                exec('python '+algo+' "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
@@ -156,8 +163,15 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
             var features = req.body.feature;
             var pred = req.body.pred;
             let extension = req.body.database.split(".")[1];
+            var algo;
+            if(reponse === "Automatic" ){
+                algo = "python_script/autoselectionalgo.py"
+            }else if ( reponse === "Automatic2"){
+                algo = "python_script/autoselection_class.py"
+            }
+             
             if (reponse === "Automatic" || reponse === "Automatic2") {
-                exec('python python_script/autoselectionalgo.py "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' true ', (error:any, stdout:any, stderr:any) => {
+                exec('python '+algo+' "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' true ', (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
