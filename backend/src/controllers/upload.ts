@@ -28,13 +28,17 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
         return;
     }
 
+    const extension = verifFileName(req.file?.originalname);
+    if (extension === false) {
+        res.status(200).json({ "status": "401", "message": "Extension de fichier non valide." }); 
+        return;
+    }
+
     let userId : string = req.body.userId;
 
     var listName = Utils.default.getNameFiles(userId, 'uploads/' + userId + '/database/',false);
     var nomFichier : string = req.body.name;
-    console.log(nomFichier)
     nomFichier = nomFichier.replace(/ /g,"-").replace(/_/g,"-").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
-    console.log(nomFichier)
     var acc = 1; 
     while (listName.includes(nomFichier)) {
         if (acc > 1) {
@@ -45,7 +49,7 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
     }
 
     const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-    let nom = aesCipher.encrypt(Buffer.from(nomFichier + "." + req.file?.originalname.split(".")[1]));
+    let nom = aesCipher.encrypt(Buffer.from(nomFichier + "." + extension));
     let fileName = 'uploads/' + userId + '/database/' + nom;
     
     fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
@@ -53,7 +57,7 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
 
 
     var colonnes : string[] = getColonneFromCSV(userId, fileName);
-    createInfoDatabase(userId, fileName, nomFichier, req.body.date, req.file?.size, req.file?.originalname.split(".")[1], colonnes);
+    createInfoDatabase(userId, fileName, nomFichier, req.body.date, req.file?.size, extension, colonnes);
 
     // Update du stockage utilisée
     await UserLimit.updateOne({ userId: objectId }, { currentStorage: newCurrentStorage });
@@ -70,6 +74,20 @@ export const saveEncryptedFile = (file : Express.Multer.File) => {
     
     fs.writeFileSync("./userId", aesCipher.encrypt(file.buffer));
 }
+
+function verifFileName(name : any) {
+    const nameSplit = name.split('.');
+    if (nameSplit.length === 1) {
+        return false;
+    }
+
+    const extension = nameSplit[nameSplit.length - 1];
+    if (extension == "csv" || extension == "xlsx" || extension == "json" || extension == "txt") {
+        return extension;
+    }
+    return false;
+}
+
 
 function getColonneFromCSV(userId : string, path : any) {
     const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
