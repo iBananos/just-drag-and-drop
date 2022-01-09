@@ -40,7 +40,7 @@ def parse_data(filename):
     elif extension == 'xlsx' or extension == 'xls':
             # Assume that the user uploaded an excel file
         df = pd.read_excel(filename,index_col=False)
-    elif extension == 'txt' or extension == 'tsv' :
+    elif extension == 'txt' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
         df = pd.read_csv(filename, delimiter = r'\s+',index_col=0)
     elif extension == 'json' :
@@ -257,6 +257,7 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         #print(confusion_matrix2)
         #print(target_name)
         matrixoutput=pd.DataFrame(confusion_matrix2,columns=target_name,index=target_name)
+
         print(importance_frame.to_csv(header=False, index=False))
         return matrixoutput.to_csv(index=False)
                              
