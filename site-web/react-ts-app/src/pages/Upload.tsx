@@ -86,7 +86,7 @@ function callbackRequest(result : any){
     utils.default.doAlert("success","Base sent, you can found it in My database !");
   }
   else {
-    utils.default.doAlert("error",res.message);
+    utils.default.doAlert("danger",res.message);
   }
 }
 

@@ -20,8 +20,9 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
     const objectId = new mongoose.Types.ObjectId(req.body.userId);
     const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();
     const limitedStorage = userLimit.limitedStorage;
-    const currentStorage = userLimit.currentStorage;
-    const newCurrentStorage = currentStorage + req.file?.size;
+    const currentStorage = Utils.default.getTotalSize(req.body.userId, 'uploads/' + req.body.userId+"/databaseInfo/");
+    const newCurrentStorage = currentStorage + req.file!.size;
+    console.log(limitedStorage,currentStorage,req.file!.size,newCurrentStorage)
 
     if (newCurrentStorage > limitedStorage) {
         res.status(200).json({ "status": "401", "message": "Vous ne disposez plus d’assez de stockage, veuillez passer à un abonnement supérieur ou alors supprimer des bases déjà enregistrées." }); 

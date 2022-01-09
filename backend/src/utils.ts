@@ -70,6 +70,14 @@ class Utils {
         return acc;
     }
 
+    public static getTotalSize(userId : string, path : string){
+        const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
+        var acc : number = 0 ;
+        fs.readdirSync(path).forEach(file => {
+            acc += JSON.parse((aesCipher.decrypt(fs.readFileSync(path + file, 'utf8')))).size; 
+        });
+        return acc;
+    }
 
     public static findEncryptedFile(userId : string, path : string, target : string) {
         let res;
