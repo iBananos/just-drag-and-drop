@@ -117,14 +117,14 @@ def autoselection(feature,predict,filename):
         algoselection2=testone[testone['pred2']==True]
         algoselection2=algoselection2['algo']
     obj_df = data.select_dtypes(include=['object']).copy()
+    dataexclude=data.select_dtypes(exclude=['object'])
+    for i in range(len(dataexclude.columns.values)):
+        if len(dataexclude[dataexclude.columns.values[i]].unique())<10:
+            obj_df = pd.concat([obj_df,dataexclude[dataexclude.columns.values[i]]],axis=1)
     lb_make = LabelEncoder()
     for i in range(len(obj_df.columns.values)):
-        try:
-            print('eee')
-            obj_df[obj_df.columns.values[i]] = lb_make.fit_transform(obj_df[obj_df.columns.values[i]])
-            data[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
-        except:
-            print(obj_df.columns.values[i]+' contient des NaN')
+                obj_df[obj_df.columns.values[i]] = lb_make.fit_transform(obj_df[obj_df.columns.values[i]])
+                data[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
     
     X=data[feature]
     X = (X-X.mean())/X.std()
