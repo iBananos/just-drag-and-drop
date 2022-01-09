@@ -11,7 +11,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score
+from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import GridSearchCV,RandomizedSearchCV
@@ -57,7 +57,7 @@ def parse_data(filename):
     
     return df
 def autoselection(feature,predict,filename):
-    data=parse_data(filename)
+    data=pd.read_csv(filename)
     n=min(len(data),1000)
     dataselect=data.sample(frac=0.2)
     featurepredict=np.concatenate((predict, feature), axis=None)
@@ -80,10 +80,10 @@ def autoselection(feature,predict,filename):
     df.values[1]=df.values[1].astype(float)
     df=df.drop(df.index[[0]])
     df=df.reset_index(drop=True)
-    FirstModel = joblib.load('python_script/FirstTOP1_class.sav')
-    SecondaryModel = joblib.load('python_script/SecondaryTOP1_class.sav')
-    earlystop = joblib.load('python_script/Goodpredictor_class.sav')
-    earlystop2 = joblib.load('python_script/SecondaryGoodPredictor_class.sav')
+    FirstModel = joblib.load('FirstTOP1_class.sav')
+    SecondaryModel = joblib.load('SecondaryTOP1_class.sav')
+    earlystop = joblib.load('Goodpredictor_class.sav')
+    earlystop2 = joblib.load('SecondaryGoodPredictor_class.sav')
     index = [0, 0, 0, 0, 0, 0, 0]
     algo = pd.DataFrame(['AdaBoostClassifier','DecisionTreeClassifier','GradientBoostingClassifier','KNeighborsClassifier','LogisticRegression','RandomForestClassifier','SGDClassifier'], columns=['algo'],index=index)
     testone=pd.concat([df,algo],axis=1)
@@ -133,40 +133,40 @@ def autoselection(feature,predict,filename):
     for i,j in enumerate(algoselection.values):
         scoring=[]
         algobest=[]
-        if j==1:
+        if j==0:
             reg = AdaBoostClassifier()
             reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            scoring.append(accuracy_score(y_test,reg.predict(X_test)))
             algobest.append('AdaBoostClassifier')
-        if j==2:
+        if j==1:
             reg = DecisionTreeClassifier()
             reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            scoring.append(accuracy_score(y_test,reg.predict(X_test)))
             algobest.append('DecisionTreeClassifier')
-        if j==3:
+        if j==2:
             reg = GradientBoostingClassifier()
             reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            scoring.append(accuracy_score(y_test,reg.predict(X_test)))
             algobest.append('GradientBoostingClassifier')
-        if j==4:
+        if j==3:
             reg = KNeighborsClassifier()
             reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            scoring.append(accuracy_score(y_test,reg.predict(X_test)))
             algobest.append('KNeighborsClassifier')
-        if j==5:
+        if j==4:
             reg = LogisticRegression()
             reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            scoring.append(accuracy_score(y_test,reg.predict(X_test)))
             algobest.append('LogisticRegression')
-        if j==6:
+        if j==5:
             reg = RandomForestClassifier()
             reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            scoring.append(accuracy_score(y_test,reg.predict(X_test)))
             algobest.append('RandomForestClassifier')
-        if j==7:
+        if j==6:
             reg = SGDClassifier()
             reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
+            scoring.append(accuracy_score(y_test,reg.predict(X_test)))
             algobest.append('SGDRegressor')
     try:
         alltesting = pd.DataFrame(scoring, columns=['r2'],index=algobest)
@@ -175,50 +175,50 @@ def autoselection(feature,predict,filename):
         for i,j in enumerate(algoselection2.values):
             scoring=[]
             algobest=[]
-        if j==1:
-            reg = AdaBoostClassifier()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('AdaBoostClassifier')
-        if j==2:
-            reg = DecisionTreeClassifier()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('DecisionTreeClassifier')
-        if j==3:
-            reg = GradientBoostingClassifier()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('GradientBoostingClassifier')
-        if j==4:
-            reg = KNeighborsClassifier()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('KNeighborsClassifier')
-        if j==5:
-            reg = LogisticRegression()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('LogisticRegression')
-        if j==6:
-            reg = RandomForestClassifier()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('RandomForestClassifier')
-        if j==7:
-            reg = SGDClassifier()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('SGDClassifier')
-        alltesting = pd.DataFrame(scoring, columns=['r2'],index=algobest)
-        bestalgo=alltesting.idxmax()[0]
+            if j==0:
+                reg = AdaBoostClassifier()
+                reg.fit(X_train, y_train)
+                scoring.append(accuracy_score(y_test,reg.predict(X_test)))
+                algobest.append('AdaBoostClassifier')
+            if j==1:
+                reg = DecisionTreeClassifier()
+                reg.fit(X_train, y_train)
+                scoring.append(accuracy_score(y_test,reg.predict(X_test)))
+                algobest.append('DecisionTreeClassifier')
+            if j==2:
+                reg = GradientBoostingClassifier()
+                reg.fit(X_train, y_train)
+                scoring.append(accuracy_score(y_test,reg.predict(X_test)))
+                algobest.append('GradientBoostingClassifier')
+            if j==3:
+                reg = KNeighborsClassifier()
+                reg.fit(X_train, y_train)
+                scoring.append(accuracy_score(y_test,reg.predict(X_test)))
+                algobest.append('KNeighborsClassifier')
+            if j==4:
+                reg = LogisticRegression()
+                reg.fit(X_train, y_train)
+                scoring.append(accuracy_score(y_test,reg.predict(X_test)))
+                algobest.append('LogisticRegression')
+            if j==5:
+                reg = RandomForestClassifier()
+                reg.fit(X_train, y_train)
+                scoring.append(accuracy_score(y_test,reg.predict(X_test)))
+                algobest.append('RandomForestClassifier')
+            if j==6:
+                reg = SGDClassifier()
+                reg.fit(X_train, y_train)
+                scoring.append(accuracy_score(y_test,reg.predict(X_test)))
+                algobest.append('SGDClassifier')
+            alltesting = pd.DataFrame(scoring, columns=['r2'],index=algobest)
+            bestalgo=alltesting.idxmax()[0]
 
     if bestalgo=='AdaBoostClassifier':
         model = AdaBoostClassifier()
         # define the grid of values to search
         grid = dict()
         grid['n_estimators'] = [10, 50, 100, 500]
-        grid['learning_rate'] = [0.0001, 0.001, 0.01, 0.1, 1.0]
+        grid['learning_rate'] = [0.001, 0.01, 0.1]
         # define the grid search procedure
         classif = GridSearchCV(estimator=model, param_grid=grid, n_jobs=-1, cv=3, scoring='accuracy')
         classif.fit(X_train, y_train)
@@ -236,9 +236,9 @@ def autoselection(feature,predict,filename):
     if bestalgo=='GradientBoostingClassifier':
         model=GradientBoostingClassifier()
         param_dist = dict(max_depth=[3,6,10],
-                  n_estimators=[50,100,500,1000],
-                  min_samples_split=[2,5,8,11],
-                  learning_rate=[0.01,0.05,0.1,0.5,1.0],
+                  n_estimators=[50,100,500],
+                  min_samples_split=[2,5,8],
+                  learning_rate=[0.01,0.05,0.1],
                   max_features=['sqrt', 'log2']
                   )
         classif = RandomizedSearchCV(model, param_distributions=param_dist,cv=3)
@@ -260,24 +260,21 @@ def autoselection(feature,predict,filename):
         classif.fit(X_train,y_train)
     if bestalgo=='RandomForestClassifier':  
         # Number of trees in random forest
-        n_estimators = [int(x) for x in np.linspace(start = 100, stop = 400, num = 20)]
+        n_estimators = [int(x) for x in np.linspace(start = 100, stop = 300, num = 50)]
         # Number of features to consider at every split
-        max_features = ['auto', 'sqrt']
+        
         # Maximum number of levels in tree
-        max_depth = [2,4,6]
+        max_depth = [3,6,9]
         # Minimum number of samples required to split a node
         min_samples_split = [2, 5]
         # Minimum number of samples required at each leaf node
-        min_samples_leaf = [2, 4, 10]
+        min_samples_leaf = [2, 5]
         # Method of selecting samples for training each tree
-        bootstrap = [True, False]
         # Create the param grid
         param_grid = {'n_estimators': n_estimators,
-                    'max_features': max_features,
                     'max_depth': max_depth,
                     'min_samples_split': min_samples_split,
-                    'min_samples_leaf': min_samples_leaf,
-                    'bootstrap': bootstrap}
+                    'min_samples_leaf': min_samples_leaf}
         model = RandomForestClassifier()
         classif = GridSearchCV(estimator = model, param_grid = param_grid, cv = 3, verbose=False, n_jobs = -1)
         classif.fit(X_train, y_train)

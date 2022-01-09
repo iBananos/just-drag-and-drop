@@ -171,43 +171,43 @@ def autoselection(feature,predict,filename):
             scoring=[]
             algobest=[]
             #print(j)
-        if j==1:
-            reg = linear_model.ElasticNet()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('ElasticNet')
-        if j==2:
-            reg = GradientBoostingRegressor()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('GradientBoostingRegressor')
-        if j==3:
-            reg = KNeighborsRegressor()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('KNeighborsRegressor')
-        if j==4:
-            reg = linear_model.Lasso()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('Lasso')
-        if j==5:
-            reg = RandomForestRegressor()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('RandomForestRegressor')
-        if j==6:
-            reg = linear_model.Ridge()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('Ridge')
-        if j==7:
-            reg = linear_model.SGDRegressor()
-            reg.fit(X_train, y_train)
-            scoring.append(r2_score(y_test,reg.predict(X_test)))
-            algobest.append('SGDRegressor')
-        alltesting = pd.DataFrame(scoring, columns=['r2'],index=algobest)
-        bestalgo=alltesting.idxmax()[0]
+            if j==1:
+                reg = linear_model.ElasticNet()
+                reg.fit(X_train, y_train)
+                scoring.append(r2_score(y_test,reg.predict(X_test)))
+                algobest.append('ElasticNet')
+            if j==2:
+                reg = GradientBoostingRegressor()
+                reg.fit(X_train, y_train)
+                scoring.append(r2_score(y_test,reg.predict(X_test)))
+                algobest.append('GradientBoostingRegressor')
+            if j==3:
+                reg = KNeighborsRegressor()
+                reg.fit(X_train, y_train)
+                scoring.append(r2_score(y_test,reg.predict(X_test)))
+                algobest.append('KNeighborsRegressor')
+            if j==4:
+                reg = linear_model.Lasso()
+                reg.fit(X_train, y_train)
+                scoring.append(r2_score(y_test,reg.predict(X_test)))
+                algobest.append('Lasso')
+            if j==5:
+                reg = RandomForestRegressor()
+                reg.fit(X_train, y_train)
+                scoring.append(r2_score(y_test,reg.predict(X_test)))
+                algobest.append('RandomForestRegressor')
+            if j==6:
+                reg = linear_model.Ridge()
+                reg.fit(X_train, y_train)
+                scoring.append(r2_score(y_test,reg.predict(X_test)))
+                algobest.append('Ridge')
+            if j==7:
+                reg = linear_model.SGDRegressor()
+                reg.fit(X_train, y_train)
+                scoring.append(r2_score(y_test,reg.predict(X_test)))
+                algobest.append('SGDRegressor')
+            alltesting = pd.DataFrame(scoring, columns=['r2'],index=algobest)
+            bestalgo=alltesting.idxmax()[0]
 
     if bestalgo=='ElasticNet':
         parametersGrid = {"max_iter": [1, 5, 10,20],
@@ -297,7 +297,7 @@ def autoselection(feature,predict,filename):
     pred=reg.predict(X_test)
     prediction=pd.DataFrame(pred,columns=['prediction'])
     try:
-        importance = reg.best_estimator_.coef_
+        importance = reg.best_estimator_.coef_[0]
     except:
         importance = reg.best_estimator_.feature_importances_
     importance=pd.DataFrame(importance,columns=['importance'])
