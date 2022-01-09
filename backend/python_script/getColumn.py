@@ -18,13 +18,13 @@ def parse_data(data):
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         df = pd.read_csv(data, delimiter=',')
-    elif extension == 'xlsx' :
+    if extension == 'xlsx' or extension == 'xls':
             # Assume that the user uploaded an excel file
         df = pd.read_excel(data)
-    elif extension == 'txt' or extension == 'tsv' :
+    if extension == 'txt' or extension == 'tsv' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
         df = pd.read_csv(data, delimiter = r'\s+')
-    elif extension == 'json' :
+    if extension == 'json' :
         df = pd.read_json(data)
     else :
         print("There was an error while processing this file")
@@ -50,7 +50,7 @@ def decryptFile(filename) :
 
 
 if __name__ == "__main__":
-    if toEncrypt == "true" :
+    if toEncrypt == "false" :
         data = decryptFile(filename)
     else :
         data = filename

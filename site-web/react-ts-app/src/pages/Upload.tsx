@@ -96,8 +96,8 @@ function callbackRequest(result : any){
           
         <div id="drop-area">
           <form className="my-form">
-            <p>Please drag and drop a database or click on the button below <br /><br />(extensions accepted .csv, .xlsx, .json or .txt)</p>
-            <input type="file" id="fileElem" accept=".csv,.json,.txt,.xlsx" onChange={handleFiles}></input>
+            <p>Please drag and drop a database or click on the button below <br /><br />(extensions accepted .csv, .xlsx,.xls, .json or .txt)</p>
+            <input type="file" id="fileElem" accept=".csv,.json,.txt,.xlsx,.xls" onChange={handleFiles}></input>
             <label className="button" htmlFor="fileElem">Select some files</label>
           </form>
             <p className="nameFile" id="nameFile"></p> 
