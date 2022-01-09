@@ -205,7 +205,7 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         importance_frame = importance_frame.T
 
         prediction=pd.DataFrame(prediction,columns=['prediction'])
-
+        #print(r2_score(y_test,prediction))
         y_test=y_test.reset_index(drop=True)
         prediction_and_true=pd.concat([prediction,y_test],axis=1)
         prediction_and_true = prediction_and_true.sample(n=100)
@@ -254,10 +254,8 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         importance_frame = importance_frame.T
                              
         confusion_matrix2 = confusion_matrix(y_test, prediction)
-        #print(confusion_matrix2)
-        #print(target_name)
         matrixoutput=pd.DataFrame(confusion_matrix2,columns=target_name,index=target_name)
-
+        #print(accuracy_score(y_test,prediction))
         print(importance_frame.to_csv(header=False, index=False))
         return matrixoutput.to_csv(index=False)
                              

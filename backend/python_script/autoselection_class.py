@@ -299,6 +299,7 @@ def autoselection(feature,predict,filename):
     confusion_matrix2 = confusion_matrix(y_test, prediction)
 
     matrixoutput=pd.DataFrame(confusion_matrix2,columns=target_name,index=target_name)
+    #print(accuracy_score(y_test,prediction))
     print(bestalgo)
     print(classif.best_params_)
     print(importance_frame.to_csv(header=False, index=False))

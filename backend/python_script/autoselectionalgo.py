@@ -295,7 +295,9 @@ def autoselection(feature,predict,filename):
     
     
     pred=reg.predict(X_test)
+    #print(r2_score(y_test,pred))
     prediction=pd.DataFrame(pred,columns=['prediction'])
+    
     try:
         importance = reg.best_estimator_.coef_[0]
     except:
@@ -307,6 +309,7 @@ def autoselection(feature,predict,filename):
     y_test=y_test.reset_index(drop=True)
     prediction_and_true=pd.concat([prediction,y_test],axis=1)
     prediction_and_true = prediction_and_true.sample(n=100)
+    
     print(bestalgo)
     print(reg.best_params_)
     print(importance_frame.to_csv(header=False, index=False))
