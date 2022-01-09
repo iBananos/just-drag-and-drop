@@ -67,7 +67,7 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
             }else if ( reponse === "Automatic2"){
                 algo = "python_script/autoselection_class.py"
             }
-             
+            console.log(algo + "----------------------------------------------------------------------------")
             if (reponse === "Automatic" || reponse === "Automatic2") {
                 exec('python '+algo+' "' + filename + '" ' + extension + ' ' + features + ' ' + pred + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {

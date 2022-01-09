@@ -7,7 +7,7 @@ const ViewHistory = () => {
         if(type !== ""){
             var algo = (document.getElementById("algo") as HTMLElement).innerHTML
             var auto;
-            if(algo === "Algorithme : Automatic"){
+            if(algo === "Algorithme : Automatic" ||algo === "Algorithme : Automatic2" ){
                 auto = "true"
             }else{
                 auto = "false"

@@ -190,6 +190,7 @@ const AnalyseView = () => {
                 borderWidth: 1,
                 backgroundColor: "rgba(187, 164, 34,0.1)",
                 borderColor: "rgba(187, 164, 34,1)",
+                label:"Feature importance"
             }],
         },
         options: {

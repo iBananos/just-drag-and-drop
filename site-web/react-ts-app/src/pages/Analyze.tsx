@@ -357,7 +357,7 @@ const Analyze = () =>  {
         var reponse = JSON.parse(response);
         var elements = document.getElementsByClassName("boutonSendanalyze");
         var auto = "false";
-        if(algoSend === "Automatic"){
+        if(algoSend === "Automatic"||algoSend === "Automatic2"){
             auto = "true"
         }
         for (var i = 0; i < elements.length; i++) {
