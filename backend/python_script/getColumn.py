@@ -17,13 +17,13 @@ def parse_data(data):
 
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
-        df = pd.read_csv(data, index_col=0, delimiter=',', encoding="utf-8")
+        df = pd.read_csv(data, delimiter=',')
     elif extension == 'xlsx' :
             # Assume that the user uploaded an excel file
-        df = pd.read_excel(data,index_col=0,encoding="utf-8")
+        df = pd.read_excel(data)
     elif extension == 'txt' or extension == 'tsv' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
-        df = pd.read_csv(data, delimiter = r'\s+',index_col=0, encoding="utf-8")
+        df = pd.read_csv(data, delimiter = r'\s+')
     elif extension == 'json' :
         df = pd.read_json(data)
     else :
@@ -36,8 +36,7 @@ def principal_fonction(data) :
     dataexclude=df.select_dtypes(exclude=['object'])
     obj_df = df.select_dtypes(include=['object']).copy()
     for i in range(len(dataexclude.columns.values)):
-        if len(dataexclude[dataexclude.columns.values[i]].unique())<50:
-            dataexclude[dataexclude.columns.values[i]]=dataexclude[dataexclude.columns.values[i]].astype(str)
+        if len(dataexclude[dataexclude.columns.values[i]].unique())<10:
             obj_df = pd.concat([obj_df,dataexclude[dataexclude.columns.values[i]]],axis=1)
     return (obj_df.columns.values)
 

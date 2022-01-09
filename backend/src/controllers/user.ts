@@ -64,7 +64,7 @@ export const signup : RequestHandler = async (req : Request, res : Response, nex
         user.save().then(async () => {
             // Vérification avec l'email
             let jwtTokenEmailVerify = jwt.sign({ email: req.body.email }, `${process.env.TOKEN_SECRET}`);
-            await sendVerificationEmail(req.body.email, token.toString('hex'), jwtTokenEmailVerify)
+         // await sendVerificationEmail(req.body.email, token.toString('hex'), jwtTokenEmailVerify)
 
             // Création des dossier dans le serveur propre a l'utilisateur
             const userId : any = await User.findOne({ email: req.body.email }).lean();
