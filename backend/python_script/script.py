@@ -34,7 +34,7 @@ def parse_data(filename):
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         try:
-            df = pd.read_csv(filename,index_col=0, delimiter=',')
+            df = pd.read_csv(filename,index_col=False, delimiter=',')
         except:
             df = pd.read_csv(filename, delimiter=',')
     elif extension == 'xlsx' or extension == 'xls':
@@ -146,6 +146,7 @@ def get_list_parameters(algo_choice,list_parameters) :
 
 def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_choice) :
     df = parse_data(filename)
+    
     X=df[features]
     y=df[pred]
     df=pd.concat([X,y],axis=1)
@@ -154,11 +155,17 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
     if analyze_choice == "Classification" :
         target_name=pd.unique(df[pred].values.flatten())
         target_name=sorted(target_name)
+    
     obj_df = df.select_dtypes(include=['object']).copy()
+    dataexclude=df.select_dtypes(exclude=['object'])
+    for i in range(len(dataexclude.columns.values)):
+        if len(dataexclude[dataexclude.columns.values[i]].unique())<10:
+            obj_df = pd.concat([obj_df,dataexclude[dataexclude.columns.values[i]]],axis=1)
     lb_make = LabelEncoder()
     for i in range(len(obj_df.columns.values)):
                 obj_df[obj_df.columns.values[i]] = lb_make.fit_transform(obj_df[obj_df.columns.values[i]])
                 df[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
+    
     X=df[features]
     y=df[pred]
     

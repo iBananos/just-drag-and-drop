@@ -19,7 +19,7 @@ def parse_data(filename):
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         try:
-            df = pd.read_csv(filename,index_col=0, delimiter=',')
+            df = pd.read_csv(filename,index_col=False, delimiter=',')
         except:
             df = pd.read_csv(filename, delimiter=',')
     elif extension == 'xlsx' or extension == 'xls':
