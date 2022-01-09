@@ -21,7 +21,7 @@ def parse_data(data):
     elif extension == 'xlsx' :
             # Assume that the user uploaded an excel file
         df = pd.read_excel(data)
-    elif extension == 'txt' or extension == 'tsv' :
+    elif extension == 'txt' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
         df = pd.read_csv(data, delimiter = r'\s+')
     elif extension == 'json' :

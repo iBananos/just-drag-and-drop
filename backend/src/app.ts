@@ -1,5 +1,6 @@
 import "dotenv/config";
 import path from "path"
+import helmet from 'helmet';
 import express from "express";
 import mongoose from 'mongoose';
 import session from 'express-session';
@@ -23,8 +24,9 @@ mongoose.connect(`${process.env.MONGO_DB_URI}`)
 const app = express();
 
 
-app.use(express.json());
+app.use(helmet());
 app.use(cookieParser());
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({ secret: `${process.env.SECRET_SESSION}`, resave: false, saveUninitialized: false }));
 
