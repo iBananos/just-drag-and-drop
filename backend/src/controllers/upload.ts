@@ -53,7 +53,8 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
     let nom = aesCipher.encrypt(Buffer.from(nomFichier + "." + extension));
     let fileName = 'uploads/' + userId + '/database/' + nom;
     
-    fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
+    //fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
+    fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
 
 
 

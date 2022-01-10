@@ -29,6 +29,24 @@ export default class AESCipher {
         }
         return text.toString();
     }
+
+
+    public encryptToBuffer(text : Buffer) {
+        if (this.toEncrypt) {
+            // 16 bytes of random data
+            const initVector = crypto.randomBytes(16);
+
+            // Cipher
+            const cipher = crypto.createCipheriv("aes-256-cbc", this.encryptKey, initVector);
+
+            // Encrypted Data
+            let encryptedData = cipher.update(text);
+            let encryptedDataFinal = Buffer.concat([encryptedData, cipher.final()]);
+            
+            return Buffer.concat([initVector, Buffer.from(";"), encryptedDataFinal]);
+        }
+        return text;
+    }
        
     public decrypt(text : string) {
         if (this.toEncrypt) {
