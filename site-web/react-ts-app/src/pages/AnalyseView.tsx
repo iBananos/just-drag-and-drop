@@ -69,8 +69,6 @@ const AnalyseView = () => {
               ctxFinal.drawImage(canvas1, 0, 0,500,500);
               ctxFinal.drawImage(canvas4, 500, 0,500,500);
                 var image = canvasFinal.toDataURL("image/jpeg");
-                console.log(file)
-                console.log(param)
                 var datasend = JSON.stringify({"image":image,"path":FileFromURL,"param":param,"file":JSON.parse(response).file});
                 utils.default.sendRequestWithToken('POST', '/api/analyze/sendPreview', datasend, callbackSend);
           };
@@ -155,9 +153,10 @@ const AnalyseView = () => {
                   totalPerColumn[i-1] += parseInt(line[j]);
                   var dataline = {'x': labels[i-1], 'y': labels[j], 'v': parseInt(line[j])}
                   data.push(dataline)
-                  console.log(totalPerColumn)
+                  
                 }
             }
+            console.log(totalPerColumn)
             
 
             createConfusionMatrix(labels,data,"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)",acc,totalPerColumn);
@@ -258,7 +257,7 @@ const AnalyseView = () => {
       myChartMatrixDiv.appendChild(myChartMatrix)
       div.appendChild(myChartMatrixDiv);
       var ctx : any = (document.getElementById('myChartMatrix') as HTMLCanvasElement).getContext('2d');
-        
+  
         var myChart = new Chart(ctx , {
             type : 'matrix',
             data: {
@@ -268,14 +267,17 @@ const AnalyseView = () => {
                     data: datas,
                     backgroundColor(context) {
                         const value = datas[context.dataIndex].v;
+                        //console.log(labels.indexOf(datas[context.dataIndex].x),datas[context.dataIndex].x, value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)])
                         var colors  = createRainbowRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
                         var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
+                        //console.log(colorString)
                         return color(colorString).alpha(0.8).rgbString();
                       },
                       borderColor(context) {
                         const value = datas[context.dataIndex].v;
                         var colors  = createRainbowRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
                         var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
+                        //console.log(colorString)
                         return color(colorString).alpha(1).rgbString();
                       },
                     borderWidth: 1,
@@ -340,6 +342,9 @@ const AnalyseView = () => {
     }
 
     function createRainbowRGB(x:any,max:any){
+      if(max===0){
+        return [116,116,116]
+      }
       var percentFade  =  x/max;
       var rouge ; 
       var bleu ;
