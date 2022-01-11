@@ -602,14 +602,21 @@ const DataVisu = () =>  {
 
     function getAverageYByXByDataset(data1:any,data2:any,data3:any,column:any,occurence:any){
         var average : any[] = []
+        var nbPointZero :any[] = []
         for(var i : number = 0 ; i < column.length ; i++){
             average.push(0);
+            nbPointZero.push(0)
         }
         for(var y : number = 0 ; y < data1.length ; y++){
-            average[column.indexOf(data3[y])]+= data1[y]/data2[y];
+            if(data2[y]!=0){
+                average[column.indexOf(data3[y])]+= data1[y]/data2[y];
+            }else{
+                nbPointZero[column.indexOf(data3[y])] ++;
+            }
+            
         }
         for(var x : number = 0 ; x < column.length ; x++){
-            average[x] = average[x]/occurence[x]
+            average[x] = average[x]/(occurence[x]-nbPointZero[x])
         }
 
         return average;
@@ -809,6 +816,7 @@ const DataVisu = () =>  {
 
     function createColors(array: any[],opacity:number){
         var newArray : string[] = [];
+        console.log("array : "  , array)
         array.forEach((el :any) =>{
             var color = el;
             newArray.push("rgba("+color.r+","+color.g+','+color.b+","+opacity+")"); 
@@ -819,6 +827,7 @@ const DataVisu = () =>  {
 
     function createRainbowRGB(nbColors:any){
         var colors : any[] = []
+        console.log(nbColors)
         for(var i :number = 0 ; i<nbColors;i++){
             var percentFade  =  i/nbColors*100;
             let rouge;
