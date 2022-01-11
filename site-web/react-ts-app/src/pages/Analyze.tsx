@@ -465,12 +465,12 @@ const Analyze = () =>  {
                 </div>
                 <div className="Parametre">
                 <div className="Automatic" id="Automatic">
-                    <p>This is a Christel option.</p>
+                    <p className="infoAlgo">This is a Christel option.</p>
                 <button value="Automatic" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
 
                 <div className="GradientBoosting" id="GradientBoosting">
-                <p>This is a Christel option.</p>
+                <p className="infoAlgo">This is a Christel option.</p>
                 <table><tbody>
                     <tr><td>learning_rate <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0"  step="0.1" defaultValue={0.1} id="learning_rate1"/></td>
                     <td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators1"/></td></tr>
@@ -479,7 +479,7 @@ const Analyze = () =>  {
                 <button value="GradientBoosting" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="RandomForest" id="RandomForest">
-                <p>This is a Christel option.</p>
+                <p className="infoAlgo">This is a Christel option.</p>
                 <table><tbody>
                     <tr><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators2"/></td><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={0} id="max_depth2"/></td></tr>
                     <tr><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2"defaultValue={2}  id="min_samples_split2"/></td></tr>
@@ -487,7 +487,7 @@ const Analyze = () =>  {
                 <button value="RandomForest" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="Ridge" id="Ridge">
-                <p>This is a Christel option.</p>
+                <p className="infoAlgo">This is a Christel option.</p>
                 <table><tbody>
                     <tr><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol3"/></td><td>solver <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="solver3" name="solver">
                         <option value="auto">auto</option>
@@ -503,11 +503,11 @@ const Analyze = () =>  {
                     <button value="Ridge" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="Automatic2" id="Automatic2">
-                <p>This is a Christel option.</p>
+                <p className="infoAlgo">This is a Christel option.</p>
                 <button value="Automatic2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="BayesianARDRegression" id="BayesianARDRegression">
-                <p>This is a Christel option.</p>
+                <p className="infoAlgo">This is a Christel option.</p>
                 <table><tbody>
                 <tr><td>n_iter <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="300" defaultValue={300} id="n_iter4"/></td><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol4"/></td></tr>
                 <tr><td>alpha_1 <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="alpha_14"/></td><td>alpha_2 <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="alpha_24"/></td></tr>
@@ -516,7 +516,7 @@ const Analyze = () =>  {
                     <button value="BayesianARDRegression" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="LinearSVC" id="LinearSVC">
-                <p>This is a Christel option.</p>
+                <p className="infoAlgo">This is a Christel option.</p>
                     <table><tbody>
                     <tr><td>penalty <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="penalty5" name="penalty">
                         <option value="l2">l2</option>
@@ -528,14 +528,14 @@ const Analyze = () =>  {
                         <button value="LinearSVC" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="AdaBoost" id="AdaBoost">
-                <p>This is a Christel option.</p>
+                <p className="infoAlgo">This is a Christel option.</p>
                 <table><tbody>
                 <tr><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="50" defaultValue={50} id="n_estimators6"/></td><td>learning_rate <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1"  defaultValue={1} id="learning_rate6"/></td></tr>
                     </tbody></table>
                     <button value="AdaBoost" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="GradientBoosting2" id="GradientBoosting2">
-                <p>This is a Christel option.</p>
+                <p className="infoAlgo">This is a Christel option.</p>
                 <table><tbody>
                 <tr><td>learning_rate <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.1" defaultValue={0.1} id="learning_rate7"/></td><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators7"/></td></tr>
                 <tr><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth7"/></td><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split7"/></td></tr>
@@ -543,7 +543,7 @@ const Analyze = () =>  {
                     <button value="GradientBoosting2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="RandomForest2" id="RandomForest2">
-                <p>This is a Christel option.</p>
+                <p className="infoAlgo">This is a Christel option.</p>
                 <table><tbody>
                 <tr><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators8"/></td><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={3} id="max_depth8"/></td></tr>
                 <tr><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split8"/></td><td>class_weight <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="class_weight8" name="class_weight">
@@ -554,7 +554,7 @@ const Analyze = () =>  {
                         <button value="RandomForest2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="LogisticRegression" id="LogisticRegression">
-                <p>This is a Christel option.</p>
+                <p className="infoAlgo">This is a Christel option.</p>
                 <table><tbody>
                 <tr><td>penalty <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="penalty9" name="penalty">
                         <option value="l2">l2</option>
