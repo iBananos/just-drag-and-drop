@@ -465,11 +465,12 @@ const Analyze = () =>  {
                 </div>
                 <div className="Parametre">
                 <div className="Automatic" id="Automatic">
-                    <p>This is a beta option.</p>
+                    <p>This is a Christel option.</p>
                 <button value="Automatic" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
 
                 <div className="GradientBoosting" id="GradientBoosting">
+                <p>This is a Christel option.</p>
                 <table><tbody>
                     <tr><td>learning_rate <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0"  step="0.1" defaultValue={0.1} id="learning_rate1"/></td>
                     <td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators1"/></td></tr>
@@ -478,6 +479,7 @@ const Analyze = () =>  {
                 <button value="GradientBoosting" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="RandomForest" id="RandomForest">
+                <p>This is a Christel option.</p>
                 <table><tbody>
                     <tr><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators2"/></td><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={0} id="max_depth2"/></td></tr>
                     <tr><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2"defaultValue={2}  id="min_samples_split2"/></td></tr>
@@ -485,6 +487,7 @@ const Analyze = () =>  {
                 <button value="RandomForest" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="Ridge" id="Ridge">
+                <p>This is a Christel option.</p>
                 <table><tbody>
                     <tr><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol3"/></td><td>solver <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="solver3" name="solver">
                         <option value="auto">auto</option>
@@ -500,73 +503,50 @@ const Analyze = () =>  {
                     <button value="Ridge" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="Automatic2" id="Automatic2">
-                    <p>This is a beta option.</p>
+                <p>This is a Christel option.</p>
                 <button value="Automatic2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="BayesianARDRegression" id="BayesianARDRegression">
+                <p>This is a Christel option.</p>
                 <table><tbody>
-                <tr><td>n_iter <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="300" defaultValue={300} id="n_iter4"/></td><td>tol <img src={help} className="help" alt="" title="Stop the algorithm if w has converged."/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol4"/></td></tr>
-                <tr><td>alpha_1 <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="alpha_14"/></td><td>alpha_2 <img src={help} className="help" alt="" title="Hyper-parameter : inverse scale parameter (rate parameter) for the
-Gamma distribution prior over the alpha parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="alpha_24"/></td></tr>
-                <tr><td>lambda_1 <img src={help} className="help" alt="" title="Hyper-parameter : shape parameter for the Gamma distribution prior
-over the lambda parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="lambda_14"/></td><td>lambda_2 <img src={help} className="help" alt="" title="Hyper-parameter : inverse scale parameter (rate parameter) for the
-Gamma distribution prior over the lambda parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="lambda_24"/></td></tr>
+                <tr><td>n_iter <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="300" defaultValue={300} id="n_iter4"/></td><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol4"/></td></tr>
+                <tr><td>alpha_1 <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="alpha_14"/></td><td>alpha_2 <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="alpha_24"/></td></tr>
+                <tr><td>lambda_1 <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="lambda_14"/></td><td>lambda_2 <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="lambda_24"/></td></tr>
                     </tbody></table>
                     <button value="BayesianARDRegression" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="LinearSVC" id="LinearSVC">
+                <p>This is a Christel option.</p>
                     <table><tbody>
-                    <tr><td>penalty <img src={help} className="help" alt="" title="Specifies the norm used in the penalization. The ‘l2’ penalty is the
-standard used in SVC. The ‘l1’ leads to coef_ vectors that are sparse."/></td><td><select  id="penalty5" name="penalty">
+                    <tr><td>penalty <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="penalty5" name="penalty">
                         <option value="l2">l2</option>
-                        <option value="l1">l1</option></select></td><td>tol <img src={help} className="help" alt="" title="Tolerance for stopping criteria."/></td><td><InputNumber  min="0" step="0.0001" defaultValue={0.0001} id="tol5"/></td></tr>
-                        <tr><td>C <img src={help} className="help" alt="" title="Regularization parameter. The strength of the regularization is
-inversely proportional to C. Must be strictly positive.
-"/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="C5"/></td><td>class_weight <img src={help} className="help" alt="" title="Set the parameter C of class i to class_weight[i]*C for SVC. If not given,
-all classes are supposed to have weight one. The “balanced” mode uses the
-values of y to automatically adjust weights inversely proportional to class
-frequencies in the input data as n_samples / (n_classes * np.bincount(y))."/></td><td><select  id="class_weight5" name="class_weight">
+                        <option value="l1">l1</option></select></td><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.0001" defaultValue={0.0001} id="tol5"/></td></tr>
+                        <tr><td>C <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="C5"/></td><td>class_weight <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="class_weight5" name="class_weight">
                         <option value="none">none</option>
                         <option value="balanced">balanced</option></select></td></tr>
                         </tbody></table>
                         <button value="LinearSVC" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="AdaBoost" id="AdaBoost">
+                <p>This is a Christel option.</p>
                 <table><tbody>
-                <tr><td>n_estimators <img src={help} className="help" alt="" title="The maximum number of estimators at which boosting is terminated.
-In case of perfect fit, the learning procedure is stopped early."/></td><td><InputNumber  min="0" step="50" defaultValue={50} id="n_estimators6"/></td><td>learning_rate <img src={help} className="help" alt="" title="Weight applied to each classifier at each boosting iteration. A higher
-learning rate increases the contribution of each classifier. There is a
-trade-off between the learning_rate and n_estimators parameters."/></td><td><InputNumber  min="0" step="1"  defaultValue={1} id="learning_rate6"/></td></tr>
+                <tr><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="50" defaultValue={50} id="n_estimators6"/></td><td>learning_rate <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1"  defaultValue={1} id="learning_rate6"/></td></tr>
                     </tbody></table>
                     <button value="AdaBoost" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="GradientBoosting2" id="GradientBoosting2">
+                <p>This is a Christel option.</p>
                 <table><tbody>
-                <tr><td>learning_rate <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="0.1" defaultValue={0.1} id="learning_rate7"/></td><td>n_estimators <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators7"/></td></tr>
-                <tr><td>max_depth <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth7"/></td><td>min_samples_split <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split7"/></td></tr>
+                <tr><td>learning_rate <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.1" defaultValue={0.1} id="learning_rate7"/></td><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators7"/></td></tr>
+                <tr><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth7"/></td><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split7"/></td></tr>
                     </tbody></table>
                     <button value="GradientBoosting2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="RandomForest2" id="RandomForest2">
+                <p>This is a Christel option.</p>
                 <table><tbody>
-                <tr><td>n_estimators <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators8"/></td><td>max_depth <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="1" defaultValue={3} id="max_depth8"/></td></tr>
-                <tr><td>min_samples_split <img src={help} className="help" alt="" title=""/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split8"/></td><td>class_weight <img src={help} className="help" alt="" title="Weights associated with classes in the form
-{class_label: weight}. If not given, all classes are supposed to have
-weight one. For multi-output problems, a list of dicts can be provided
-in the same order as the columns of y. Note that for multioutput
-(including multilabel) weights should be defined for each class of every
-column in its own dict. For example, for four-class multilabel
-classification weights should be [{0: 1, 1: 1}, {0: 1, 1: 5}, {0: 1, 1: 1}, {0:
-1, 1: 1}] instead of [{1:1}, {2:5}, {3:1}, {4:1}]. The “balanced” mode uses
-the values of y to automatically adjust weights inversely proportional
-to class frequencies in the input data as n_samples / (n_classes *
-np.bincount(y)) The “balanced_subsample” mode is the same as
-“balanced” except that weights are computed based on the bootstrap
-sample for every tree grown. For multi-output, the weights of each
-column of y will be multiplied. Note that these weights will be
-multiplied with sample_weight (passed through the fit method) if
-sample_weight is specified.
-"/></td><td><select  id="class_weight8" name="class_weight">
+                <tr><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators8"/></td><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={3} id="max_depth8"/></td></tr>
+                <tr><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split8"/></td><td>class_weight <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="class_weight8" name="class_weight">
                         <option value="none">none</option>
                         <option value="balanced">balanced</option>
                         </select></td></tr>
@@ -574,28 +554,17 @@ sample_weight is specified.
                         <button value="RandomForest2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="LogisticRegression" id="LogisticRegression">
+                <p>This is a Christel option.</p>
                 <table><tbody>
-                <tr><td>penalty <img src={help} className="help" alt="" title="Specify the norm
-of the penalty: 'none': no penalty is added; 'l2': add a L2 penalty term
-and it is the default choice; 'l1': add a L1 penalty term; 'elasticnet':
-both L1 and L2 penalty terms are added."/></td><td><select  id="penalty9" name="penalty">
+                <tr><td>penalty <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="penalty9" name="penalty">
                         <option value="l2">l2</option>
                         <option value="l1">l1</option>
                         <option value="elasticnet">elasticnet</option>
-                        <option value="none">none</option></select></td><td>tol <img src={help} className="help" alt="" title="Tolerance for stopping criteria. "/></td><td><InputNumber  min="0" step="0.0001" defaultValue={0.0001} id="tol9"/></td></tr>
-                        <tr><td>c <img src={help} className="help" alt="" title="Inverse of regularization strength; must be a positive float. Like in
-support vector machines, smaller values specify stronger
-regularization."/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="c9"/></td><td>class_weight <img src={help} className="help" alt="" title="Weights associated
-with classes in the form {class_label: weight}. If not given, all classes
-are supposed to have weight one. The “balanced” mode uses the
-values of y to automatically adjust weights inversely proportional to
-class frequencies in the input data as n_samples / (n_classes *
-np.bincount(y)). Note that these weights will be multiplied with
-sample_weight (passed through the fit method) if sample_weight is
-specified. New in version 0.17: class_weight=’balanced’"/></td><td><select  id="class_weight9" name="class_weight">
+                        <option value="none">none</option></select></td><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.0001" defaultValue={0.0001} id="tol9"/></td></tr>
+                        <tr><td>c <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="c9"/></td><td>class_weight <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="class_weight9" name="class_weight">
                         <option value="none">none</option>
                         <option value="balanced">balanced</option></select></td></tr>
-                        <tr><td>max_iter <img src={help} className="help" alt="" title="Maximum number of iterations taken for the solvers to converge."/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="max_iter9"/></td></tr>
+                        <tr><td>max_iter <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="max_iter9"/></td></tr>
                     </tbody></table>
                     <button value="LogisticRegression" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
