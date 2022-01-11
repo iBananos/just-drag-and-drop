@@ -16,7 +16,7 @@ export const  parameters : RequestHandler = (req : Request, res : Response, next
     let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/database/", req.body.database);
     let filename = "uploads/" + req.body.userId + "/database/" + targetBase;
     let extension = req.body.database.split(".")[1];
-    exec('python python_script/datavisu.py "' + filename + '" ' + extension + ' ' + req.body.firstOne + ' ' + req.body.secondOne + ' ' + req.body.thirdOne + ' ' + req.body.sample + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+    exec('python python_script/datavisu.py "' + filename + '" ' + extension + ' "' + req.body.firstOne + '" "' + req.body.secondOne + '" "' + req.body.thirdOne + '" ' + req.body.sample + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
         if (error) {
             console.error(`error: ${error.message}`);
             return;
@@ -33,7 +33,7 @@ export const  parameters : RequestHandler = (req : Request, res : Response, next
 export const  parametersDemo : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     let filename = "uploads/" + "demo" + "/database/" + req.body.database;
     let extension = req.body.database.split(".")[1];
-    exec('python python_script/datavisu.py "' + filename + '" ' + extension + ' ' + req.body.firstOne + ' ' + req.body.secondOne + ' ' + req.body.thirdOne + ' ' + req.body.sample + ' ' + 'true' , (error:any, stdout:any, stderr:any) => {
+    exec('python python_script/datavisu.py "' + filename + '" ' + extension + ' "' + req.body.firstOne + '" "' + req.body.secondOne + '" "' + req.body.thirdOne + '" ' + req.body.sample + ' ' + 'true' , (error:any, stdout:any, stderr:any) => {
         if (error) {
             console.error(`error: ${error.message}`);
             return;
