@@ -690,11 +690,7 @@ const DataVisu = () =>  {
             },
             options: {
                 scales: {
-                    xAxes: [{
-                        ticks: {
-                            display: false //this will remove only the label
-                        }
-                    }]
+                    
                 },
                 aspectRatio : 1,
                 responsive: true
@@ -773,11 +769,7 @@ const DataVisu = () =>  {
             },
             options: {
                 scales: {
-                    xAxes: [{
-                        ticks: {
-                            display: false //this will remove only the label
-                        }
-                    }]
+                    
                 },
                 aspectRatio : 1,
                 responsive: true
