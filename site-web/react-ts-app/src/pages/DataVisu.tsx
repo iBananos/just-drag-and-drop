@@ -1,5 +1,6 @@
 import BarreLaterale from '../components/BarreLaterale';
 import Navigation from '../components/Navigation';
+import help from "../assets/help.png";
 import { Chart} from 'chart.js';
 import * as utils from "../Utils";
 import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
@@ -1159,7 +1160,8 @@ const DataVisu = () =>  {
                     <option value="Scatter" >Scatter Chart</option>
                     <option value="Line" >Line Chart</option>
                 </select><br />
-                <button onClick={printCorrelation} className='boutonSend' id="correlationMatrixButton" disabled>Correlation Matrix</button>
+                <button onClick={printCorrelation} className='boutonSend' id="correlationMatrixButton" disabled>Correlation Matrix<img src={help} className="helpCorrelation" alt="" title="Christel"/></button>
+                
                 </div>
                 </div>
                 </div>
