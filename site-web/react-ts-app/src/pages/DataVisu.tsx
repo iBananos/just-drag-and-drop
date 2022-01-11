@@ -5,7 +5,7 @@ import * as utils from "../Utils";
 import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
 import trashIcone from "../assets/trash.png";
 import downloadIcone from "../assets/download.png";
-import { color } from 'chart.js/helpers';
+import { callback, color } from 'chart.js/helpers';
 
 Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  );
 var id = 0;
@@ -213,6 +213,7 @@ const DataVisu = () =>  {
     }
 
     function callbackDownload(response:any){
+        console.log(callback)
         var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
         if(thirdOne === "AucuneColoration"){
             createDashBoard2column(response)

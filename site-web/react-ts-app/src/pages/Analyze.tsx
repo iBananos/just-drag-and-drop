@@ -471,46 +471,22 @@ const Analyze = () =>  {
 
                 <div className="GradientBoosting" id="GradientBoosting">
                 <table><tbody>
-                    <tr><td>learning_rate <img src={help} className="help" alt="" title="Learning rate shrinks the contribution of each tree by learning_rate.
-There is a trade-off between learning_rate and n_estimators."/></td><td><InputNumber  min="0"  step="0.1" defaultValue={0.1} id="learning_rate1"/></td>
-                    <td>n_estimators <img src={help} className="help" alt="" title="The number of boosting stages to perform. Gradient boosting is fairly
-robust to over-fitting so a large number usually results in better performance."/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators1"/></td></tr>
-                    <tr><td>max_depth <img src={help} className="help" alt="" title="Maximum depth of the individual regression estimators. 
-                    The maximum depth limits the number of nodes in the tree. 
-                    Tune this parameter for best performance; 
-                    the best value depends on the interaction of the input variables."/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth1"/></td><td>min_samples_split <img src={help} className="help" alt="" title="The minimum number of samples required to split an internal node:
-- If int, then consider min_samples_split as the minimum number.
-- If float, then min_samples_split is a fraction and ceil(min_samples_split * n_samples) are the minimum number of samples for each split.
-"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split1"/></td></tr>
+                    <tr><td>learning_rate <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0"  step="0.1" defaultValue={0.1} id="learning_rate1"/></td>
+                    <td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators1"/></td></tr>
+                    <tr><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split1"/></td></tr>
                 </tbody></table>
                 <button value="GradientBoosting" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="RandomForest" id="RandomForest">
                 <table><tbody>
-                    <tr><td>n_estimators <img src={help} className="help" alt="" title="The number of trees in the forest."/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators2"/></td><td>max_depth <img src={help} className="help" alt="" title="The maximum depth of the tree. If None, then nodes are expanded
-until all leaves are pure or until all leaves contain less than
-min_samples_split samples.
-"/></td><td><InputNumber  min="0" step="1" defaultValue={0} id="max_depth2"/></td></tr>
-                    <tr><td>min_samples_split <img src={help} className="help" alt="" title="The minimum number of samples required to split an internal node:
-- If int, then consider min_samples_split as the minimum number.
-- If float, then min_samples_split is a fraction and ceil(min_samples_split * n_samples) 
-    are the minimum number of samples for each split.
-"/></td><td><InputNumber  min="0" step="2"defaultValue={2}  id="min_samples_split2"/></td></tr>
+                    <tr><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators2"/></td><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={0} id="max_depth2"/></td></tr>
+                    <tr><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2"defaultValue={2}  id="min_samples_split2"/></td></tr>
                 </tbody></table>
                 <button value="RandomForest" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="Ridge" id="Ridge">
                 <table><tbody>
-                    <tr><td>tol <img src={help} className="help" alt="" title="Precision of the solution."/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol3"/></td><td>solver <img src={help} className="help" alt="" title="Solver to use in the computational routines:
-- ‘auto’ chooses the solver automatically based on the type of data.
-- ‘svd’ uses a Singular Value Decomposition of X to compute the Ridge coefficients. More stable for singular matrices than ‘cholesky’.
-- ‘cholesky’ uses the standard scipy.linalg.solve function to obtain a closed-form solution.
-- ‘sparse_cg’ uses the conjugate gradient solver as found in scipy.sparse.linalg.cg. As an iterative algorithm, this solver is more appropriate than ‘cholesky’ for large-scale data (possibility to set tol and max_iter).
-- ‘lsqr’ uses the dedicated regularized least-squares routine scipy.sparse.linalg.lsqr. It is the fastest and uses an iterative procedure.
-- ‘sag’ uses a Stochastic Average Gradient descent, and ‘saga’ uses its improved, unbiased version named SAGA. Both methods also use an iterative procedure, and are often faster than other solvers when both n_samples and n_features are large. Note that ‘sag’ and ‘saga’ fast convergence is only guaranteed on features with approximately the same scale. You can preprocess the data with a scaler from sklearn.preprocessing.
-- ‘lbfgs’ uses L-BFGS-B algorithm implemented in scipy.optimize.minimize. It can be used only when positive is True.
-All last six solvers support both dense and sparse data. However, only ‘sag’, ‘sparse_cg’, and ‘lbfgs’ support sparse input when fit_intercept is True.
-"/></td><td><select  id="solver3" name="solver">
+                    <tr><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol3"/></td><td>solver <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="solver3" name="solver">
                         <option value="auto">auto</option>
                         <option value="svd">svd</option>
                         <option value="cholesky">cholesky</option>
@@ -519,13 +495,7 @@ All last six solvers support both dense and sparse data. However, only ‘sag’
                         <option value="sag">sag</option>
                         <option value="saga">saga</option>
                         <option value="lbfgs">lbfgs</option> </select></td></tr>
-                    <tr><td>alpha <img src={help} className="help" alt="" title="Regularization strength; must be a positive float. Regularization
-improves the conditioning of the problem and reduces the variance of
-the estimates. Larger values specify stronger regularization. Alpha 
-corresponds to 1 / (2C) in other linear models such
-as LogisticRegression or LinearSVC. If an array is passed, penalties are
-assumed to be specific to the targets. Hence they must correspond in
-number."/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="alpha3"/></td></tr>
+                    <tr><td>alpha <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="alpha3"/></td></tr>
                     </tbody></table>
                     <button value="Ridge" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
@@ -535,9 +505,8 @@ number."/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="alpha3"/>
                 </div>
                 <div className="BayesianARDRegression" id="BayesianARDRegression">
                 <table><tbody>
-                <tr><td>n_iter <img src={help} className="help" alt="" title="Maximum number of iterations."/></td><td><InputNumber  min="0" step="300" defaultValue={300} id="n_iter4"/></td><td>tol <img src={help} className="help" alt="" title="Stop the algorithm if w has converged."/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol4"/></td></tr>
-                <tr><td>alpha_1 <img src={help} className="help" alt="" title="Hyper-parameter : shape parameter for the Gamma distribution prior
-over the alpha parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="alpha_14"/></td><td>alpha_2 <img src={help} className="help" alt="" title="Hyper-parameter : inverse scale parameter (rate parameter) for the
+                <tr><td>n_iter <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="300" defaultValue={300} id="n_iter4"/></td><td>tol <img src={help} className="help" alt="" title="Stop the algorithm if w has converged."/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol4"/></td></tr>
+                <tr><td>alpha_1 <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="alpha_14"/></td><td>alpha_2 <img src={help} className="help" alt="" title="Hyper-parameter : inverse scale parameter (rate parameter) for the
 Gamma distribution prior over the alpha parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="alpha_24"/></td></tr>
                 <tr><td>lambda_1 <img src={help} className="help" alt="" title="Hyper-parameter : shape parameter for the Gamma distribution prior
 over the lambda parameter."/></td><td><InputNumber  min="0" step="0.000001" defaultValue={0.000001} id="lambda_14"/></td><td>lambda_2 <img src={help} className="help" alt="" title="Hyper-parameter : inverse scale parameter (rate parameter) for the

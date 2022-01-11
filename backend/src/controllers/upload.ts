@@ -109,7 +109,9 @@ function createInfoDatabase(userId : string, fileName : string, name : string, d
             console.error(`stderr: ${stderr}`);
             return;
         }
-        var colonnesString = stdout.replace(/'+/g,'').replace("]",'').replace("[",'').replace('\r\n','').split(" ")
+        var resultat = stdout.replace(/' '+/g,"','")
+        var colonnesString = resultat.replace(/'+/g,'').replace("]",'').replace("[",'').replace('\r\n','').split(",")
+        console.log(colonnesString)
         var doc = JSON.stringify({"name":name, "date":date, "size":size, "extension":extension, "colonnes":colonnes, "colonnesString":colonnesString});
 
         let nomFichier = aesCipher.encrypt(Buffer.from(name + ".json"));
