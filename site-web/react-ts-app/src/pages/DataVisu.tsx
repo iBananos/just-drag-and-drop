@@ -817,6 +817,7 @@ const DataVisu = () =>  {
 
     function createRainbowRGB(nbColors:any){
         var colors : any[] = []
+        console.log(nbColors)
         for(var i :number = 0 ; i<nbColors;i++){
             var percentFade  =  i/nbColors*100;
             let rouge;

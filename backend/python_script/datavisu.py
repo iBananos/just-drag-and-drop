@@ -40,6 +40,8 @@ def parse_data(filename):
     return df
 
 def principal_fonction(filename,first,second,third,sample) :
+    print("check")
+    print(sample)
     df = parse_data(filename)
     index = df.index
     number_of_rows = len(index)
