@@ -474,7 +474,8 @@ const Analyze = () =>  {
                 <table><tbody>
                     <tr><td>learning_rate <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0"  step="0.1" defaultValue={0.1} id="learning_rate1"/></td>
                     <td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators1"/></td></tr>
-                    <tr><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split1"/></td></tr>
+                    <tr><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth1"/>
+                    </td><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split1"/></td></tr>
                 </tbody></table>
                 <button value="GradientBoosting" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
@@ -489,7 +490,8 @@ const Analyze = () =>  {
                 <div className="Ridge" id="Ridge">
                 <p className="infoAlgo">This is a Christel option.</p>
                 <table><tbody>
-                    <tr><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol3"/></td><td>solver <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="solver3" name="solver">
+                <tr><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol3"/></td>
+                    <td>solver <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="solver3" name="solver">
                         <option value="auto">auto</option>
                         <option value="svd">svd</option>
                         <option value="cholesky">cholesky</option>
