@@ -1159,7 +1159,7 @@ const DataVisu = () =>  {
                     <option value="Scatter" >Scatter Chart</option>
                     <option value="Line" >Line Chart</option>
                 </select><br />
-                <button onClick={printCorrelation} className='boutonSend' id="correlationMatrixButton" disabled>Correlation Matrix<img src={help} className="helpCorrelation" alt="" title="Christel"/></button>
+                <button onClick={printCorrelation} className='boutonSend' id="correlationMatrixButton" disabled>Correlation Matrix<img src={help} className="helpCorrelation" alt="" title="A correlation matrix is a table showing correlation coefficients between variables. Each cell in the table shows the correlation between two variables. Goes from -1 to 1."/></button>
                 
                 </div>
                 </div>
