@@ -465,33 +465,33 @@ const Analyze = () =>  {
                 </div>
                 <div className="Parametre">
                 <div className="Automatic" id="Automatic">
-                    <p className="infoAlgo">This is a Christel option.</p>
+                    <p className="infoAlgo">This is option chooses the best algorithm to get the best result.</p>
                 <button value="Automatic" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
 
                 <div className="GradientBoosting" id="GradientBoosting">
-                <p className="infoAlgo">This is a Christel option.</p>
+                <p className="infoAlgo">Gradient boosting is a type of machine learning boost. It relies heavily on the prediction that the next model will reduce prediction errors when mixed with the previous ones. The main idea is to establish target results for this next model in order to minimize errors.</p>
                 <table><tbody>
-                    <tr><td>learning_rate <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0"  step="0.1" defaultValue={0.1} id="learning_rate1"/></td>
-                    <td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators1"/></td></tr>
-                    <tr><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth1"/>
-                    </td><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split1"/></td></tr>
+                    <tr><td>learning_rate <img src={help} className="help" alt="" title="Determines the step size at each iteration while moving toward a minimum of a loss function"/></td><td><InputNumber  min="0"  step="0.1" defaultValue={0.1} id="learning_rate1"/></td>
+                    <td>n_estimators <img src={help} className="help" alt="" title="The number of boosting stages to perform"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators1"/></td></tr>
+                    <tr><td>max_depth <img src={help} className="help" alt="" title="Maximum depth of the individual regression estimators"/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth1"/>
+                    </td><td>min_samples_split <img src={help} className="help" alt="" title="The minimum number of samples required to split an internal node"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split1"/></td></tr>
                 </tbody></table>
                 <button value="GradientBoosting" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="RandomForest" id="RandomForest">
-                <p className="infoAlgo">This is a Christel option.</p>
+                <p className="infoAlgo">A random forest is a meta estimator that fits a number of classifying decision trees on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. </p>
                 <table><tbody>
-                    <tr><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators2"/></td><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={0} id="max_depth2"/></td></tr>
-                    <tr><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2"defaultValue={2}  id="min_samples_split2"/></td></tr>
+                    <tr><td>n_estimators <img src={help} className="help" alt="" title="The number of trees in the forest"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators2"/></td><td>max_depth <img src={help} className="help" alt="" title="The maximum depth of the tree. If 0, then nodes are expanded until all leaves are pure or until all leaves contain less than min_samples_split samples"/></td><td><InputNumber  min="0" step="1" defaultValue={0} id="max_depth2"/></td></tr>
+                    <tr><td>min_samples_split <img src={help} className="help" alt="" title="The minimum number of samples required to split an internal node"/></td><td><InputNumber  min="0" step="2"defaultValue={2}  id="min_samples_split2"/></td></tr>
                 </tbody></table>
                 <button value="RandomForest" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="Ridge" id="Ridge">
-                <p className="infoAlgo">This is a Christel option.</p>
+                <p className="infoAlgo">This model solves a regression model where the loss function is the linear least squares function and regularization is given by the l2-norm.</p>
                 <table><tbody>
-                <tr><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol3"/></td>
-                    <td>solver <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="solver3" name="solver">
+                <tr><td>tol <img src={help} className="help" alt="" title="Precision of the solution"/></td><td><InputNumber  min="0" step="0.001" defaultValue={0.001} id="tol3"/></td>
+                    <td>solver <img src={help} className="help" alt="" title="Solver to use in the computational routines"/></td><td><select  id="solver3" name="solver">
                         <option value="auto">auto</option>
                         <option value="svd">svd</option>
                         <option value="cholesky">cholesky</option>
@@ -500,12 +500,12 @@ const Analyze = () =>  {
                         <option value="sag">sag</option>
                         <option value="saga">saga</option>
                         <option value="lbfgs">lbfgs</option> </select></td></tr>
-                    <tr><td>alpha <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="alpha3"/></td></tr>
+                    <tr><td>alpha <img src={help} className="help" alt="" title="Regularization strength"/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="alpha3"/></td></tr>
                     </tbody></table>
                     <button value="Ridge" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="Automatic2" id="Automatic2">
-                <p className="infoAlgo">This is a Christel option.</p>
+                <p className="infoAlgo">This is option chooses the best algorithm to get the best result.</p>
                 <button value="Automatic2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="BayesianARDRegression" id="BayesianARDRegression">
@@ -518,37 +518,37 @@ const Analyze = () =>  {
                     <button value="BayesianARDRegression" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="LinearSVC" id="LinearSVC">
-                <p className="infoAlgo">This is a Christel option.</p>
+                <p className="infoAlgo">Linear Support Vector Classification.</p>
                     <table><tbody>
-                    <tr><td>penalty <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="penalty5" name="penalty">
+                    <tr><td>penalty <img src={help} className="help" alt="" title="Specifies the norm used in the penalization"/></td><td><select  id="penalty5" name="penalty">
                         <option value="l2">l2</option>
-                        <option value="l1">l1</option></select></td><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.0001" defaultValue={0.0001} id="tol5"/></td></tr>
-                        <tr><td>C <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="C5"/></td><td>class_weight <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="class_weight5" name="class_weight">
+                        <option value="l1">l1</option></select></td><td>tol <img src={help} className="help" alt="" title="Tolerance for stopping criteria"/></td><td><InputNumber  min="0" step="0.0001" defaultValue={0.0001} id="tol5"/></td></tr>
+                        <tr><td>C <img src={help} className="help" alt="" title="Regularization parameter"/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="C5"/></td><td>class_weight <img src={help} className="help" alt="" title="Attributes weight to each class"/></td><td><select  id="class_weight5" name="class_weight">
                         <option value="none">none</option>
                         <option value="balanced">balanced</option></select></td></tr>
                         </tbody></table>
                         <button value="LinearSVC" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="AdaBoost" id="AdaBoost">
-                <p className="infoAlgo">This is a Christel option.</p>
+                <p className="infoAlgo">An AdaBoost classifier is a meta-estimator that begins by fitting a classifier on the original dataset and then fits additional copies of the classifier on the same dataset but where the weights of incorrectly classified instances are adjusted such that subsequent classifiers focus more on difficult cases.</p>
                 <table><tbody>
-                <tr><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="50" defaultValue={50} id="n_estimators6"/></td><td>learning_rate <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1"  defaultValue={1} id="learning_rate6"/></td></tr>
+                <tr><td>n_estimators <img src={help} className="help" alt="" title="The maximum number of estimators at which boosting is terminated"/></td><td><InputNumber  min="0" step="50" defaultValue={50} id="n_estimators6"/></td><td>learning_rate <img src={help} className="help" alt="" title="Weight applied to each classifier at each boosting iteration"/></td><td><InputNumber  min="0" step="1"  defaultValue={1} id="learning_rate6"/></td></tr>
                     </tbody></table>
                     <button value="AdaBoost" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="GradientBoosting2" id="GradientBoosting2">
-                <p className="infoAlgo">This is a Christel option.</p>
+                <p className="infoAlgo">Gradient boosting is a type of machine learning boost. It relies heavily on the prediction that the next model will reduce prediction errors when mixed with the previous ones. The main idea is to establish target results for this next model in order to minimize errors.</p>
                 <table><tbody>
-                <tr><td>learning_rate <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.1" defaultValue={0.1} id="learning_rate7"/></td><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators7"/></td></tr>
-                <tr><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth7"/></td><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split7"/></td></tr>
+                <tr><td>learning_rate <img src={help} className="help" alt="" title="Determines the step size at each iteration while moving toward a minimum of a loss function"/></td><td><InputNumber  min="0" step="0.1" defaultValue={0.1} id="learning_rate7"/></td><td>n_estimators <img src={help} className="help" alt="" title="The number of boosting stages to perform"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators7"/></td></tr>
+                <tr><td>max_depth <img src={help} className="help" alt="" title="The maximum depth of the individual regression estimators"/></td><td><InputNumber  min="0" step="3" defaultValue={3} id="max_depth7"/></td><td>min_samples_split <img src={help} className="help" alt="" title="The minimum number of samples required to be at a leaf node"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split7"/></td></tr>
                     </tbody></table>
                     <button value="GradientBoosting2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="RandomForest2" id="RandomForest2">
-                <p className="infoAlgo">This is a Christel option.</p>
+                <p className="infoAlgo">A random forest is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting.</p>
                 <table><tbody>
-                <tr><td>n_estimators <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators8"/></td><td>max_depth <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={3} id="max_depth8"/></td></tr>
-                <tr><td>min_samples_split <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split8"/></td><td>class_weight <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="class_weight8" name="class_weight">
+                <tr><td>n_estimators <img src={help} className="help" alt="" title="The number of trees in the forest"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="n_estimators8"/></td><td>max_depth <img src={help} className="help" alt="" title="The maximum depth of the individual regression estimators"/></td><td><InputNumber  min="0" step="1" defaultValue={3} id="max_depth8"/></td></tr>
+                <tr><td>min_samples_split <img src={help} className="help" alt="" title="The minimum number of samples required to split an internal node"/></td><td><InputNumber  min="0" step="2" defaultValue={2} id="min_samples_split8"/></td><td>class_weight <img src={help} className="help" alt="" title="The maximum depth of the individual regression estimators"/></td><td><select  id="class_weight8" name="class_weight">
                         <option value="none">none</option>
                         <option value="balanced">balanced</option>
                         </select></td></tr>
@@ -556,17 +556,17 @@ const Analyze = () =>  {
                         <button value="RandomForest2" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
                 <div className="LogisticRegression" id="LogisticRegression">
-                <p className="infoAlgo">This is a Christel option.</p>
+                <p className="infoAlgo">Logistic regression models the probabilities for classification problems with two possible outcomes. It’s an extension of the linear regression model for classification problems.</p>
                 <table><tbody>
-                <tr><td>penalty <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="penalty9" name="penalty">
+                <tr><td>penalty <img src={help} className="help" alt="" title="Specifies the norm used in the penalization"/></td><td><select  id="penalty9" name="penalty">
                         <option value="l2">l2</option>
                         <option value="l1">l1</option>
                         <option value="elasticnet">elasticnet</option>
-                        <option value="none">none</option></select></td><td>tol <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="0.0001" defaultValue={0.0001} id="tol9"/></td></tr>
-                        <tr><td>c <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="c9"/></td><td>class_weight <img src={help} className="help" alt="" title="Christel"/></td><td><select  id="class_weight9" name="class_weight">
+                        <option value="none">none</option></select></td><td>tol <img src={help} className="help" alt="" title="Tolerance for stopping criteria"/></td><td><InputNumber  min="0" step="0.0001" defaultValue={0.0001} id="tol9"/></td></tr>
+                        <tr><td>c <img src={help} className="help" alt="" title="Inverse of regularization strength"/></td><td><InputNumber  min="0" step="1" defaultValue={1} id="c9"/></td><td>class_weight <img src={help} className="help" alt="" title="Weights associated with classes"/></td><td><select  id="class_weight9" name="class_weight">
                         <option value="none">none</option>
                         <option value="balanced">balanced</option></select></td></tr>
-                        <tr><td>max_iter <img src={help} className="help" alt="" title="Christel"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="max_iter9"/></td></tr>
+                        <tr><td>max_iter <img src={help} className="help" alt="" title="Maximum number of iterations taken for the solvers to converge"/></td><td><InputNumber  min="0" step="100" defaultValue={100} id="max_iter9"/></td></tr>
                     </tbody></table>
                     <button value="LogisticRegression" onClick={sendRequest} className="boutonSendanalyze" id="boutonSendanalyze">Analyze</button>
                 </div>
