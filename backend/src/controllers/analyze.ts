@@ -413,7 +413,19 @@ export const informations : RequestHandler = (req : Request, res : Response, nex
 };
 
 export const sendPreview : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    var nomFichier = req.body.path ;
     const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
+    var acc = 1; 
+    nomFichier = nomFichier.replace(/ /g,"-").replace(/_/g,"-").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
+    var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyse/',false);
+    while (listName.includes(nomFichier)) {
+        if (acc > 1) {
+            nomFichier = nomFichier.split('(')[0];
+        }
+        nomFichier = nomFichier+"("+acc+")";
+        acc++;
+    }
+    req.body.path = nomFichier;
     fs.writeFile('uploads/' + req.body.userId + '/analysePreview/' + aesCipher.encrypt(Buffer.from(req.body.path + ".txt")), aesCipher.encrypt(Buffer.from(req.body.image)), function (err) {
         if (err) { 
         } else {
