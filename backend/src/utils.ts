@@ -1,6 +1,6 @@
 import fs from "fs";
 import AESCipher from "./utils/aesCipher";
-
+import xlsx from "node-xlsx";
 
 class Utils {
     
@@ -90,6 +90,38 @@ class Utils {
         return res;
     }
 
+    public static xlsxToCSV(path:string,path2:string,aesCipher:AESCipher) {
+        var rows = [];
+        var row :any= [];
+        var fileConverted: any = "";
+        console.log(path)
+        var obj = xlsx.parse(path); // parses a file
+        //looping through all sheets
+        for(var i = 0; i < obj.length; i++)
+        {
+            var sheet :any = obj[i];
+            //loop through all rows in the sheet
+            for(var j = 0; j < sheet['data'].length; j++)
+            {
+                row=[]
+                for(var v = 1; v < sheet['data'][j].length; v++)
+                {
+                    row.push(sheet['data'][j][v].toString().replace(/,+/g,"."))
+                }
+                rows.push(row)
+            }
+        }
+
+        //creates the csv string to write it to a file
+        for(var i = 0; i < rows.length; i++)
+        {
+            fileConverted += rows[i].join(",") + "\n";
+        }
+        fs.writeFileSync(path2, aesCipher.encryptToBuffer(fileConverted));
+        fs.unlink(path, function (err) {
+            console.log("csv correctement convertis")
+        });
+    }
 
     public static getSizeFile(userId : string, path : string) {
         const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);

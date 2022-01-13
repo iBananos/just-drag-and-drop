@@ -6,6 +6,7 @@ import * as Utils from "../utils";
 import { exec } from 'child_process';
 import AESCipher from "../utils/aesCipher";
 import UserLimit from '../models/userLimit';
+
 import type { RequestHandler, Request, Response, NextFunction } from "express";
 
 
@@ -29,11 +30,12 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
         return;
     }
 
-    const extension = verifFileName(req.file?.originalname);
+    var extension = verifFileName(req.file?.originalname);
     if (extension === false) {
         res.status(200).json({ "status": "401", "message": "Extension de fichier non valide." }); 
         return;
     }
+    
 
     let userId : string = req.body.userId;
 
@@ -48,18 +50,26 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
         nomFichier = nomFichier + "(" + acc + ")";
         acc++;
     }
+    
 
     const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
     let nom = aesCipher.encrypt(Buffer.from(nomFichier + "." + extension));
     let fileName = 'uploads/' + userId + '/database/' + nom;
-    
-    //fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
-    fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
-
-
-
+    if(extension === "xlsx"){
+        fs.writeFileSync(fileName, (req.file!.buffer));
+        let nomCSV = aesCipher.encrypt(Buffer.from(nomFichier + "." + "csv"));
+        
+        var fileNameCSV='uploads/' + userId + '/database/'+nomCSV;
+        Utils.default.xlsxToCSV(fileName,fileNameCSV ,aesCipher);
+        fileName = fileNameCSV
+        extension = 'csv'
+    }else{
+        //fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
+        fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
+    }
     var colonnes : string[] = getColonneFromCSV(userId, fileName);
     createInfoDatabase(userId, fileName, nomFichier, req.body.date, req.file?.size, extension, colonnes);
+    
 
     // Update du stockage utilisée
     await UserLimit.updateOne({ userId: objectId }, { currentStorage: newCurrentStorage });

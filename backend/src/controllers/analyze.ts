@@ -80,14 +80,14 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
                         console.error(`stderr: ${stderr}`);
                         return;
                     }
-                    if(stdout.split("\n")[0].includes("You will not get good")){
+                    if(stdout.split("\n")[0].includes("Error_")){
                         fs.unlink('uploads/' + req.body.userId + '/analyseInfo/' + nom, function (err) {
                             if (err) {
                                 console.error(err);
                             } else {
                                 console.log("File removed:", req.body.path);
                             }
-                            res.status(200).json({ "status" : "401", "message": stdout, "name": "a", "category": "b"});
+                            res.status(200).json({ "status" : "401", "message": stdout.split("_")[1], "name": "a", "category": "b"});
                             return;
                         });
                         
@@ -184,17 +184,16 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
                         console.error(`stderr: ${stderr}`);
                         return;
                     }
-                    if(stdout.split("\n")[0].includes("You will not get good")){
+                    if(stdout.split("\n")[0].includes("Error_")){
                         fs.unlink('uploads/' + "demo" + '/analyseInfo/' + nomFichier +'.json', function (err) {
                             if (err) {
                                 console.error(err);
                             } else {
                                 console.log("File removed:", req.body.path);
                             }
-                            res.status(200).json({ "status" : "401", "message": stdout, "name": "a", "category": "b"});
+                            res.status(200).json({ "status" : "401", "message": stdout.split("_")[1], "name": "a", "category": "b"});
                             return;
                         });
-                        
                     }else{
                         fs.writeFile('uploads/' + "demo" + '/analyse/' + nomFichier + ".csv", stdout, function (err) {
                             if (err) {
