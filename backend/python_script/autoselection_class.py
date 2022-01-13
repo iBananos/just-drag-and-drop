@@ -73,7 +73,10 @@ def autoselection(feature,predict,filename):
     y=y.to_numpy()
     #mfe = MFE(groups=["general", "statistical", "info-theory"])#features=["min","max","sd","attr_to_inst","mean","cat_to_num","nr_attr", "nr_bin", "nr_cat","nr_inst",'nr_num',"num_to_cat", "nr_class","attr_ent",'cor','cov',"nr_cor_attr",'mad',"nr_outliers","skewness"])
     mfe=MFE(features=['attr_conc', 'attr_to_inst', 'cat_to_num','class_conc', 'cor', 'cov',  'eigenvalues', 'eq_num_attr', 'freq_class',  'g_mean', 'gravity', 'inst_to_attr','joint_ent','kurtosis', 'mad','max', 'mean', 'median', 'min', 'mut_inf', 'nr_attr', 'nr_bin', 'nr_class', 'nr_cor_attr','nr_inst', 'nr_norm', 'nr_num', 'nr_outliers', 'ns_ratio','range', 'sd', 'skewness', 'sparsity', 't_mean', 'var'])
-    mfe.fit(X, y)
+    try:
+        mfe.fit(X, y)
+    except:
+        return 'Error_You will not get good prediction with your dataset'
     ft = mfe.extract()
     df = pd.DataFrame(ft, columns=ft[0])
     df=df.replace([np.inf, -np.inf], np.nan)
@@ -102,7 +105,7 @@ def autoselection(feature,predict,filename):
     stopcalcul=earlystop.predict(testone)
     stopcalcul2=earlystop2.predict(testone)
     if stopcalcul[0]==False and stopcalcul[1]==False and stopcalcul[2]==False and stopcalcul[3]==False and stopcalcul[4]==False and stopcalcul[5]==False and stopcalcul[6]==False and stopcalcul2[0]==False and stopcalcul2[1]==False and stopcalcul2[2]==False and stopcalcul2[3]==False and stopcalcul2[4]==False and stopcalcul2[5]==False and stopcalcul2[6]==False:
-        return 'You will not getting good prediction with your dataset'
+        return 'Error_You will not get good prediction with your dataset'
     pred1=FirstModel.predict(testone)
     testone['pred2']=SecondaryModel.predict(testone)
     testone['pred']=pred1
@@ -289,7 +292,7 @@ def autoselection(feature,predict,filename):
         classif.fit(X_train, y_train)
     prediction=classif.predict(X_test)
     try:
-        importance = classif.best_estimator_.coef_
+        importance = classif.best_estimator_.coef_[0]
     except:
         importance = classif.best_estimator_.feature_importances_
     importance=pd.DataFrame(importance,columns=['importance'])

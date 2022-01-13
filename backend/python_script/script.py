@@ -138,8 +138,6 @@ def get_list_parameters(algo_choice,list_parameters) :
         list_parameters = [list_parameters[0],float(list_parameters[1]),float(list_parameters[2]),list_parameters[3],int(list_parameters[4])]
     elif algo_choice == "Ridge" :
         list_parameters = [float(list_parameters[0]),list_parameters[1],float(list_parameters[2])]
-    elif algo_choice == "BayesianARDRegression" :
-        list_parameters = [300,1e-3,1e-6,1e-6,1e-6,1e-6,]
     return list_parameters
     #return list_parameters_default
 
@@ -155,7 +153,8 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
     if analyze_choice == "Classification" :
         target_name=pd.unique(df[pred].values.flatten())
         target_name=sorted(target_name)
-    
+        if len(target_name)==1:
+            return 'Error_No classification possible there is only one class'
     obj_df = df.select_dtypes(include=['object']).copy()
     dataexclude=df.select_dtypes(exclude=['object'])
     for i in range(len(dataexclude.columns.values)):
@@ -195,7 +194,7 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
              #get importance
-            importance = model.coef_
+            importance = model.coef_[0]
         else : 
             print("choose an available alogrithm")
 
