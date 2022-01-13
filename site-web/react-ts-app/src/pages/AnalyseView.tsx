@@ -105,19 +105,22 @@ const AnalyseView = () => {
         
         
         file = file.split('\n')
+        
+        var score = file[0]
+        var message =  "Score : <br>   <p STYLE='padding:0 0 0 20px;'> " + score +"</p> <br>"
+        file = file.slice(1)
         if(automatic === "true"){
           var algo = file[0]
           var parametre_auto : any= file[1].replace("{",'').replace("}",'').replace(/'+/g,"").split(",")
-          var message =  "Algorithme choisit par le serveur : <br>   <p STYLE='padding:0 0 0 20px;'> " + algo +"</p> <br> Paramètre optimaux choisis par le serveur : <br> <p STYLE='padding:0 0 0 20px;'>  "
+          message +=  "Algorithme choisit par le serveur : <br>   <p STYLE='padding:0 0 0 20px;'> " + algo +"</p> <br> Paramètre optimaux choisis par le serveur : <br> <p STYLE='padding:0 0 0 20px;'>  "
           for (var key in parametre_auto) {
                message+=parametre_auto[key] +'<br>';
          }
-         message+='</p>'
-          var indication = document.getElementById('indication') as HTMLElement
-          indication.innerHTML =message
-
+          message+='</p>'
           file = file.slice(2)
         }
+        var indication = document.getElementById('indication') as HTMLElement
+          indication.innerHTML =message
         createChartBar(file[0].split(","),file[1].split(","))
         file = file.slice(3)
         if(TypeRequest === "Regression"){

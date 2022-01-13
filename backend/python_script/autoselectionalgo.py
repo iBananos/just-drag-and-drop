@@ -295,7 +295,7 @@ def autoselection(feature,predict,filename):
     
     
     pred=reg.predict(X_test)
-    #print(r2_score(y_test,pred))
+    print(r2_score(y_test,pred))
     prediction=pd.DataFrame(pred,columns=['prediction'])
     
     try:

@@ -416,7 +416,7 @@ export const sendPreview : RequestHandler = (req : Request, res : Response, next
     var nomFichier = req.body.path ;
     const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
     var acc = 1; 
-    nomFichier = nomFichier.replace(/ /g,"-").replace(/_/g,"-").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
+    //nomFichier = nomFichier.replace(/ /g,"-").replace(/_/g,"-").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
     var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyse/',false);
     while (listName.includes(nomFichier)) {
         if (acc > 1) {
@@ -426,6 +426,8 @@ export const sendPreview : RequestHandler = (req : Request, res : Response, next
         acc++;
     }
     req.body.path = nomFichier;
+    var dataAnalyse = JSON.parse(req.body.param)
+    dataAnalyse.nameAnalyze= nomFichier;
     fs.writeFile('uploads/' + req.body.userId + '/analysePreview/' + aesCipher.encrypt(Buffer.from(req.body.path + ".txt")), aesCipher.encrypt(Buffer.from(req.body.image)), function (err) {
         if (err) { 
         } else {
@@ -434,7 +436,7 @@ export const sendPreview : RequestHandler = (req : Request, res : Response, next
                 if (err) {
                 } else {
                     console.log("analyse saved")
-                    fs.writeFile('uploads/' + req.body.userId + '/analyseInfo/' + aesCipher.encrypt(Buffer.from(req.body.path + ".json")), aesCipher.encrypt(Buffer.from(req.body.param)), function (err) {
+                    fs.writeFile('uploads/' + req.body.userId + '/analyseInfo/' + aesCipher.encrypt(Buffer.from(req.body.path + ".json")), aesCipher.encrypt(Buffer.from(JSON.stringify(dataAnalyse))), function (err) {
                         if (err) {
                         } else {
                             console.log("analyse info saved")
