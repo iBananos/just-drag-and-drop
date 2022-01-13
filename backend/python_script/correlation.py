@@ -6,9 +6,10 @@ import sys
 filename = sys.argv[1]
 extension = sys.argv[2]
 demo = sys.argv[3]
+separator = sys.argv[4]
 if demo == "false" :
-    key = sys.argv[4]
-    toEncrypt = sys.argv[5]
+    key = sys.argv[5]
+    toEncrypt = sys.argv[6]
 else : 
     key = ""
     toEncrypt = ""

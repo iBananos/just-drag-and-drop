@@ -67,9 +67,9 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
             }else if ( reponse === "Automatic2"){
                 algo = "python_script/autoselection_class.py"
             }
-            
+            var separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
             if (reponse === "Automatic" || reponse === "Automatic2") {
-                console.log('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt())
+                console.log('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" false "'+ separator +'" '+ aesCipher.getKey() + ' ' + aesCipher.getToEncrypt())
                 exec('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
@@ -104,8 +104,9 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
             } else {
                 var list_param : string[] = [];
                 Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
+                var separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
                 console.log('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt())
-                exec('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+                exec('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' false "'+separator +'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
@@ -174,7 +175,7 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
              
             if (reponse === "Automatic" || reponse === "Automatic2") {
                 console.log('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" true ')
-                exec('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" true ', (error:any, stdout:any, stderr:any) => {
+                exec('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" true ","', (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
@@ -208,7 +209,8 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
                 var list_param : string[] = [];
                 Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
                 console.log('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' true' )
-                exec('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' true' , (error:any, stdout:any, stderr:any) => {
+                var separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
+                exec('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' true "' + separator+'"', (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;

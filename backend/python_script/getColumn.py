@@ -8,8 +8,9 @@ from aesCipher import AESCipher
 
 filename = sys.argv[1]
 extension = sys.argv[2]
-key = sys.argv[3]
-toEncrypt = sys.argv[4]
+separator = sys.argv[3]
+key = sys.argv[4]
+toEncrypt = sys.argv[5]
 
 
 

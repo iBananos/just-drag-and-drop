@@ -13,9 +13,10 @@ second = sys.argv[4]
 third = sys.argv[5]
 sample = sys.argv[6]
 demo = sys.argv[7]
+separator = sys.argv[8]
 if demo == "false" :
-    key = sys.argv[8]
-    toEncrypt = sys.argv[9]
+    key = sys.argv[9]
+    toEncrypt = sys.argv[10]
 else : 
     key = ""
     toEncrypt = ""

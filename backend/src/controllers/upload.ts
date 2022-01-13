@@ -68,7 +68,7 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
         fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
     }
     var colonnes : string[] = getColonneFromCSV(userId, fileName);
-    createInfoDatabase(userId, fileName, nomFichier, req.body.date, req.file?.size, extension, colonnes);
+    createInfoDatabase(userId, fileName, nomFichier, req.body.date, req.file?.size, extension, colonnes,req.body.separator);
     
 
     // Update du stockage utilisée
@@ -108,9 +108,10 @@ function getColonneFromCSV(userId : string, path : any) {
 }
 
 
-function createInfoDatabase(userId : string, fileName : string, name : string, date : string, size : any, extension : any, colonnes : string[]){
+function createInfoDatabase(userId : string, fileName : string, name : string, date : string, size : any, extension : any, colonnes : string[],separator:string){
     const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-    exec('python python_script/getcolumn.py "' + fileName + '" ' + extension + ' ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error : any, stdout : any, stderr : any) => {
+    
+    exec('python python_script/getcolumn.py "' + fileName + '" ' + extension + ' "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error : any, stdout : any, stderr : any) => {
         if (error) {
             console.error(`error: ${error.message}`);
             return;
@@ -122,7 +123,7 @@ function createInfoDatabase(userId : string, fileName : string, name : string, d
         var resultat = stdout.replace(/' '+/g,"','")
         var colonnesString = resultat.replace(/'+/g,'').replace("]",'').replace("[",'').replace('\r\n','').split(",")
         console.log(colonnesString)
-        var doc = JSON.stringify({"name":name, "date":date, "size":size, "extension":extension, "colonnes":colonnes, "colonnesString":colonnesString});
+        var doc = JSON.stringify({"name":name, "date":date, "size":size, "extension":extension, "colonnes":colonnes, "colonnesString":colonnesString,"separator":separator});
 
         let nomFichier = aesCipher.encrypt(Buffer.from(name + ".json"));
         fs.writeFile('uploads/' + userId + '/databaseInfo/' + nomFichier, aesCipher.encrypt(Buffer.from(doc)), function (err) {});

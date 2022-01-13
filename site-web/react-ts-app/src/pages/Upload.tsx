@@ -53,6 +53,10 @@ function handleFiles(event :any) {
       files = event[0];
     }
     (document.getElementById('nameFile') as HTMLInputElement).innerHTML = files.name;
+    (document.getElementById('inputName') as HTMLInputElement).value = files.name.split(".")[0];
+    if(files.name.split(".")[1]==="csv"){
+      (document.getElementById("separator") as HTMLSelectElement).disabled = false;
+    }
   }
 }
 function sendFile(){
@@ -76,7 +80,9 @@ function sendFile(){
 function uploadFile(file:any) {
   var name = (document.getElementById('inputName') as HTMLInputElement).value;
   var date = new Date(Date.now());
-  utils.default.sendFileWithToken('POST', '/api/upload', file, name, date, callbackRequest);  
+  var separator = (document.getElementById("separator") as  HTMLSelectElement).value
+  console.log('POST', '/api/upload', file, name, date,separator)
+  utils.default.sendFileWithToken('POST', '/api/upload', file, name, date,separator, callbackRequest);  
 }
 
 function callbackRequest(result : any){
@@ -107,7 +113,18 @@ function callbackRequest(result : any){
           <input type="text" className="inputName" id="inputName" placeholder="Database name..."></input>
           <button className="sendButton" onClick={sendFile}>Send</button>
         </div>
-        <span className="msg" id="msg"></span> 
+        <div id="separatorSelector" className="separatorSelector">
+          Separator for CSV : <select name="separator" id="separator" defaultValue={","} disabled>
+            <option value=",">' , ' : comma</option>
+            <option value=";">' ; ' : semicolon</option>
+            <option value="|">' | ' : pipe</option>
+            <option value="/">' / ' : slash</option>
+            <option value="\">' \ ' : backslash</option>
+            <option value=":">' : ' : colon</option>
+            <option value=" ">' &nbsp; ' : blank space</option>
+          </select>
+        </div>
+        
         </div>
         
         <BarreLaterale />

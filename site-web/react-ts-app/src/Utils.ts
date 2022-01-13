@@ -117,7 +117,7 @@ class Utils {
         }, 4000);
     }
 
-    public static async sendFileWithToken(methode : string, url : string, data : File, name : string , date :Date, callback : any) {
+    public static async sendFileWithToken(methode : string, url : string, data : File, name : string , date :Date,separator:string, callback : any) {
         if (!Utils.checkToken()){
             return false;
         }
@@ -144,6 +144,7 @@ class Utils {
         formData.append('name', name)
         formData.append('date', date.toString())
         formData.append('file', data)
+        formData.append('separator', separator)
         xhr.send(formData)
     }
 

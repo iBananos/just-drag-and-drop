@@ -20,9 +20,10 @@ analyze_choice = sys.argv[6]
 algo_choice = sys.argv[7]
 
 demo = sys.argv[8]
+separator = sys.argv[9]
 if demo == "false" :
-    key = sys.argv[9]
-    toEncrypt = sys.argv[10]
+    key = sys.argv[10]
+    toEncrypt = sys.argv[11]
 else : 
     key = ""
     toEncrypt = ""

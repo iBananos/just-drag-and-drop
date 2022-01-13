@@ -44,6 +44,18 @@
     }
     
 }
+
+.separatorSelector{
+    color : $color_text;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 15%;
+    select{
+        text-align: left;
+        margin-left: 10px;
+        padding-left: 20px;
+    }
+}
 .button{
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
@@ -99,6 +111,7 @@
     position: relative;
     height: 35px;
     background-color: transparent;
+    
 }::placeholder{
     color: $color_placeholder;
 }

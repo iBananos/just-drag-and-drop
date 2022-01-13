@@ -90,6 +90,18 @@ class Utils {
         return res;
     }
 
+    public static getSeparator(userId : string, target : string) {
+        let res;
+        const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
+        fs.readdirSync("uploads/" + userId + "/databaseInfo/").forEach(file => {
+            if (aesCipher.decrypt(file) === target) {
+                res = JSON.parse((aesCipher.decrypt(fs.readFileSync("uploads/" + userId + "/databaseInfo/" + file, 'utf8')))).separator;
+            }
+        });
+        return res;
+    }
+
+
     public static xlsxToCSV(path:string,path2:string,aesCipher:AESCipher) {
         var rows = [];
         var row :any= [];
