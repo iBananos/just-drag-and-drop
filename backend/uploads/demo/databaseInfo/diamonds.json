@@ -1,1 +1,1 @@
-{"name":"diamonds","date":"Thu Dec 16 2021 22:26:54 GMT+0100 (heure normale d’Europe centrale)","size":3192560,"extension":"csv","colonnes":["","carat","cut","color","clarity","depth","table","price","x","y","z"],"colonnesString":["cut","color","clarity"]}
+{"name":"diamonds","date":"Thu Dec 16 2021 22:26:54 GMT+0100 (heure normale d’Europe centrale)","size":3192560,"extension":"csv","colonnes":["","carat","cut","color","clarity","depth","table","price","x","y","z"],"colonnesString":["cut","color","clarity"],"separator":","}
