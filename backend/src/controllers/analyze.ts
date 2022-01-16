@@ -209,8 +209,8 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
                 var list_param : string[] = [];
                 Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
                 console.log('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' true' )
-                var separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
-                exec('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' true "' + separator+'"', (error:any, stdout:any, stderr:any) => {
+
+                exec('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' true ","', (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
