@@ -71,7 +71,12 @@ class Utils {
       
         xhr.addEventListener('readystatechange', function(e) {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                callback(this.response);
+                if(xhr.response==="Vous devez d'abord confirmer votre adresse email."){
+                    Utils.doAlert("danger","Vous devez d'abord confirmer votre adresse email.")
+                }else{
+                    callback(this.response);
+                }
+                
             }
             else if (xhr.readyState === 4 && xhr.status !== 200) {
                 JSON.parse(this.response);
