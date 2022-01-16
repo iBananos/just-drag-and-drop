@@ -7,6 +7,7 @@ const router = express.Router();
 
 
  router.post("/getInformation", auth ,  profileCtrl.getInformation);
+ router.post("/isVerified", auth , profileCtrl.isVerified);
 
 // Exportation du router
 export default router;

@@ -5,6 +5,7 @@ import * as utils from "../Utils";
 const Upload = () => { 
   let files : File;
   window.onload=function(){
+    utils.default.sendRequestWithToken('POST', '/api/profile/isVerified', "", null);
   var dropArea = (document.getElementById("drop-area") as HTMLInputElement)
   // Prevent default drag behaviors
   ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {

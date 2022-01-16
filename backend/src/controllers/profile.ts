@@ -20,7 +20,11 @@ export const getInformation : RequestHandler = async (req : Request, res : Respo
         
     }
     catch (err) {
-        const error = new HttpException(500, 'controllers/profile.ts', err.toString());
-        next(error);
+        //const error = new HttpException(500, 'controllers/profile.ts', err.toString());
+        next(err);
     }
+}
+
+export const isVerified : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
+    res.send({"messsage" :"verified"})
 }
