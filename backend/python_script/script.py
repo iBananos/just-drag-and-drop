@@ -6,6 +6,7 @@ from sklearn.linear_model import LogisticRegression, Ridge, ARDRegression
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
 from io import StringIO
 from aesCipher import AESCipher
 import sys
