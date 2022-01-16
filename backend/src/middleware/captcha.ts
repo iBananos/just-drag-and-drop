@@ -9,12 +9,9 @@ export const captcha : RequestHandler = async (req : Request, res : Response, ne
             next();
         }
         else {
-            /* En production : !!!!!!
             const captcha = new Captcha();
             req.session.captcha = captcha.getResponse();
             res.status(401).json({"message": "Captcha invalide !", "captcha": captcha.getData()});
-            */
-            next();
         }
     }
     catch (err) {
