@@ -112,7 +112,7 @@ const AnalyseView = () => {
         if(automatic === "true"){
           var algo = file[0]
           var parametre_auto : any= file[1].replace("{",'').replace("}",'').replace(/'+/g,"").split(",")
-          message +=  "Algorithme choisit par le serveur : <br>   <p STYLE='padding:0 0 0 20px;'> " + algo +"</p> <br> Paramètre optimaux choisis par le serveur : <br> <p STYLE='padding:0 0 0 20px;'>  "
+          message +=  "Algorithm choosen by the server : <br>   <p STYLE='padding:0 0 0 20px;'> " + algo +"</p> <br> Optimal parameters choosen by the server : <br> <p STYLE='padding:0 0 0 20px;'>  "
           for (var key in parametre_auto) {
                message+=parametre_auto[key] +'<br>';
          }
