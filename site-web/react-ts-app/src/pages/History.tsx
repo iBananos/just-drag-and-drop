@@ -47,7 +47,7 @@ const History = () =>  {
                 date.innerHTML = "Date : " +  list[id].date;
                 database.innerHTML = "Database : "+  list[id].database;
                 type.innerHTML = "Type : " +  list[id].type;
-                algo.innerHTML = "Algorithme : " +  list[id].algo;
+                algo.innerHTML = "Algorithm : " +  list[id].algo;
                 var trash = document.createElement("img");
                 trash.src = trashIcone;
                 trash.id =  list[id].nameAnalyze+"_trash";
@@ -55,7 +55,7 @@ const History = () =>  {
                 trash.className = "trashAnalyze";
                 trash.onclick = deleteAnalyze;
                 trashdiv.appendChild(trash)
-                param.innerHTML = "Paramètres : ";
+                param.innerHTML = "Parameters : ";
                 Object.entries(list[id].params).forEach(([key,value])=>{
                     console.log(list[id].params)
                     var p = document.createElement("p");
