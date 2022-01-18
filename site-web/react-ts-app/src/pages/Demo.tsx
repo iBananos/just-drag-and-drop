@@ -11,7 +11,7 @@ const Demo = () =>  {
                 <h1 className="title">Demo page</h1>
                 <div className="democontainer">
                 <NavLink onClick={window.location.reload} to="/dataVisu?demo=true"><div className="democell"><p className="textDemo">Datavisualisation</p></div></NavLink>
-                <NavLink onClick={window.location.reload} to="/analyze?demo=true"><div className="democell"><p className="textDemo">Predictions</p></div></NavLink>
+                <NavLink onClick={window.location.reload} to="/analyze?demo=true"><div className="democell"><p className="textDemo">Prediction</p></div></NavLink>
                     </div>
             </div>
             <BarreLaterale />
