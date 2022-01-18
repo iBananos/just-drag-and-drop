@@ -235,7 +235,7 @@ const DataVisu = () =>  {
         newIndication.className = "indication";
         var x = file[0].split(',')[0];
         var y = file[0].split(',')[1];
-        newIndication.innerHTML = x + " en fonction de " +  y
+        newIndication.innerHTML = x + " with respect to " +  y
         newBoard.appendChild(newIndication)
 
         var download = document.createElement("img");
@@ -359,7 +359,7 @@ const DataVisu = () =>  {
                 plugins: {
                     title: {
                       display: true,
-                      text: 'Datavisualisation de ' +x+' en fonction de ' +y+'.',
+                      text: 'Datavisualisation of ' +x+' with respect to ' +y+'.',
                     }
                   },
                 aspectRatio : 1,
@@ -415,7 +415,7 @@ const DataVisu = () =>  {
                 plugins: {
                     title: {
                       display: true,
-                      text: 'Datavisualisation de '+x +' en fonction de '+y+'.',
+                      text: 'Datavisualisation of '+x +' with respect to '+y+'.',
                     }
                   },
                 aspectRatio : 1,
@@ -446,7 +446,7 @@ const DataVisu = () =>  {
         var x = file[0].split(',')[0];
         var y = file[0].split(',')[1];
         var z = file[0].split(',')[2];
-        newIndication.innerHTML = x + " en fonction de " + y + " classé par " +  z
+        newIndication.innerHTML = x + " with respect to " + y + " sorted by " +  z
         newBoard.appendChild(newIndication)
 
         var download = document.createElement("img");
@@ -588,7 +588,7 @@ const DataVisu = () =>  {
                 plugins: {
                     title: {
                       display: true,
-                      text: 'Moyenne de '+x + ' par ' + y+ ' en fonction de la coloration '+z+'.',
+                      text: 'Mean of '+x + ' per ' + y+ ' with respect to the coloration '+z+'.',
                     }
                   },
                 responsive: true
@@ -651,7 +651,7 @@ const DataVisu = () =>  {
                 plugins: {
                     title: {
                       display: true,
-                      text: 'Répartition des ' +z+'.',
+                      text: 'Distribution of ' +z+'.',
                     }
                   },
                 aspectRatio : 1,
@@ -679,7 +679,7 @@ const DataVisu = () =>  {
             data: {
                 labels: labels,
                 datasets: [{
-                    label : "Répartion des "+label,
+                    label : "Distribution of "+label,
                     type: 'bar',
                     data: data,
                     borderWidth: 1,
@@ -758,7 +758,7 @@ const DataVisu = () =>  {
             data: {
                 labels: labels,
                 datasets: [{
-                    label : "Répartion des "+label,
+                    label : "Distribution of "+label,
                     type: 'bar',
                     data: data,
                     borderWidth: 1,
@@ -889,7 +889,7 @@ const DataVisu = () =>  {
                 plugins: {
                     title: {
                       display: true,
-                      text: 'Datavisualisation de ' +x+' en fonction de ' +y+', coloré par '+ z+'.',
+                      text: 'Datavisualisation of ' +x+' with respect to ' +y+', colored by '+ z+'.',
                     }
                   },
                 aspectRatio : 1,
