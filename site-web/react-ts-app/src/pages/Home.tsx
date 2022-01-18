@@ -7,7 +7,7 @@ const Home = () =>  {
         const params = new URLSearchParams(search); 
         var status = params.get('status');
         if(status==="disconnected"){
-            utils.default.doAlert("info","You have been disconnect !");
+            utils.default.doAlert("info","You have been disconnected !");
         }else if(status==="connected"){
             utils.default.doAlert("success","You are connected !");
         }
