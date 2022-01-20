@@ -167,6 +167,8 @@ const DataVisu = () =>  {
         (document.getElementById("advanced")as HTMLButtonElement).onclick = showAdvanced;
         (document.getElementById("correlationMatrixButton") as HTMLButtonElement).disabled = false;
         (document.getElementById("correlationMatrixButton")as HTMLButtonElement).onclick = printCorrelation;
+        (document.getElementById("FullOverview") as HTMLButtonElement).disabled = false;
+        (document.getElementById("FullOverview")as HTMLButtonElement).onclick = requestFullOverview;
         createSelectorForColonnes()
     }
     function enableSecondOne(){
@@ -926,6 +928,8 @@ const DataVisu = () =>  {
         }
     }
 
+    
+
     function callbackMatrix(reponse:any){
         id++;
         var newBoard = document.createElement("div") as any;
@@ -1114,6 +1118,23 @@ const DataVisu = () =>  {
         }
         return [rouge,vert,bleu]
     }
+
+    function requestFullOverview(){
+        var requestAnalyze = JSON.stringify({"database": (document.getElementById("SelectDB")as HTMLSelectElement).value});
+        if(demo === "true"){
+            utils.default.sendRequestDemo('POST', '/api/dataVisu/fullOverviewDemo', requestAnalyze, callbackFullOverview); 
+        }else{
+            utils.default.sendRequestWithToken('POST', '/api/dataVisu/fullOverview', requestAnalyze, callbackFullOverview);
+        }
+    }
+
+    function callbackFullOverview(reponse:any){
+        //console.log(JSON.parse(reponse).file)
+        var newWindow :any = window.open();
+        newWindow.document.write(JSON.parse(reponse).file);
+      
+    }
+
     return (
         
         <div className="DataVisu">
@@ -1160,7 +1181,7 @@ const DataVisu = () =>  {
                     <option value="Line" >Line Chart</option>
                 </select><br />
                 <button onClick={printCorrelation} className='boutonSend' id="correlationMatrixButton" disabled>Correlation Matrix<img src={help} className="helpCorrelation" alt="" title="A correlation matrix is a table showing correlation coefficients between variables. Each cell in the table shows the correlation between two variables. Goes from -1 to 1."/></button>
-                
+                <button onClick={requestFullOverview} className='boutonSend' id="FullOverview" disabled>Full Overview<img src={help} className="helpCorrelation" alt="" title="Christel"/></button>
                 </div>
                 </div>
                 </div>

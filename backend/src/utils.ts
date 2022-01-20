@@ -140,6 +140,7 @@ class Utils {
         let data = JSON.parse(aesCipher.decrypt(fs.readFileSync(path, 'utf8')));
         return data.size;
     }
+
 }
 
 export default Utils;

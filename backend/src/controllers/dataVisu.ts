@@ -86,6 +86,25 @@ export const  matrixDemo : RequestHandler = (req : Request, res : Response, next
         res.send(data)
     });
 }
+export const  fullOverview : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
+    let filename = req.body.database.split(".")[0]+".html";
+    let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/databaseHTML/", filename);
+
+    var data = {"name": req.body.database,"file":fs.readFileSync("uploads/"+req.body.userId+"/databaseHTML/" + targetBase, 'utf8')}
+    res.send(data)
+
+    
+}
+
+export const  fullOverviewDemo : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
+    console.log(req.body.database)
+    let filename = req.body.database.split(".")[0]+".html";
+    
+    var data = {"name": req.body.database,"file":fs.readFileSync("uploads/demo/databaseHTML/" + filename, 'utf8')}
+    res.send(data)
+    
+}
 
 export const downloadAnalyze : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     var data = {"name": req.body.path,"file":fs.readFileSync("uploads/"+req.body.userId +"/analyse/"+req.body.path, 'utf8')}
