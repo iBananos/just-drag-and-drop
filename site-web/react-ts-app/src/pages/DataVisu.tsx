@@ -361,7 +361,7 @@ const DataVisu = () =>  {
                 plugins: {
                     title: {
                       display: true,
-                      text: 'Datavisualisation of ' +x+' with respect to ' +y+'.',
+                      text: 'Datavisualisation of ' +x+' with respect to ' +y,
                     }
                   },
                 aspectRatio : 1,
