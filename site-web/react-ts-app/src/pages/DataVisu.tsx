@@ -590,7 +590,7 @@ const DataVisu = () =>  {
                 plugins: {
                     title: {
                       display: true,
-                      text: 'Mean of '+x + ' per ' + y+ ' with respect to the coloration '+z+'.',
+                      text: 'Mean of '+x + ' per ' + y+ ' with respect to the coloration '+z,
                     }
                   },
                 responsive: true
@@ -653,7 +653,7 @@ const DataVisu = () =>  {
                 plugins: {
                     title: {
                       display: true,
-                      text: 'Distribution of ' +z+'.',
+                      text: 'Distribution of ' +z,
                     }
                   },
                 aspectRatio : 1,
@@ -891,7 +891,7 @@ const DataVisu = () =>  {
                 plugins: {
                     title: {
                       display: true,
-                      text: 'Datavisualisation of ' +x+' with respect to ' +y+', colored by '+ z+'.',
+                      text: 'Datavisualisation of ' +x+' with respect to ' +y+', colored by '+ z,
                     }
                   },
                 aspectRatio : 1,
