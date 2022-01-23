@@ -40,7 +40,7 @@ def principal_fonction(data,savepath,separator) :
     file=parse_data(data,separator)
     name_data = (data.split("/")[-1]).split(".")[0]
     profile = ProfileReport(file,minimal=True)
-    profile.to_file(savepath+'/'+name_data+'.html')
+    profile.to_file(savepath)
     return ''
 
 
