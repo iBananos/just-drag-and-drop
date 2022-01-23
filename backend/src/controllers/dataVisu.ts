@@ -87,11 +87,13 @@ export const  matrixDemo : RequestHandler = (req : Request, res : Response, next
     });
 }
 export const  fullOverview : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
-    let filename = req.body.database.split(".")[0]+".html";
-    let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/databaseHTML/", filename);
+    
+    let filename : string = req.body.database.split(".")[0]+".html";
+   
+    let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/databaseHTML", filename);
 
     let data = {"name": req.body.database,"file":fs.readFileSync("uploads/"+req.body.userId+"/databaseHTML/" + targetBase, 'utf8')}
+
     res.send(data)
 
     
