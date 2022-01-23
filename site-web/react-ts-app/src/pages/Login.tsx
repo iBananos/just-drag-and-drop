@@ -2,8 +2,8 @@
 import { NavLink } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import * as utils from "../Utils";
-var pathUrl =  window.location
-var hostname = "";
+let pathUrl =  window.location
+let hostname = "";
 if(pathUrl.origin === "http://localhost:3000"){
     hostname =  "http://localhost:4000";
 }
@@ -11,23 +11,23 @@ if(pathUrl.origin === "http://localhost:3000"){
 const Login = () => {
 
     function login(){
-        var mail  = (document.getElementById('mail')as HTMLInputElement)?.value;
-        var mdp  = (document.getElementById('mdp')as HTMLInputElement)?.value;
+        let mail  = (document.getElementById('mail')as HTMLInputElement)?.value;
+        let mdp  = (document.getElementById('mdp')as HTMLInputElement)?.value;
         sendRequestLogin(mail,mdp);
     }
 
     function sendRequestLogin(mail:string, mdp:string) {
-        var url = hostname+'/api/auth/login'
-        var xhr = new XMLHttpRequest()
+        let url = hostname+'/api/auth/login'
+        let xhr = new XMLHttpRequest()
         xhr.open('POST', url, true)
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.withCredentials = true;
       
       
         xhr.addEventListener('readystatechange', function(e) {
-            var res;
+            let res;
           if (xhr.readyState === 4 && xhr.status === 200) {
-            var msg = "";
+            let msg = "";
             (document.getElementById("msg")as HTMLInputElement).innerHTML= msg;
             res = JSON.parse(this.response);
 
@@ -43,7 +43,7 @@ const Login = () => {
             //(document.getElementById("msg")as HTMLInputElement).innerHTML= res.message;
           }
         })
-        var data = JSON.stringify({"email":mail,"password":mdp})
+        let data = JSON.stringify({"email":mail,"password":mdp})
         xhr.send(data)
     }
 

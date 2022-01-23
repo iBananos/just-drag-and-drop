@@ -27,16 +27,16 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
         return;
     }
 
-    var reponse = checkAnalyze(req,false);
+    let reponse = checkAnalyze(req,false);
     if (reponse !== 'ok' && reponse !== "Automatic" && reponse !== "Automatic2") {
         res.status(200).json({ "status" : "401", "message": reponse});
         return;
     }
-    var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/',false);
-    var nomFichier = req.body.nameAnalyze;
+    let listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/',false);
+    let nomFichier = req.body.nameAnalyze;
     nomFichier = nomFichier.replace(/ /g,"-").replace(/_/g,"-").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
     if (nomFichier === "") nomFichier = "analyze";
-    var acc = 1; 
+    let acc = 1; 
     while (listName.includes(nomFichier)) {
         if (acc > 1) {
             nomFichier = nomFichier.split('(')[0];
@@ -52,22 +52,22 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
         if (err) {
             res.send('error'); 
         } else {
-            var analyze_choice = req.body.category;
-            var algo_choice = req.body.algo;
+            let analyze_choice = req.body.category;
+            let algo_choice = req.body.algo;
             
 
             let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/database/", req.body.database);
-            var filename = 'uploads/' + req.body.userId + '/database/' + targetBase;
-            var features = req.body.feature;
-            var pred = req.body.pred;
+            let filename = 'uploads/' + req.body.userId + '/database/' + targetBase;
+            let features = req.body.feature;
+            let pred = req.body.pred;
             let extension = req.body.database.split(".")[1];
-            var algo;
+            let algo;
             if(reponse === "Automatic" ){
                 algo = "python_script/autoselectionalgo.py"
             }else if ( reponse === "Automatic2"){
                 algo = "python_script/autoselection_class.py"
             }
-            var separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
+            let separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
             if (reponse === "Automatic" || reponse === "Automatic2") {
                 console.log('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" false "'+ separator +'" '+ aesCipher.getKey() + ' ' + aesCipher.getToEncrypt())
                 exec('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
@@ -102,9 +102,9 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
                       }   
                     })            
             } else {
-                var list_param : string[] = [];
+                let list_param : string[] = [];
                 Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
-                var separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
+                let separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
                 console.log('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt())
                 exec('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' false "'+separator +'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
@@ -135,16 +135,16 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
 
 export const  parametersDemo : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
 
-    var reponse = checkAnalyze(req,true);
+    let reponse = checkAnalyze(req,true);
     if (reponse !== 'ok' && reponse !== "Automatic" && reponse !== "Automatic2") {
         res.status(200).json({ "status" : "401", "message": reponse});
         return;
     }
-    var listName = Utils.default.getNameFiles("demo", 'uploads/' + "demo" + '/analyseInfo/',true);
-    var nomFichier = req.body.nameAnalyze;
+    let listName = Utils.default.getNameFiles("demo", 'uploads/' + "demo" + '/analyseInfo/',true);
+    let nomFichier = req.body.nameAnalyze;
     nomFichier = nomFichier.replace(/ /g,"-").replace(/_/g,"-").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
     if (nomFichier === "") nomFichier = "analyze";
-    var acc = 1; 
+    let acc = 1; 
     while (listName.includes(nomFichier)) {
         if (acc > 1) {
             nomFichier = nomFichier.split('(')[0];
@@ -159,14 +159,14 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
         if (err) {
             res.send('error'); 
         } else {
-            var analyze_choice = req.body.category;
-            var algo_choice = req.body.algo;
+            let analyze_choice = req.body.category;
+            let algo_choice = req.body.algo;
             
-            var filename = 'uploads/' + "demo" + '/database/' + req.body.database;
-            var features = req.body.feature;
-            var pred = req.body.pred;
+            let filename = 'uploads/' + "demo" + '/database/' + req.body.database;
+            let features = req.body.feature;
+            let pred = req.body.pred;
             let extension = req.body.database.split(".")[1];
-            var algo;
+            let algo;
             if(reponse === "Automatic" ){
                 algo = "python_script/autoselectionalgo.py"
             }else if ( reponse === "Automatic2"){
@@ -206,7 +206,7 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
                       }   
                     })            
             } else {
-                var list_param : string[] = [];
+                let list_param : string[] = [];
                 Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value as string)});
                 console.log('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' true' )
 
@@ -287,8 +287,8 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
 };
 
 function checkAnalyze(req:any,demo:boolean){
-    var filename :any;
-    var userID :any;
+    let filename :any;
+    let userID :any;
     if(!demo){
         userID = req.body.userId;
     }else{
@@ -304,19 +304,19 @@ function checkAnalyze(req:any,demo:boolean){
         filename = req.body.database
     }
     filename = filename.split(".")[0]
-    var analyze_choice = req.body.category;
-    var algo_choice = req.body.algo;
-    var features = req.body.feature;
-    var list_param :any= [];
+    let analyze_choice = req.body.category;
+    let algo_choice = req.body.algo;
+    let features = req.body.feature;
+    let list_param :any= [];
     Object.entries(req.body.params).forEach(([key,value])=>{list_param.push(value)}); // PROBLEME A CETTE LIGNE  TypeError: Cannot convert undefined or null to object
-    var pred = req.body.pred;
-    var listName = Utils.default.getNameFiles(userID, 'uploads/' + userID + '/database/',demo);
+    let pred = req.body.pred;
+    let listName = Utils.default.getNameFiles(userID, 'uploads/' + userID + '/database/',demo);
     // verif database
     if(typeof filename !== 'string') return "le nom de la database n'est pas un nom de fichier"
     if(!listName.includes(filename)) return "la database est inexistante"
 
     // verif pred
-    var data :any;
+    let data :any;
     if(!demo){
         let targetAnalyse :any= Utils.default.findEncryptedFile(userID, "uploads/" + userID + "/databaseInfo/", req.body.database.split(".")[0] + ".json");  
         data= JSON.parse(aesCipher.decrypt(fs.readFileSync("uploads/" + userID + "/databaseInfo/" + targetAnalyse, 'utf8')));
@@ -328,7 +328,7 @@ function checkAnalyze(req:any,demo:boolean){
     if(!data.colonnes.includes(pred)) return "la colonne prédiction est inexistante"
     // vérif feature
     if(typeof features !== 'object') return "features n'est pas une liste"
-    var acc :number = 0 
+    let acc :number = 0 
     features.forEach((element:any) => {
         acc++
         if(typeof element !== 'string') return "une colonne de feature n'est pas une nom de colonne"
@@ -415,11 +415,11 @@ export const informations : RequestHandler = (req : Request, res : Response, nex
 };
 
 export const sendPreview : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    var nomFichier = req.body.path ;
+    let nomFichier = req.body.path ;
     const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
-    var acc = 1; 
+    let acc = 1; 
     //nomFichier = nomFichier.replace(/ /g,"-").replace(/_/g,"-").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
-    var listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyse/',false);
+    let listName = Utils.default.getNameFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyse/',false);
     while (listName.includes(nomFichier)) {
         if (acc > 1) {
             nomFichier = nomFichier.split('(')[0];
@@ -428,7 +428,7 @@ export const sendPreview : RequestHandler = (req : Request, res : Response, next
         acc++;
     }
     req.body.path = nomFichier;
-    var dataAnalyse = JSON.parse(req.body.param)
+    let dataAnalyse = JSON.parse(req.body.param)
     dataAnalyse.nameAnalyze= nomFichier;
     fs.writeFile('uploads/' + req.body.userId + '/analysePreview/' + aesCipher.encrypt(Buffer.from(req.body.path + ".txt")), aesCipher.encrypt(Buffer.from(req.body.image)), function (err) {
         if (err) { 
@@ -456,12 +456,12 @@ export const sendPreview : RequestHandler = (req : Request, res : Response, next
 
 
 export const downloadAnalyze : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    var type = req.body.type
+    let type = req.body.type
     if (type == "Classification" ||type == "Regression"  ) {
         const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
         let targetAnalyseCSV = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyse/", req.body.path + ".csv");
         let targetAnalyseJSON = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyseInfo/", req.body.path + ".json");
-        var data = {"name": req.body.path,"param":aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/analyseInfo/" + targetAnalyseJSON, 'utf8')), "file": aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/analyse/" + targetAnalyseCSV, 'utf8'))};
+        let data = {"name": req.body.path,"param":aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/analyseInfo/" + targetAnalyseJSON, 'utf8')), "file": aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/analyse/" + targetAnalyseCSV, 'utf8'))};
         res.send(data);
         console.log("okay")
         if(req.body.fromHistory === "false"){
@@ -487,9 +487,9 @@ export const downloadAnalyze : RequestHandler = (req : Request, res : Response, 
 };
 
 export const downloadAnalyzeDemo : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    var type = req.body.type
+    let type = req.body.type
     if (type == "Classification" ||type == "Regression"  ) {
-        var data = {"name": req.body.path, "file": fs.readFileSync("uploads/" + "demo" + "/analyse/" + req.body.path + ".csv", 'utf8')};
+        let data = {"name": req.body.path, "file": fs.readFileSync("uploads/" + "demo" + "/analyse/" + req.body.path + ".csv", 'utf8')};
         res.send(data);
         fs.unlink("uploads/" + "demo"+ "/analyseInfo/" + req.body.path + ".json", async function (err) {
             if (err) {

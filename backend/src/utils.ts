@@ -6,17 +6,17 @@ class Utils {
     
 
     public static getNameFiles(userId : string, path : string,demo : boolean){
-        var listName: string[] = [];
+        let listName: string[] = [];
         if(!demo){
             const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
             fs.readdirSync(path).forEach(file => {
                 file = aesCipher.decrypt(file);
-                var name = file.split(".")
+                let name = file.split(".")
                 listName.push(name[0])
             });
         }else{
             fs.readdirSync(path).forEach(file => {
-                var name = file.split(".")
+                let name = file.split(".")
                 listName.push(name[0])
             });
         }
@@ -24,16 +24,16 @@ class Utils {
     }
 
     public static getDataFiles(userId : string, path : string, demo :boolean){
-        var listName: string[] = [];
+        let listName: string[] = [];
         if(!demo) {
             const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
             fs.readdirSync(path).forEach(file => {
-                var data = JSON.parse(aesCipher.decrypt(fs.readFileSync(path + file, 'utf8')));
+                let data = JSON.parse(aesCipher.decrypt(fs.readFileSync(path + file, 'utf8')));
                 listName.push(data)
             });
         }else{
             fs.readdirSync(path).forEach(file => {
-                var data = JSON.parse(fs.readFileSync(path + file, 'utf8'));
+                let data = JSON.parse(fs.readFileSync(path + file, 'utf8'));
                 listName.push(data)
             });
         }
@@ -43,16 +43,16 @@ class Utils {
     }
 
     public static getPreviewFiles(userId : string, path : string, demo :boolean){
-        var listName: string[] = [];
+        let listName: string[] = [];
         if(!demo) {
             const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
             fs.readdirSync(path).forEach(file => {
-                var data = (aesCipher.decrypt(fs.readFileSync(path + file, 'utf8')));
+                let data = (aesCipher.decrypt(fs.readFileSync(path + file, 'utf8')));
                 listName.push(data)
             });
         }else{
             fs.readdirSync(path).forEach(file => {
-                var data = fs.readFileSync(path + file, 'utf8');
+                let data = fs.readFileSync(path + file, 'utf8');
                 listName.push(data)
             });
         }
@@ -63,7 +63,7 @@ class Utils {
 
     public static getNbFiles(userId : string, path : string){
         const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-        var acc : number = 0 ;
+        let acc : number = 0 ;
         fs.readdirSync(path).forEach(file => {
             acc++ ; 
         });
@@ -72,7 +72,7 @@ class Utils {
 
     public static getTotalSize(userId : string, path : string){
         const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-        var acc : number = 0 ;
+        let acc : number = 0 ;
         fs.readdirSync(path).forEach(file => {
             acc += JSON.parse((aesCipher.decrypt(fs.readFileSync(path + file, 'utf8')))).size; 
         });
@@ -103,20 +103,20 @@ class Utils {
 
 
     public static xlsxToCSV(path:string,path2:string,aesCipher:AESCipher) {
-        var rows = [];
-        var row :any= [];
-        var fileConverted: any = "";
+        let rows = [];
+        let row :any= [];
+        let fileConverted: any = "";
         console.log(path)
-        var obj = xlsx.parse(path); // parses a file
+        let obj = xlsx.parse(path); // parses a file
         //looping through all sheets
-        for(var i = 0; i < obj.length; i++)
+        for(let i = 0; i < obj.length; i++)
         {
-            var sheet :any = obj[i];
+            let sheet :any = obj[i];
             //loop through all rows in the sheet
-            for(var j = 0; j < sheet['data'].length; j++)
+            for(let j = 0; j < sheet['data'].length; j++)
             {
                 row=[]
-                for(var v = 1; v < sheet['data'][j].length; v++)
+                for(let v = 1; v < sheet['data'][j].length; v++)
                 {
                     row.push(sheet['data'][j][v].toString().replace(/,+/g,"."))
                 }
@@ -125,7 +125,7 @@ class Utils {
         }
 
         //creates the csv string to write it to a file
-        for(var i = 0; i < rows.length; i++)
+        for(let i = 0; i < rows.length; i++)
         {
             fileConverted += rows[i].join(",") + "\n";
         }

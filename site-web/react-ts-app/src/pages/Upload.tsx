@@ -6,7 +6,7 @@ const Upload = () => {
   let files : File;
   window.onload=function(){
     utils.default.sendRequestWithToken('POST', '/api/profile/isVerified', "", callback);
-  var dropArea = (document.getElementById("drop-area") as HTMLInputElement)
+  let dropArea = (document.getElementById("drop-area") as HTMLInputElement)
   // Prevent default drag behaviors
   ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
     dropArea.addEventListener(eventName, preventDefaults, false)   
@@ -43,8 +43,8 @@ function unhighlight(e:Event) {
 }
 }
 function handleDrop(e:any) {
-  var dt = e.dataTransfer
-  var files = dt.files
+  let dt = e.dataTransfer
+  let files = dt.files
 
   handleFiles(files)
 }
@@ -65,7 +65,7 @@ function handleFiles(event :any) {
   }
 }
 function sendFile(){
-  var name = (document.getElementById('inputName') as HTMLInputElement);
+  let name = (document.getElementById('inputName') as HTMLInputElement);
   if(files){
     if(name.value !== ""){
       uploadFile(files)
@@ -83,9 +83,9 @@ function sendFile(){
 
 
 function uploadFile(file:any) {
-  var name = (document.getElementById('inputName') as HTMLInputElement).value;
-  var date = new Date(Date.now());
-  var separator = (document.getElementById("separator") as  HTMLSelectElement).value
+  let name = (document.getElementById('inputName') as HTMLInputElement).value;
+  let date = new Date(Date.now());
+  let separator = (document.getElementById("separator") as  HTMLSelectElement).value
   console.log('POST', '/api/upload', file, name, date,separator)
   utils.default.sendFileWithToken('POST', '/api/upload', file, name, date,separator, callbackRequest);  
 }

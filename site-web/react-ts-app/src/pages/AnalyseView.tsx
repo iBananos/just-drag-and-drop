@@ -12,11 +12,11 @@ Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,  
 
 
 const AnalyseView = () => {
-    var TypeRequest : any;
-    var demo :any ;
-    var FileFromURL : any;
-    var fromHistory :any;
-    var automatic :any;
+    let TypeRequest : any;
+    let demo :any ;
+    let FileFromURL : any;
+    let fromHistory :any;
+    let automatic :any;
     window.onload= () =>{
         const search = window.location.search; // returns the URL query String
         const params = new URLSearchParams(search); 
@@ -37,11 +37,11 @@ const AnalyseView = () => {
     function callbackDownload(response:any){
         const search = window.location.search;
         const params = new URLSearchParams(search); 
-        var file = JSON.parse(response).file;
-        var param = JSON.parse(response).param;
+        let file = JSON.parse(response).file;
+        let param = JSON.parse(response).param;
         TypeRequest = params.get('type'); 
-        var newBoard = document.getElementById('containerGraph') as HTMLDivElement;
-        var newIndication = document.createElement("div");
+        let newBoard = document.getElementById('containerGraph') as HTMLDivElement;
+        let newIndication = document.createElement("div");
         newIndication.id = "indication";
         newIndication.className = "indication";
         newIndication.innerHTML = "baabbababa";
@@ -49,51 +49,51 @@ const AnalyseView = () => {
         newBoard.appendChild(newIndication)
 
         if(demo !== "true" && fromHistory !== "true"){
-          var save = document.createElement("img");
+          let save = document.createElement("img");
           save.src = saveIcone;
           save.id = "save";
           save.alt = "";
           save.className = "saveDash";
           save.onclick  = (ev:any) => {
-            var canvas1;
+            let canvas1;
             if(TypeRequest === "Regression"){
               canvas1 = (document.getElementById("myChartLine") as HTMLCanvasElement)
             }else{
               canvas1 = (document.getElementById("myChartMatrix") as HTMLCanvasElement)
             }
-              var canvas4 = (document.getElementById("myChartBar") as HTMLCanvasElement)
-              var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
+              let canvas4 = (document.getElementById("myChartBar") as HTMLCanvasElement)
+              let canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
               canvasFinal.width = 1000;
               canvasFinal.height= 500;
-              var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
+              let ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
               ctxFinal.drawImage(canvas1, 0, 0,500,500);
               ctxFinal.drawImage(canvas4, 500, 0,500,500);
-                var image = canvasFinal.toDataURL("image/jpeg");
-                var datasend = JSON.stringify({"image":image,"path":FileFromURL,"param":param,"file":JSON.parse(response).file});
+                let image = canvasFinal.toDataURL("image/jpeg");
+                let datasend = JSON.stringify({"image":image,"path":FileFromURL,"param":param,"file":JSON.parse(response).file});
                 utils.default.sendRequestWithToken('POST', '/api/analyze/sendPreview', datasend, callbackSend);
           };
           newBoard.appendChild(save);
       }
-        var download = document.createElement("img");
+        let download = document.createElement("img");
             download.src = downloadIcone;
             download.id = "download";
             download.alt = "";
             download.className = "downloadDash";
             download.onclick  = (ev:any) => {
-              var canvas1;
+              let canvas1;
               if(TypeRequest === "Regression"){
                 canvas1 = (document.getElementById("myChartLine") as HTMLCanvasElement)
               }else{
                 canvas1 = (document.getElementById("myChartMatrix") as HTMLCanvasElement)
               }
-                var canvas4 = (document.getElementById("myChartBar") as HTMLCanvasElement)
-                var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
+                let canvas4 = (document.getElementById("myChartBar") as HTMLCanvasElement)
+                let canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
                 canvasFinal.width = 1000;
                 canvasFinal.height= 500;
-                var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
+                let ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
                 ctxFinal.drawImage(canvas1, 0, 0,500,500);
                 ctxFinal.drawImage(canvas4, 500, 0,500,500);
-                var link = document.createElement('a');
+                let link = document.createElement('a');
                 link.download = "RESULT.png";
                 link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
                 link.click();
@@ -106,26 +106,26 @@ const AnalyseView = () => {
         
         file = file.split('\n')
         
-        var score = file[0]
-        var message =  "Score : <br>   <p STYLE='padding:0 0 0 20px;'> " + score +"</p> <br>"
+        let score = file[0]
+        let message =  "Score : <br>   <p STYLE='padding:0 0 0 20px;'> " + score +"</p> <br>"
         file = file.slice(1)
         if(automatic === "true"){
-          var algo = file[0]
-          var parametre_auto : any= file[1].replace("{",'').replace("}",'').replace(/'+/g,"").split(",")
+          let algo = file[0]
+          let parametre_auto : any= file[1].replace("{",'').replace("}",'').replace(/'+/g,"").split(",")
           message +=  "Algorithm choosen by the server : <br>   <p STYLE='padding:0 0 0 20px;'> " + algo +"</p> <br> Optimal parameters choosen by the server : <br> <p STYLE='padding:0 0 0 20px;'>  "
-          for (var key in parametre_auto) {
+          for (let key in parametre_auto) {
                message+=parametre_auto[key] +'<br>';
          }
           message+='</p>'
           file = file.slice(2)
         }
-        var indication = document.getElementById('indication') as HTMLElement
+        let indication = document.getElementById('indication') as HTMLElement
           indication.innerHTML =message
         createChartBar(file[0].split(","),file[1].split(","))
         file = file.slice(3)
         if(TypeRequest === "Regression"){
-            var data1 : any = [];
-            var data2 : any = [];
+            let data1 : any = [];
+            let data2 : any = [];
         
             file.forEach((el :any) =>{
                 el = el.split(",")
@@ -134,27 +134,27 @@ const AnalyseView = () => {
             });
             data2 = data2.slice(1)
             data1 = data1.slice(1)
-            var min = data1[0];
-            var max = data1[Object.keys(data1).length-1];
+            let min = data1[0];
+            let max = data1[Object.keys(data1).length-1];
             createChart(data2,data1,"label",[min,max],"rgba(187, 164, 34,0.1)","rgba(187, 164, 34,1)");
         }else{
-            var labels = file[0].split(",");
-            var acc = 0 ;
+            let labels = file[0].split(",");
+            let acc = 0 ;
             labels.forEach((el :any) =>{
                 acc++
             });
-            var data : any = [];
-            var totalPerColumn :number[] = [] ;
-            for(var x : number = 0 ; x < acc ; x++){
+            let data : any = [];
+            let totalPerColumn :number[] = [] ;
+            for(let x : number = 0 ; x < acc ; x++){
 
               totalPerColumn.push(0)
             }
 
-            for(var i : number = 1 ; i < acc+1 ; i++){
-                var line = file[i].split(",")
-                for(var j : number = 0 ; j < acc ; j++){
+            for(let i : number = 1 ; i < acc+1 ; i++){
+                let line = file[i].split(",")
+                for(let j : number = 0 ; j < acc ; j++){
                   totalPerColumn[i-1] += parseInt(line[j]);
-                  var dataline = {'x': labels[i-1], 'y': labels[j], 'v': parseInt(line[j])}
+                  let dataline = {'x': labels[i-1], 'y': labels[j], 'v': parseInt(line[j])}
                   data.push(dataline)
                   
                 }
@@ -173,16 +173,16 @@ const AnalyseView = () => {
     }
 
     function createChartBar(labels:any,data:any){
-      var div = document.getElementById("ChartBar") as HTMLDivElement;
+      let div = document.getElementById("ChartBar") as HTMLDivElement;
       
       
-      var myChartBar = document.createElement("canvas") as HTMLCanvasElement;
+      let myChartBar = document.createElement("canvas") as HTMLCanvasElement;
       myChartBar.id= "myChartBar";
       myChartBar.className= "myChartBar";
       div.appendChild(myChartBar);
-      var ctx : any = (document.getElementById('myChartBar') as HTMLCanvasElement).getContext('2d');
+      let ctx : any = (document.getElementById('myChartBar') as HTMLCanvasElement).getContext('2d');
         
-      var myChart = new Chart(ctx , {
+      let myChart = new Chart(ctx , {
         type : 'bar',
         data: {
             labels: labels,
@@ -200,7 +200,7 @@ const AnalyseView = () => {
           responsive: true,
             animation: {
                 /*onComplete: function() {
-                  var a = document.createElement('a');
+                  let a = document.createElement('a');
                     a.href = myChart.toBase64Image();
                     a.download = 'my_file_name.png';
 
@@ -215,31 +215,31 @@ const AnalyseView = () => {
 
     }
     function createRefBar(height:any){
-      var div = document.getElementById("Chart") as HTMLDivElement;
-      var divRef = document.createElement("div");
+      let div = document.getElementById("Chart") as HTMLDivElement;
+      let divRef = document.createElement("div");
       divRef.className = "BarRef"
 
-      var p100 = document.createElement("p");
+      let p100 = document.createElement("p");
       p100.className = "p100"
       p100.innerHTML = "100%";
       divRef.appendChild(p100)
 
-      var p75 = document.createElement("p");
+      let p75 = document.createElement("p");
       p75.className = "p75"
       p75.innerHTML = "75%";
       divRef.appendChild(p75)
 
-      var p50 = document.createElement("p");
+      let p50 = document.createElement("p");
       p50.className = "p50"
       p50.innerHTML = "50%";
       divRef.appendChild(p50)
 
-      var p25 = document.createElement("p");
+      let p25 = document.createElement("p");
       p25.className = "p25"
       p25.innerHTML = "25%";
       divRef.appendChild(p25)
       
-      var p0 = document.createElement("p");
+      let p0 = document.createElement("p");
       p0.className = "p0"
       p0.innerHTML = "0%";
       divRef.appendChild(p0)
@@ -249,19 +249,19 @@ const AnalyseView = () => {
     }
     function createConfusionMatrix(labels:any,datas:any,backgroundColor:any,borderColor:any,nbrow:number,totalPerColumn:number[]){
 
-      var div = document.getElementById("Chart") as HTMLDivElement;
-      var myChartMatrixDiv = document.createElement("div");
+      let div = document.getElementById("Chart") as HTMLDivElement;
+      let myChartMatrixDiv = document.createElement("div");
       myChartMatrixDiv.className = "myChartMatrixDiv"
       
       
-      var myChartMatrix = document.createElement("canvas") as HTMLCanvasElement;
+      let myChartMatrix = document.createElement("canvas") as HTMLCanvasElement;
       myChartMatrix.id= "myChartMatrix";
       myChartMatrix.className= "myChartMatrix";
       myChartMatrixDiv.appendChild(myChartMatrix)
       div.appendChild(myChartMatrixDiv);
-      var ctx : any = (document.getElementById('myChartMatrix') as HTMLCanvasElement).getContext('2d');
+      let ctx : any = (document.getElementById('myChartMatrix') as HTMLCanvasElement).getContext('2d');
   
-        var myChart = new Chart(ctx , {
+        let myChart = new Chart(ctx , {
             type : 'matrix',
             data: {
                 datasets: [{
@@ -271,15 +271,15 @@ const AnalyseView = () => {
                     backgroundColor(context) {
                         const value = datas[context.dataIndex].v;
                         //console.log(labels.indexOf(datas[context.dataIndex].x),datas[context.dataIndex].x, value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)])
-                        var colors  = createRainbowRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
-                        var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
+                        let colors  = createRainbowRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
+                        let colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
                         //console.log(colorString)
                         return color(colorString).alpha(0.8).rgbString();
                       },
                       borderColor(context) {
                         const value = datas[context.dataIndex].v;
-                        var colors  = createRainbowRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
-                        var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
+                        let colors  = createRainbowRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
+                        let colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
                         //console.log(colorString)
                         return color(colorString).alpha(1).rgbString();
                       },
@@ -330,7 +330,7 @@ const AnalyseView = () => {
                   },maintainAspectRatio: true,
                 animation: {
                     /*onComplete: function() {
-                      var a = document.createElement('a');
+                      let a = document.createElement('a');
                         a.href = myChart.toBase64Image();
                         a.download = 'my_file_name.png';
 
@@ -348,10 +348,10 @@ const AnalyseView = () => {
       if(max===0){
         return [116,116,116]
       }
-      var percentFade  =  x/max;
-      var rouge ; 
-      var bleu ;
-      var vert;
+      let percentFade  =  x/max;
+      let rouge ; 
+      let bleu ;
+      let vert;
       if(percentFade<0.5){
         rouge = 33 + (166*percentFade*3); 
         bleu = 196 - (166*percentFade*3);
@@ -365,14 +365,14 @@ const AnalyseView = () => {
   }
 
     function createChart(data2:any,abscisseData:any,label:any,lineData:any,backgroundColor:any,borderColor:any){
-      var myChartLine = document.createElement("canvas") as HTMLCanvasElement;
+      let myChartLine = document.createElement("canvas") as HTMLCanvasElement;
       myChartLine.id= "myChartLine";
       myChartLine.className= "myChartLine";
-      var div = document.getElementById("Chart") as HTMLDivElement;
+      let div = document.getElementById("Chart") as HTMLDivElement;
       div.appendChild(myChartLine);
-      var ctx : any = (document.getElementById('myChartLine') as HTMLCanvasElement).getContext('2d');
+      let ctx : any = (document.getElementById('myChartLine') as HTMLCanvasElement).getContext('2d');
         
-        var myChart = new Chart(ctx , {
+        let myChart = new Chart(ctx , {
             type : 'scatter',
             data: {
                 datasets: [{
@@ -399,7 +399,7 @@ const AnalyseView = () => {
               responsive: true,
                 animation: {
                     /*onComplete: function() {
-                      var a = document.createElement('a');
+                      let a = document.createElement('a');
                         a.href = myChart.toBase64Image();
                         a.download = 'my_file_name.png';
 

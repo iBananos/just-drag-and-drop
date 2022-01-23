@@ -1,4 +1,4 @@
-var pathUrl =  window.location
+let pathUrl =  window.location
 let hostname : string = "";
 if (pathUrl.origin === "http://localhost:3000") {
     hostname =  "http://localhost:4000";
@@ -14,7 +14,7 @@ const Verification = () => {
     
     function getVerif() {
         let url = hostname + '/api/auth/verification' + pathUrl.search;
-        var urlencoded = new URLSearchParams();
+        let urlencoded = new URLSearchParams();
         fetch(url, { method: 'POST', body: urlencoded, redirect: 'follow' })
             .then(response => response.text())
             .then(result => {
@@ -28,7 +28,7 @@ const Verification = () => {
 
 
     function startTimer() {
-        var timer = 5;
+        let timer = 5;
         setInterval(function () {
             (document.getElementById("time") as HTMLInputElement).innerHTML = timer.toString();
             if (--timer < 0) {

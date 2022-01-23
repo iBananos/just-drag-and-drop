@@ -1,8 +1,8 @@
 import Navigation from '../components/Navigation';
 
 import * as utils from "../Utils";
-var pathUrl =  window.location
-var hostname = "";
+let pathUrl =  window.location
+let hostname = "";
 if (pathUrl.origin === "http://localhost:3000") {
     hostname =  "http://localhost:4000";
 } 
@@ -17,7 +17,7 @@ const Signup = () => {
     }
     
     function getSvg() {
-        var urlencoded = new URLSearchParams();
+        let urlencoded = new URLSearchParams();
         fetch(hostname + "/api/auth/captcha", {method: 'POST', body: urlencoded, redirect: 'follow'})
         .then(response => response.text())
         .then(result => {
@@ -29,12 +29,12 @@ const Signup = () => {
 
 
     function createAccount() {
-        var mail = (document.getElementById('mail')as HTMLInputElement)?.value;
-        var mdp1 = (document.getElementById('mpd1')as HTMLInputElement)?.value;
-        var mdp2 = (document.getElementById('mpd2')as HTMLInputElement)?.value;
-        var surname = (document.getElementById('surname')as HTMLInputElement)?.value;
-        var name = (document.getElementById('name')as HTMLInputElement)?.value;
-        var captcha = (document.getElementById('captcha')as HTMLInputElement)?.value;
+        let mail = (document.getElementById('mail')as HTMLInputElement)?.value;
+        let mdp1 = (document.getElementById('mpd1')as HTMLInputElement)?.value;
+        let mdp2 = (document.getElementById('mpd2')as HTMLInputElement)?.value;
+        let surname = (document.getElementById('surname')as HTMLInputElement)?.value;
+        let name = (document.getElementById('name')as HTMLInputElement)?.value;
+        let captcha = (document.getElementById('captcha')as HTMLInputElement)?.value;
 
         if (mdp1 === mdp2) { 
             sendRequestSignUp(mail ,mdp1, name, surname, captcha);
@@ -47,8 +47,8 @@ const Signup = () => {
     }
 
     function sendRequestSignUp(mail:string, mdp:string, name : string, surname : string, captcha : string) {
-        var url = hostname + '/api/auth/signup'
-        var xhr = new XMLHttpRequest()
+        let url = hostname + '/api/auth/signup'
+        let xhr = new XMLHttpRequest()
         xhr.open('POST', url, true)
         xhr.setRequestHeader("Content-Type", "application/json");
       
@@ -58,7 +58,7 @@ const Signup = () => {
                 window.location.href = "/";
             }
             else if (xhr.readyState === 4 && xhr.status !== 200) {
-                var res = JSON.parse(this.response);
+                let res = JSON.parse(this.response);
                 //(document.getElementById("msg") as HTMLInputElement).innerHTML= res.message;
                 
                 if (res.message === "Captcha invalide !") {
@@ -70,7 +70,7 @@ const Signup = () => {
             }
         });
 
-        var data = JSON.stringify({"email": mail, "password": mdp, "name": name, "surname": surname, "captcha": captcha})
+        let data = JSON.stringify({"email": mail, "password": mdp, "name": name, "surname": surname, "captcha": captcha})
         xhr.send(data);
     }
 

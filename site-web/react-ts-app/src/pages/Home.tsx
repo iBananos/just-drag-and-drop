@@ -5,7 +5,7 @@ const Home = () =>  {
     window.onload= () =>{
         const search = window.location.search; // returns the URL query String
         const params = new URLSearchParams(search); 
-        var status = params.get('status');
+        let status = params.get('status');
         if(status==="disconnected"){
             utils.default.doAlert("info","You have been disconnected !");
         }else if(status==="connected"){

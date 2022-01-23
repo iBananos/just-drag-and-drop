@@ -19,7 +19,7 @@ const Navigation = () => {
     }
 
     function gestionNav(){
-        var width = window.innerWidth;
+        let width = window.innerWidth;
         if(width > 450){
             (document.getElementById("company") as HTMLElement).style.display = "block";
         }else{
@@ -27,8 +27,8 @@ const Navigation = () => {
         }
     }
     window.addEventListener('resize', gestionNav);
-    var aenvoyer = false;
-    var timesent = Date.now();
+    let aenvoyer = false;
+    let timesent = Date.now();
     setInterval(checkTokenValidity,5000);
 
     function checkTokenValidity() {

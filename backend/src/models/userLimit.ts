@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
-var Schema = mongoose.Schema
+let Schema = mongoose.Schema
 
 // Model d'un user
 const userLimitSchema = new mongoose.Schema({

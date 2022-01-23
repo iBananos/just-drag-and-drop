@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-var Schema = mongoose.Schema
+let Schema = mongoose.Schema
 
 // Model d'un user
 const refreshTokenSchema = new mongoose.Schema({

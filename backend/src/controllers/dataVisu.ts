@@ -16,7 +16,7 @@ export const  parameters : RequestHandler = (req : Request, res : Response, next
     let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/database/", req.body.database);
     let filename = "uploads/" + req.body.userId + "/database/" + targetBase;
     let extension = req.body.database.split(".")[1];
-    var separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
+    let separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
     exec('python python_script/datavisu.py "' + filename + '" ' + extension + ' "' + req.body.firstOne + '" "' + req.body.secondOne + '" "' + req.body.thirdOne + '" ' + req.body.sample + ' false "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
         if (error) {
             console.error(`error: ${error.message}`);
@@ -26,7 +26,7 @@ export const  parameters : RequestHandler = (req : Request, res : Response, next
             console.error(`stderr: ${stderr}`);
             return;
         }
-        var data = {"name": req.body.path,"file":stdout}
+        let data = {"name": req.body.path,"file":stdout}
         res.send(data)
     });
 }
@@ -43,7 +43,7 @@ export const  parametersDemo : RequestHandler = (req : Request, res : Response, 
             console.error(`stderr: ${stderr}`);
             return;
         }
-        var data = {"name": req.body.path,"file":stdout}
+        let data = {"name": req.body.path,"file":stdout}
         res.send(data)
     });
 }
@@ -54,7 +54,7 @@ export const  matrix : RequestHandler = (req : Request, res : Response, next : N
     let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/database/", req.body.database);
     let filename = "uploads/" + req.body.userId + "/database/" + targetBase;
     let extension = req.body.database.split(".")[1];
-    var separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
+    let separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
     exec('python python_script/correlation.py "' + filename + '" ' + extension + ' false "' +separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
         if (error) {
             console.error(`error: ${error.message}`);
@@ -64,7 +64,7 @@ export const  matrix : RequestHandler = (req : Request, res : Response, next : N
             console.error(`stderr: ${stderr}`);
             return;
         }
-        var data = {"name": req.body.path,"file":stdout}
+        let data = {"name": req.body.path,"file":stdout}
         res.send(data)
     });
 }
@@ -82,7 +82,7 @@ export const  matrixDemo : RequestHandler = (req : Request, res : Response, next
             console.error(`stderr: ${stderr}`);
             return;
         }
-        var data = {"name": req.body.path,"file":stdout}
+        let data = {"name": req.body.path,"file":stdout}
         res.send(data)
     });
 }
@@ -91,7 +91,7 @@ export const  fullOverview : RequestHandler = (req : Request, res : Response, ne
     let filename = req.body.database.split(".")[0]+".html";
     let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/databaseHTML/", filename);
 
-    var data = {"name": req.body.database,"file":fs.readFileSync("uploads/"+req.body.userId+"/databaseHTML/" + targetBase, 'utf8')}
+    let data = {"name": req.body.database,"file":fs.readFileSync("uploads/"+req.body.userId+"/databaseHTML/" + targetBase, 'utf8')}
     res.send(data)
 
     
@@ -101,13 +101,13 @@ export const  fullOverviewDemo : RequestHandler = (req : Request, res : Response
     console.log(req.body.database)
     let filename = req.body.database.split(".")[0]+".html";
     
-    var data = {"name": req.body.database,"file":fs.readFileSync("uploads/demo/databaseHTML/" + filename, 'utf8')}
+    let data = {"name": req.body.database,"file":fs.readFileSync("uploads/demo/databaseHTML/" + filename, 'utf8')}
     res.send(data)
     
 }
 
 export const downloadAnalyze : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    var data = {"name": req.body.path,"file":fs.readFileSync("uploads/"+req.body.userId +"/analyse/"+req.body.path, 'utf8')}
+    let data = {"name": req.body.path,"file":fs.readFileSync("uploads/"+req.body.userId +"/analyse/"+req.body.path, 'utf8')}
     res.send(data);
 };
 

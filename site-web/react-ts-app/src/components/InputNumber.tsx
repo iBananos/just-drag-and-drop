@@ -11,19 +11,19 @@ const InputNumber = (props:inputProps) => {
 
     function roundDecimal(nombre:number, precision:number){
         precision = precision || 2;
-        var tmp = Math.pow(10, precision);
+        let tmp = Math.pow(10, precision);
         return Math.round( nombre*tmp )/tmp;
     }
 
     function increaseCounter(){
-        var value = (document.getElementById(props.id) as HTMLInputElement).value;
-        var res =(parseFloat(value)+parseFloat(props.step));
+        let value = (document.getElementById(props.id) as HTMLInputElement).value;
+        let res =(parseFloat(value)+parseFloat(props.step));
         (document.getElementById(props.id) as HTMLInputElement).value = roundDecimal(res,props.step.length).toString();
     }
 
     function  decreaseCounter(){
-        var value = (document.getElementById(props.id) as HTMLInputElement).value;
-        var res =(parseFloat(value)-parseFloat(props.step));
+        let value = (document.getElementById(props.id) as HTMLInputElement).value;
+        let res =(parseFloat(value)-parseFloat(props.step));
         if(res>0){
             (document.getElementById(props.id) as HTMLInputElement).value = roundDecimal(res,props.step.length).toString();
         }else{

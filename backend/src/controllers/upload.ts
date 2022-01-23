@@ -30,7 +30,7 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
         return;
     }
 
-    var extension = verifFileName(req.file?.originalname);
+    let extension = verifFileName(req.file?.originalname);
     if (extension === false) {
         res.status(200).json({ "status": "401", "message": "Extension de fichier non valide." }); 
         return;
@@ -39,10 +39,10 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
 
     let userId : string = req.body.userId;
 
-    var listName = Utils.default.getNameFiles(userId, 'uploads/' + userId + '/database/',false);
-    var nomFichier : string = req.body.name;
+    let listName = Utils.default.getNameFiles(userId, 'uploads/' + userId + '/database/',false);
+    let nomFichier : string = req.body.name;
     nomFichier = nomFichier.replace(/ /g,"-").replace(/_/g,"-").replace(/\//g,"").replace(/\(/g,"").replace(/\)/g,"").replace(/"/g,"").replace(/'/g,"").replace(/\./g,"");
-    var acc = 1; 
+    let acc = 1; 
     while (listName.includes(nomFichier)) {
         if (acc > 1) {
             nomFichier = nomFichier.split('(')[0]
@@ -55,11 +55,15 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
     const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
     let nom = aesCipher.encrypt(Buffer.from(nomFichier + "." + extension));
     let fileName = 'uploads/' + userId + '/database/' + nom;
+    let nomHTML = aesCipher.encrypt(Buffer.from(nomFichier + "." + "html"));
+    let fileNameHTML='uploads/' + userId + '/databaseHTML/'+nomHTML;
     if(extension === "xlsx"){
         fs.writeFileSync(fileName, (req.file!.buffer));
+        
         let nomCSV = aesCipher.encrypt(Buffer.from(nomFichier + "." + "csv"));
         
-        var fileNameCSV='uploads/' + userId + '/database/'+nomCSV;
+        let fileNameCSV='uploads/' + userId + '/database/'+nomCSV;
+        
         Utils.default.xlsxToCSV(fileName,fileNameCSV ,aesCipher);
         fileName = fileNameCSV
         extension = 'csv'
@@ -67,8 +71,8 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
         //fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
         fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
     }
-    var colonnes : string[] = getColonneFromCSV(userId, fileName);
-    createInfoDatabase(userId, fileName, nomFichier, req.body.date, req.file?.size, extension, colonnes,req.body.separator);
+    let colonnes : string[] = getColonneFromCSV(userId, fileName);
+    createInfoDatabase(userId, fileName,fileNameHTML, nomFichier, req.body.date, req.file?.size, extension, colonnes,req.body.separator);
     
 
     // Update du stockage utilisée
@@ -103,12 +107,12 @@ function verifFileName(name : any) {
 
 function getColonneFromCSV(userId : string, path : any) {
     const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-    var colonnes : string[] = aesCipher.decrypt(fs.readFileSync(path, "utf8")).split('\n')[0].replace(/"/g, '').split(",");
+    let colonnes : string[] = aesCipher.decrypt(fs.readFileSync(path, "utf8")).split('\n')[0].replace(/"/g, '').split(",");
     return colonnes;
 }
 
 
-function createInfoDatabase(userId : string, fileName : string, name : string, date : string, size : any, extension : any, colonnes : string[],separator:string){
+function createInfoDatabase(userId : string, fileName : string,overviewPath : string, name : string, date : string, size : any, extension : any, colonnes : string[],separator:string){
     const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
     
     exec('python python_script/getColumn.py "' + fileName + '" ' + extension + ' "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error : any, stdout : any, stderr : any) => {
@@ -120,13 +124,24 @@ function createInfoDatabase(userId : string, fileName : string, name : string, d
             console.error(`stderr: ${stderr}`);
             return;
         }
-        var resultat = stdout.replace(/' '+/g,"','")
-        var colonnesString = resultat.replace(/'+/g,'').replace("]",'').replace("[",'').replace('\r\n','').split(",")
+        let resultat = stdout.replace(/' '+/g,"','")
+        let colonnesString = resultat.replace(/'+/g,'').replace("]",'').replace("[",'').replace('\r\n','').split(",")
         console.log(colonnesString)
-        var doc = JSON.stringify({"name":name, "date":date, "size":size, "extension":extension, "colonnes":colonnes, "colonnesString":colonnesString,"separator":separator});
+        let doc = JSON.stringify({"name":name, "date":date, "size":size, "extension":extension, "colonnes":colonnes, "colonnesString":colonnesString,"separator":separator});
 
         let nomFichier = aesCipher.encrypt(Buffer.from(name + ".json"));
         fs.writeFile('uploads/' + userId + '/databaseInfo/' + nomFichier, aesCipher.encrypt(Buffer.from(doc)), function (err) {});
+    });
+    exec('python python_script/fullOverview.py "' + fileName + '" ' + extension + ' "'+separator+'" "'+overviewPath +'" '+ aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error : any, stdout : any, stderr : any) => {
+        if (error) {
+            console.error(`error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.error(`stderr: ${stderr}`);
+            return;
+        }
+        let resultat = stdout;
     });
 }
 
@@ -173,7 +188,7 @@ export const downloadData : RequestHandler = (req : Request, res : Response, nex
     const aesCipher = new AESCipher(req.body.userId, `${process.env.KEY_ENCRYPT}`);
     let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/database/", req.body.path);
     if (targetBase != undefined) {
-        var data = {"name": req.body.path, "file": aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/database/" + targetBase, 'utf8'))}
+        let data = {"name": req.body.path, "file": aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/database/" + targetBase, 'utf8'))}
         res.send(data);
     }
 };

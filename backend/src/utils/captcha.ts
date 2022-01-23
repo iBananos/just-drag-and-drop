@@ -8,7 +8,7 @@ export default class Captcha {
 
 
     constructor() {
-        var captcha = svgCaptcha.create({size: 5});
+        let captcha = svgCaptcha.create({size: 5});
         let data : any = captcha.data;
         data = data.replaceAll(/([#])\d+/g, "#bba422");
 

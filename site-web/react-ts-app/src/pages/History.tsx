@@ -5,26 +5,26 @@ import * as utils from "../Utils"
 import trashIcone from "../assets/trash.png";
 const History = () =>  {
 
-    var list : any[]= [];
-    var listImg : any[]= [];
+    let list : any[]= [];
+    let listImg : any[]= [];
     function deleteAnalyze(ev : any){
-        var id = ev.target.id.split("_")[0] ;
-        var file =  JSON.stringify({"path" : id});
+        let id = ev.target.id.split("_")[0] ;
+        let file =  JSON.stringify({"path" : id});
         utils.default.sendRequestWithToken('POST', '/api/analyze/deleteData', file, callbackDelete);
     }
     function callbackDelete(response:Response){
         window.location.reload()
     }
     function askForView(ev:any){
-        var id : number = parseInt(ev.target.id,10) ;
-        var title = (document.getElementById("title")as HTMLDivElement);
-        var img = (document.getElementById("ViewImage")as HTMLDivElement);
-        var date = (document.getElementById("date")as HTMLDivElement);
-        var database = (document.getElementById("database")as HTMLDivElement);
-        var algo = (document.getElementById("algo")as HTMLDivElement);
-        var param = (document.getElementById("param")as HTMLDivElement);
-        var type = (document.getElementById("type")as HTMLDivElement);
-        var trashdiv = (document.getElementById("trashDiv")as HTMLDivElement);
+        let id : number = parseInt(ev.target.id,10) ;
+        let title = (document.getElementById("title")as HTMLDivElement);
+        let img = (document.getElementById("ViewImage")as HTMLDivElement);
+        let date = (document.getElementById("date")as HTMLDivElement);
+        let database = (document.getElementById("database")as HTMLDivElement);
+        let algo = (document.getElementById("algo")as HTMLDivElement);
+        let param = (document.getElementById("param")as HTMLDivElement);
+        let type = (document.getElementById("type")as HTMLDivElement);
+        let trashdiv = (document.getElementById("trashDiv")as HTMLDivElement);
         trashdiv.innerHTML = "";
         img.innerHTML = "";
         title.innerHTML = "";
@@ -38,7 +38,7 @@ const History = () =>  {
         (document.getElementById("loadButton")as HTMLInputElement).style.display ="none";
             
         if(id !== undefined){
-                var image = document.createElement("img");
+                let image = document.createElement("img");
                 image.className = "previewView";
                 image.src=listImg[id];
                 img.appendChild(image)
@@ -48,7 +48,7 @@ const History = () =>  {
                 database.innerHTML = "Database : "+  list[id].database;
                 type.innerHTML = "Type : " +  list[id].type;
                 algo.innerHTML = "Algorithm : " +  list[id].algo;
-                var trash = document.createElement("img");
+                let trash = document.createElement("img");
                 trash.src = trashIcone;
                 trash.id =  list[id].nameAnalyze+"_trash";
                 trash.alt = "";
@@ -58,7 +58,7 @@ const History = () =>  {
                 param.innerHTML = "Parameters : ";
                 Object.entries(list[id].params).forEach(([key,value])=>{
                     console.log(list[id].params)
-                    var p = document.createElement("p");
+                    let p = document.createElement("p");
                     console.log(key + " : " + value)
                     p.innerHTML = key + " : " + value;
                     param.appendChild(p);
@@ -79,28 +79,28 @@ const History = () =>  {
     }
 
     function createCells(response : any){
-        var listData= JSON.parse(response).liste;
-        var listImages= JSON.parse(response).images;
+        let listData= JSON.parse(response).liste;
+        let listImages= JSON.parse(response).images;
         console.log(listImages)
-        for(var i: number = 0 ; i < listData.length; i++){
+        for(let i: number = 0 ; i < listData.length; i++){
 
-            var data= listData[i]
+            let data= listData[i]
             list.push(data);
-            var dataImg= listImages[i]
+            let dataImg= listImages[i]
             listImg.push(dataImg);
             
-            var cell = document.createElement("div");
+            let cell = document.createElement("div");
             cell.className ="HistoryCell"; 
             cell.id = i.toString();
             cell.onclick = askForView;
 
-            var img = document.createElement("img");
+            let img = document.createElement("img");
             img.className = "preview";
             img.id=i.toString();
             img.src=listImages[i]
             cell.appendChild(img)
 
-            var p = document.createElement("p");
+            let p = document.createElement("p");
             p.className = "title";
             p.id=i.toString();
             p.innerHTML = data.nameAnalyze;

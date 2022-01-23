@@ -2,11 +2,11 @@
 const ViewHistory = () => {
 
     function loadAnalyze(){
-        var url =  (document.getElementById("informationRequesturl")as HTMLInputElement).innerHTML;
-        var type =  (document.getElementById("informationRequesttype")as HTMLInputElement).innerHTML;
+        let url =  (document.getElementById("informationRequesturl")as HTMLInputElement).innerHTML;
+        let type =  (document.getElementById("informationRequesttype")as HTMLInputElement).innerHTML;
         if(type !== ""){
-            var algo = (document.getElementById("algo") as HTMLElement).innerHTML
-            var auto;
+            let algo = (document.getElementById("algo") as HTMLElement).innerHTML
+            let auto;
             if(algo === "Algorithme : Automatic" ||algo === "Algorithme : Automatic2" ){
                 auto = "true"
             }else{

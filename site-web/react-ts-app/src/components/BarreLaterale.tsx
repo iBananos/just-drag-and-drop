@@ -9,9 +9,9 @@ const BarreLaterale = () => {
     //}
 
     function callbackUser(response : any){
-        var reponse = JSON.parse(response);
-        var profileMail = document.getElementById("profileMail") as HTMLDivElement;
-        var profileName = document.getElementById("profileName") as HTMLDivElement;
+        let reponse = JSON.parse(response);
+        let profileMail = document.getElementById("profileMail") as HTMLDivElement;
+        let profileName = document.getElementById("profileName") as HTMLDivElement;
         profileMail.innerHTML = reponse.mail;
         profileName.innerHTML = reponse.name +" " +reponse.surname;
     }

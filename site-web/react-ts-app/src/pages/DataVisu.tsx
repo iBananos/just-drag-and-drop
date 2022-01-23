@@ -9,22 +9,22 @@ import downloadIcone from "../assets/download.png";
 import { callback, color } from 'chart.js/helpers';
 
 Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  );
-var id = 0;
-var list : any[]= [];
+let id = 0;
+let list : any[]= [];
 const DataVisu = () =>  {    
 
     function requestDatabases(response : any){
-        var listData= JSON.parse(response).liste;
-        for(var i: number = 0 ; i < listData.length; i++){
-            var data= listData[i];
+        let listData= JSON.parse(response).liste;
+        for(let i: number = 0 ; i < listData.length; i++){
+            let data= listData[i];
             list.push(data);
-            var option = document.createElement("option");
+            let option = document.createElement("option");
             option.innerHTML = data.name+"."+data.extension;
             option.value = data.name+"."+data.extension;
             document.getElementById("SelectDB")?.appendChild(option);
         }
     }
-    var demo : any;
+    let demo : any;
     window.onload= function(){
         const search = window.location.search; // returns the URL query String
         const params = new URLSearchParams(search); 
@@ -40,28 +40,28 @@ const DataVisu = () =>  {
 
     function createSelectorForColonnes(){
         
-        var firstcolumn = (document.getElementById("firstOne")as HTMLSelectElement);
-        var secondcolumn = (document.getElementById("secondOne")as HTMLSelectElement);
-        var thirdcolumn = (document.getElementById("thirdOne")as HTMLSelectElement);
-        var base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
-        for(var i: number = 0 ; i < list.length; i++){
+        let firstcolumn = (document.getElementById("firstOne")as HTMLSelectElement);
+        let secondcolumn = (document.getElementById("secondOne")as HTMLSelectElement);
+        let thirdcolumn = (document.getElementById("thirdOne")as HTMLSelectElement);
+        let base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
+        for(let i: number = 0 ; i < list.length; i++){
             if(list[i].name+"."+list[i].extension === base){
-                var colonnes = list[i].colonnes;
-                var colonnesString = list[i].colonnesString;
+                let colonnes = list[i].colonnes;
+                let colonnesString = list[i].colonnesString;
                 firstcolumn.innerHTML = "";
                 secondcolumn.innerHTML = "";
                 thirdcolumn.innerHTML = "";
-                var optiondefault = document.createElement("option");
+                let optiondefault = document.createElement("option");
                 optiondefault.innerHTML = "Choose a column";
                 optiondefault.value = "Choose a column";
                 optiondefault.disabled = true;
                 optiondefault.defaultSelected = true;
-                var optiondefault2 = document.createElement("option");
+                let optiondefault2 = document.createElement("option");
                 optiondefault2.innerHTML = "Choose a column";
                 optiondefault2.value = "Choose a column";
                 optiondefault2.disabled = true;
                 optiondefault2.defaultSelected = true;
-                var optiondefault3 = document.createElement("option");
+                let optiondefault3 = document.createElement("option");
                 optiondefault3.innerHTML = "Choose a coloration";
                 optiondefault3.value = "Choose a column";
                 optiondefault3.disabled = true;
@@ -69,9 +69,9 @@ const DataVisu = () =>  {
                 firstcolumn.appendChild(optiondefault);
                 secondcolumn.appendChild(optiondefault2);
                 thirdcolumn.appendChild(optiondefault3);
-                for(var y: number = 0 ; y < colonnes.length; y++){
+                for(let y: number = 0 ; y < colonnes.length; y++){
                     if(!colonnesString.includes(colonnes[y]) && colonnes[y]!==""){
-                        var option = document.createElement("option");
+                        let option = document.createElement("option");
                         option.innerHTML = colonnes[y];
                         option.value = colonnes[y];
                         firstcolumn.appendChild(option);
@@ -89,31 +89,31 @@ const DataVisu = () =>  {
     
 
     function createSelectorForSecondColonnes(){
-        var firstcolumn = (document.getElementById("firstOne")as HTMLSelectElement);
-        var secondcolumn = (document.getElementById("secondOne")as HTMLSelectElement);
-        var thirdcolumn = (document.getElementById("thirdOne")as HTMLSelectElement);
-        var base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
-        for(var i: number = 0 ; i < list.length; i++){
+        let firstcolumn = (document.getElementById("firstOne")as HTMLSelectElement);
+        let secondcolumn = (document.getElementById("secondOne")as HTMLSelectElement);
+        let thirdcolumn = (document.getElementById("thirdOne")as HTMLSelectElement);
+        let base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
+        for(let i: number = 0 ; i < list.length; i++){
             if(list[i].name+"."+list[i].extension === base){
-                var colonnes = list[i].colonnes;
-                var colonnesString = list[i].colonnesString;
+                let colonnes = list[i].colonnes;
+                let colonnesString = list[i].colonnesString;
                 secondcolumn.innerHTML = "";
                 thirdcolumn.innerHTML = "";
-                var optiondefault2 = document.createElement("option");
+                let optiondefault2 = document.createElement("option");
                 optiondefault2.innerHTML = "Choose a column";
                 optiondefault2.value = "Choose a column";
                 optiondefault2.disabled = true;
                 optiondefault2.defaultSelected = true;
-                var optiondefault3 = document.createElement("option");
+                let optiondefault3 = document.createElement("option");
                 optiondefault3.innerHTML = "Choose a column";
                 optiondefault3.value = "Choose a column";
                 optiondefault3.disabled = true;
                 optiondefault3.defaultSelected = true;
                 secondcolumn.appendChild(optiondefault2);
                 thirdcolumn.appendChild(optiondefault3);
-                for(var y: number = 0 ; y < colonnes.length; y++){
+                for(let y: number = 0 ; y < colonnes.length; y++){
                     if(firstcolumn.value !== colonnes[y] && !colonnesString.includes(colonnes[y]) && colonnes[y]!==""){
-                        var option = document.createElement("option");
+                        let option = document.createElement("option");
                         option.innerHTML = colonnes[y];
                         option.value = colonnes[y];
                         secondcolumn.appendChild(option);
@@ -127,29 +127,29 @@ const DataVisu = () =>  {
     }
 
     function createSelectorForThirdColonnes(){
-        var firstcolumn = (document.getElementById("firstOne")as HTMLSelectElement);
-        var secondcolumn = (document.getElementById("secondOne")as HTMLSelectElement);
-        var thirdcolumn = (document.getElementById("thirdOne")as HTMLSelectElement);
-        var base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
-        for(var i: number = 0 ; i < list.length; i++){
+        let firstcolumn = (document.getElementById("firstOne")as HTMLSelectElement);
+        let secondcolumn = (document.getElementById("secondOne")as HTMLSelectElement);
+        let thirdcolumn = (document.getElementById("thirdOne")as HTMLSelectElement);
+        let base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
+        for(let i: number = 0 ; i < list.length; i++){
             if(list[i].name+"."+list[i].extension === base){
-                var colonnes = list[i].colonnesString;
+                let colonnes = list[i].colonnesString;
                 thirdcolumn.innerHTML = "";
-                var optiondefault3 = document.createElement("option");
+                let optiondefault3 = document.createElement("option");
                 optiondefault3.innerHTML = "Choose a coloration";
                 optiondefault3.value = "Choose a column";
                 optiondefault3.disabled = true;
                 
                 thirdcolumn.appendChild(optiondefault3);
-                var optionNone3 = document.createElement("option");
+                let optionNone3 = document.createElement("option");
                 optionNone3.defaultSelected = true;
                 optionNone3.innerHTML = "None";
                 optionNone3.value = "AucuneColoration";
                 optionNone3.style.color = 'red';
                 thirdcolumn.appendChild(optionNone3);
-                for(var y: number = 0 ; y < colonnes.length; y++){
+                for(let y: number = 0 ; y < colonnes.length; y++){
                     if(firstcolumn.value !== colonnes[y] && secondcolumn.value !== colonnes[y] && colonnes[y]!==""){
-                        var option = document.createElement("option");
+                        let option = document.createElement("option");
                         option.innerHTML = colonnes[y];
                         option.value = colonnes[y];
                         thirdcolumn.appendChild(option);
@@ -180,7 +180,7 @@ const DataVisu = () =>  {
     }
     
     function enableSubmit(){
-        var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
+        let thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
         (document.getElementById("boutonSend")as HTMLButtonElement).disabled = false;
         if(thirdOne === "AucuneColoration"){
             (document.getElementById("typeChart")as HTMLSelectElement).disabled = false;
@@ -193,13 +193,13 @@ const DataVisu = () =>  {
 
     
     function sendRequest(ev :any){
-        var database = (document.getElementById("SelectDB") as HTMLSelectElement).value
-        var firstOne = (document.getElementById("firstOne") as HTMLSelectElement).value
-        var secondOne = (document.getElementById("secondOne") as HTMLSelectElement).value
-        var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value
-        var sample = (document.getElementById("sample") as HTMLInputElement).value
-        var date = new Date(Date.now()); 
-        var requestAnalyze = JSON.stringify({
+        let database = (document.getElementById("SelectDB") as HTMLSelectElement).value
+        let firstOne = (document.getElementById("firstOne") as HTMLSelectElement).value
+        let secondOne = (document.getElementById("secondOne") as HTMLSelectElement).value
+        let thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value
+        let sample = (document.getElementById("sample") as HTMLInputElement).value
+        let date = new Date(Date.now()); 
+        let requestAnalyze = JSON.stringify({
                                             "database" : database,
                                             "date":date, 
                                             "firstOne":firstOne,
@@ -216,7 +216,7 @@ const DataVisu = () =>  {
     }
 
     function callbackDownload(response:any){
-        var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
+        let thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
         if(thirdOne === "AucuneColoration"){
             createDashBoard2column(response)
         }else{
@@ -226,41 +226,41 @@ const DataVisu = () =>  {
 
     function createDashBoard2column(response:any){
         id++;
-        var file = JSON.parse(response).file;
+        let file = JSON.parse(response).file;
         file = file.split('\n')
-        var newBoard = document.createElement("div");
+        let newBoard = document.createElement("div");
         newBoard.id = "newBoard_"+id;
         newBoard.className = "DashBoard"
 
-        var newIndication = document.createElement("div");
+        let newIndication = document.createElement("div");
         newIndication.id = "indication_"+id;
         newIndication.className = "indication";
-        var x = file[0].split(',')[0];
-        var y = file[0].split(',')[1];
+        let x = file[0].split(',')[0];
+        let y = file[0].split(',')[1];
         newIndication.innerHTML = x + " with respect to " +  y
         newBoard.appendChild(newIndication)
 
-        var download = document.createElement("img");
+        let download = document.createElement("img");
             download.src = downloadIcone;
             download.id = "download_"+id;
             download.alt = "";
             download.className = "downloadDash";
             download.onclick  = (ev:any) => {
-                var thisId = ev.path[0].id.split("_")[1]
-                var canvas1 = (document.getElementById("scatter_"+thisId) as HTMLCanvasElement)
+                let thisId = ev.path[0].id.split("_")[1]
+                let canvas1 = (document.getElementById("scatter_"+thisId) as HTMLCanvasElement)
     
-                var canvas4 = (document.getElementById("hBarx_"+thisId) as HTMLCanvasElement)
+                let canvas4 = (document.getElementById("hBarx_"+thisId) as HTMLCanvasElement)
     
-                var canvas5 = (document.getElementById("hBary_"+thisId) as HTMLCanvasElement)
+                let canvas5 = (document.getElementById("hBary_"+thisId) as HTMLCanvasElement)
     
-                var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
+                let canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
                 canvasFinal.width = 2000;
                 canvasFinal.height= 1000;
-                var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
+                let ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
                 ctxFinal.drawImage(canvas1, 0, 0,1000,1000);
                 ctxFinal.drawImage(canvas4, 1000, 0,500,500);
                 ctxFinal.drawImage(canvas5, 1500, 0,500,500);
-                var link = document.createElement('a');
+                let link = document.createElement('a');
                 link.download = "RESULT.png";
                 link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
                 link.click();
@@ -268,31 +268,31 @@ const DataVisu = () =>  {
             };
 
             newBoard.appendChild(download);
-        var trash = document.createElement("img");
+        let trash = document.createElement("img");
             trash.src = trashIcone;
             trash.id = "trash_"+id;
             trash.alt = "";
             trash.className = "trashDash";
             trash.onclick  = (ev:any) => {
-                var dashBoard = (document.getElementById("newBoard_"+ev.path[0].id.split("_")[1]) as HTMLDivElement);
+                let dashBoard = (document.getElementById("newBoard_"+ev.path[0].id.split("_")[1]) as HTMLDivElement);
                 dashBoard.innerHTML = "";
                 dashBoard.style.display = "none";
             }
             newBoard.appendChild(trash);
 
-        var newScatterBoard = document.createElement("div");
+        let newScatterBoard = document.createElement("div");
         newScatterBoard.id = "scatterBoard_"+id;
         newScatterBoard.className = "scatterBoard"
         newBoard.appendChild(newScatterBoard);
 
         
-        var newhBaryBoard = document.createElement("div");
+        let newhBaryBoard = document.createElement("div");
         newhBaryBoard.id = "hBaryBoard_"+id;
         newhBaryBoard.className = "hBaryBoard2"
         newBoard.appendChild(newhBaryBoard)
 
         
-        var newhBarxBoard = document.createElement("div");
+        let newhBarxBoard = document.createElement("div");
         newhBarxBoard.id = "hBarxBoard_"+id;
         newhBarxBoard.className = "hBarxBoard2"
         newBoard.appendChild(newhBarxBoard)
@@ -303,8 +303,8 @@ const DataVisu = () =>  {
 
         document.getElementById('ChartsRes')?.appendChild(newBoard)
         
-        var data1 : any = [];
-        var data2 : any = [];
+        let data1 : any = [];
+        let data2 : any = [];
             
         file.forEach((el :any) =>{
             el = el.split(",")
@@ -315,8 +315,8 @@ const DataVisu = () =>  {
         
         data1 = data1.slice(1)
         data2 = data2.slice(1)
-        var type  = (document.getElementById("typeChart")as HTMLSelectElement).value;
-        var thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
+        let type  = (document.getElementById("typeChart")as HTMLSelectElement).value;
+        let thirdOne = (document.getElementById("thirdOne") as HTMLSelectElement).value;
         if(thirdOne === "AucuneColoration" && type === "Line"){
             createLine2Column(data1,data2,x,y)
         }
@@ -330,22 +330,22 @@ const DataVisu = () =>  {
     }
 
     function createLine2Column(data1:any,data2:any,x:any,y:any){
-        var datas = orderData(data1,data2);
+        let datas = orderData(data1,data2);
         data1 = []
         data2 = []
-        for(var i : number = 0 ; i < datas.length ; i++ ){
+        for(let i : number = 0 ; i < datas.length ; i++ ){
             data1.push(datas[i].data1)
             data2.push(datas[i].data2)
         }
-        var newCanvas = document.createElement('canvas');
+        let newCanvas = document.createElement('canvas');
         newCanvas.className="scatter";
         newCanvas.id="scatter_"+id;
         document.getElementById('scatterBoard_'+id)?.appendChild(newCanvas)
 
 
-        var ctx :any = (document.getElementById('scatter_'+id) as HTMLCanvasElement).getContext('2d');
+        let ctx :any = (document.getElementById('scatter_'+id) as HTMLCanvasElement).getContext('2d');
         
-        var myChart = new Chart(ctx , {
+        let myChart = new Chart(ctx , {
             type : 'line',
             data: {
                 datasets: [{
@@ -378,8 +378,8 @@ const DataVisu = () =>  {
     
 
     function orderData(data1:any,data2:any){
-        var datas : any[] = []
-        for(var i : number = 0 ; i < data1.length ; i++ ){
+        let datas : any[] = []
+        for(let i : number = 0 ; i < data1.length ; i++ ){
             datas.push({"data1" : data1[i], "data2": data2[i]})
         }
         datas.sort(function (a, b) {
@@ -393,15 +393,15 @@ const DataVisu = () =>  {
     }
 
     function createScatter2Column(data1:any,data2:any,x:any,y:any){
-        var newCanvas = document.createElement('canvas');
+        let newCanvas = document.createElement('canvas');
         newCanvas.className="scatter";
         newCanvas.id="scatter_"+id;
         document.getElementById('scatterBoard_'+id)?.appendChild(newCanvas)
 
 
-        var ctx :any = (document.getElementById('scatter_'+id) as HTMLCanvasElement).getContext('2d');
+        let ctx :any = (document.getElementById('scatter_'+id) as HTMLCanvasElement).getContext('2d');
         
-        var myChart = new Chart(ctx , {
+        let myChart = new Chart(ctx , {
             type : 'scatter',
             data: {
                 datasets: [{
@@ -434,50 +434,50 @@ const DataVisu = () =>  {
     
     function createDashBoard3column(response:any){
         id++;
-        var file = JSON.parse(response).file;
+        let file = JSON.parse(response).file;
         file = file.split('\n')
-        var newBoard = document.createElement("div") as any;
+        let newBoard = document.createElement("div") as any;
         newBoard.id = "newBoard_"+id;
         newBoard.className = "DashBoard"
         
         
 
-        var newIndication = document.createElement("div");
+        let newIndication = document.createElement("div");
         newIndication.id = "indication_"+id;
         newIndication.className = "indication";
-        var x = file[0].split(',')[0];
-        var y = file[0].split(',')[1];
-        var z = file[0].split(',')[2];
+        let x = file[0].split(',')[0];
+        let y = file[0].split(',')[1];
+        let z = file[0].split(',')[2];
         newIndication.innerHTML = x + " with respect to " + y + " sorted by " +  z
         newBoard.appendChild(newIndication)
 
-        var download = document.createElement("img");
+        let download = document.createElement("img");
             download.src = downloadIcone;
             download.id = "download_"+id;
             download.alt = "";
             download.className = "downloadDash";
             download.onclick  = (ev:any) => {
-                var thisId = ev.path[0].id.split("_")[1]
-                var canvas1 = (document.getElementById("scatter_"+thisId) as HTMLCanvasElement)
+                let thisId = ev.path[0].id.split("_")[1]
+                let canvas1 = (document.getElementById("scatter_"+thisId) as HTMLCanvasElement)
     
-                var canvas2 = (document.getElementById("doughnut_"+thisId) as HTMLCanvasElement)
+                let canvas2 = (document.getElementById("doughnut_"+thisId) as HTMLCanvasElement)
     
-                var canvas3 = (document.getElementById("polar_"+thisId) as HTMLCanvasElement)
+                let canvas3 = (document.getElementById("polar_"+thisId) as HTMLCanvasElement)
     
-                var canvas4 = (document.getElementById("hBarx_"+thisId) as HTMLCanvasElement)
+                let canvas4 = (document.getElementById("hBarx_"+thisId) as HTMLCanvasElement)
     
-                var canvas5 = (document.getElementById("hBary_"+thisId) as HTMLCanvasElement)
+                let canvas5 = (document.getElementById("hBary_"+thisId) as HTMLCanvasElement)
     
-                var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
+                let canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
                 canvasFinal.width = 2000;
                 canvasFinal.height= 1000;
-                var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
+                let ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
                 ctxFinal.drawImage(canvas1, 0, 0,1000,1000);
                 ctxFinal.drawImage(canvas2, 1000, 0,500,500);
                 ctxFinal.drawImage(canvas3, 1500, 0,500,500);
                 ctxFinal.drawImage(canvas4, 1000, 500,500,500);
                 ctxFinal.drawImage(canvas5, 1500, 500,500,500);
-                var link = document.createElement('a');
+                let link = document.createElement('a');
                 link.download = "RESULT.png";
                 link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
                 link.click();
@@ -485,51 +485,51 @@ const DataVisu = () =>  {
             };
 
             newBoard.appendChild(download);
-        var trash = document.createElement("img");
+        let trash = document.createElement("img");
             trash.src = trashIcone;
             trash.id = "trash_"+id;
             trash.alt = "";
             trash.className = "trashDash";
             trash.onclick  = (ev:any) => {
-                var dashBoard = (document.getElementById("newBoard_"+ev.path[0].id.split("_")[1]) as HTMLDivElement);
+                let dashBoard = (document.getElementById("newBoard_"+ev.path[0].id.split("_")[1]) as HTMLDivElement);
                 dashBoard.innerHTML = "";
                 dashBoard.style.display = "none";
             }
             newBoard.appendChild(trash);
 
-        var newScatterBoard = document.createElement("div");
+        let newScatterBoard = document.createElement("div");
         newScatterBoard.id = "scatterBoard_"+id;
         newScatterBoard.className = "scatterBoard"
         newBoard.appendChild(newScatterBoard);
 
-        var newDoughnutBoard = document.createElement("div");
+        let newDoughnutBoard = document.createElement("div");
         newDoughnutBoard.id = "doughnutBoard_"+id;
         newDoughnutBoard.className = "doughnutBoard"
         newBoard.appendChild(newDoughnutBoard);
 
         
-        var newPolarBoard = document.createElement("div");
+        let newPolarBoard = document.createElement("div");
         newPolarBoard.id = "polarBoard_"+id;
         newPolarBoard.className = "polarBoard"
         newBoard.appendChild(newPolarBoard)
 
         
-        var newhBaryBoard = document.createElement("div");
+        let newhBaryBoard = document.createElement("div");
         newhBaryBoard.id = "hBaryBoard_"+id;
         newhBaryBoard.className = "hBaryBoard"
         newBoard.appendChild(newhBaryBoard)
 
         
-        var newhBarxBoard = document.createElement("div");
+        let newhBarxBoard = document.createElement("div");
         newhBarxBoard.id = "hBarxBoard_"+id;
         newhBarxBoard.className = "hBarxBoard"
         newBoard.appendChild(newhBarxBoard)
 
         document.getElementById('ChartsRes')?.appendChild(newBoard)
         
-        var data1 : any = [];
-        var data2 : any = [];
-        var data3 : any = [];
+        let data1 : any = [];
+        let data2 : any = [];
+        let data3 : any = [];
             
         file.forEach((el :any) =>{
             el = el.split(",")
@@ -552,29 +552,29 @@ const DataVisu = () =>  {
         }
         
     function createScatter(data1:any,data2:any,data3:any,x:any,y:any,z:any){
-        var column = getThirdColumn(data3);
+        let column = getThirdColumn(data3);
         data3 = getColoration(data3,column);
-        var backgroundColor = createColors(data3,0.5);
-        var borderColor = createColors(data3,1)
+        let backgroundColor = createColors(data3,0.5);
+        let borderColor = createColors(data3,1)
         createChart2(data1,data2,backgroundColor,borderColor,x,y,z);
     }
     function createPolar(data1:any,data2:any,data3:any,x:any,y:any,z:any){
         
-        var newPolar = document.createElement('canvas');
+        let newPolar = document.createElement('canvas');
         newPolar.className="polar";
         newPolar.id="polar_"+id;
         document.getElementById('polarBoard_'+id)?.appendChild(newPolar)
 
 
-        var ctx :any = (document.getElementById('polar_'+id) as HTMLCanvasElement).getContext('2d');
-        var column = getThirdColumn(data3)
+        let ctx :any = (document.getElementById('polar_'+id) as HTMLCanvasElement).getContext('2d');
+        let column = getThirdColumn(data3)
 
-        var occurence : any[]= getOccurenceColumn(column,data3)
-        var data : any[]= getAverageYByXByDataset(data1,data2,data3,column,occurence)
-        var coloration = getColoration(data,column);
-        var backgroundColor = createColors(coloration,0.5);
-        var borderColor = createColors(coloration,1)
-        var myChart = new Chart(ctx , {
+        let occurence : any[]= getOccurenceColumn(column,data3)
+        let data : any[]= getAverageYByXByDataset(data1,data2,data3,column,occurence)
+        let coloration = getColoration(data,column);
+        let backgroundColor = createColors(coloration,0.5);
+        let borderColor = createColors(coloration,1)
+        let myChart = new Chart(ctx , {
             type : 'polarArea',
             data: {
                 datasets: [{
@@ -602,13 +602,13 @@ const DataVisu = () =>  {
     }
 
     function getAverageYByXByDataset(data1:any,data2:any,data3:any,column:any,occurence:any){
-        var average : any[] = []
-        var nbPointZero :any[] = []
-        for(var i : number = 0 ; i < column.length ; i++){
+        let average : any[] = []
+        let nbPointZero :any[] = []
+        for(let i : number = 0 ; i < column.length ; i++){
             average.push(0);
             nbPointZero.push(0)
         }
-        for(var y : number = 0 ; y < data1.length ; y++){
+        for(let y : number = 0 ; y < data1.length ; y++){
             if(data2[y]!==0){
                 average[column.indexOf(data3[y])]+= data1[y]/data2[y];
             }else{
@@ -616,7 +616,7 @@ const DataVisu = () =>  {
             }
             
         }
-        for(var x : number = 0 ; x < column.length ; x++){
+        for(let x : number = 0 ; x < column.length ; x++){
             average[x] = average[x]/(occurence[x]-nbPointZero[x])
         }
 
@@ -624,20 +624,20 @@ const DataVisu = () =>  {
     }
 
     function createDoughnut(data3:any,z:any){
-        var newDoughnut = document.createElement('canvas');
+        let newDoughnut = document.createElement('canvas');
         newDoughnut.className="doughnut";
         newDoughnut.id="doughnut_"+id;
         document.getElementById('doughnutBoard_'+id)?.appendChild(newDoughnut)
 
 
-        var ctx :any = (document.getElementById('doughnut_'+id) as HTMLCanvasElement).getContext('2d');
-        var column = getThirdColumn(data3)
-        var data : any[]= getOccurenceColumn(column,data3)
-        var coloration = getColoration(data,column);
+        let ctx :any = (document.getElementById('doughnut_'+id) as HTMLCanvasElement).getContext('2d');
+        let column = getThirdColumn(data3)
+        let data : any[]= getOccurenceColumn(column,data3)
+        let coloration = getColoration(data,column);
 
-        var backgroundColor = createColors(coloration,0.5);
-        var borderColor = createColors(coloration,1)
-        var myChart = new Chart(ctx , {
+        let backgroundColor = createColors(coloration,0.5);
+        let borderColor = createColors(coloration,1)
+        let myChart = new Chart(ctx , {
             type : 'doughnut',
             data: {
                 datasets: [{
@@ -666,17 +666,17 @@ const DataVisu = () =>  {
     }
     function hBarx(data3:any,label:string){
 
-        var newhBarx = document.createElement('canvas');
+        let newhBarx = document.createElement('canvas');
         newhBarx.className="hBarx";
         newhBarx.id="hBarx_"+id;
         document.getElementById('hBarxBoard_'+id)?.appendChild(newhBarx)
 
 
-        var ctx :any = (document.getElementById('hBarx_'+id) as HTMLCanvasElement).getContext('2d');
-        var labels :any  = getLabelFromOneColumn(data3);
-        var data = getdataFromOneColumn(data3,labels);
+        let ctx :any = (document.getElementById('hBarx_'+id) as HTMLCanvasElement).getContext('2d');
+        let labels :any  = getLabelFromOneColumn(data3);
+        let data = getdataFromOneColumn(data3,labels);
         labels = getLabelFromSteps(labels)
-        var myChart = new Chart(ctx , {
+        let myChart = new Chart(ctx , {
             type : 'bar',
             data: {
                 labels: labels,
@@ -703,8 +703,8 @@ const DataVisu = () =>  {
     }
 
     function getLabelFromOneColumn(data:any){
-        var min = data[0];
-        var max = data[0];
+        let min = data[0];
+        let max = data[0];
         data.forEach((element:any) => {
             if(min>element){
                 min= element
@@ -712,18 +712,18 @@ const DataVisu = () =>  {
                 max = element
             }
         });
-        var step = (max-min)/10;
-        var labels :any[]= []
-        for(var i :number = 0; i <= 10 ; i++){
+        let step = (max-min)/10;
+        let labels :any[]= []
+        for(let i :number = 0; i <= 10 ; i++){
             labels.push((min+i*step).toExponential(1))
         }
         return labels
     }
 
     function getdataFromOneColumn(data:any,labels:any){
-        var datastat :any[] = [0,0,0,0,0,0,0,0,0,0] 
+        let datastat :any[] = [0,0,0,0,0,0,0,0,0,0] 
         data.forEach((element:any) => {
-            for(var i :number = 1; i <= 10 ; i++){
+            for(let i :number = 1; i <= 10 ; i++){
                 if(element<labels[i]){
                     datastat[i-1]++;
                     break
@@ -735,8 +735,8 @@ const DataVisu = () =>  {
     }
 
     function getLabelFromSteps(labels:any){
-        var labelSteps : string[] = []
-        for(var i :number = 1; i <= 10 ; i++){
+        let labelSteps : string[] = []
+        for(let i :number = 1; i <= 10 ; i++){
             labelSteps.push("["+labels[i-1]+","+labels[i]+"]")
         }
         return labelSteps
@@ -744,18 +744,18 @@ const DataVisu = () =>  {
 
     function hBary(data3:any,label:string){
 
-        var newhBary = document.createElement('canvas');
+        let newhBary = document.createElement('canvas');
         newhBary.className="hBary";
         newhBary.id="hBary_"+id;
         document.getElementById('hBaryBoard_'+id)?.appendChild(newhBary)
 
 
-        var ctx :any = (document.getElementById('hBary_'+id) as HTMLCanvasElement).getContext('2d');
+        let ctx :any = (document.getElementById('hBary_'+id) as HTMLCanvasElement).getContext('2d');
        
-        var labels :any  = getLabelFromOneColumn(data3);
-        var data = getdataFromOneColumn(data3,labels);
+        let labels :any  = getLabelFromOneColumn(data3);
+        let data = getdataFromOneColumn(data3,labels);
         labels = getLabelFromSteps(labels)
-        var myChart = new Chart(ctx , {
+        let myChart = new Chart(ctx , {
             type : 'bar',
             data: {
                 labels: labels,
@@ -783,11 +783,11 @@ const DataVisu = () =>  {
 
 
     function getOccurenceColumn(column:any,data:any){
-        var occurence : any[] = []
-        for(var i : number = 0 ; i < column.length ; i++){
+        let occurence : any[] = []
+        for(let i : number = 0 ; i < column.length ; i++){
             occurence.push(0);
         }
-        for(var y : number = 0 ; y < data.length ; y++){
+        for(let y : number = 0 ; y < data.length ; y++){
             occurence[column.indexOf(data[y])]++
         }
 
@@ -797,7 +797,7 @@ const DataVisu = () =>  {
     
 
     function getThirdColumn(data:any){
-        var newArray : string[] = [];
+        let newArray : string[] = [];
         data.forEach((el :any) =>{
             if(!newArray.includes(el)){
                 newArray.push(el); 
@@ -808,9 +808,9 @@ const DataVisu = () =>  {
 
 
     function createColors(array: any[],opacity:number){
-        var newArray : string[] = [];
+        let newArray : string[] = [];
         array.forEach((el :any) =>{
-            var color = el;
+            let color = el;
             newArray.push("rgba("+color.r+","+color.g+','+color.b+","+opacity+")"); 
             
         })
@@ -818,10 +818,10 @@ const DataVisu = () =>  {
     }
 
     function createRainbowRGB(nbColors:any){
-        var colors : any[] = []
+        let colors : any[] = []
         console.log(nbColors)
-        for(var i :number = 0 ; i<nbColors;i++){
-            var percentFade  =  i/nbColors*100;
+        for(let i :number = 0 ; i<nbColors;i++){
+            let percentFade  =  i/nbColors*100;
             let rouge;
             let vert;
             let bleu;
@@ -851,10 +851,10 @@ const DataVisu = () =>  {
     return colors
 }
     function getColoration(array: string[],column:any[]){
-        var newArray : string[] = [];
-        var coloration : any[] = [];
-        var nbColors = column.length;
-        var colors :any = createRainbowRGB(nbColors)
+        let newArray : string[] = [];
+        let coloration : any[] = [];
+        let nbColors = column.length;
+        let colors :any = createRainbowRGB(nbColors)
         array.forEach((el :any) =>{
             if(!newArray.includes(el)){
                 newArray.push(el); 
@@ -867,15 +867,15 @@ const DataVisu = () =>  {
     
     function createChart2(data1:any,data2:any,backgroundColor:any,borderColor:any,x:any,y:any,z:any){
         
-        var newCanvas = document.createElement('canvas');
+        let newCanvas = document.createElement('canvas');
         newCanvas.className="scatter";
         newCanvas.id="scatter_"+id;
         document.getElementById('scatterBoard_'+id)?.appendChild(newCanvas)
 
 
-        var ctx :any = (document.getElementById('scatter_'+id) as HTMLCanvasElement).getContext('2d');
+        let ctx :any = (document.getElementById('scatter_'+id) as HTMLCanvasElement).getContext('2d');
         
-        var myChart = new Chart(ctx , {
+        let myChart = new Chart(ctx , {
             type : 'scatter',
             data: {
                 datasets: [{
@@ -908,8 +908,8 @@ const DataVisu = () =>  {
 
 
     function updateSample(){
-        var inputSample = document.getElementById("inputSample") as HTMLDivElement;
-        var sample = document.getElementById("sample") as HTMLInputElement;
+        let inputSample = document.getElementById("inputSample") as HTMLDivElement;
+        let sample = document.getElementById("sample") as HTMLInputElement;
         inputSample.innerHTML =sample.value +"%";
     }
 
@@ -920,7 +920,7 @@ const DataVisu = () =>  {
         (document.getElementById("dataVisuContainer") as HTMLDivElement).className = "dataVisuContainerParam";
     }
     function printCorrelation(){
-        var requestAnalyze = JSON.stringify({"database": (document.getElementById("SelectDB")as HTMLSelectElement).value});
+        let requestAnalyze = JSON.stringify({"database": (document.getElementById("SelectDB")as HTMLSelectElement).value});
         if(demo === "true"){
             utils.default.sendRequestDemo('POST', '/api/dataVisu/matrixDemo', requestAnalyze, callbackMatrix); 
         }else{
@@ -932,30 +932,30 @@ const DataVisu = () =>  {
 
     function callbackMatrix(reponse:any){
         id++;
-        var newBoard = document.createElement("div") as any;
+        let newBoard = document.createElement("div") as any;
         newBoard.id = "newBoard_"+id;
         newBoard.className = "DashBoard";
-        var newIndication = document.createElement("div");
+        let newIndication = document.createElement("div");
         newIndication.id = "indication_"+id;
         newIndication.className = "indication";
         newIndication.innerHTML = "Matrice de corrélation";
         newBoard.appendChild(newIndication)
        
 
-        var download = document.createElement("img");
+        let download = document.createElement("img");
             download.src = downloadIcone;
             download.id = "download_"+id;
             download.alt = "";
             download.className = "downloadDash";
             download.onclick  = (ev:any) => {
-                var thisId = ev.path[0].id.split("_")[1]
-                var canvas1 = (document.getElementById("matrix_"+thisId) as HTMLCanvasElement)
-                var canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
+                let thisId = ev.path[0].id.split("_")[1]
+                let canvas1 = (document.getElementById("matrix_"+thisId) as HTMLCanvasElement)
+                let canvasFinal = document.createElement("canvas") as HTMLCanvasElement;
                 canvasFinal.width = 2000;
                 canvasFinal.height= 1000;
-                var ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
+                let ctxFinal = canvasFinal.getContext("2d") as CanvasRenderingContext2D;
                 ctxFinal.drawImage(canvas1, 0, 0,2000,1000);
-                var link = document.createElement('a');
+                let link = document.createElement('a');
                 link.download = "RESULT.png";
                 link.href = canvasFinal.toDataURL("image/png").replace("image/png", "image/octet-stream");
                 link.click();
@@ -963,59 +963,59 @@ const DataVisu = () =>  {
             };
 
             newBoard.appendChild(download);
-        var trash = document.createElement("img");
+        let trash = document.createElement("img");
             trash.src = trashIcone;
             trash.id = "trash_"+id;
             trash.alt = "";
             trash.className = "trashDash";
             trash.onclick  = (ev:any) => {
-                var dashBoard = (document.getElementById("newBoard_"+ev.path[0].id.split("_")[1]) as HTMLDivElement);
+                let dashBoard = (document.getElementById("newBoard_"+ev.path[0].id.split("_")[1]) as HTMLDivElement);
                 dashBoard.innerHTML = "";
                 dashBoard.style.display = "none";
             }
         newBoard.appendChild(trash);
 
         
-        var newMatrixBoard = document.createElement("div") as any;
+        let newMatrixBoard = document.createElement("div") as any;
         newMatrixBoard.id = "matrixBoard_"+id;
         newMatrixBoard.className = "MatrixBoard";
         newBoard.appendChild(newMatrixBoard)
-        var divbarre = document.createElement("div")
+        let divbarre = document.createElement("div")
         divbarre.className = "divBarre"
         
-        var p1 = document.createElement("p")
+        let p1 = document.createElement("p")
         p1.innerHTML = "-1"
         p1.style.float = "left"
         divbarre.append(p1)
-        var barreColor = document.createElement("div");
+        let barreColor = document.createElement("div");
         barreColor.id = "barreColor_"+id;
         barreColor.className = "barreColor"
         barreColor.innerHTML ="0"
         divbarre.append(barreColor)
-        var p2 = document.createElement("p")
+        let p2 = document.createElement("p")
         p2.innerHTML = "1"
         p2.style.float = "left"
         divbarre.append(p2)
         newBoard.appendChild(divbarre)
         document.getElementById('ChartsRes')?.appendChild(newBoard)
-        var matrix = JSON.parse(reponse).file;
+        let matrix = JSON.parse(reponse).file;
         matrix = matrix.split("\n")
-        var labels :any[] = matrix[0].split(",");
-        var nbrow=0;
+        let labels :any[] = matrix[0].split(",");
+        let nbrow=0;
         labels.forEach((element:any) => {
             nbrow++;
         });
-        var data :any[] = []
-        var totalPerColumn :number[] = [] ;
-            for(var x : number = 0 ; x < nbrow ; x++){
+        let data :any[] = []
+        let totalPerColumn :number[] = [] ;
+            for(let x : number = 0 ; x < nbrow ; x++){
 
               totalPerColumn.push(0)
             }
-        for(var i : number = 1 ; i < nbrow+1 ; i++){
-            var line = matrix[i].split(",")
-                for(var j : number = 0 ; j < nbrow ; j++){
+        for(let i : number = 1 ; i < nbrow+1 ; i++){
+            let line = matrix[i].split(",")
+                for(let j : number = 0 ; j < nbrow ; j++){
                   totalPerColumn[i-1] += parseFloat(line[j]);
-                  var dataline = {'x': labels[i-1], 'y': labels[j], 'v': parseFloat(line[j])}
+                  let dataline = {'x': labels[i-1], 'y': labels[j], 'v': parseFloat(line[j])}
                   data.push(dataline)
                 }
         }
@@ -1024,15 +1024,15 @@ const DataVisu = () =>  {
     }
 
     function createCorrelationMatrix(labels:any,datas:any,backgroundColor:any,borderColor:any,nbrow:number,totalPerColumn:number[]){
-        var newCanvas = document.createElement('canvas');
+        let newCanvas = document.createElement('canvas');
         newCanvas.className="matrix";
         newCanvas.id="matrix_"+id;
         document.getElementById('matrixBoard_'+id)?.appendChild(newCanvas)
 
 
-        var ctx :any = (document.getElementById('matrix_'+id) as HTMLCanvasElement).getContext('2d');
+        let ctx :any = (document.getElementById('matrix_'+id) as HTMLCanvasElement).getContext('2d');
         
-        var myChart = new Chart(ctx , {
+        let myChart = new Chart(ctx , {
               type : 'matrix',
               data: {
                   datasets: [{
@@ -1041,14 +1041,14 @@ const DataVisu = () =>  {
                       data: datas,
                       backgroundColor(context) {
                           const value = datas[context.dataIndex].v;
-                          var colors  = createMatrixRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
-                          var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
+                          let colors  = createMatrixRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
+                          let colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
                           return color(colorString).alpha(0.8).rgbString();
                         },
                         borderColor(context) {
                           const value = datas[context.dataIndex].v;
-                          var colors  = createMatrixRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
-                          var colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
+                          let colors  = createMatrixRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
+                          let colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
                           return color(colorString).alpha(1).rgbString();
                         },
                       borderWidth: 1,
@@ -1103,10 +1103,10 @@ const DataVisu = () =>  {
       }
 
     function createMatrixRGB(x:any,max:any){
-        var percentFade  =  (x+1)/2;
-        var rouge ; 
-        var bleu ;
-        var vert;
+        let percentFade  =  (x+1)/2;
+        let rouge ; 
+        let bleu ;
+        let vert;
         if(percentFade<0.5){
           rouge = 33 + (166*percentFade*2); 
           bleu = 196 - (166*percentFade*2);
@@ -1120,7 +1120,7 @@ const DataVisu = () =>  {
     }
 
     function requestFullOverview(){
-        var requestAnalyze = JSON.stringify({"database": (document.getElementById("SelectDB")as HTMLSelectElement).value});
+        let requestAnalyze = JSON.stringify({"database": (document.getElementById("SelectDB")as HTMLSelectElement).value});
         if(demo === "true"){
             utils.default.sendRequestDemo('POST', '/api/dataVisu/fullOverviewDemo', requestAnalyze, callbackFullOverview); 
         }else{
@@ -1130,7 +1130,7 @@ const DataVisu = () =>  {
 
     function callbackFullOverview(reponse:any){
         //console.log(JSON.parse(reponse).file)
-        var newWindow :any = window.open();
+        let newWindow :any = window.open();
         newWindow.document.write(JSON.parse(reponse).file);
       
     }

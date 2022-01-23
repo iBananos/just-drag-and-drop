@@ -12,8 +12,8 @@ const Mydatabase = () => {
         utils.default.sendRequestWithToken('POST', '/api/upload/getInfo', "", requestDatabases);
     }
     function displayInfo(ev : any){
-        var id = ev.target.id.split("_")[0] ;
-        var div = document.getElementById(id) as HTMLDivElement;
+        let id = ev.target.id.split("_")[0] ;
+        let div = document.getElementById(id) as HTMLDivElement;
         if(div.className === "titleOpen"){
             div.className = "titleClose";
         }else{
@@ -22,49 +22,49 @@ const Mydatabase = () => {
     }
 
     function requestDatabases(response : any){
-        var listData= JSON.parse(response).liste;
-        for(var i: number = 0 ; i < listData.length; i++){
-            var data = listData[i]
-            var cell = document.createElement("div");
+        let listData= JSON.parse(response).liste;
+        for(let i: number = 0 ; i < listData.length; i++){
+            let data = listData[i]
+            let cell = document.createElement("div");
             cell.className = "cell"
-            var title = document.createElement("div");
+            let title = document.createElement("div");
             
             title.id = data.name;
             title.className="titleBase";
-            var p = document.createElement("span");
+            let p = document.createElement("span");
             p.innerHTML = data.name;
             title.appendChild(p);
-            var image = document.createElement("img");
+            let image = document.createElement("img");
             image.src = downIcone;
             image.id = data.name+"_image";
             image.alt = "";
             image.className = "imagedown";
             image.onclick = displayInfo;
             title.appendChild(image);
-            var hr = document.createElement("hr");
+            let hr = document.createElement("hr");
             title.appendChild(hr);
 
-            var date = document.createElement("p");
+            let date = document.createElement("p");
             date.innerHTML = "Uploaded : " +data.date;
             date.id=data.name+"_date";
-            var size = document.createElement("p");
+            let size = document.createElement("p");
             size.innerHTML = "Size : " +data.size + " octets";
             size.id=data.name+"_size";
-            var extension = document.createElement("p");
+            let extension = document.createElement("p");
             extension.innerHTML = "Type : " + data.extension;
             extension.id = data.name+"_extension";
             title.appendChild(date)
             title.appendChild(size)
             title.appendChild(extension)
 
-            var download = document.createElement("img");
+            let download = document.createElement("img");
             download.src = downloadIcone;
             download.id = data.name+"_download";
             download.alt = "";
             download.className = "download";
             download.onclick = downloadBase;
 
-            var trash = document.createElement("img");
+            let trash = document.createElement("img");
             trash.src = trashIcone;
             trash.id = data.name+"_trash";
             trash.alt = "";
@@ -78,9 +78,9 @@ const Mydatabase = () => {
         }
     }
     function deleteDatabase(ev : any){
-        var id = ev.target.id.split("_")[0] ;
-        var extension = ((document.getElementById(id+"_extension") as HTMLDivElement).innerHTML).split(" ")[2];
-        var file =  JSON.stringify({"path" : id+"."+extension});
+        let id = ev.target.id.split("_")[0] ;
+        let extension = ((document.getElementById(id+"_extension") as HTMLDivElement).innerHTML).split(" ")[2];
+        let file =  JSON.stringify({"path" : id+"."+extension});
         (document.getElementById(id) as HTMLDivElement).style.display ="none";
         utils.default.sendRequestWithToken('POST', '/api/upload/deleteData', file, callbackDelete);
     }
@@ -90,14 +90,14 @@ const Mydatabase = () => {
     }
 
     function downloadBase(ev : any){
-        var id = ev.target.id.split("_")[0] ;
-        var extension = ((document.getElementById(id+"_extension") as HTMLDivElement).innerHTML).split(" ")[2];
-        var file =  JSON.stringify({"path" : id+"."+extension});
+        let id = ev.target.id.split("_")[0] ;
+        let extension = ((document.getElementById(id+"_extension") as HTMLDivElement).innerHTML).split(" ")[2];
+        let file =  JSON.stringify({"path" : id+"."+extension});
         utils.default.sendRequestWithToken('POST', '/api/upload/downloadData', file, callbackDownload);
     }
 
     function downloader(filename:string, text:string) {
-            var element = document.createElement('a');
+            let element = document.createElement('a');
             element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
             element.setAttribute('download', filename);
           
@@ -111,7 +111,7 @@ const Mydatabase = () => {
       
 
     function callbackDownload(response : string){
-        var data = JSON.parse(response)
+        let data = JSON.parse(response)
         downloader(data.name,data.file)
     }
     return (
