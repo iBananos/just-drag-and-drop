@@ -1,5 +1,6 @@
 import sys
 import pandas as pd
+from pandas_profiling import ProfileReport
 
 from io import StringIO
 from aesCipher import AESCipher
@@ -14,25 +15,32 @@ toEncrypt = sys.argv[6]
 
 
 
-def parse_data(data):
+def parse_data(filename,separator):
 
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
-        df = pd.read_csv(data, delimiter=',')
-    elif extension == 'xlsx' :
+        try:
+            df = pd.read_csv(filename,index_col=False, delimiter=separator)
+        except:
+            df = pd.read_csv(filename, delimiter=separator)
+    elif extension == 'xlsx':
             # Assume that the user uploaded an excel file
-        df = pd.read_excel(data)
+        df = pd.read_excel(filename,index_col=False)
     elif extension == 'txt' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
-        df = pd.read_csv(data, delimiter = r'\s+')
+        df = pd.read_csv(filename, delimiter = r'\s+',index_col=0)
     elif extension == 'json' :
-        df = pd.read_json(data)
+        df = pd.read_json(filename)
     else :
         print("There was an error while processing this file")
     
     return df
 
-def principal_fonction(data,savepath) :
+def principal_fonction(data,savepath,separator) :
+    file=parse_data(data,separator)
+    name_data = (data.split("/")[-1]).split(".")[0]
+    profile = ProfileReport(file,minimal=True)
+    profile.to_file(savepath+'/'+name_data+'.html')
     return ''
 
 
@@ -49,4 +57,4 @@ if __name__ == "__main__":
         data = decryptFile(filename)
     else :
         data = filename
-    print(principal_fonction(data,savePath))
+    print(principal_fonction(data,savePath,separator))
