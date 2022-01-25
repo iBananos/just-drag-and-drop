@@ -17,19 +17,21 @@ const certificate = fs.readFileSync('./certificate/server.cert', 'utf8');
 const credentials = {key: privateKey, cert: certificate};
 
 
-// Server Http
-const serverHttp = http.createServer(app);
-serverHttp.on('listening', () => {
-    const address = serverHttp.address();
-    const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-    console.log('Server listening on ' + bind);
-});
-
-
 // Server HTTPS
 const serverHttps = https.createServer(credentials, app);
 
+// Server Http
+const serverHttp = http.createServer((req, res) => {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+});
 
 
-serverHttp.listen(port);
-serverHttps.listen(443);
+
+serverHttps.listen(443, () => {
+    console.log("Server https is running on port " + 443);
+});
+
+serverHttp.listen(port, () => {
+    console.log("Server http is running on port " + port);
+});
