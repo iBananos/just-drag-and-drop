@@ -15,18 +15,18 @@ else :
     toEncrypt = ""
 
 
-def parse_data(filename):
-    
+def parse_data(filename,separator):
+
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         try:
-            df = pd.read_csv(filename,index_col=False, delimiter=',')
+            df = pd.read_csv(filename,index_col=False, delimiter=separator)
         except:
-            df = pd.read_csv(filename, delimiter=',')
+            df = pd.read_csv(filename, delimiter=separator)
     elif extension == 'xlsx':
             # Assume that the user uploaded an excel file
-        df = pd.read_excel(filename,index_col=0)
-    elif extension == 'txt':
+        df = pd.read_excel(filename,index_col=False)
+    elif extension == 'txt' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
         df = pd.read_csv(filename, delimiter = r'\s+',index_col=0)
     elif extension == 'json' :
@@ -36,8 +36,8 @@ def parse_data(filename):
     
     return df
 
-def check_type(filename) :
-    data=parse_data(filename)
+def check_type(filename,separator) :
+    data=parse_data(filename,separator)
     obj_df = data.select_dtypes(include=['object']).copy()
     for i in range(len(obj_df.columns.values)):
         try:
@@ -48,8 +48,8 @@ def check_type(filename) :
             obj_df[obj_df.columns.values[i]]=obj_df[obj_df.columns.values[i]]
     return True
 
-def correlation_matrix(filename) : 
-    df = parse_data(filename)
+def correlation_matrix(filename,separator) : 
+    df = parse_data(filename,separator)
     if check_type(filename) == True : 
         cm = df.corr()
     else :
@@ -70,4 +70,4 @@ if __name__ == "__main__":
             data = filename
     else :
         data = filename
-    print(correlation_matrix(data))
+    print(correlation_matrix(data,separator))

@@ -31,18 +31,18 @@ else :
     key = ""
     toEncrypt = ""
 
-def parse_data(filename):
+def parse_data(filename,separator):
 
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         try:
-            df = pd.read_csv(filename,index_col=False, delimiter=',')
+            df = pd.read_csv(filename,index_col=False, delimiter=separator)
         except:
-            df = pd.read_csv(filename, delimiter=',')
+            df = pd.read_csv(filename, delimiter=separator)
     elif extension == 'xlsx':
             # Assume that the user uploaded an excel file
         df = pd.read_excel(filename,index_col=False)
-    elif extension == 'txt':
+    elif extension == 'txt' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
         df = pd.read_csv(filename, delimiter = r'\s+',index_col=0)
     elif extension == 'json' :
@@ -53,8 +53,8 @@ def parse_data(filename):
     return df
 
 
-def autoselection(feature,predict,filename):
-    data=parse_data(filename)
+def autoselection(feature,predict,filename,separator):
+    data=parse_data(filename,separator)
     n=min(len(data),1000)
     dataselect=data.sample(frac=0.2)
     featurepredict=np.concatenate((predict, feature), axis=None)
@@ -331,4 +331,4 @@ if __name__ == "__main__":
     else :
         data = filename
     #print(features.split(","),pred,filename)
-    print(autoselection(features.split(","),pred,data))
+    print(autoselection(features.split(","),pred,data,separator))

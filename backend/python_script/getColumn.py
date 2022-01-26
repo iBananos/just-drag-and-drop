@@ -14,26 +14,29 @@ toEncrypt = sys.argv[5]
 
 
 
-def parse_data(data):
+def parse_data(filename,separator):
 
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
-        df = pd.read_csv(data, delimiter=',')
-    elif extension == 'xlsx' :
+        try:
+            df = pd.read_csv(filename,index_col=False, delimiter=separator)
+        except:
+            df = pd.read_csv(filename, delimiter=separator)
+    elif extension == 'xlsx':
             # Assume that the user uploaded an excel file
-        df = pd.read_excel(data)
+        df = pd.read_excel(filename,index_col=False)
     elif extension == 'txt' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
-        df = pd.read_csv(data, delimiter = r'\s+')
+        df = pd.read_csv(filename, delimiter = r'\s+',index_col=0)
     elif extension == 'json' :
-        df = pd.read_json(data)
+        df = pd.read_json(filename)
     else :
         print("There was an error while processing this file")
     
     return df
 
-def principal_fonction(data) :
-    df = parse_data(data)
+def principal_fonction(data,separator) :
+    df = parse_data(filename,separator)
     dataexclude=df.select_dtypes(exclude=['object'])
     obj_df = df.select_dtypes(include=['object']).copy()
     for i in range(len(dataexclude.columns.values)):
@@ -55,4 +58,4 @@ if __name__ == "__main__":
         data = decryptFile(filename)
     else :
         data = filename
-    print(principal_fonction(data))
+    print(principal_fonction(data,separator))

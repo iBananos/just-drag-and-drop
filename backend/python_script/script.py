@@ -31,14 +31,14 @@ else :
 
 ####fonction pour pouvoir lire les databases et les transformer en dataframes
 
-def parse_data(filename):
+def parse_data(filename,separator):
 
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         try:
-            df = pd.read_csv(filename,index_col=False, delimiter=',')
+            df = pd.read_csv(filename,index_col=False, delimiter=separator)
         except:
-            df = pd.read_csv(filename, delimiter=',')
+            df = pd.read_csv(filename, delimiter=separator)
     elif extension == 'xlsx':
             # Assume that the user uploaded an excel file
         df = pd.read_excel(filename,index_col=False)
@@ -56,8 +56,8 @@ def parse_data(filename):
 ####(cette fonction est appelee dans correlation_matrix et get_describe, si tu veux pas l'utiliser,
 ####faudra l'enlever aussi de ces deux fonctions mais tu me diras au pire (nico voulait que je te les envoie au cas ou))
 
-def check_type(filename) :
-    data=parse_data(filename)
+def check_type(filename,separator) :
+    data=parse_data(filename,separator)
     obj_df = data.select_dtypes(include=['object']).copy()
     for i in range(len(obj_df.columns.values)):
         try:
@@ -70,8 +70,8 @@ def check_type(filename) :
 
 ###fonction qui retourne une liste contenant la matrice de correlation de la database
 
-def correlation_matrix(filename) : 
-    df = parse_data(filename)
+def correlation_matrix(filename,separator) : 
+    df = parse_data(filename,separator)
     if check_type(filename) == True : 
         cm = df.corr()
     else :
@@ -80,8 +80,8 @@ def correlation_matrix(filename) :
 
 ###fonction qui retourne une liste contenant la description de la database
 
-def get_describe(filename,choice) :
-    df = parse_data(filename)
+def get_describe(filename,choice,separator) :
+    df = parse_data(filename,separator)
     if check_type(filename) == True : 
         des = df.describe()
     else : 
@@ -144,8 +144,8 @@ def get_list_parameters(algo_choice,list_parameters) :
     #return list_parameters_default
 
 
-def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_choice) :
-    df = parse_data(filename)
+def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_choice,separator) :
+    df = parse_data(filename,separator)
     
     X=df[features]
     y=df[pred]
@@ -280,7 +280,7 @@ if __name__ == "__main__":
             data = filename
     else :
         data = filename
-    print(principal_fonction(data, features.split(","), pred, list_param.split(","), analyze_choice, algo_choice))
+    print(principal_fonction(data, features.split(","), pred, list_param.split(","), analyze_choice, algo_choice,separator))
 
 
 
