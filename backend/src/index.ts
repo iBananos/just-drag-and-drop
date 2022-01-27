@@ -21,11 +21,15 @@ const credentials = {key: privateKey, cert: certificate};
 const serverHttps = https.createServer(credentials, app);
 
 // Server Http
+/* Pour VPS 
 const serverHttp = http.createServer((req, res) => {
-    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.writeHead(301, { "Location": "https://" + req.headers['host']?.split(':')[0] + req.url });
     res.end();
 });
+*/
 
+/* Pour local */
+const serverHttp = http.createServer(app);
 
 
 serverHttps.listen(443, () => {
