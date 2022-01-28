@@ -162,6 +162,19 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         });
     }
 
+    let targetBaseHTML = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/databaseHTML/", req.body.path.split(".")[0] + ".html");
+    if (targetBaseHTML != undefined) {
+        fs.unlink("uploads/" + req.body.userId + "/databaseHTML/" + targetBaseHTML, function (err) {
+            if (err) {
+                console.error(err);
+                res.send("Erreur lors de la suppression");
+            } else {
+                console.log("File removed:", req.body.path.split(".")[0] + ".html");
+            }
+        });
+    }
+
+
     let targetInfo = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/databaseInfo/", req.body.path.split(".")[0] + ".json");
 
     let size = Utils.default.getSizeFile(req.body.userId, "uploads/" + req.body.userId + "/databaseInfo/" + targetInfo);
@@ -171,6 +184,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
                 console.error(err);
                 res.send("Erreur lors de la suppression");
             } else {
+                console.log("File removed:", req.body.path.split(".")[0] + ".json");
                 // Update du stockage de l'utilisateur
                 const objectId = new mongoose.Types.ObjectId(req.body.userId);
                 const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();

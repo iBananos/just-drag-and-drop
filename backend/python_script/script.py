@@ -254,7 +254,7 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
         importance_frame = pd.concat([features,importance], axis=1)
         importance_frame = importance_frame.T
                              
-        confusion_matrix2 = confusion_matrix(y_test, prediction)
+        confusion_matrix2 = confusion_matrix(y_test, prediction, normalize="true")
         matrixoutput=pd.DataFrame(confusion_matrix2,columns=target_name,index=target_name)
         print(accuracy_score(y_test,prediction))
         print(importance_frame.to_csv(header=False, index=False))

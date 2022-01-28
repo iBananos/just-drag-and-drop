@@ -153,8 +153,8 @@ const AnalyseView = () => {
             for(let i : number = 1 ; i < acc+1 ; i++){
                 let line = file[i].split(",")
                 for(let j : number = 0 ; j < acc ; j++){
-                  totalPerColumn[i-1] += parseInt(line[j]);
-                  let dataline = {'x': labels[i-1], 'y': labels[j], 'v': parseInt(line[j])}
+                  totalPerColumn[i-1] += parseFloat(line[j]);
+                  let dataline = {'x': labels[i-1], 'y': labels[j], 'v': parseFloat(line[j])}
                   data.push(dataline)
                   
                 }
@@ -216,35 +216,22 @@ const AnalyseView = () => {
     }
     function createRefBar(height:any){
       let div = document.getElementById("Chart") as HTMLDivElement;
-      let divRef = document.createElement("div");
-      divRef.className = "BarRef"
+      let divbarre = document.createElement("div")
+        divbarre.className = "divBarre"
 
-      let p100 = document.createElement("p");
-      p100.className = "p100"
-      p100.innerHTML = "100%";
-      divRef.appendChild(p100)
-
-      let p75 = document.createElement("p");
-      p75.className = "p75"
-      p75.innerHTML = "75%";
-      divRef.appendChild(p75)
-
-      let p50 = document.createElement("p");
-      p50.className = "p50"
-      p50.innerHTML = "50%";
-      divRef.appendChild(p50)
-
-      let p25 = document.createElement("p");
-      p25.className = "p25"
-      p25.innerHTML = "25%";
-      divRef.appendChild(p25)
-      
-      let p0 = document.createElement("p");
-      p0.className = "p0"
-      p0.innerHTML = "0%";
-      divRef.appendChild(p0)
-      divRef.style.height = height;
-      div.appendChild(divRef)
+      let p1 = document.createElement("p")
+        p1.innerHTML = "0"
+        p1.style.float = "left"
+        divbarre.append(p1)
+        let barreColor = document.createElement("div");
+        barreColor.id = "barreColor";
+        barreColor.className = "barreColor"
+        divbarre.append(barreColor)
+        let p2 = document.createElement("p")
+        p2.innerHTML = "1"
+        p2.style.float = "left"
+        divbarre.append(p2)
+        div.appendChild(divbarre)
       
     }
     function createConfusionMatrix(labels:any,datas:any,backgroundColor:any,borderColor:any,nbrow:number,totalPerColumn:number[]){
@@ -271,14 +258,14 @@ const AnalyseView = () => {
                     backgroundColor(context) {
                         const value = datas[context.dataIndex].v;
                         //console.log(labels.indexOf(datas[context.dataIndex].x),datas[context.dataIndex].x, value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)])
-                        let colors  = createRainbowRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
+                        let colors  = createRainbowRGB(value);
                         let colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
                         //console.log(colorString)
                         return color(colorString).alpha(0.8).rgbString();
                       },
                       borderColor(context) {
                         const value = datas[context.dataIndex].v;
-                        let colors  = createRainbowRGB(value, totalPerColumn[labels.indexOf(datas[context.dataIndex].x)]);
+                        let colors  = createRainbowRGB(value);
                         let colorString : string= "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
                         //console.log(colorString)
                         return color(colorString).alpha(1).rgbString();
@@ -344,11 +331,8 @@ const AnalyseView = () => {
 
     }
 
-    function createRainbowRGB(x:any,max:any){
-      if(max===0){
-        return [116,116,116]
-      }
-      let percentFade  =  x/max;
+    function createRainbowRGB(x:any){
+      let percentFade  =  x;
       let rouge ; 
       let bleu ;
       let vert;
