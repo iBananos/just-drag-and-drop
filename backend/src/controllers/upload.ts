@@ -26,13 +26,13 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
     console.log(limitedStorage,currentStorage,req.file!.size,newCurrentStorage)
 
     if (newCurrentStorage > limitedStorage) {
-        res.status(200).json({ "status": "401", "message": "Vous ne disposez plus d’assez de stockage, veuillez passer à un abonnement supérieur ou alors supprimer des bases déjà enregistrées." }); 
+        res.status(200).json({ "status": "401", "message": "You have no storage left. Please upgrade to a higher subscription or delete already saved databases." }); 
         return;
     }
 
     let extension = verifFileName(req.file?.originalname);
     if (extension === false) {
-        res.status(200).json({ "status": "401", "message": "Extension de fichier non valide." }); 
+        res.status(200).json({ "status": "401", "message": "File extension not valid." }); 
         return;
     }
     
@@ -155,7 +155,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/database/" + targetBase, function (err) {
             if (err) {
                 console.error(err);
-                res.send("Erreur lors de la suppression");
+                res.send("Error while deleting");
             } else {
                 console.log("File removed:", req.body.path);
             }
@@ -167,7 +167,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/databaseHTML/" + targetBaseHTML, function (err) {
             if (err) {
                 console.error(err);
-                res.send("Erreur lors de la suppression");
+                res.send("Error while deleting");
             } else {
                 console.log("File removed:", req.body.path.split(".")[0] + ".html");
             }
@@ -182,7 +182,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/databaseInfo/" + targetInfo, async function (err) {
             if (err) {
                 console.error(err);
-                res.send("Erreur lors de la suppression");
+                res.send("Error while deleting");
             } else {
                 console.log("File removed:", req.body.path.split(".")[0] + ".json");
                 // Update du stockage de l'utilisateur
@@ -192,7 +192,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
                 const newCurrentStorage = currentStorage - parseInt(size, 10);
                 await UserLimit.updateOne({ userId: objectId }, { currentStorage: newCurrentStorage });
 
-                res.send("Base supprimée");
+                res.send("Database deleted");
             }
         });
     }
