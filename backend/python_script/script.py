@@ -196,7 +196,7 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
             prediction = model.predict(X_test)
             score = r2_score(y_test,model.predict(X_test))
              #get importance
-            importance = model.coef_[0]
+            importance = model.coef_
         else : 
             print("choose an available alogrithm")
 
