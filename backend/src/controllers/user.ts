@@ -24,15 +24,15 @@ import type { RequestHandler, Request, Response, NextFunction } from "express";
 export const signup : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
     try {
         if (!req.body.email || !req.body.password || !req.body.name || !req.body.surname) {
-            throw new HttpException(401, "controllers/user.ts", "Il manque des informations.");
+            throw new HttpException(401, "controllers/user.ts", "Missing some information.");
         }
 
         if (!checkMailAvailable(req.body.email)) {
-            throw new HttpException(401, "controllers/user.ts", "Veuillez entrer une adresse mail valide.");
+            throw new HttpException(401, "controllers/user.ts", "Please enter a valid email adress.");
         }
 
         if (!checkPassword(req.body.password)) {
-            throw new HttpException(401, "controllers/user.ts", "Le mot de passe n'est pas assez complexe.");
+            throw new HttpException(401, "controllers/user.ts", "Password is too weak.");
         }
 
         // Hachage du mot de passe
@@ -46,7 +46,7 @@ export const signup : RequestHandler = async (req : Request, res : Response, nex
         const hash = await argon2i.hash(req.body.password, salt, options);
 
         if (!hash) {
-            throw new HttpException(500, "controllers/user.ts", "Erreur dans le hachage dans signup.");
+            throw new HttpException(500, "controllers/user.ts", "Error in hash in signup.");
         }
 
         // Création de l'user dans la BD
@@ -87,9 +87,9 @@ export const signup : RequestHandler = async (req : Request, res : Response, nex
             });
             await userLimit.save();
 
-            res.status(200).json({ message: "Votre compte a bien été créé !" });
+            res.status(200).json({ message: "Your account has been created !" });
         })
-        .catch(() => res.status(401).json({"message" : "Cette adresse e-mail est déjà utilisée."}));
+        .catch(() => res.status(401).json({"message" : "This email address is already in use."}));
     }
     catch (err) {
         next(err);
@@ -108,12 +108,12 @@ export const login : RequestHandler = async (req : Request, res : Response, next
     try {
         const user : any = await User.findOne({ email: req.body.email }).lean();
         if (!user) {
-            throw new HttpException(401, "controllers/user.ts", "Nom d'utilisateur ou mot de passe incorrect !");
+            throw new HttpException(401, "controllers/user.ts", "Username or password incorrect !");
         }
 
         const valid = await argon2i.verify(user.password, req.body.password);
         if (!valid) {
-            throw new HttpException(401, "controllers/user.ts", "Nom d'utilisateur ou mot de passe incorrect !");
+            throw new HttpException(401, "controllers/user.ts", "Username or password incorrect !");
         }
 
         /* Création des token */
@@ -174,18 +174,18 @@ export const verification : RequestHandler = async (req : Request, res : Respons
         const foundUser : any = await User.findOne({ email: email }).lean();
 
         if (!foundUser) {
-            throw new HttpException(500, "controllers/user.ts", "Email introuvable");
+            throw new HttpException(500, "controllers/user.ts", "Email address not found");
         }
 
         if (foundUser.isVerified) {
-            return res.status(200).json({ "message" : "Vous avez déjà vérifié votre compte !" });
+            return res.status(200).json({ "message" : "You have already verified your account !" });
         }
         else {
             const foundToken = foundUser.token;
             if (foundToken == token) {
                 await User.updateOne({ email: email }, { isVerified: true, $unset: { token: ""}});
 
-                return res.status(200).json({ "message" : "Votre compte a été vérifié avec succès !" });
+                return res.status(200).json({ "message" : "Your account has been successfully verified !" });
             }
             else {
                 throw new HttpException(500, "controllers/user.ts", "Token Expires");
