@@ -2,7 +2,7 @@
 $color_back: rgba(20, 20, 20, 0.705);
 $color_trans: #8670700c;
 $color_green: #339999;
-$color_yellow : rgb(187, 164, 34);
+$color_yellow : #bba422;
 $color_blue1: #006699;
 $color_blue2: #009999;
 $color_green2: #CCFFCC;
@@ -52,7 +52,7 @@ body{
     background-color: black;
     background-image: url("../assets/background2.png");
     background-size: cover;
-    
+    color: $color_text;
     background-attachment: fixed;
     font-family: $font;
 }

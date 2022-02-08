@@ -71,6 +71,7 @@ const Navigation = () => {
     function UserNav() {
         return <ul>
         <li><NavLink onClick={window.location.reload} to="/">Home</NavLink></li>
+        <li><NavLink onClick={window.location.reload} to="/demo">Demo</NavLink></li>
         <li className="dropdown">
             <div className="dropbtn">Database</div>
             <div className="dropdown-content">

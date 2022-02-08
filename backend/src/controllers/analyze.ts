@@ -303,6 +303,7 @@ function checkAnalyze(req:any,demo:boolean){
         
         filename = req.body.database
     }
+    console.log(filename)
     filename = filename.split(".")[0]
     let analyze_choice = req.body.category;
     let algo_choice = req.body.algo;
