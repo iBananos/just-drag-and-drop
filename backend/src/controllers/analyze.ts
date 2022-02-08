@@ -244,7 +244,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/analyse/" + targetBase, function (err) {
             if (err) {
                 console.error(err);
-                res.send("Erreur lors de la suppression");
+                res.send("Error while deleting");
             } else {
                 console.log("File removed:", req.body.path);
             }
@@ -256,14 +256,14 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/analyseInfo/" + targetInfo, async function (err) {
             if (err) {
                 console.error(err);
-                res.send("Erreur lors de la suppression");
+                res.send("Error while deleting");
             } else {
-                // Update des analyse utilisée
+                // Update des analyses utilisées
                 const objectId = new mongoose.Types.ObjectId(req.body.userId);
                 const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();
                 const currentAnalyse = userLimit.currentAnalyse;
                 await UserLimit.updateOne({ userId: objectId }, { currentAnalyse: currentAnalyse - 1 });
-                res.send("Base supprimée");
+                res.send("Database deleted");
             }
         });
     }
@@ -273,14 +273,14 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/analysePreview/" + targetPreview, async function (err) {
             if (err) {
                 console.error(err);
-                res.send("Erreur lors de la suppression");
+                res.send("Error while deleting");
             } else {
                 // Update des analyse utilisée
                 const objectId = new mongoose.Types.ObjectId(req.body.userId);
                 const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();
                 const currentAnalyse = userLimit.currentAnalyse;
                 await UserLimit.updateOne({ userId: objectId }, { currentAnalyse: currentAnalyse - 1 });
-                res.send("Base supprimée");
+                res.send("Database deleted");
             }
         });
     }
@@ -313,8 +313,8 @@ function checkAnalyze(req:any,demo:boolean){
     let pred = req.body.pred;
     let listName = Utils.default.getNameFiles(userID, 'uploads/' + userID + '/database/',demo);
     // verif database
-    if(typeof filename !== 'string') return "le nom de la database n'est pas un nom de fichier"
-    if(!listName.includes(filename)) return "la database est inexistante"
+    if(typeof filename !== 'string') return "database name is not a file name"
+    if(!listName.includes(filename)) return "database does not exist"
 
     // verif pred
     let data :any;
@@ -325,30 +325,30 @@ function checkAnalyze(req:any,demo:boolean){
         data = JSON.parse(fs.readFileSync("uploads/" + userID + "/databaseInfo/" +  req.body.database.split(".")[0] + ".json", 'utf8'));
     }
     
-    if(typeof pred !== 'string') return "pred n'a pas une nom de colonne"
-    if(!data.colonnes.includes(pred)) return "la colonne prédiction est inexistante"
+    if(typeof pred !== 'string') return "pred has no column name"
+    if(!data.colonnes.includes(pred)) return "prediction column does not exist"
     // vérif feature
-    if(typeof features !== 'object') return "features n'est pas une liste"
+    if(typeof features !== 'object') return "features is not a list"
     let acc :number = 0 
     features.forEach((element:any) => {
         acc++
-        if(typeof element !== 'string') return "une colonne de feature n'est pas une nom de colonne"
-        if(!data.colonnes.includes(element)) return "une colonne de feature est inexistante"
+        if(typeof element !== 'string') return "a feature column is not a column name"
+        if(!data.colonnes.includes(element)) return "a feature column does not exist"
     });
-    if(acc ===0 ) return "features est vide"
+    if(acc ===0 ) return "features is empty"
 
     // vérif category
-    if(typeof analyze_choice !== 'string') return "analyze_choice n'est pas une string"
-    if(analyze_choice !== 'Regression' && analyze_choice !== 'Classification') return "analyze_choice n'est pas une analyse valide"
-    if(data.colonnesString.includes(pred) && analyze_choice === 'Regression') return "la colonne prédiction n'est pas valide pour une Regression"
+    if(typeof analyze_choice !== 'string') return "analyze_choice is not a string"
+    if(analyze_choice !== 'Regression' && analyze_choice !== 'Classification') return "analyze_choice is not a valid analysis"
+    if(data.colonnesString.includes(pred) && analyze_choice === 'Regression') return "the prediction column is not valid for a regression"
 
     // vérif algo
-    if(typeof algo_choice !== 'string') return "algo_choice n'est pas une string"
-    if(analyze_choice === 'Regression' && !['Automatic','GradientBoosting','RandomForest','Ridge'].includes(algo_choice)) return "algo_choice n'est pas un algo valide pour une régression"
-    if(analyze_choice === 'Classification' && !['Automatic2','LinearSVC','AdaBoost','GradientBoosting2','RandomForest2','LogisticRegression'].includes(algo_choice)) return "algo_choice n'est pas un algo valide pour une classification"
+    if(typeof algo_choice !== 'string') return "algo_choice is not a string"
+    if(analyze_choice === 'Regression' && !['Automatic','GradientBoosting','RandomForest','Ridge'].includes(algo_choice)) return "algo_choice is not a valid algo for regression"
+    if(analyze_choice === 'Classification' && !['Automatic2','LinearSVC','AdaBoost','GradientBoosting2','RandomForest2','LogisticRegression'].includes(algo_choice)) return "algo_choice is not a valid algo for classification"
     if(algo_choice === "Automatic" || algo_choice === "Automatic2") return algo_choice;
     // vérif params
-    if(verifParams(req.body.params,algo_choice,analyze_choice)) return "les params ne sont pas valide pour l'algo choisit"
+    if(verifParams(req.body.params,algo_choice,analyze_choice)) return "params are not valid for the choosen algo"
 
     return "ok"
 }
