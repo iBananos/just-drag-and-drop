@@ -4,6 +4,9 @@ import * as utils from "../Utils";
 import sklearn from "../assets/sklearn.png"
 import github from "../assets/github.png"
 import linkedIn from "../assets/linkedin.png"
+import python from "../assets/python.png"
+import react from "../assets/react.png"
+import typescript from "../assets/typescript.png"
 const Home = () =>  {
     window.onload= () =>{
         const search = window.location.search; // returns the URL query String
@@ -53,9 +56,9 @@ const Home = () =>  {
                     
                     <table>
                         <tr>
-                        <td><a href="https://github.com/christelralalasoa"><img className="iconeReact" alt="React" src="https://img.icons8.com/office/160/000000/react.png"/></a></td>
-                            <td><a href="https://github.com/christelralalasoa"><img className="iconeTypescript" alt="" src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/24/000000/external-typescript-an-open-source-programming-language-developed-and-maintained-by-microsoft-logo-shadow-tal-revivo.png"/></a></td>
-                            <td><a href="https://github.com/christelralalasoa"><img className="iconePython" alt="" src="https://img.icons8.com/color/144/000000/python--v1.png"/></a></td>
+                        <td><a href="https://github.com/christelralalasoa"><img className="iconeReact" alt="React" src={react}/></a></td>
+                            <td><a href="https://github.com/christelralalasoa"><img className="iconeTypescript" alt="" src={typescript}/></a></td>
+                            <td><a href="https://github.com/christelralalasoa"><img className="iconePython" alt="" src={python}/></a></td>
                             <td><a href="https://github.com/christelralalasoa"><img className="iconeSklearn" alt="" src={sklearn}/></a></td>
                             
                         </tr>

@@ -365,7 +365,7 @@ function verifParams(list_param:any,algo_choice:any,analyze_choice:any){
             if(isNaN(parseInt(list_param.max_depth)) || parseInt(list_param.max_depth) < 0 ) return true
             if(isNaN(parseInt(list_param.min_samples_split)) || parseInt(list_param.min_samples_split) < 0 ) return true
         }else if(algo_choice === 'Ridge'){
-            if(isNaN(parseFloat(list_param.n_estimators)) || parseFloat(list_param.n_estimators ) < 0 ) return true
+            if(isNaN(parseFloat(list_param.tol)) || parseFloat(list_param.tol ) < 0 ) return true
             if(!["auto","svd","cholesky",'lsqr',"sparse_cg","sag","saga","lbfgs"].includes(list_param.solver)) return true
             if(isNaN(parseInt(list_param.alpha)) || parseInt(list_param.alpha) < 0 ) return true
         }
