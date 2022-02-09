@@ -68,8 +68,8 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
         fileName = fileNameCSV
         extension = 'csv'
     }else{
-        //fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
-        fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
+        fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
+        //fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
     }
     let colonnes : string[] = getColonneFromCSV(userId, fileName);
     createInfoDatabase(userId, fileName,fileNameHTML, nomFichier, req.body.date, req.file?.size, extension, colonnes,req.body.separator);
@@ -114,10 +114,13 @@ function getColonneFromCSV(userId : string, path : any) {
 
 function createInfoDatabase(userId : string, fileName : string,overviewPath : string, name : string, date : string, size : any, extension : any, colonnes : string[],separator:string){
     const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-    
+    console.log('python python_script/getColumn.py "' + fileName + '" ' + extension + ' "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt())
     exec('python python_script/getColumn.py "' + fileName + '" ' + extension + ' "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error : any, stdout : any, stderr : any) => {
+        
         if (error) {
+            
             console.error(`error: ${error.message}`);
+            console.log("tttttttttttttttttttttttttttttZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ")
             return;
         }
         if (stderr) {

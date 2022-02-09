@@ -66,16 +66,23 @@ function handleFiles(event :any) {
 }
 function sendFile(){
   let name = (document.getElementById('inputName') as HTMLInputElement);
+  (document.getElementById("sendButton") as HTMLButtonElement).disabled = true;
+  (document.getElementById("sendButton") as HTMLButtonElement).onclick = null;
   if(files){
     if(name.value !== ""){
-      uploadFile(files)
+      uploadFile(files);
+      
       
     }else{
       utils.default.doAlert("warning","Please give the new database a name");
+      (document.getElementById("sendButton") as HTMLButtonElement).disabled = false;
+      (document.getElementById("sendButton") as HTMLButtonElement).onclick = sendFile;
 
       
   }}else{
     utils.default.doAlert("warning","Please drop a database");
+    (document.getElementById("sendButton") as HTMLButtonElement).disabled = false;
+    (document.getElementById("sendButton") as HTMLButtonElement).onclick = sendFile;
   }
 }
 
@@ -99,6 +106,8 @@ function callbackRequest(result : any){
   else {
     utils.default.doAlert("danger",res.message);
   }
+  (document.getElementById("sendButton") as HTMLButtonElement).disabled = false;
+  (document.getElementById("sendButton") as HTMLButtonElement).onclick = sendFile;
 }
 
   return (
@@ -116,7 +125,7 @@ function callbackRequest(result : any){
         
         <div className="sendFile">
           <input type="text" className="inputName" id="inputName" placeholder="Database name..."></input>
-          <button className="sendButton" onClick={sendFile}>Send</button>
+          <button className="sendButton" id="sendButton" onClick={sendFile} >Send</button>
         </div>
         <div id="separatorSelector" className="separatorSelector">
           Separator for CSV : <select name="separator" id="separator" defaultValue={","} disabled>

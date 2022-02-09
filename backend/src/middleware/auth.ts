@@ -53,11 +53,11 @@ export const auth : RequestHandler = async (req : Request, res : Response, next 
         if (!user) {
             throw new HttpException(401, "middleware/auth.ts", "L'authentification a échoué.");
         }
-
+/* //Necessite un deployement non VPN
         if (user.isVerified == false && req.originalUrl != "/api/profile/getInformation") {
             throw new HttpException(200, "middleware/auth.ts", "Vous devez d'abord confirmer votre adresse email.");
         }
-        
+*/
         req.body.userId = decodedToken.userId;
         next();
     }
