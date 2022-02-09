@@ -20,7 +20,7 @@ def parse_data(filename,separator):
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         try:
-            df = pd.read_csv(filename,index_col=False, delimiter=separator)
+            df = pd.read_csv(filename,index_col=0, delimiter=separator)
         except:
             df = pd.read_csv(filename, delimiter=separator)
     elif extension == 'xlsx':
@@ -50,10 +50,10 @@ def check_type(filename,separator) :
 
 def correlation_matrix(filename,separator) : 
     df = parse_data(filename,separator)
-    if check_type(filename,separator) == True : 
-        cm = df.corr()
-    else :
-        print("issue with data types")
+    #if check_type(filename,separator) == True : 
+    cm = df.corr()
+    #else :
+    #    print("issue with data types")
     return cm.to_csv(index=False)
 
 def decryptFile(filename) :

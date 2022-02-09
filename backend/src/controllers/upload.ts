@@ -66,8 +66,8 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
         fileName = fileNameCSV
         extension = 'csv'
     }else{
-        fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
-        //fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
+        //fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
+        fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
     }
     let colonnes : string[] = getColonneFromCSV(userId, fileName);
     createInfoDatabase(userId, fileName,fileNameHTML, nomFichier, req.body.date, req.file?.size, extension, colonnes,req.body.separator);
@@ -130,7 +130,7 @@ function createInfoDatabase(userId : string, fileName : string,overviewPath : st
         let nomFichier = aesCipher.encrypt(Buffer.from(name + ".json"));
         fs.writeFile('uploads/' + userId + '/databaseInfo/' + nomFichier, aesCipher.encrypt(Buffer.from(doc)), function (err) {});
     });
-    /*
+    
     exec('python python_script/fullOverview.py "' + fileName + '" ' + extension + ' "'+separator+'" "'+overviewPath +'" '+ aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error : any, stdout : any, stderr : any) => {
         if (error) {
             console.error(`error: ${error.message}`);
@@ -142,7 +142,7 @@ function createInfoDatabase(userId : string, fileName : string,overviewPath : st
         }
         let resultat = stdout;
     });
-    */
+    
 }
 
 export const getInfoDatabase : RequestHandler = (req : Request, res : Response, next : NextFunction) => {

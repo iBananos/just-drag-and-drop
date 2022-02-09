@@ -343,7 +343,7 @@ const Analyze = () =>  {
         console.log(requestAnalyze);
         (document.getElementById("reponseServeur") as HTMLParagraphElement).innerHTML = "Sending request, please wait...";
         
-        
+        (document.getElementById("loading") as HTMLDivElement).style.display = "block"
         if(demo === "true"){
             utils.default.sendRequestDemo('POST', '/api/analyze/parametersDemo', requestAnalyze, callbackRequest); 
         }else{
@@ -353,6 +353,7 @@ const Analyze = () =>  {
     }
 
     function callbackRequest(response : any) {
+        (document.getElementById("loading") as HTMLDivElement).style.display = "none"
         console.log(response);
         let reponse = JSON.parse(response);
         let elements = document.getElementsByClassName("boutonSendanalyze");
@@ -392,15 +393,7 @@ const Analyze = () =>  {
     return (
         
         <div className="Analyze">
-            <div id="loading" className="loading">
-            <div className="loading-content">
-            <div className="loading-content__center-part">
-            </div>
-            <div className="loading-content__loader">
-                <div className="loading-content__loader-content"></div>
-            </div>
-        </div>
-            </div>
+            
             <div className="view" id="view">
                 <div className="blurAnalyze">
                 <h1 className="title">Analyze page</h1>
@@ -576,6 +569,15 @@ const Analyze = () =>  {
                     <p id="reponseServeur"></p>
                 </div>
 
+            </div>
+            </div>
+            <div id="loading" className="loading">
+            <div className="loading-content">
+            <div className="loading-content__center-part">
+            </div>
+            <div className="loading-content__loader">
+                <div className="loading-content__loader-content"></div>
+            </div>
             </div>
             </div>
             <BarreLaterale />

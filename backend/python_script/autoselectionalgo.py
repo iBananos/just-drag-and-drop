@@ -24,6 +24,7 @@ features = sys.argv[3]
 pred = sys.argv[4]
 demo = sys.argv[5]
 separator = sys.argv[6]
+
 if demo == "false" :
     key = sys.argv[7]
     toEncrypt = sys.argv[8]
@@ -36,7 +37,7 @@ def parse_data(filename,separator):
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         try:
-            df = pd.read_csv(filename,index_col=False, delimiter=separator)
+            df = pd.read_csv(filename,index_col=0, delimiter=separator)
         except:
             df = pd.read_csv(filename, delimiter=separator)
     elif extension == 'xlsx':
