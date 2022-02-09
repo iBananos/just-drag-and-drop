@@ -57,24 +57,20 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
     let fileName = 'uploads/' + userId + '/database/' + nom;
     let nomHTML = aesCipher.encrypt(Buffer.from(nomFichier + "." + "html"));
     let fileNameHTML='uploads/' + userId + '/databaseHTML/'+nomHTML;
-    if(extension === "xlsx"){
-        fs.writeFileSync(fileName, (req.file!.buffer));
-        
+    if (extension === "xlsx") {        
         let nomCSV = aesCipher.encrypt(Buffer.from(nomFichier + "." + "csv"));
         
-        let fileNameCSV='uploads/' + userId + '/database/'+nomCSV;
+        let fileNameCSV = 'uploads/' + userId + '/database/' + nomCSV;
         
-        Utils.default.xlsxToCSV(fileName,fileNameCSV ,aesCipher);
+        Utils.default.xlsxToCSV(req.file!.buffer, fileNameCSV, aesCipher);
         fileName = fileNameCSV
         extension = 'csv'
     }else{
-        //fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
-        fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
+        fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
     }
     let colonnes : string[] = getColonneFromCSV(userId, fileName);
     createInfoDatabase(userId, fileName,fileNameHTML, nomFichier, req.body.date, req.file?.size, extension, colonnes,req.body.separator);
     
-
     // Update du stockage utilisée
     await UserLimit.updateOne({ userId: objectId }, { currentStorage: newCurrentStorage });
 
@@ -117,7 +113,10 @@ function createInfoDatabase(userId : string, fileName : string,overviewPath : st
     
     exec('python python_script/getColumn.py "' + fileName + '" ' + extension + ' "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error : any, stdout : any, stderr : any) => {
         if (error) {
+            console.log(stdout)
+            console.log("la");
             console.error(`error: ${error.message}`);
+            console.log("la");
             return;
         }
         if (stderr) {
@@ -132,6 +131,7 @@ function createInfoDatabase(userId : string, fileName : string,overviewPath : st
         let nomFichier = aesCipher.encrypt(Buffer.from(name + ".json"));
         fs.writeFile('uploads/' + userId + '/databaseInfo/' + nomFichier, aesCipher.encrypt(Buffer.from(doc)), function (err) {});
     });
+    /*
     exec('python python_script/fullOverview.py "' + fileName + '" ' + extension + ' "'+separator+'" "'+overviewPath +'" '+ aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error : any, stdout : any, stderr : any) => {
         if (error) {
             console.error(`error: ${error.message}`);
@@ -143,6 +143,7 @@ function createInfoDatabase(userId : string, fileName : string,overviewPath : st
         }
         let resultat = stdout;
     });
+    */
 }
 
 export const getInfoDatabase : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
