@@ -43,7 +43,7 @@ export default class AESCipher {
             let encryptedData = cipher.update(text);
             let encryptedDataFinal = Buffer.concat([encryptedData, cipher.final()]);
             
-            return Buffer.concat([initVector, Buffer.from(";"), encryptedDataFinal]);
+            return Buffer.concat([Buffer.from(initVector.toString("hex")), Buffer.from(";"), Buffer.from(encryptedDataFinal.toString("hex"))]);
         }
         return text;
     }
