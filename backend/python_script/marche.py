@@ -1,3 +1,4 @@
 import pickle
-with open('FirstTOP1.sav', 'rb') as ifp:
+import gzip
+with gzip.open('FirstTOP1.sav', 'rb') as ifp:
     print(pickle.load(ifp))
