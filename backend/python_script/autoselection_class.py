@@ -36,14 +36,14 @@ else :
     key = ""
     toEncrypt = ""
 
-def parse_data(filename,separator):
+def parse_data(filename):
 
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         try:
-            df = pd.read_csv(filename,index_col=False, delimiter=separator)
+            df = pd.read_csv(filename,index_col=False)#, delimiter=separator)
         except:
-            df = pd.read_csv(filename, delimiter=separator)
+            df = pd.read_csv(filename)#, delimiter=separator)
     elif extension == 'xlsx':
             # Assume that the user uploaded an excel file
         df = pd.read_excel(filename,index_col=False)
@@ -56,8 +56,8 @@ def parse_data(filename,separator):
         print("There was an error while processing this file")
     
     return df
-def autoselection(feature,predict,filename,separator):
-    data=parse_data(filename,separator)
+def autoselection(feature,predict,filename):
+    data=parse_data(filename)
     n=min(len(data),1000)
     dataselect=data.sample(frac=0.2)
     featurepredict=np.concatenate((predict, feature), axis=None)
@@ -233,7 +233,7 @@ def autoselection(feature,predict,filename,separator):
               'criterion' :['gini', 'entropy']
              }
         tree_clas = DecisionTreeClassifier()
-        classif = GridSearchCV(estimator=tree_clas, param_grid=param_grid, cv=3, verbose=False)
+        classif = GridSearchCV(estimator=tree_clas, param_grid=param_grid, cv=3, verbose=False,n_jobs = -1)
         classif.fit(X_train, y_train)
         
     if bestalgo=='GradientBoostingClassifier':
@@ -241,10 +241,9 @@ def autoselection(feature,predict,filename,separator):
         param_dist = dict(max_depth=[3,6,10],
                   n_estimators=[50,100,500],
                   min_samples_split=[2,5,8],
-                  learning_rate=[0.01,0.05,0.1],
-                  max_features=['sqrt', 'log2']
+                  max_features=['auto','sqrt', 'log2',None]
                   )
-        classif = RandomizedSearchCV(model, param_distributions=param_dist,cv=3)
+        classif = RandomizedSearchCV(model, param_distributions=param_dist,cv=3,n_jobs = -1)
         classif.fit(X_train, y_train)
     if bestalgo=='KNeighborsClassifier':
         knn = KNeighborsClassifier()
@@ -252,7 +251,7 @@ def autoselection(feature,predict,filename,separator):
         param_grid = dict(n_neighbors=k_range)
         
         # defining parameter range
-        classif = GridSearchCV(knn, param_grid, cv=3, scoring='accuracy',verbose=False)
+        classif = GridSearchCV(knn, param_grid, cv=3, scoring='accuracy',verbose=False,n_jobs = -1)
         
         # fitting the model for grid search
         classif.fit(X_train, y_train)
@@ -324,4 +323,4 @@ if __name__ == "__main__":
     else :
         data = filename
     #print(features.split(","),pred,filename)
-    print(autoselection(features.split(","),pred,data,separator))
+    print(autoselection(features.split(","),pred,data))

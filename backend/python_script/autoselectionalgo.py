@@ -22,7 +22,7 @@ filename = sys.argv[1]
 extension = sys.argv[2]
 features = sys.argv[3]
 pred = sys.argv[4]
-separator = sys.argv[5]
+#separator = sys.argv[5]
 demo = sys.argv[5]
 if demo == "false" :
     key = sys.argv[6]
@@ -31,14 +31,14 @@ else :
     key = ""
     toEncrypt = ""
 
-def parse_data(filename,separator):
+def parse_data(filename):
 
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         try:
-            df = pd.read_csv(filename,index_col=False, delimiter=separator)
+            df = pd.read_csv(filename,index_col=False)#, delimiter=separator)
         except:
-            df = pd.read_csv(filename, delimiter=separator)
+            df = pd.read_csv(filename)#, delimiter=separator)
     elif extension == 'xlsx':
             # Assume that the user uploaded an excel file
         df = pd.read_excel(filename,index_col=False)
@@ -53,8 +53,8 @@ def parse_data(filename,separator):
     return df
 
 
-def autoselection(feature,predict,filename,separator):
-    data=parse_data(filename,separator)
+def autoselection(feature,predict,filename):
+    data=parse_data(filename)
     n=min(len(data),1000)
     dataselect=data.sample(frac=0.2)
     featurepredict=np.concatenate((predict, feature), axis=None)
@@ -260,7 +260,7 @@ def autoselection(feature,predict,filename,separator):
         # Number of features to consider at every split
         max_features = ['auto', 'sqrt']
         # Maximum number of levels in tree
-        max_depth = [int(x) for x in np.linspace(100, 300, num = 11)]
+        max_depth = [3,6,9]
         max_depth.append(None)
         # Minimum number of samples required to split a node
         min_samples_split = [1,2, 5]
@@ -331,4 +331,4 @@ if __name__ == "__main__":
     else :
         data = filename
     #print(features.split(","),pred,filename)
-    print(autoselection(features.split(","),pred,data,separator))
+    print(autoselection(features.split(","),pred,data))
