@@ -133,6 +133,7 @@ const DataVisu = () =>  {
         let base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
         for(let i: number = 0 ; i < list.length; i++){
             if(list[i].name+"."+list[i].extension === base){
+                let colonnesNoneString = list[i].colonnes;
                 let colonnes = list[i].colonnesString;
                 thirdcolumn.innerHTML = "";
                 let optiondefault3 = document.createElement("option");
@@ -148,7 +149,7 @@ const DataVisu = () =>  {
                 optionNone3.style.color = 'red';
                 thirdcolumn.appendChild(optionNone3);
                 for(let y: number = 0 ; y < colonnes.length; y++){
-                    if(firstcolumn.value !== colonnes[y] && secondcolumn.value !== colonnes[y] && colonnes[y]!==""){
+                    if(firstcolumn.value !== colonnes[y] && secondcolumn.value !== colonnes[y] /*&& colonnesNoneString.includes(colonnes[y])*/ && colonnes[y]!==""){
                         let option = document.createElement("option");
                         option.innerHTML = colonnes[y];
                         option.value = colonnes[y];

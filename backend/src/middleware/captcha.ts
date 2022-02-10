@@ -5,8 +5,9 @@ import type { RequestHandler, Request, Response, NextFunction } from "express";
 
 export const captcha : RequestHandler = async (req : Request, res : Response, next : NextFunction) => {
     try {
+        console.log(req.session.captcha+ " " +req.body.captcha)
         if (req.session.captcha === req.body.captcha) {
-            next();
+            next(); 
         }
         else {
             const captcha = new Captcha();

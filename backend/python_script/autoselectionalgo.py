@@ -22,8 +22,9 @@ filename = sys.argv[1]
 extension = sys.argv[2]
 features = sys.argv[3]
 pred = sys.argv[4]
-separator = sys.argv[6]
 demo = sys.argv[5]
+separator = sys.argv[6]
+
 if demo == "false" :
     key = sys.argv[7]
     toEncrypt = sys.argv[8]

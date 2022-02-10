@@ -103,11 +103,10 @@ class Utils {
     }
 
 
-    public static xlsxToCSV(path:string,path2:string,aesCipher:AESCipher) {
+    public static xlsxToCSV(path:Buffer,path2:string,aesCipher:AESCipher) {
         let rows = [];
         let row :any= [];
         let fileConverted: any = "";
-        console.log(path)
         let obj = xlsx.parse(path); // parses a file
         //looping through all sheets
         for(let i = 0; i < obj.length; i++)
@@ -130,10 +129,7 @@ class Utils {
         {
             fileConverted += rows[i].join(",") + "\n";
         }
-        fs.writeFileSync(path2, aesCipher.encryptToBuffer(fileConverted));
-        fs.unlink(path, function (err) {
-            console.log("csv correctement convertis")
-        });
+        fs.writeFileSync(path2, aesCipher.encrypt(fileConverted));
     }
 
     public static getSizeFile(userId : string, path : string) {

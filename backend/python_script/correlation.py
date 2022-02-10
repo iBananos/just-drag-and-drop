@@ -50,10 +50,10 @@ def check_type(filename,separator) :
 
 def correlation_matrix(filename,separator) : 
     df = parse_data(filename,separator)
-    if check_type(filename,separator) == True : 
-        cm = df.corr()
-    else :
-        print("issue with data types")
+    #if check_type(filename,separator) == True : 
+    cm = df.corr()
+    #else :
+    #    print("issue with data types")
     return cm.to_csv(index=False)
 
 def decryptFile(filename) :

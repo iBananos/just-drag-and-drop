@@ -296,44 +296,46 @@ table{
 
 .loading{
     display: none;
+    margin-top: -300px;
+    margin-left: 500px;
 }
 
 .loading-content {
     position: relative;
-    height: 200px;
-    width: 200px;
+    height: 100px;
+    width: 100px;
     border-radius: 100%;
-    margin: 100px auto;
+    margin: 50px auto;
     overflow: hidden;
     background: $color_back;
-    box-shadow:  10px 10px 20px #000000,
-               -10px -10px 20px #000000;
+    box-shadow:  5px 5px 10px #000000,
+               -5px -5px 10px #000000;
     animation: spin;
     .loading-content__center-part {
       position: relative;
       top: 50%;
       z-index: 999;
-      height: 160px;
-      width: 160px;
+      height: 80px;
+      width: 80px;
       transform: translateY(-50%);
-      margin-left: 20px;
+      margin-left: 10px;
       border-radius: 100%;
       background: $color_back;
-      box-shadow: inset 5px 5px 20px #000000,
-              inset -5px -5px 20px #000000;
+      box-shadow: inset 5px 5px 10px #000000,
+              inset -5px -5px 10px #000000;
     }
     .loading-content__loader {
       position: absolute;
-      left: 92.5px; /* (width of loading-content / 2) - (width of content__loader / 2) */
+      left: 46.5px; /* (width of loading-content / 2) - (width of content__loader / 2) */
       top: 0;
       height: 100%;
-      width: 15px;
+      width: 7px;
       -webkit-animation: spin 3s infinite linear;
       .loading-content__loader-content {
-        height: 40px; // loading-content - loading-content__center-part
+        height: 20px; // loading-content - loading-content__center-part
         width: 100%;
         background-color: $color_text;
-        box-shadow: 0px 0 40px 60px $color_text;
+        box-shadow: 0px 0 20px 30px $color_text;
       }
     }
   }

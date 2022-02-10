@@ -84,6 +84,14 @@
     margin-top: -37px;
     cursor: pointer;
     border: none;
+   
+}
+.sendButton:disabled{
+    color:gray;
+    &:hover{
+        background-color: $color_back;
+        cursor: default;
+    }
 }
 
 .sendFile{

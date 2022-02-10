@@ -70,7 +70,7 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
             let separator = Utils.default.getSeparator(req.body.userId,req.body.database.split(".")[0]+".json")
             if (reponse === "Automatic" || reponse === "Automatic2") {
                 console.log('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" false "'+ separator +'" '+ aesCipher.getKey() + ' ' + aesCipher.getToEncrypt())
-                exec('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" false ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
+                exec('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" false "'+ separator +'" '+ aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
                         return;
@@ -174,7 +174,7 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
             }
              
             if (reponse === "Automatic" || reponse === "Automatic2") {
-                console.log('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" true ')
+                console.log('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" true ","')
                 exec('python '+algo+' "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" true ","', (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
