@@ -122,8 +122,8 @@ function createInfoDatabase(userId : string, fileName : string,overviewPath : st
             console.error(`stderr: ${stderr}`);
             return;
         }
-        let resultat = stdout.replace(/' '+/g,"','")
-        let colonnesString = resultat.replace(/'+/g,'').replace("]",'').replace("[",'').replace(/\r\n+/g,',').split(",")
+        let resultat = stdout.replace(/\r\n+/g,'').replace(/' '+/g,"','")
+        let colonnesString = resultat.replace(/'+/g,'').replace("]",'').replace("[",'').replace(/\r\n+/g,'').split(",")
         console.log(colonnesString)
         let doc = JSON.stringify({"name":name, "date":date, "size":size, "extension":extension, "colonnes":colonnes, "colonnesString":colonnesString,"separator":separator});
 
