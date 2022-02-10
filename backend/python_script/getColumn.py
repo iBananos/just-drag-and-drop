@@ -35,7 +35,7 @@ def parse_data(filename,separator):
     
     return df
 
-def principal_fonction(data,separator) :
+def principal_fonction(filename,separator) :
     df = parse_data(filename,separator)
     dataexclude=df.select_dtypes(exclude=['object'])
     obj_df = df.select_dtypes(include=['object']).copy()

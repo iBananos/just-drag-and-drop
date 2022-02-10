@@ -22,8 +22,8 @@ filename = sys.argv[1]
 extension = sys.argv[2]
 features = sys.argv[3]
 pred = sys.argv[4]
-separator = sys.argv[5]
-demo = sys.argv[6]
+separator = sys.argv[6]
+demo = sys.argv[5]
 if demo == "false" :
     key = sys.argv[7]
     toEncrypt = sys.argv[8]
@@ -31,7 +31,7 @@ else :
     key = ""
     toEncrypt = ""
 
-def parse_data(filename):
+def parse_data(filename,separator):
 
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file

@@ -164,9 +164,10 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
             obj_df = pd.concat([obj_df,dataexclude[dataexclude.columns.values[i]]],axis=1)
     lb_make = LabelEncoder()
     for i in range(len(obj_df.columns.values)):
-                obj_df[obj_df.columns.values[i]] = lb_make.fit_transform(obj_df[obj_df.columns.values[i]])
-                df[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
-    
+            obj_df[obj_df.columns.values[i]] = lb_make.fit_transform(obj_df[obj_df.columns.values[i]])
+            df[obj_df.columns.values[i]] = obj_df[obj_df.columns.values[i]]
+            if len(obj_df[obj_df.columns.values[i]].unique())==1:
+                return 'Error_The column : '+str(obj_df.columns.values[i])+' as one unique value'
     X=df[features]
     y=df[pred]
     
