@@ -1,30 +1,22 @@
-from hpsklearn.components import _class_weight
-import pandas as pd
-from pandas.core.frame import DataFrame
-import numpy as np
-from sklearn.model_selection import RandomizedSearchCV
 import pandas as pd
 import numpy as np
-from sklearn.ensemble import RandomForestRegressor,RandomForestClassifier,GradientBoostingClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score,accuracy_score
+import pandas as pd
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier,GradientBoostingClassifier
+from sklearn.metrics import accuracy_score
 from xgboost import XGBClassifier
 from sklearn.linear_model import LogisticRegression
 import plotly.graph_objs as go
 from sklearn.preprocessing import LabelEncoder
-from hpsklearn import HyperoptEstimator
 from sklearn.metrics import confusion_matrix,classification_report
 import pickle
-from sklearn.datasets import make_classification
-from sklearn.model_selection import cross_val_score
+
 from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.svm import SVC
-from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import StackingClassifier
-import plotly.express as px
+
 def get_stacking():
 	# define the base models
 	level0 = list()
