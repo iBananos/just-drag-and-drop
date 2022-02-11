@@ -172,7 +172,10 @@ def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_cho
     y=df[pred]
     
     X = (X-X.mean())/X.std()
-    X_train, X_test, y_train, y_test =  train_test_split(X, y, test_size=0.2, random_state=42)
+    try:
+        X_train, X_test, y_train, y_test =  train_test_split(X, y, test_size=0.2, random_state=42)
+    except:
+        return 'Error_Your database is empty'
     if analyze_choice == "Regression" : 
         
         parameters = get_list_parameters(algo_choice,list_param)
