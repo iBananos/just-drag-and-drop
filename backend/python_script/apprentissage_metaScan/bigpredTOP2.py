@@ -86,7 +86,6 @@ print(len(X_train.columns))
 rf=RandomForestClassifier(bootstrap=False, ccp_alpha=0.0, class_weight={ True:0.9, False:0.10 },
                        criterion='gini', max_depth=205, max_features='sqrt',
                        max_leaf_nodes=None, max_samples=None,
-                       min_impurity_decrease=0.0, min_impurity_split=None,
                        min_samples_leaf=1, min_samples_split=5,
                        min_weight_fraction_leaf=0.0, n_estimators=555,
                        n_jobs=None, oob_score=False, random_state=None,
