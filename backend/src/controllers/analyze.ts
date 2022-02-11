@@ -116,7 +116,18 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
                         console.error(`stderr: ${stderr}`);
                         return;
                     }
-                    
+                    if(stdout.split("\n")[0].includes("Error_")){
+                        fs.unlink('uploads/' + req.body.userId + '/analyseInfo/' + nom, function (err) {
+                            if (err) {
+                                console.error(err);
+                            } else {
+                                console.log("File removed:", req.body.path);
+                            }
+                            res.status(200).json({ "status" : "401", "message": stdout.split("_")[1], "name": "a", "category": "b"});
+                            return;
+                        });
+                        
+                    }else{
                     fs.writeFile('uploads/' + req.body.userId + '/analyse/' + aesCipher.encrypt(Buffer.from(nomFichier + ".csv")), aesCipher.encrypt(Buffer.from(stdout)), function (err) {
                         if (err) {
                             res.send('error'); 
@@ -124,6 +135,7 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
                             res.status(200).json({ "status" :"ok", "name": nomFichier, "category": req.body.category});
                         }
                     });
+                }
                 });
             }
         }
@@ -220,7 +232,17 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
                         console.error(`stderr: ${stderr}`);
                         return;
                     }
-                    
+                    if(stdout.split("\n")[0].includes("Error_")){
+                        fs.unlink('uploads/' + "demo" + '/analyseInfo/' + nomFichier +'.json', function (err) {
+                            if (err) {
+                                console.error(err);
+                            } else {
+                                console.log("File removed:", req.body.path);
+                            }
+                            res.status(200).json({ "status" : "401", "message": stdout.split("_")[1], "name": "a", "category": "b"});
+                            return;
+                        });
+                    }else{
                     fs.writeFile('uploads/' + "demo" + '/analyse/' + nomFichier + ".csv", stdout, function (err) {
                         if (err) {
                             res.send('error'); 
@@ -228,6 +250,7 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
                             res.status(200).json({ "status" :"ok", "name": nomFichier, "category": req.body.category});
                         }
                     });
+                }
                 });
             }
         }
