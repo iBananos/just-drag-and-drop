@@ -48,8 +48,7 @@ init=init.drop(' p_trace', axis=1)
 init=init.drop(' roy_root', axis=1)
 init=init.drop(' w_lambda', axis=1)
 init2=init[init["TOP1"]==True]
-fig = px.histogram(init2, x="algo")
-fig.show()
+
 obj_df = init.select_dtypes(include=['object']).copy()
 lb_make = LabelEncoder()
 for i in range(len(obj_df.columns.values)):
@@ -62,8 +61,7 @@ uniqueindex=init['test_label'].unique()
 uniqueindex=np.random.choice(uniqueindex,int(len(uniqueindex)/1.25))
 init=init.set_index('test_label')
 init2=init[init["TOP1"]==True]
-fig = px.histogram(init2, x="algo")
-fig.show()
+
 trainingset=init.loc[uniqueindex]
 
 testset=init.drop(trainingset.index)
@@ -116,13 +114,9 @@ print(cf_matrix)
 testset['classif_exact']=testset['pred'] == testset['Gonebeagoodprediction']
 
 confuindex=testset[testset['pred']==True]
-import plotly.express as px
+
 testset2=testset[testset["Gonebeagoodprediction"]==True]
-fig = px.histogram(testset2, x="algo")
-fig.show()
-testset2=testset[testset["pred"]==True]
-fig = px.histogram(testset2, x="algo")
-fig.show()
+
 
 testset=testset.drop(confuindex.index)
 print(testset[testset['pred']==True])
@@ -199,10 +193,7 @@ testset=testset.drop(confuindex.index)
 print(len(testset.index.unique()))
 testset['classif_exact']=testset['pred'] == testset['Gonebeagoodprediction']
 false=testset[testset['classif_exact']==False]
-fig = px.histogram(false, x="algo")
-fig.show()
-fig=px.scatter(false.index,false['r2'],color=false['algo'])
-fig.show()
+
 
 '''
 
