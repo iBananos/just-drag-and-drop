@@ -148,6 +148,7 @@ class Utils {
         userId.forEach((element:any) => {
             let client :string = ""+element._id;
             if(!listName.includes(client)){
+                console.log("nouveau client detecté : " + element.name + element.surname)
                 let dir = 'uploads/' + client;
                 fs.mkdirSync(dir);
                 fs.mkdirSync(dir + '/database');
