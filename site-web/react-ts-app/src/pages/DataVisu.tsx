@@ -675,14 +675,16 @@ const DataVisu = () =>  {
 
         let ctx :any = (document.getElementById('hBarx_'+id) as HTMLCanvasElement).getContext('2d');
         let labels :any  = getLabelFromOneColumn(data3);
+        console.log(labels)
         let data = getdataFromOneColumn(data3,labels);
-        labels = getLabelFromSteps(labels)
+        //labels = getLabelFromSteps(labels)
+
         let myChart = new Chart(ctx , {
             type : 'bar',
             data: {
-                labels: labels,
+                labels: [0,1,2,3,4,5,6,7,8,9],
                 datasets: [{
-                    label : "Distribution of "+label,
+                    label : "Distribution of "+label+" goes from "+labels[0]+" to "+labels[1]+" step "+(labels[1]-labels[0]),
                     type: 'bar',
                     data: data,
                     borderWidth: 1,
@@ -755,13 +757,13 @@ const DataVisu = () =>  {
        
         let labels :any  = getLabelFromOneColumn(data3);
         let data = getdataFromOneColumn(data3,labels);
-        labels = getLabelFromSteps(labels)
+        //labels = getLabelFromSteps(labels)
         let myChart = new Chart(ctx , {
             type : 'bar',
             data: {
-                labels: labels,
+                labels: [0,1,2,3,4,5,6,7,8,9],
                 datasets: [{
-                    label : "Distribution of "+label,
+                    label : "Distribution of "+label+" goes from "+labels[0]+" to "+labels[1]+" step "+(labels[1]-labels[0]),
                     type: 'bar',
                     data: data,
                     borderWidth: 1,
@@ -812,7 +814,10 @@ const DataVisu = () =>  {
         let newArray : string[] = [];
         array.forEach((el :any) =>{
             let color = el;
-            newArray.push("rgba("+color.r+","+color.g+','+color.b+","+opacity+")"); 
+            if(color!==undefined){
+                newArray.push("rgba("+color.r+","+color.g+','+color.b+","+opacity+")"); 
+            }
+            
             
         })
         return(newArray)
