@@ -264,6 +264,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
     let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyse/", req.body.path + ".csv");
     console.log(targetBase)
     if (targetBase != undefined) {
+        console.log("onveutdelete1")
         fs.unlink("uploads/" + req.body.userId + "/analyse/" + targetBase, function (err) {
             if (err) {
                 console.error(err);
@@ -276,6 +277,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
 
     let targetInfo = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyseInfo/", req.body.path + ".json");
     if (targetInfo != undefined) {
+        console.log("onveutdelete2")
         fs.unlink("uploads/" + req.body.userId + "/analyseInfo/" + targetInfo, async function (err) {
             if (err) {
                 console.error(err);
@@ -286,13 +288,14 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
                 const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();
                 const currentAnalyse = userLimit.currentAnalyse;
                 await UserLimit.updateOne({ userId: objectId }, { currentAnalyse: currentAnalyse - 1 });
-                res.send("Database deleted");
+      
             }
         });
     }
 
     let targetPreview = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analysePreview/", req.body.path + ".txt");
     if (targetPreview != undefined) {
+        console.log("onveutdelete3")
         fs.unlink("uploads/" + req.body.userId + "/analysePreview/" + targetPreview, async function (err) {
             if (err) {
                 console.error(err);
@@ -303,10 +306,12 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
                 const userLimit : any = await UserLimit.findOne({ userId: objectId }).lean();
                 const currentAnalyse = userLimit.currentAnalyse;
                 await UserLimit.updateOne({ userId: objectId }, { currentAnalyse: currentAnalyse - 1 });
-                res.send("Database deleted");
+                
             }
         });
     }
+    console.log("onveutdelete4")
+    res.send("Database deleted");
 };
 
 function checkAnalyze(req:any,demo:boolean){
