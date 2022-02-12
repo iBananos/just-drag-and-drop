@@ -1,4 +1,5 @@
 import sys
+from numpy import save
 import pandas as pd
 from pandas_profiling import ProfileReport
 
@@ -39,7 +40,7 @@ def principal_fonction(data,savepath,separator) :
     file=parse_data(data,separator)
     profile = ProfileReport(file,minimal=True)
     profile.to_file(savepath)
-    return ''
+    return " "
 
 
 def decryptFile(filename) :
