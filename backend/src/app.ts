@@ -12,12 +12,16 @@ import analyzeRoutes from './routes/analyze';
 import profileRoutes from './routes/profile';
 import middlewareError from './middleware/error';
 import HttpException from './utils/httpException';
+import Utils from "./utils";
 
 
 
 // Connexion avec la base de donnée Mongo
 mongoose.connect(`${process.env.MONGO_DB_URI}`)
-    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .then(() => {
+        console.log('Connexion à MongoDB réussie !')
+        Utils.checkUsersFiles();
+    })
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 

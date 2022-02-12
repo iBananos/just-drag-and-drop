@@ -1,7 +1,8 @@
 import fs from "fs";
 import AESCipher from "./utils/aesCipher";
 import xlsx from "node-xlsx";
-
+import type { ObjectId } from 'mongoose';
+import User from './models/user';
 class Utils {
     
 
@@ -138,6 +139,35 @@ class Utils {
         return data.size;
     }
 
+    public static async checkUsersFiles() {
+        let listName : string[] = [];
+        fs.readdirSync('uploads/').forEach(file => {
+            listName.push(file)
+        });
+        const userId : any = await User.find().lean();
+        userId.forEach((element:any) => {
+            let client :string = ""+element._id;
+            if(!listName.includes(client)){
+                let dir = 'uploads/' + client;
+                fs.mkdirSync(dir);
+                fs.mkdirSync(dir + '/database');
+                fs.mkdirSync(dir + '/analyse');
+                fs.mkdirSync(dir + '/analyseInfo');
+                fs.mkdirSync(dir + '/databaseInfo');
+                fs.mkdirSync(dir + '/analysePreview');
+                fs.mkdirSync(dir + '/databaseHTML');
+            }
+        });
+        
+            /*let dir = 'uploads/' + userId._id;
+            fs.mkdirSync(dir);
+            fs.mkdirSync(dir + '/database');
+            fs.mkdirSync(dir + '/analyse');
+            fs.mkdirSync(dir + '/analyseInfo');
+            fs.mkdirSync(dir + '/databaseInfo');
+            fs.mkdirSync(dir + '/analysePreview');
+            fs.mkdirSync(dir + '/databaseHTML');*/
+    }
 }
 
 export default Utils;
