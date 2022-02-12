@@ -11,6 +11,7 @@ const History = () =>  {
         let id = ev.target.id.split("_")[0] ;
         let file =  JSON.stringify({"path" : id});
         utils.default.sendRequestWithToken('POST', '/api/analyze/deleteData', file, callbackDelete);
+        window.location.reload()
     }
     function callbackDelete(response:Response){
         window.location.reload()
