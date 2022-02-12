@@ -43,6 +43,33 @@ class Utils {
         return listName;
     }
 
+    public static getDataFilesForHistory(userId : string, path : string, demo :boolean){
+        let listName: string[] = [];
+        let listImage: string[] =[];
+        if(!demo) {
+            const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
+            
+            fs.readdirSync("uploads/"+userId+"/analysePreview/").forEach(file => {
+                listImage.push(aesCipher.decrypt(file).split(".")[0]);
+            });
+            fs.readdirSync(path).forEach(file => {
+                if(listImage.includes(aesCipher.decrypt(file).split(".")[0])){
+                    let data = JSON.parse(aesCipher.decrypt(fs.readFileSync(path + file, 'utf8')));
+                    listName.push(data)
+                }
+            });
+        }else{
+            
+            fs.readdirSync(path).forEach(file => {
+                let data = JSON.parse(fs.readFileSync(path + file, 'utf8'));
+                listName.push(data)
+            });
+        }
+
+        
+        return listName;
+    }
+
     public static getPreviewFiles(userId : string, path : string, demo :boolean){
         let listName: string[] = [];
         if(!demo) {

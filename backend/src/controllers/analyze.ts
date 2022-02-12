@@ -435,7 +435,7 @@ export const databasesDemo : RequestHandler = (req : Request, res : Response, ne
 
 export const informations : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     //res.send({"liste" : Utils.default.getInformations('uploads/' + req.body.userId )});
-    res.send({"liste" : Utils.default.getDataFiles(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/',false),"images":Utils.default.getPreviewFiles(req.body.userId, 'uploads/' + req.body.userId + '/analysePreview/',false)});
+    res.send({"liste" : Utils.default.getDataFilesForHistory(req.body.userId, 'uploads/' + req.body.userId + '/analyseInfo/',false),"images":Utils.default.getPreviewFiles(req.body.userId, 'uploads/' + req.body.userId + '/analysePreview/',false)});
 };
 
 export const sendPreview : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
