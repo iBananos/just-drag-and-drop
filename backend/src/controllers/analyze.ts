@@ -75,11 +75,12 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
                         console.error(`error: ${error.message}`);
                         return;
                     }
-                  
+                    
                     if (stderr) {
                         console.error(`stderr: ${stderr}`);
                         return;
                     }
+                //    return console.log(stdout);
                     if(stdout.split("\n")[0].includes("Error_")){
                         fs.unlink('uploads/' + req.body.userId + '/analyseInfo/' + nom, function (err) {
                             if (err) {

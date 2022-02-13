@@ -22,6 +22,8 @@ def parse_data(filename,separator):
             df = pd.read_csv(filename,index_col=False, delimiter=separator)
         except:
             df = pd.read_csv(filename, delimiter=separator)
+        if len(df.columns)==1:
+            return 'Error_ Your DataFrame contains only one column please check your separator or change the data '
     elif extension == 'xlsx':
             # Assume that the user uploaded an excel file
         df = pd.read_excel(filename,index_col=False)

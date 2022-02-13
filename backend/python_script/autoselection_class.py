@@ -58,6 +58,9 @@ def parse_data(filename,separator):
     return df
 def autoselection(feature,predict,filename,separator):
     data=parse_data(filename,separator)
+    data=data.dropna()
+    if len(data)<10:
+        return 'Error_ Your data is to small for automatique sélection you will not get a good prediction'
     if toEncrypt == "true" :
         data.drop(data.tail(1).index,inplace=True) # drop last n rows
     n=min(len(data),1000)
@@ -82,9 +85,9 @@ def autoselection(feature,predict,filename,separator):
     ft = mfe.extract()
     df = pd.DataFrame(ft, columns=ft[0])
     df=df.replace([np.inf, -np.inf], np.nan)
-    df.values[1]=df.values[1].astype(float)
-    df=df.drop(df.index[[0]])
-    df=df.reset_index(drop=True)
+    #df.values[1]=df.values[1].astype(float)
+    #df=df.drop(df.index[[0]])
+    #df=df.reset_index(drop=True)
     FirstModel = joblib.load('python_script/FirstTOP1_class.sav')
     SecondaryModel = joblib.load('python_script/SecondaryTOP1_class.sav')
     earlystop = joblib.load('python_script/Goodpredictor_class.sav')
@@ -96,7 +99,7 @@ def autoselection(feature,predict,filename,separator):
         try:
             testone[j]=testone[j].astype(float)
         except:
-            break
+            continue
     obj_df = testone.select_dtypes(include=['object']).copy()
     lb_make = LabelEncoder()
     for i in range(len(obj_df.columns.values)):
@@ -242,7 +245,6 @@ def autoselection(feature,predict,filename,separator):
         model=GradientBoostingClassifier()
         param_dist = dict(max_depth=[3,6,10],
                   n_estimators=[50,100,500],
-                  min_samples_split=[2,5,8],
                   max_features=['auto','sqrt', 'log2',None]
                   )
         classif = RandomizedSearchCV(model, param_distributions=param_dist,cv=3,n_jobs = -1)
@@ -270,14 +272,12 @@ def autoselection(feature,predict,filename,separator):
         # Maximum number of levels in tree
         max_depth = [3,6,9]
         # Minimum number of samples required to split a node
-        min_samples_split = [2, 5]
         # Minimum number of samples required at each leaf node
         min_samples_leaf = [2, 5]
         # Method of selecting samples for training each tree
         # Create the param grid
         param_grid = {'n_estimators': n_estimators,
                     'max_depth': max_depth,
-                    'min_samples_split': min_samples_split,
                     'min_samples_leaf': min_samples_leaf}
         model = RandomForestClassifier()
         classif = GridSearchCV(estimator = model, param_grid = param_grid, cv = 3, verbose=False, n_jobs = -1)
@@ -295,7 +295,10 @@ def autoselection(feature,predict,filename,separator):
     try:
         importance = classif.best_estimator_.coef_[0]
     except:
-        importance = classif.best_estimator_.feature_importances_
+        try:
+            importance = classif.best_estimator_.feature_importances_
+        except:
+            importance = []
     importance=pd.DataFrame(importance,columns=['importance'])
     features = pd.DataFrame(feature, columns=['features'])
     importance_frame = pd.concat([features,importance], axis=1)

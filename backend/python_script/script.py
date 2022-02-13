@@ -148,11 +148,12 @@ def get_list_parameters(algo_choice,list_parameters) :
 
 def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_choice,separator) :
     df = parse_data(filename,separator)
-    
     X=df[features]
     y=df[pred]
     df=pd.concat([X,y],axis=1)
     df=df.dropna()
+    if len(df)<10:
+        return 'Error_ Your data is to small for automatique sélection you will not get a good prediction'
     df=df.reset_index(drop=True)
     if analyze_choice == "Classification" :
         target_name=pd.unique(df[pred].values.flatten())

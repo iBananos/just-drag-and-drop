@@ -58,7 +58,10 @@ def autoselection(feature,predict,filename,separator):
     data=parse_data(filename,separator)
     if toEncrypt == "true" :
         data.drop(data.tail(1).index,inplace=True) # drop last n rows
-    n=min(len(data),1000)
+    data=data.replace([np.inf, -np.inf], np.nan)
+    data=data.dropna()
+    if len(data)<10:
+        return 'Error_ your data is to small for automatique sélection you will not get a good prediction'
     dataselect=data.sample(frac=0.2)
     featurepredict=np.concatenate((predict, feature), axis=None)
     dataselect=dataselect[featurepredict]
@@ -73,6 +76,7 @@ def autoselection(feature,predict,filename,separator):
     ft = mfe.extract()
     df = pd.DataFrame(ft, columns=ft[0])
     df=df.replace([np.inf, -np.inf], np.nan)
+    df=df.fillna(-1)
     df.values[1]=df.values[1].astype(float)
     df=df.drop(df.index[[0]])
     df=df.reset_index(drop=True)
@@ -129,92 +133,87 @@ def autoselection(feature,predict,filename,separator):
     scoring=[]
     algobest=[]
     for i,j in enumerate(algoselection.values):
-        
-        #print(j)
-        if j==1:
+        if j==0:
             reg = linear_model.ElasticNet()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('ElasticNet')
-        if j==2:
+        if j==1:
             reg = GradientBoostingRegressor()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('GradientBoostingRegressor')
-        if j==3:
+        if j==2:
             reg = KNeighborsRegressor()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('KNeighborsRegressor')
-        if j==4:
+        if j==3:
             reg = linear_model.Lasso()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('Lasso')
-        if j==5:
+        if j==4:
             reg = RandomForestRegressor()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('RandomForestRegressor')
-        if j==6:
+        if j==5:
             reg = linear_model.Ridge()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('Ridge')
-        if j==7:
+        if j==6:
             reg = linear_model.SGDRegressor()
             reg.fit(X_train, y_train)
             scoring.append(r2_score(y_test,reg.predict(X_test)))
             algobest.append('SGDRegressor')
     try:
         alltesting = pd.DataFrame(scoring, columns=['r2'],index=algobest)
-        #return alltesting
         bestalgo=alltesting.idxmax()[0]
     except:
         scoring=[]
         algobest=[]
         for i,j in enumerate(algoselection2.values):
             
-            #print(j)
-            if j==1:
+            if j==0:
                 reg = linear_model.ElasticNet()
                 reg.fit(X_train, y_train)
                 scoring.append(r2_score(y_test,reg.predict(X_test)))
                 algobest.append('ElasticNet')
-            if j==2:
+            if j==1:
                 reg = GradientBoostingRegressor()
                 reg.fit(X_train, y_train)
                 scoring.append(r2_score(y_test,reg.predict(X_test)))
                 algobest.append('GradientBoostingRegressor')
-            if j==3:
+            if j==2:
                 reg = KNeighborsRegressor()
                 reg.fit(X_train, y_train)
                 scoring.append(r2_score(y_test,reg.predict(X_test)))
                 algobest.append('KNeighborsRegressor')
-            if j==4:
+            if j==3:
                 reg = linear_model.Lasso()
                 reg.fit(X_train, y_train)
                 scoring.append(r2_score(y_test,reg.predict(X_test)))
                 algobest.append('Lasso')
-            if j==5:
+            if j==4:
                 reg = RandomForestRegressor()
                 reg.fit(X_train, y_train)
                 scoring.append(r2_score(y_test,reg.predict(X_test)))
                 algobest.append('RandomForestRegressor')
-            if j==6:
+            if j==5:
                 reg = linear_model.Ridge()
                 reg.fit(X_train, y_train)
                 scoring.append(r2_score(y_test,reg.predict(X_test)))
                 algobest.append('Ridge')
-            if j==7:
+            if j==6:
                 reg = linear_model.SGDRegressor()
                 reg.fit(X_train, y_train)
                 scoring.append(r2_score(y_test,reg.predict(X_test)))
                 algobest.append('SGDRegressor')
             alltesting = pd.DataFrame(scoring, columns=['r2'],index=algobest)
-            #return alltesting
             bestalgo=alltesting.idxmax()[0]
-
+    bestalgo=='ElasticNet'
     if bestalgo=='ElasticNet':
         parametersGrid = {"max_iter": [1, 5, 10,20],
                       "alpha": [0.001, 0.01, 0.1, 1, 10, 100],
@@ -227,7 +226,6 @@ def autoselection(feature,predict,filename,separator):
         n_estimators = [100, 500, 900, 1100]
         max_depth = [3, 5, 10, 15]
         min_samples_leaf = [1, 2, 4, 8] 
-        min_samples_split = [2, 4, 6]
         max_features = ['auto', 'sqrt', 'log2', None]
 
         # Define the grid of hyperparameters to search
@@ -235,7 +233,6 @@ def autoselection(feature,predict,filename,separator):
             'n_estimators': n_estimators,
             'max_depth': max_depth,
             'min_samples_leaf': min_samples_leaf,
-            'min_samples_split': min_samples_split,
             'max_features': max_features}
 
         # Set up the random search with 4-fold cross validation
@@ -268,8 +265,6 @@ def autoselection(feature,predict,filename,separator):
         # Maximum number of levels in tree
         max_depth = [3,6,9]
         max_depth.append(None)
-        # Minimum number of samples required to split a node
-        min_samples_split = [1,2, 5]
         # Minimum number of samples required at each leaf node
         min_samples_leaf = [1, 2,5]
         # Method of selecting samples for training each tree
@@ -277,7 +272,6 @@ def autoselection(feature,predict,filename,separator):
         random_grid = {'n_estimators': n_estimators,
                     'max_features': max_features,
                     'max_depth': max_depth,
-                    'min_samples_split': min_samples_split,
                     'min_samples_leaf': min_samples_leaf,
                     'bootstrap': bootstrap}
         rf=RandomForestRegressor()
@@ -298,16 +292,17 @@ def autoselection(feature,predict,filename,separator):
         reg = GridSearchCV(SGDReg, SGD_params, cv=3)  
         reg.fit(X_train, y_train)
         
-    
-    
     pred=reg.predict(X_test)
     print(r2_score(y_test,pred))
     prediction=pd.DataFrame(pred,columns=['prediction'])
-    
+    importance=[]
     try:
-        importance = reg.best_estimator_.coef_[0]
+        importance = reg.best_estimator_.coef_
     except:
-        importance = reg.best_estimator_.feature_importances_
+        try:
+            importance = reg.best_estimator_.feature_importances_
+        except:
+            importance = []
     importance=pd.DataFrame(importance,columns=['importance'])
     features = pd.DataFrame(feature, columns=['features'])
     importance_frame = pd.concat([features,importance], axis=1)
