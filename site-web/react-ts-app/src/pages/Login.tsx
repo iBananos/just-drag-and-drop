@@ -37,10 +37,12 @@ const Login = () => {
             (document.getElementById("login") as HTMLInputElement).setAttribute("display","none");
             window.location.href = "/?status=connected"; 
           }
+          else if (xhr.readyState === 4 && xhr.status === 429) {
+              utils.default.doAlert("danger", "Too Many Requests");
+          }
           else if (xhr.readyState === 4 && xhr.status !== 200) {
             res = JSON.parse(this.response);
-            utils.default.doAlert("danger",res.message);
-            //(document.getElementById("msg")as HTMLInputElement).innerHTML= res.message;
+            utils.default.doAlert("danger", res.message);
           }
         })
         let data = JSON.stringify({"email":mail,"password":mdp})
