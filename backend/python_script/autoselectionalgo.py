@@ -61,7 +61,7 @@ def autoselection(feature,predict,filename,separator):
     data=data.replace([np.inf, -np.inf], np.nan)
     data=data.dropna()
     if len(data)<10:
-        return 'Error_ your data is to small for automatique sélection you will not get a good prediction'
+        return 'Error_ Your data is to small for automatique sélection you will not get a good prediction'
     dataselect=data.sample(frac=0.2)
     featurepredict=np.concatenate((predict, feature), axis=None)
     dataselect=dataselect[featurepredict]
