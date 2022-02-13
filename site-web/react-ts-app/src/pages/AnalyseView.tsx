@@ -5,7 +5,9 @@ import * as utils from "../Utils";
 import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 import { color } from 'chart.js/helpers';
 import saveIcone from "../assets/save.png";
+import saveIconeL from "../assets/saveLight.png";
 import downloadIcone from "../assets/download.png";
+import downloadIconeL from "../assets/downloadLight.png";
 import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
 
 Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip ,MatrixController, MatrixElement);
@@ -49,8 +51,11 @@ const AnalyseView = () => {
         newBoard.appendChild(newIndication)
 
         if(demo !== "true" && fromHistory !== "true"){
+          let sourceSave;
+          if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='dark'){sourceSave = saveIcone}else{sourceSave = saveIconeL}
+        
           let save = document.createElement("img");
-          save.src = saveIcone;
+          save.src = sourceSave;
           save.id = "save";
           save.alt = "";
           save.className = "saveDash";
@@ -74,8 +79,10 @@ const AnalyseView = () => {
           };
           newBoard.appendChild(save);
       }
+        let sourceDowload;
+        if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='dark'){sourceDowload = downloadIcone}else{sourceDowload = downloadIconeL}
         let download = document.createElement("img");
-            download.src = downloadIcone;
+            download.src = sourceDowload;
             download.id = "download";
             download.alt = "";
             download.className = "downloadDash";

@@ -1,11 +1,14 @@
 import BarreLaterale from '../components/BarreLaterale';
 import Navigation from '../components/Navigation';
 import help from "../assets/help.png";
+import helpL from "../assets/helpLight.png";
 import { Chart} from 'chart.js';
 import * as utils from "../Utils";
 import {    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  } from 'chart.js';
 import trashIcone from "../assets/trash.png";
+import trashIconeL from "../assets/trashLight.png";
 import downloadIcone from "../assets/download.png";
+import downloadIconeL from "../assets/downloadLight.png";
 import { callback, color } from 'chart.js/helpers';
 
 Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  );
@@ -36,7 +39,15 @@ const DataVisu = () =>  {
         }
         
     }
+    let sourceTrash:string;
+    if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='dark'){sourceTrash = trashIcone}else{sourceTrash = trashIconeL}
 
+    let sourceDownload:string;
+    if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='dark'){sourceDownload = downloadIcone}else{sourceDownload = downloadIconeL}
+
+    let sourceHelp:string;
+    if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='dark'){sourceHelp = help}else{sourceHelp = helpL}
+  
 
     function createSelectorForColonnes(){
         
@@ -242,7 +253,7 @@ const DataVisu = () =>  {
         newBoard.appendChild(newIndication)
 
         let download = document.createElement("img");
-            download.src = downloadIcone;
+            download.src = sourceDownload;
             download.id = "download_"+id;
             download.alt = "";
             download.className = "downloadDash";
@@ -270,7 +281,7 @@ const DataVisu = () =>  {
 
             newBoard.appendChild(download);
         let trash = document.createElement("img");
-            trash.src = trashIcone;
+            trash.src = sourceTrash;
             trash.id = "trash_"+id;
             trash.alt = "";
             trash.className = "trashDash";
@@ -453,7 +464,7 @@ const DataVisu = () =>  {
         newBoard.appendChild(newIndication)
 
         let download = document.createElement("img");
-            download.src = downloadIcone;
+            download.src = sourceDownload;
             download.id = "download_"+id;
             download.alt = "";
             download.className = "downloadDash";
@@ -487,7 +498,7 @@ const DataVisu = () =>  {
 
             newBoard.appendChild(download);
         let trash = document.createElement("img");
-            trash.src = trashIcone;
+            trash.src = sourceTrash;
             trash.id = "trash_"+id;
             trash.alt = "";
             trash.className = "trashDash";
@@ -949,7 +960,7 @@ const DataVisu = () =>  {
        
 
         let download = document.createElement("img");
-            download.src = downloadIcone;
+            download.src = sourceDownload;
             download.id = "download_"+id;
             download.alt = "";
             download.className = "downloadDash";
@@ -970,7 +981,7 @@ const DataVisu = () =>  {
 
             newBoard.appendChild(download);
         let trash = document.createElement("img");
-            trash.src = trashIcone;
+            trash.src = sourceTrash;
             trash.id = "trash_"+id;
             trash.alt = "";
             trash.className = "trashDash";
@@ -1186,8 +1197,8 @@ const DataVisu = () =>  {
                     <option value="Scatter" >Scatter Chart</option>
                     <option value="Line" >Line Chart</option>
                 </select><br />
-                <button onClick={printCorrelation} className='boutonSend' id="correlationMatrixButton" disabled>Correlation Matrix<img src={help} className="helpCorrelation" alt="" title="A correlation matrix is a table showing correlation coefficients between variables. Each cell in the table shows the correlation between two variables. Goes from -1 to 1."/></button>
-                <button onClick={requestFullOverview} className='boutonSend' id="FullOverview" disabled>Full Overview<img src={help} className="helpCorrelation" alt="" title="Christel"/></button>
+                <button onClick={printCorrelation} className='boutonSend' id="correlationMatrixButton" disabled>Correlation Matrix<img src={sourceHelp} className="helpCorrelation" alt="" title="A correlation matrix is a table showing correlation coefficients between variables. Each cell in the table shows the correlation between two variables. Goes from -1 to 1."/></button>
+                <button onClick={requestFullOverview} className='boutonSend' id="FullOverview" disabled>Full Overview<img src={sourceHelp} className="helpCorrelation" alt="" title="Christel"/></button>
                 </div>
                 </div>
                 </div>

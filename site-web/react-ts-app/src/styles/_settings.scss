@@ -1,43 +1,38 @@
 /* PALETTE */ 
-$color_back: rgba(20, 20, 20, 0.705);
-$color_trans: #8670700c;
-$color_green: #339999;
-$color_yellow : #bba422;
-$color_blue1: #006699;
-$color_blue2: #009999;
-$color_green2: #CCFFCC;
-$color_green3: #99CC33;
-$color_blue3: #339999;
-$color_nav: #181925;
 $color_error : rgb(209, 52, 52);
 $blur : 40px;
-$color_history : rgba(24, 24, 24, 0.856);
-$color_theme : $color_yellow;
-/* BUTTON */
-$color_button:  #171824;
-$color_button_hover :$color_theme;
-$color_shadow : rgba(1, 2, 5, 0.796);
-/* TEXT */
-$color_placeholder :rgb(107, 101, 72);
-$color_text: $color_theme;
+
 $font : Poppins, Arial;
 
 $logo : "./assets/Logo.png";
+:root {
+
+    --color_back: rgba(20, 20, 20, 0.705);
+    --color_trans: #8670700c;
+    --color_nav: #181925;
+    --color_history: rgba(24, 24, 24, 0.856);
+    --color_button: #171824;
+    --color_button_hover: #bba422;
+    --color_text: #bba422;
+    --color_placeholder:rgb(107, 101, 72);
+    --color_shadow : black;
+    
+}
 
 button{
-    background-color: $color_back;
+    background-color: var(--color_back);
     border-radius: 16.00px;
-    box-shadow: 0px 0px 30px black ;
+    box-shadow: 0px 0px 30px var(--color_shadow) ;
     border: none;
     cursor: pointer;
-    color: $color_text;
+    color: var(--color_text);
     transition: all 0.2s ease-out;
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
     &:hover{
-        background-color: $color_button_hover;
+        background-color: var(--color_button_hover);
         color: white;
-        //box-shadow: 0px 0px 20px $color_button_hover ;
+        //box-shadow: 0px 0px 20px var(--color_button_hover) ;
     }
 }
 input:focus {
@@ -46,24 +41,24 @@ input:focus {
 select{
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
-    background-color: $color_back;
+    background-color: var(--color_back);
 }
 body{
-    background-color: black;
-    background-image: url("../assets/background2.png");
-    background-size: cover;
-    color: $color_text;
+    background-color: var(--color_shadow);
+    //background-image: url("../assets/background2.png");
+    //background-size: cover;
+    color: var(--color_text);
     background-attachment: fixed;
     font-family: $font;
 }
 
 h1,h2,h3{
     font-family: $font;
-    color: $color_text;
+    color: var(--color_text);
 }
 
 h1{
-    -webkit-text-stroke: 1.00px $color_text;
+    -webkit-text-stroke: 1.00px var(--color_text);
 }
 
 .view{
@@ -79,7 +74,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active{
     -webkit-box-shadow: 0 0 0 30px transparent inset !important;
-    -webkit-text-fill-color: $color_text !important;
+    -webkit-text-fill-color: var(--color_text) !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -89,13 +84,13 @@ input:-webkit-autofill:active{
   
   /* Track */
   ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px rgb(7, 6, 6); 
+    box-shadow: inset 0 0 5px var(--color_shadow); 
     border-radius: 10px;
   }
    
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: $color_text; 
+    background: var(--color_text); 
     border-radius: 10px;
   }
   
@@ -105,6 +100,6 @@ input:-webkit-autofill:active{
   }
 
   select option {
-      background-color: rgb(17, 17, 17);
-      border: black;
+      background-color: var(--color_back);
+      border: var(--color_shadow);
   }

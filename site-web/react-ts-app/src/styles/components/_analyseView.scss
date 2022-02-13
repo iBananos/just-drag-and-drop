@@ -10,7 +10,7 @@
 .Chart{
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur(30px);
-    background-color: $color_back;
+    background-color: var(--color_back);
     border-radius: 16px;
     width: 50%;
     float: left;
@@ -18,7 +18,7 @@
 .ChartBar{
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur(30px);
-    background-color: $color_back;
+    background-color: var(--color_back);
     border-radius: 16px;
     width: 50%;
     float: left;
@@ -41,7 +41,7 @@
     height: 20px;
     
     margin-top: 15px;
-    color: $color_text;
+    color: var(--color_text);
     font-family: $font;
     float: left;
 }

@@ -1,6 +1,6 @@
 .DataVisu{
     text-align: center;
-    color: $color_text;
+    color: var(--color_text);
 }
 
 .firstOne{
@@ -10,10 +10,10 @@
 .dataVisuName{
     border-radius:16px ;
     width: 250px;
-    color: $color_text;
+    color: var(--color_text);
     border:none;
     height: 35px;
-    background-color: black;
+    background-color: var(--color_shadow);
 }
 
 .divDataVisuName{
@@ -36,13 +36,13 @@
 .boutonSend:disabled{
     color:gray;
     
-    background-color: $color_back;
+    background-color: var(--color_back);
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
     &:hover{
         cursor:default;
         color: gray;
-        background-color: $color_back;
+        background-color: var(--color_back);
     }
 }
 
@@ -65,7 +65,7 @@
     margin-right:2%;
     //text-align: end;
     height: 20px;
-    color: $color_text;
+    color: var(--color_text);
     font-family: $font;
     float: left;
     margin-bottom: 20px
@@ -78,7 +78,7 @@
     height: 20px;
     
     margin-top: 15px;
-    color: $color_text;
+    color: var(--color_text);
     font-family: $font;
     float: left;
 }
@@ -86,7 +86,7 @@
 .indicSample{
     margin-top: 40px;
     margin-bottom: -20px;
-    color: $color_text;
+    color: var(--color_text);
 }
 
 .inputSample{
@@ -94,13 +94,13 @@
     margin-left: 200px;
     margin-top: -15px;
     font-family: $font;
-    color: $color_text;
+    color: var(--color_text);
 }
 .sample{
     -webkit-appearance: none;
     height: 5px;
     border-radius: 16px;
-    background: $color_text;
+    background: var(--color_text);
 }
 .sample::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -108,7 +108,7 @@
     width: 12px;
     border-radius: 16px;
     height: 12px;
-    background: $color_text;
+    background: var(--color_text);
     cursor: pointer;
   }
 .dataVisuView{
@@ -130,7 +130,7 @@
 .dataVisuContainer{
     margin-left: 0px;
     height: 100%;
-    box-shadow: inset 0px 0px 20px black ;
+    box-shadow: inset 0px 0px 20px var(--color_shadow) ;
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
     width: 500px;
@@ -140,7 +140,7 @@
 .dataVisuContainerAdvanced{
     margin-left: 0px;
     height: 100%;
-    box-shadow: inset 0px 0px 20px black ;
+    box-shadow: inset 0px 0px 20px var(--color_shadow) ;
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
     width: 500px;
@@ -168,7 +168,7 @@
 .dataVisuContainerParam{
     margin-left: 0px;
     height: 100%;
-    box-shadow: inset 0px 0px 20px black ;
+    box-shadow: inset 0px 0px 20px var(--color_shadow) ;
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
     width: 500px;
@@ -202,7 +202,7 @@
 .DashBoard{
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
-    background-color: $color_back;
+    background-color: var(--color_back);
     margin-top: 15px;
     margin-bottom: 15px;
     vertical-align: center;
@@ -261,7 +261,7 @@
 }
 
 .indication{
-    color: $color_text;
+    color: var(--color_text);
     font-family: $font;
     margin-top: 20px;
     float: left;
@@ -271,7 +271,7 @@
 }
 
 .advanced{
-    color : $color_text ;
+    color : var(--color_text) ;
     font-size: small;
     margin-top: 25px;
     margin-left: 150px;
@@ -281,13 +281,13 @@
     &:disabled{
         color:gray;
         
-        background-color: $color_back;
+        background-color: var(--color_back);
         -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
         backdrop-filter: blur($blur);
         &:hover{
             cursor:default;
             color: gray;
-            background-color: $color_back;
+            background-color: var(--color_back);
         }
     }
 }
@@ -295,7 +295,7 @@
 .return{
     font-size: small;
     margin-top: 25px;
-    color : $color_text ;
+    color : var(--color_text) ;
     margin-right: 150px;
     height: 20px;
     cursor: pointer;

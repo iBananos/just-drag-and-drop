@@ -5,16 +5,16 @@
     width: 100%;
     text-align: center;
     .box1{
-        border-bottom-color: $color_text;
+        border-bottom-color: var(--color_text);
         border-bottom-style: solid;
         border-bottom-width: 3px;
-        border-left-color: $color_text;
+        border-left-color: var(--color_text);
         border-left-style: solid;
         border-left-width: 3px;
-        border-right-color: $color_text;
+        border-right-color: var(--color_text);
         border-right-style: solid;
         border-right-width: 3px;
-        border-top-color: $color_text;
+        border-top-color: var(--color_text);
         border-top-style: solid;
         border-top-width: 3px;
         border-top-left-radius: 12.00px;
@@ -30,16 +30,16 @@
     }
     .box2{
         position: relative;
-        border-bottom-color: $color_text;
+        border-bottom-color: var(--color_text);
         border-bottom-style: solid;
         border-bottom-width: 3px;
-        border-left-color: $color_text;
+        border-left-color: var(--color_text);
         border-left-style: solid;
         border-left-width: 3px;
-        border-right-color: $color_text;
+        border-right-color: var(--color_text);
         border-right-style: solid;
         border-right-width: 3px;
-        border-top-color: $color_text;
+        border-top-color: var(--color_text);
         border-top-style: solid;
         border-top-width: 3px;
         border-top-left-radius: 12.00px;
@@ -65,7 +65,7 @@
         text-align: left;
         line-height: 24.00px;
         letter-spacing: -0.07px;
-        color: $color_text;
+        color: var(--color_text);
         font-size: 12.00px;
         font-weight: 400;
         font-style: normal;
@@ -83,7 +83,7 @@
         text-align: left;
         line-height: 24.00px;
         letter-spacing: 0.00px;
-        color: $color_text;
+        color: var(--color_text);
         font-size: 14.00px;
         font-weight: 500;
         font-style: normal;
@@ -95,7 +95,7 @@
         top: 33.00px;
     }
     .ph::placeholder{
-        color: $color_placeholder;
+        color: var(--color_placeholder);
     }
 
     .signin{
@@ -109,7 +109,7 @@
     .or{
         position: relative;
         margin-top: 15px;
-        color: $color_text;
+        color: var(--color_text);
         font-family: $font;
     }
     hr{
@@ -118,7 +118,7 @@
         display: block;
         height: 1px;
         border: 0;
-        border-top: 1px solid $color_text;
+        border-top: 1px solid var(--color_text);
         padding: 0;
         position: absolute;
     }
@@ -147,5 +147,5 @@
     padding: 30px;
     padding-top: 1px;
     border-radius: 32px ;
-    background-color: $color_back;
+    background-color: var(--color_back);
 }

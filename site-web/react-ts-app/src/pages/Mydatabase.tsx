@@ -5,7 +5,9 @@ import * as utils from "../Utils";
 import downIcone from "../assets/down.png";
 import trashIcone from "../assets/trash.png";
 import downloadIcone from "../assets/download.png";
-
+import downIconeL from "../assets/downLight.png";
+import trashIconeL from "../assets/trashLight.png";
+import downloadIconeL from "../assets/downloadLight.png";
 const Mydatabase = () => {
     window.onload= function(){
         console.log("demande")
@@ -21,6 +23,15 @@ const Mydatabase = () => {
         }
     }
 
+    let sourceTrash:string;
+    if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='dark'){sourceTrash = trashIcone}else{sourceTrash = trashIconeL}
+
+    let sourceDownload:string;
+    if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='dark'){sourceDownload = downloadIcone}else{sourceDownload = downloadIconeL}
+
+    let sourceDown:string;
+    if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='dark'){sourceDown = downIcone}else{sourceDown = downIconeL}
+  
     function requestDatabases(response : any){
         let listData= JSON.parse(response).liste;
         for(let i: number = 0 ; i < listData.length; i++){
@@ -35,7 +46,7 @@ const Mydatabase = () => {
             p.innerHTML = data.name;
             title.appendChild(p);
             let image = document.createElement("img");
-            image.src = downIcone;
+            image.src = sourceDown;
             image.id = data.name+"_image";
             image.alt = "";
             image.className = "imagedown";
@@ -58,14 +69,14 @@ const Mydatabase = () => {
             title.appendChild(extension)
 
             let download = document.createElement("img");
-            download.src = downloadIcone;
+            download.src = sourceDownload;
             download.id = data.name+"_download";
             download.alt = "";
             download.className = "download";
             download.onclick = downloadBase;
 
             let trash = document.createElement("img");
-            trash.src = trashIcone;
+            trash.src = sourceTrash;
             trash.id = data.name+"_trash";
             trash.alt = "";
             trash.className = "trash";

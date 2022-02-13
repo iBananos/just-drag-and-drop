@@ -1,5 +1,5 @@
 .Mydatabase{
-    color: $color_text;
+    color: var(--color_text);
     text-align: left;
 }
 .gridCells{
@@ -11,10 +11,10 @@
     }
     hr{
         margin-top: 15px;
-        color: $color_text;
+        color: var(--color_text);
         height: 1px;
         border: 0;
-        border-top: 1px solid $color_text;
+        border-top: 1px solid var(--color_text);
         padding: 0;
     }
     width: 600px;
@@ -31,11 +31,11 @@
     padding-left: 25px;
     padding-right: 25px;
     padding-top: 10px;
-    background-color: $color_back;
+    background-color: var(--color_back);
     height: 30px;
     overflow: hidden;
     border-radius: 16px;
-    box-shadow: 0px 0px 20px black ;
+    box-shadow: 0px 0px 20px var(--color_shadow) ;
     
 }
 
@@ -47,11 +47,11 @@
     padding-left: 25px;
     padding-right: 25px;
     padding-top: 10px;
-    background-color: $color_back;
+    background-color: var(--color_back);
     height: 30px;
     overflow: hidden;
     border-radius: 16px;
-    box-shadow: 0px 0px 20px black ;
+    box-shadow: 0px 0px 20px var(--color_shadow) ;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
     animation-name: slidein;
@@ -75,10 +75,10 @@
     padding-left: 25px;
     padding-right: 25px;
     padding-top: 10px;
-    background-color: $color_back;
+    background-color: var(--color_back);
     overflow: hidden;
     border-radius: 16px;
-    box-shadow: 0px 0px 20px black ;
+    box-shadow: 0px 0px 20px var(--color_shadow) ;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
     animation-name: slideoff;
@@ -102,12 +102,12 @@
 }
 
 .trash{
-    width: 15px;
+    width: 30px;
     margin-left: 480px;
 }
 
 .download{
-    width: 15px;
+    width: 30px;
     position: absolute;
-    margin-left: 450px;
+    margin-left: 440px;
 }

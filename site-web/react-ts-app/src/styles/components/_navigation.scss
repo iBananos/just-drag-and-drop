@@ -8,11 +8,13 @@
     right: 0px;
     overflow: none;
     text-align: left;
-    background-color: $color_back;
+    background-color: var(--color_back);
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
     
-    
+    .theme{
+      height: 100%;
+    }
     ul {
       
         list-style-type: none;
@@ -28,7 +30,7 @@
     li {
         float: left;
         display: block;
-        color: $color_text;
+        color: var(--color_text);
         text-align: center;
         font-family: $font;
         transition: all 0.4s ease-in-out;
@@ -37,14 +39,14 @@
     li a {
         display: block;
         padding: 16px 16px;
-        color: $color_text;
+        color: var(--color_text);
         transition: all 0.4s ease-in-out;
         text-align: center;
         font-family: $font;
         text-decoration: none;
     }
     li:hover {
-        background-color: $color_trans;
+        background-color: var(--color_trans);
     }
     .logo{
         margin-left:10px;
@@ -61,10 +63,10 @@
         position:relative;
         margin-left: 10px;
         margin-top: 7px;
-        color: $color_text;
-        -webkit-text-stroke: 1.00px $color_text;
+        color: var(--color_text);
+        -webkit-text-stroke: 1.00px var(--color_text);
     }
-    box-shadow: 0px 5px 10px black ;
+    box-shadow: 0px 5px 10px var(--color_shadow) ;
    
 }
 .toggle {
@@ -80,7 +82,7 @@
 	display: block;
 	width: 25px;
 	height: 4px;
-  background-color: $color_text;
+  background-color: var(--color_text);
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
@@ -102,7 +104,7 @@
 }
 .dropbtn {
     display: inline-block;
-    color: $color_text;
+    color: var(--color_text);
     text-align: center;
     padding: 16px 16px;
     text-decoration: none;
@@ -110,7 +112,7 @@
   }
   
   li a:hover, .dropdown:hover .dropbtn {
-    background-color: $color_text;
+    background-color: var(--color_text);
       color: white;
     
   }
@@ -130,18 +132,18 @@
   }
   
   .dropdown-content a {
-    color: black;
+    color: var(--color_shadow);
     padding: 12px 16px;
     text-decoration: none;
     display: block;
     text-align: left;
-    background-color: rgb(17, 17, 17);
+    background-color: var(--color_back);
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
   }
   
   .dropdown-content a:hover {
-    background-color: $color_text;
+    background-color: var(--color_text);
       color: white;}
   
   .dropdown:hover .dropdown-content {

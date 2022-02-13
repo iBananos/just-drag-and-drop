@@ -3,7 +3,7 @@
     
 }
 .profileInformations{
-    color: $color_text;
+    color: var(--color_text);
     font-family: $font;
     margin-top: 140px;
     .profileMail{
@@ -14,14 +14,14 @@
 
 .openBar{
     overflow: hidden;
-    background: $color_trans;
+    background: var(--color_trans);
     position: fixed;
     border-radius: 16px;
     left: 20px;
     top: 60px;
     -webkit-backdrop-filter: blur(15px); /* assure la compatibilité avec safari */
     backdrop-filter: blur(15px);
-    box-shadow: 0px 5px 10px black ;
+    box-shadow: 0px 5px 10px var(--color_shadow) ;
     animation-duration: 0.3s;
     animation-fill-mode: forwards;
     animation-name: openBar;
@@ -40,14 +40,14 @@
 
 .closeBar{
     overflow: hidden;
-    background: $color_trans;
+    background: var(--color_trans);
     border-radius: 16px;
     position: fixed;
     -webkit-backdrop-filter: blur(15px); /* assure la compatibilité avec safari */
     backdrop-filter: blur(15px);
     left: 20px;
     top: 60px;
-    box-shadow: 0px 5px 10px black ;
+    box-shadow: 0px 5px 10px var(--color_shadow) ;
     animation-duration: 0.3s;
     animation-fill-mode: forwards;
     animation-name: closeBar;

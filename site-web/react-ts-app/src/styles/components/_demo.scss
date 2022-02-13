@@ -1,7 +1,8 @@
 .Demo{
     text-align: center;
-    color: $color_text;
+    color: var(--color_text);
     font-family: $font;
+    margin-top: 100px;
     .democell{
         width: 400px;
         height: 400px;
@@ -10,10 +11,13 @@
         border-radius: 32px;
         margin-left: 50px;
         margin-right: 50px;
+        background-color: var(--color_back);
         position: relative;
         float: left;
+        box-shadow: 0px 0px 20px var(--color_shadow) ;
         &:hover{
-            background-color: $color_text;
+            box-shadow: 0px 0px 20px var(--color_shadow) ;
+            background-color: var(--color_text);
             -webkit-transition: all 200ms linear;
 	        transition: all 200ms linear; 
             color : white;
@@ -34,6 +38,6 @@
     }
     a{
         text-decoration: none;
-        color: $color_text;
+        color: var(--color_text);
     }
 }

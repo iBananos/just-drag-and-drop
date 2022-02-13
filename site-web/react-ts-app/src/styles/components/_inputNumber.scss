@@ -1,12 +1,12 @@
 .InputNumberComponent{
     position: relative;
     background-color: transparent;
-    color: $color_text;
+    color: var(--color_text);
     width: 200px;
     height: 40px;
     border-radius: 16px;
     border: none;
-    box-shadow: 0px 0px 20px black ;
+    box-shadow: 0px 0px 20px var(--color_shadow) ;
     text-align: center;
     outline: none;
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
@@ -17,14 +17,14 @@
 .InputNumberComponent button{
     width: 30px;
     height: 30px;
-    color: $color_text;
+    color: var(--color_text);
     box-shadow: none;
     font-size: 1em;
     background-color: transparent;
     
 }
 .InputNumberComponent button:hover{
-    background-color: black;
+    background-color: var(--color_shadow);
 }
 .boutonMinus{
     margin-top: 5px;
@@ -36,7 +36,7 @@
 .inputNumber{
     position: relative;
     background-color: transparent;
-    color: $color_text;
+    color: var(--color_text);
     width: 100px;
     height: 40px;
     border-radius: 16px;

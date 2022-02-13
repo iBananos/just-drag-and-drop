@@ -3,6 +3,7 @@ import Navigation from "../components/Navigation";
 import ViewHistory from "../components/ViewHistory";
 import * as utils from "../Utils"
 import trashIcone from "../assets/trash.png";
+import trashIconeL from "../assets/trashLight.png";
 const History = () =>  {
 
     let list : any[]= [];
@@ -16,6 +17,9 @@ const History = () =>  {
     function callbackDelete(response:Response){
         window.location.reload()
     }
+    let sourceTrash:string;
+    if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='dark'){sourceTrash = trashIcone}else{sourceTrash = trashIconeL}
+
     function askForView(ev:any){
         let id : number = parseInt(ev.target.id,10) ;
         let title = (document.getElementById("title")as HTMLDivElement);
@@ -50,7 +54,7 @@ const History = () =>  {
                 type.innerHTML = "Type : " +  list[id].type;
                 algo.innerHTML = "Algorithm : " +  list[id].algo;
                 let trash = document.createElement("img");
-                trash.src = trashIcone;
+                trash.src = sourceTrash;
                 trash.id =  list[id].nameAnalyze+"_trash";
                 trash.alt = "";
                 trash.className = "trashAnalyze";

@@ -2,7 +2,7 @@
     #drop-area{
         -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
         backdrop-filter: blur($blur);
-        background: $color_back;
+        background: var(--color_back);
         margin-top: 150px;
         height: 300px;
         margin-left: 10%;
@@ -14,16 +14,16 @@
         border-bottom-right-radius: 16.00px;
         border-style:ridge ;
         border-width: 0.5em;
-        border-color: black;
+        border-color: var(--color_shadow);
         text-align: center;
         font-family: $font;
-        color: $color_text;
+        color: var(--color_text);
     }#drop-area.highlight {
-        border-color: $color_button_hover;
-        box-shadow: 0px 0px 20px $color_button_hover, inset 0px 0px 20px $color_button_hover ;
+        border-color: var(--color_button_hover);
+        box-shadow: 0px 0px 20px var(--color_button_hover), inset 0px 0px 20px var(--color_button_hover) ;
       }
       #drop-area input{
-        background: $color_back;
+        background: var(--color_back);
         display: none;
     }
     .dropTitle{
@@ -46,7 +46,7 @@
 }
 
 .separatorSelector{
-    color : $color_text;
+    color : var(--color_text);
     position: absolute;
     margin-top: 20px;
     margin-left: 15%;
@@ -65,20 +65,20 @@
     cursor: pointer;
     transition: all 0.2s ease-out;
     border: none;
-    background-color: $color_back;
-    box-shadow: 0px 0px 30px black ;
-    color: $color_text;
+    background-color: var(--color_back);
+    box-shadow: 0px 0px 30px var(--color_shadow) ;
+    color: var(--color_text);
     &:hover{
-        background-color: $color_button_hover;
+        background-color: var(--color_button_hover);
         color: white;
-        //box-shadow: 0px 0px 20px $color_button_hover ;
+        //box-shadow: 0px 0px 20px var(--color_button_hover) ;
     }
 }
 .sendButton{
     display: inline-block;
     position: absolute;
     padding: 11px;
-    background-color: $color_back;
+    background-color: var(--color_back);
     box-shadow: none;
     margin-left : -30px;
     margin-top: -37px;
@@ -89,7 +89,7 @@
 .sendButton:disabled{
     color:gray;
     &:hover{
-        background-color: $color_back;
+        background-color: var(--color_back);
         cursor: default;
     }
 }
@@ -99,12 +99,12 @@
     margin-left: 15%;
     width: 400px;
     position: relative;
-    background-color: $color_back;
+    background-color: var(--color_back);
     height: 37px;
     padding-left: 30px;
     padding-right: 30px;
     border-radius: 16px;
-    box-shadow: 0px 0px 30px black ;
+    box-shadow: 0px 0px 30px var(--color_shadow) ;
     -webkit-backdrop-filter: blur($blur/2); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur/2);
 }
@@ -114,14 +114,14 @@
     border-bottom-right-radius:16px ;
     border-top-right-radius:16px ;
     width: 350px;
-    color: $color_text;
+    color: var(--color_text);
     border:none;
     position: relative;
     height: 35px;
     background-color: transparent;
     
 }::placeholder{
-    color: $color_placeholder;
+    color: var(--color_placeholder);
 }
 .msg{
     margin-top: 78%;

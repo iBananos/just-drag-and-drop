@@ -3,19 +3,19 @@
     bottom: 0px;
     position: relative;
     width: 100%;
-    color: $color_text;
+    color: var(--color_text);
     text-align: center;
     font-family: $font;
 }
 select{
     cursor: pointer;
-    color: $color_text;
+    color: var(--color_text);
     width: 200px;
     text-align: center;
     border: none;
     border-radius: 16px;
-    border-color: $color_text;
-    box-shadow: 0px 0px 20px black ;
+    border-color: var(--color_text);
+    box-shadow: 0px 0px 20px var(--color_shadow) ;
     height: 40px;
 }:focus {
     outline: none;
@@ -34,7 +34,7 @@ select{
     label{
         -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
         backdrop-filter: blur($blur);
-        background-color: $color_back;
+        background-color: var(--color_back);
     }
 }
 .Algos2{
@@ -43,7 +43,7 @@ select{
     label{
         -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
         backdrop-filter: blur($blur);
-        background-color: $color_back;
+        background-color: var(--color_back);
     }
 }
 .GradientBoosting{
@@ -93,7 +93,7 @@ select{
 .blurAnalyze{
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
         backdrop-filter: blur($blur);
-        background-color: $color_back;
+        background-color: var(--color_back);
     padding-left: 20px;
     padding-right: 20px;
     width: 700px;
@@ -104,15 +104,15 @@ select{
     border-radius: 32px;
 }
 .Parametre select{
-    background-color: $color_back;
+    background-color: var(--color_back);
     position: relative;
-    color: $color_text;
+    color: var(--color_text);
     width: 200px;
     height: 40px;
     border: none;
     border-radius: 16px;
-    border-color: $color_text;
-    box-shadow: 0px 0px 20px black ;
+    border-color: var(--color_text);
+    box-shadow: 0px 0px 20px var(--color_shadow) ;
 }
 td{
     height: 70px;
@@ -151,16 +151,16 @@ table{
 	overflow: hidden;
 	cursor: pointer;
 	text-transform: uppercase;
-	color: $color_text;
+	color: var(--color_text);
 	-webkit-transition: all 300ms linear;
 	transition: all 300ms linear; 
 }
 .checkbox-tools:not(:checked) + label{
-	background-color: $color_back;
-    box-shadow: 0px 0px 10px black ;
+	background-color: var(--color_back);
+    box-shadow: 0px 0px 10px var(--color_shadow) ;
 }
 .checkbox-tools:checked + label{
-	background-color: $color_text;
+	background-color: var(--color_text);
     color: white;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
@@ -175,13 +175,13 @@ table{
 .boutonSendanalyze:disabled{
     color:gray;
     
-    background-color: $color_back;
+    background-color: var(--color_back);
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
     &:hover{
         cursor:default;
         color: gray;
-        background-color: $color_back;
+        background-color: var(--color_back);
     }
 }
 .divinput{
@@ -194,16 +194,16 @@ table{
 .analyzeName{
     border-radius:16px ;
     width: 250px;
-    color: $color_text;
+    color: var(--color_text);
     -webkit-backdrop-filter: blur($blur); /* assure la compatibilité avec safari */
     backdrop-filter: blur($blur);
     border:none;
     margin-top: 0px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+    box-shadow: 0px 0px 20px var(--color_shadow);
     height: 35px;
-    background-color: $color_back;
+    background-color: var(--color_back);
 }::placeholder{
-    color: $color_placeholder;
+    color: var(--color_placeholder);
 }
 
 .help{
@@ -221,14 +221,14 @@ table{
     backdrop-filter: blur($blur);
     overflow-y: scroll;
     text-align: left;
-    background-color: $color_back;
-    color: $color_text;
+    background-color: var(--color_back);
+    color: var(--color_text);
     width: 210px;
     margin-left: auto;
     border: none;
     border-radius: 16px;
-    border-color: $color_text;
-    box-shadow: 0px 0px 20px black ;
+    border-color: var(--color_text);
+    box-shadow: 0px 0px 20px var(--color_shadow) ;
     margin-right: auto;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
@@ -249,14 +249,14 @@ table{
     backdrop-filter: blur($blur);
     overflow-y: hidden;
     text-align: left;
-    background-color: $color_back;
-    color: $color_text;
+    background-color: var(--color_back);
+    color: var(--color_text);
     width: 210px;
     margin-left: auto;
     border: none;
     border-radius: 16px;
-    border-color: $color_text;
-    box-shadow: 0px 0px 20px black ;
+    border-color: var(--color_text);
+    box-shadow: 0px 0px 20px var(--color_shadow) ;
     margin-right: auto;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
@@ -278,20 +278,20 @@ table{
     margin-top: 30px;
     cursor: pointer;
     text-align: center;
-    background-color: $color_back;
-    color: $color_text;
+    background-color: var(--color_back);
+    color: var(--color_text);
     width: 210px;
     border-radius: 16px;
     height: 28px;
     font-size: small;
     border: none;
-    border-color: $color_text;
+    border-color: var(--color_text);
     padding-top: 13px;
-    box-shadow:0px 0px 20px black  ;
+    box-shadow:0px 0px 20px var(--color_shadow)  ;
 }
 
 .parametersCheckbox{
-    color: $color_text;
+    color: var(--color_text);
 }
 
 .loading{
@@ -307,7 +307,7 @@ table{
     border-radius: 100%;
     margin: 50px auto;
     overflow: hidden;
-    background: $color_back;
+    background: var(--color_back);
     box-shadow:  5px 5px 10px #000000,
                -5px -5px 10px #000000;
     animation: spin;
@@ -320,7 +320,7 @@ table{
       transform: translateY(-50%);
       margin-left: 10px;
       border-radius: 100%;
-      background: $color_back;
+      background: var(--color_back);
       box-shadow: inset 5px 5px 10px #000000,
               inset -5px -5px 10px #000000;
     }
@@ -334,8 +334,8 @@ table{
       .loading-content__loader-content {
         height: 20px; // loading-content - loading-content__center-part
         width: 100%;
-        background-color: $color_text;
-        box-shadow: 0px 0 20px 30px $color_text;
+        background-color: var(--color_text);
+        box-shadow: 0px 0 20px 30px var(--color_text);
       }
     }
   }
