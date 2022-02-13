@@ -56,6 +56,8 @@ def parse_data(filename,separator):
 
 def autoselection(feature,predict,filename,separator):
     data=parse_data(filename,separator)
+    if toEncrypt == "true" :
+        data.drop(data.tail(1).index,inplace=True) # drop last n rows
     n=min(len(data),1000)
     dataselect=data.sample(frac=0.2)
     featurepredict=np.concatenate((predict, feature), axis=None)
@@ -85,7 +87,7 @@ def autoselection(feature,predict,filename,separator):
         try:
             testone[j]=testone[j].astype(float)
         except:
-            break
+            continue
     obj_df = testone.select_dtypes(include=['object']).copy()
     lb_make = LabelEncoder()
     for i in range(len(obj_df.columns.values)):
@@ -124,9 +126,10 @@ def autoselection(feature,predict,filename,separator):
     X = (X-X.mean())/X.std()
     y=data[predict]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    scoring=[]
+    algobest=[]
     for i,j in enumerate(algoselection.values):
-        scoring=[]
-        algobest=[]
+        
         #print(j)
         if j==1:
             reg = linear_model.ElasticNet()
@@ -165,12 +168,13 @@ def autoselection(feature,predict,filename,separator):
             algobest.append('SGDRegressor')
     try:
         alltesting = pd.DataFrame(scoring, columns=['r2'],index=algobest)
-
+        #return alltesting
         bestalgo=alltesting.idxmax()[0]
     except:
+        scoring=[]
+        algobest=[]
         for i,j in enumerate(algoselection2.values):
-            scoring=[]
-            algobest=[]
+            
             #print(j)
             if j==1:
                 reg = linear_model.ElasticNet()
@@ -208,6 +212,7 @@ def autoselection(feature,predict,filename,separator):
                 scoring.append(r2_score(y_test,reg.predict(X_test)))
                 algobest.append('SGDRegressor')
             alltesting = pd.DataFrame(scoring, columns=['r2'],index=algobest)
+            #return alltesting
             bestalgo=alltesting.idxmax()[0]
 
     if bestalgo=='ElasticNet':

@@ -38,8 +38,11 @@ def parse_data(filename,separator):
 
 def principal_fonction(data,savepath,separator) :
     file=parse_data(data,separator)
+    if toEncrypt == "true" :
+        file.drop(file.tail(1).index,inplace=True) # drop last n rows
     profile = ProfileReport(file,minimal=True)
     profile.to_file(savepath)
+
     return " "
 
 

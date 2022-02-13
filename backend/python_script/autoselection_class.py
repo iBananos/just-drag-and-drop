@@ -58,6 +58,8 @@ def parse_data(filename,separator):
     return df
 def autoselection(feature,predict,filename,separator):
     data=parse_data(filename,separator)
+    if toEncrypt == "true" :
+        data.drop(data.tail(1).index,inplace=True) # drop last n rows
     n=min(len(data),1000)
     dataselect=data.sample(frac=0.2)
     featurepredict=np.concatenate((predict, feature), axis=None)

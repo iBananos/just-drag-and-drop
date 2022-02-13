@@ -45,6 +45,8 @@ def parse_data(filename,separator):
 
 def principal_fonction(filename,first,second,third,sample,separator) :
     df = parse_data(filename,separator)
+    if toEncrypt == "true" :
+        df.drop(df.tail(1).index,inplace=True) # drop last n rows
     index = df.index
     number_of_rows = len(index)
     number = float(number_of_rows)/float(100)*float(sample)

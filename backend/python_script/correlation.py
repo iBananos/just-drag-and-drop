@@ -38,6 +38,8 @@ def parse_data(filename,separator):
 
 def check_type(filename,separator) :
     data=parse_data(filename,separator)
+    if toEncrypt == "true" :
+        data.drop(data.tail(1).index,inplace=True) # drop last n rows
     obj_df = data.select_dtypes(include=['object']).copy()
     for i in range(len(obj_df.columns.values)):
         try:
