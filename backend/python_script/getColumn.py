@@ -37,6 +37,8 @@ def parse_data(filename,separator):
 
 def principal_fonction(filename,separator) :
     df = parse_data(filename,separator)
+    if toEncrypt == "true" :
+        df.drop(df.tail(1).index,inplace=True) # drop last n rows
     dataexclude=df.select_dtypes(exclude=['object'])
     obj_df = df.select_dtypes(include=['object']).copy()
     for i in range(len(dataexclude.columns.values)):
