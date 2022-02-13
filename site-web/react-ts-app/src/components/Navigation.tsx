@@ -109,7 +109,7 @@ const Navigation = () => {
     function switchTheme(){
         if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='light'){
             localStorage.setItem("theme","dark");
-            (document.documentElement as HTMLElement).style.setProperty("--color_back","rgba(30, 30, 30, 0.705)");
+            (document.documentElement as HTMLElement).style.setProperty("--color_back","rgb(20, 20, 20,0.7)");
             (document.documentElement as HTMLElement).style.setProperty("--color_trans","#8670700c");
             (document.documentElement as HTMLElement).style.setProperty("--color_nav","#181925");
             (document.documentElement as HTMLElement).style.setProperty("--color_history","rgba(24, 24, 24, 0.856)");
@@ -119,21 +119,21 @@ const Navigation = () => {
             (document.documentElement as HTMLElement).style.setProperty("--color_placeholder","rgb(107, 101, 72)");
             (document.documentElement as HTMLElement).style.setProperty("--color_shadow","black");
             //(document.body as HTMLElement).style.background = "url('../assets/background2.png')";
-            (document.body as HTMLElement).style.backgroundColor = "black";
+            (document.body as HTMLElement).style.backgroundColor = "#101010";
             let imageTheme = (document.getElementById("theme") as HTMLImageElement)
-            if(imageTheme!==null) imageTheme.src = dark;            
+            if(imageTheme!==null) imageTheme.src = dark;         
 
         }else{
             localStorage.setItem("theme","light");
-            (document.documentElement as HTMLElement).style.setProperty("--color_back","#fafbff");
-            (document.documentElement as HTMLElement).style.setProperty("--color_trans","transparent");
+            (document.documentElement as HTMLElement).style.setProperty("--color_back","rgb(250, 251, 255,0.7)");
+            (document.documentElement as HTMLElement).style.setProperty("--color_trans","#8670700c");
             (document.documentElement as HTMLElement).style.setProperty("--color_nav","#fafbff");
             (document.documentElement as HTMLElement).style.setProperty("--color_history","#f2f2f2");
             (document.documentElement as HTMLElement).style.setProperty("--color_button","#fafbff");
             (document.documentElement as HTMLElement).style.setProperty("--color_button_hover","#5961ff");
             (document.documentElement as HTMLElement).style.setProperty("--color_text","#5961ff");
             (document.documentElement as HTMLElement).style.setProperty("--color_placeholder","rgb(107, 101, 72)");
-            (document.documentElement as HTMLElement).style.setProperty("--color_shadow","#f2f2f2");
+            (document.documentElement as HTMLElement).style.setProperty("--color_shadow","#e1deff");
             //(document.body as HTMLElement).style.backgroundColor = "url('../assets/backgroundLight.png')";
             (document.body as HTMLElement).style.backgroundColor = "#f2f4ff";
             let imageTheme = (document.getElementById("theme") as HTMLImageElement)
@@ -144,7 +144,7 @@ const Navigation = () => {
     function setTheme(){
         if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='dark'){
 
-            (document.documentElement as HTMLElement).style.setProperty("--color_back","rgb(20, 20, 20)");
+            (document.documentElement as HTMLElement).style.setProperty("--color_back","rgb(20, 20, 20,0.7)");
             (document.documentElement as HTMLElement).style.setProperty("--color_trans","#8670700c");
             (document.documentElement as HTMLElement).style.setProperty("--color_nav","#181925");
             (document.documentElement as HTMLElement).style.setProperty("--color_history","rgba(24, 24, 24, 0.856)");
@@ -161,8 +161,8 @@ const Navigation = () => {
 
 
         }else{
-            (document.documentElement as HTMLElement).style.setProperty("--color_back","#fafbff");
-            (document.documentElement as HTMLElement).style.setProperty("--color_trans","transparent");
+            (document.documentElement as HTMLElement).style.setProperty("--color_back","rgb(250, 251, 255,0.7)");
+            (document.documentElement as HTMLElement).style.setProperty("--color_trans","#8670700c");
             (document.documentElement as HTMLElement).style.setProperty("--color_nav","#fafbff");
             (document.documentElement as HTMLElement).style.setProperty("--color_history","#f2f2f2");
             (document.documentElement as HTMLElement).style.setProperty("--color_button","#fafbff");

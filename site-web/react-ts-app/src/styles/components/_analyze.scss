@@ -308,8 +308,8 @@ table{
     margin: 50px auto;
     overflow: hidden;
     background: var(--color_back);
-    box-shadow:  5px 5px 10px #000000,
-               -5px -5px 10px #000000;
+    box-shadow:  5px 5px 10px var(--color_shadow),
+               -5px -5px 10px var(--color_shadow);
     animation: spin;
     .loading-content__center-part {
       position: relative;
@@ -321,8 +321,8 @@ table{
       margin-left: 10px;
       border-radius: 100%;
       background: var(--color_back);
-      box-shadow: inset 5px 5px 10px #000000,
-              inset -5px -5px 10px #000000;
+      box-shadow: inset 5px 5px 10px var(--color_shadow),
+              inset -5px -5px 10px var(--color_shadow);
     }
     .loading-content__loader {
       position: absolute;
