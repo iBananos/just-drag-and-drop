@@ -6,13 +6,34 @@ Type : 	Développement
 ```
 git clone https://github.com/iBananos/just-drag-and-drop
 ```
+
+Installation requise : 
+ - NodeJs 17.x.x
+ - Python 3.8 et Python 3.9
+  
+Protocole de build : 
+  ```
+  cd just-drag-and-drop
+  pip install -r /backend/python_script/requirements.txt
+  
+  cd site-web/react-ts-app/
+  npm install
+  npm run build
+  
+  cd ../../backend/python
+  npm install
+  npm run dev
+  ```
+
+- Se rendre sur : http://localhost:4000
+
+Lancement des tests Jest :
+
+- depuis la racine du projet 
 ```
-cd just-drag-and-drop
+cd backend
+npm run test
 ```
-```
-docker compose up
-```
-- Se rendre sur : http://localhost:3000
 
 ## Résumé : 
 
