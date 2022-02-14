@@ -2,7 +2,7 @@
 
 Type : 	Développement
 
-## Lancement de l'application :
+## Lancement de l'application en local :
 ```
 git clone https://github.com/iBananos/just-drag-and-drop
 ```
@@ -27,14 +27,25 @@ Protocole de build :
 
 - Se rendre sur : http://localhost:4000
 
-Lancement des tests Jest :
+## Lancement de l'application sur le serveur Polytech :
+
+Machine hébergeant le serveur accessible uniquement via le réseau de Polytech Sophia où sur son VPN: 
+```
+ssh projet@134.59.215.240
+mot de passe : à demander aux étudiants, M.Sander ou M.Cyril Tonin
+
+cd just-drag-and-drop/backend
+npm run build
+```
+- Se rendre sur : https://134.59.215.240
+
+## Lancement des tests Jest :
 
 - depuis la racine du projet 
 ```
 cd backend
 npm run test
 ```
-
 ## Résumé : 
 
 Contexte:
