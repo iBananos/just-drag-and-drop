@@ -51,9 +51,12 @@ class Utils {
         xhr.withCredentials = true;
       
         xhr.addEventListener('readystatechange', function(e) {
+            console.log(this.response)
             if (xhr.readyState === 4 && xhr.status === 200) {
                 if(JSON.parse(this.response).message==="Vous devez d'abord confirmer votre adresse email."){
                     Utils.doAlert("danger","Vous devez d'abord confirmer votre adresse email.")
+                }else if(JSON.parse(this.response).status==="401"){
+                    Utils.doAlert("danger",JSON.parse(this.response).message)
                 }else{
                     callback(this.response);
                 }
@@ -76,7 +79,11 @@ class Utils {
         xhr.addEventListener('readystatechange', function(e) {
             if (xhr.readyState === 4 && xhr.status === 200) {
               
+                if(JSON.parse(this.response).status==="401"){
+                    Utils.doAlert("danger",JSON.parse(this.response).message)
+                }else{
                     callback(this.response);
+                }
           
                 
             }
@@ -141,6 +148,7 @@ class Utils {
         xhr.withCredentials = true;
 
         xhr.addEventListener('readystatechange', function(e) {
+
             if (xhr.readyState === 4 && xhr.status === 200) {
                 callback(this.response);
             }

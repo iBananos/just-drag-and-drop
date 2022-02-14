@@ -4,7 +4,17 @@ import * as utils from "../Utils";
 
 const Upload = () => { 
   let files : File;
+  
+  
   window.onload=function(){
+    const search = window.location.search; // returns the URL query String
+        const params = new URLSearchParams(search); 
+        let status :any = params.get('success');
+        if(status==="true"){
+          utils.default.doAlert("success","Base sent, you can found it in My database !");
+        }else if (status){
+            utils.default.doAlert("danger",status);
+        }
     utils.default.sendRequestWithToken('POST', '/api/profile/isVerified', "", callback);
   let dropArea = (document.getElementById("drop-area") as HTMLInputElement)
   // Prevent default drag behaviors
@@ -101,13 +111,14 @@ function callbackRequest(result : any){
   const res = JSON.parse(result);
 
   if (res.status === "200") {
-    utils.default.doAlert("success","Base sent, you can found it in My database !");
+    
+    
+    window.location.href = "/upload?success=true";
   }
   else {
-    utils.default.doAlert("danger",res.message);
+    window.location.href = "/upload?success="+res.message;
   }
-  (document.getElementById("sendButton") as HTMLButtonElement).disabled = false;
-  (document.getElementById("sendButton") as HTMLButtonElement).onclick = sendFile;
+  
 }
 
   return (
@@ -133,7 +144,6 @@ function callbackRequest(result : any){
             <option value=";">' ; ' : semicolon</option>
             <option value="|">' | ' : pipe</option>
             <option value="/">' / ' : slash</option>
-            <option value="\">' \ ' : backslash</option>
             <option value=":">' : ' : colon</option>
             <option value=" ">' &nbsp; ' : blank space</option>
           </select>

@@ -20,10 +20,12 @@ export const  parameters : RequestHandler = (req : Request, res : Response, next
     exec('python python_script/datavisu.py "' + filename + '" ' + extension + ' "' + req.body.firstOne + '" "' + req.body.secondOne + '" "' + req.body.thirdOne + '" ' + req.body.sample + ' false "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
         if (error) {
             console.error(`error: ${error.message}`);
+            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             return;
         }
         if (stderr) {
             console.error(`stderr: ${stderr}`);
+            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             return;
         }
         let data = {"name": req.body.path,"file":stdout}
@@ -37,10 +39,12 @@ export const  parametersDemo : RequestHandler = (req : Request, res : Response, 
     exec('python python_script/datavisu.py "' + filename + '" ' + extension + ' "' + req.body.firstOne + '" "' + req.body.secondOne + '" "' + req.body.thirdOne + '" ' + req.body.sample + ' ' + 'true ","' , (error:any, stdout:any, stderr:any) => {
         if (error) {
             console.error(`error: ${error.message}`);
+            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             return;
         }
         if (stderr) {
             console.error(`stderr: ${stderr}`);
+            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             return;
         }
         let data = {"name": req.body.path,"file":stdout}
@@ -58,10 +62,12 @@ export const  matrix : RequestHandler = (req : Request, res : Response, next : N
     exec('python python_script/correlation.py "' + filename + '" ' + extension + ' false "' +separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error:any, stdout:any, stderr:any) => {
         if (error) {
             console.error(`error: ${error.message}`);
+            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             return;
         }
         if (stderr) {
             console.error(`stderr: ${stderr}`);
+            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             return;
         }
         let data = {"name": req.body.path,"file":stdout}
@@ -76,14 +82,22 @@ export const  matrixDemo : RequestHandler = (req : Request, res : Response, next
     exec('python python_script/correlation.py "' + filename + '" ' + extension + ' true ","' , (error:any, stdout:any, stderr:any) => {
         if (error) {
             console.error(`error: ${error.message}`);
+            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             return;
         }
         if (stderr) {
             console.error(`stderr: ${stderr}`);
+            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             return;
         }
-        let data = {"name": req.body.path,"file":stdout}
-        res.send(data)
+        if(stdout.split("\n")[0].includes("Error_")){
+            
+            res.status(200).json({ "status" : "401", "message": stdout.split("_")[1], "name": "a", "category": "b"});
+               
+        }else{
+            let data = {"name": req.body.path,"file":stdout}
+            res.send(data)
+        }
     });
 }
 export const  fullOverview : RequestHandler = (req : Request, res : Response, next : NextFunction) => {

@@ -71,12 +71,59 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
         fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
     }
     let colonnes : string[] = getColonneFromCSV(userId, fileName);
-    createInfoDatabase(userId, fileName,fileNameHTML,fileNameHTML2, nomFichier, req.body.date, req.file?.size, extension, colonnes,req.body.separator);
-    
-    // Update du stockage utilisée
-    await UserLimit.updateOne({ userId: objectId }, { currentStorage: newCurrentStorage });
 
-    res.status(200).json({ "status": "200", "message": "complete" });
+    let overviewPath : string = fileNameHTML;
+    let overviewPath2 : string =fileNameHTML2;
+    let name : string =nomFichier;
+    let date : string =req.body.date;
+    let size : any = req.file?.size;
+    let separator:string =req.body.separator;
+
+
+    console.log('python python_script/getColumn.py "' + fileName + '" ' + extension + ' "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt())
+    exec('python python_script/getColumn.py "' + fileName + '" ' + extension + ' "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), async (error : any, stdout : any, stderr : any) => {
+        
+        if (error) {
+            console.error(`error: ${error.message}`);
+            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please retry.", "name": "a", "category": "b"});
+            return;
+        }
+        if (stderr) {
+            console.error(`stderr: ${stderr}`);
+            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please retry.", "name": "a", "category": "b"});
+            return;
+        }
+        if(stdout.split("\n")[0].includes("Error_")||stdout.includes("error: Command failed:")){
+            
+            res.status(200).json({ "status" : "401", "message": stdout.split("_")[1], "name": "a", "category": "b"});
+            return
+        }else{
+            let resultat = stdout.replace(/\r\n+/g,'').replace(/' '+/g,"','")
+            let colonnesString = resultat.replace(/'+/g,'').replace("]",'').replace("[",'').replace(/\r\n+/g,'').split(",")
+            console.log(colonnesString)
+            let doc = JSON.stringify({"name":name, "date":date, "size":size, "extension":extension, "colonnes":colonnes, "colonnesString":colonnesString,"separator":separator});
+    
+            let nomFichier = aesCipher.encrypt(Buffer.from(name + ".json"));
+            fs.writeFile('uploads/' + userId + '/databaseInfo/' + nomFichier, aesCipher.encrypt(Buffer.from(doc)), function (err) {});
+            exec('python python_script/fullOverview.py "' + fileName + '" ' + extension + ' "'+separator+'" "'+overviewPath2 +'" '+ aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), {maxBuffer: 1024 * 100000}, async (error : any, stdout : any, stderr : any) => {
+                if (error) {
+                    console.error(`error: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.error(`stderr: ${stderr}`);
+                    return;
+                }
+                
+            }); 
+            await UserLimit.updateOne({ userId: objectId }, { currentStorage: newCurrentStorage });
+            res.status(200).json({ "status": "200", "message": "complete" }); 
+            return
+        }
+        
+    });
+    
+    
 };
 
 
@@ -110,40 +157,6 @@ function getColonneFromCSV(userId : string, path : any) {
 }
 
 
-function createInfoDatabase(userId : string, fileName : string,overviewPath : string,overviewPath2 : string, name : string, date : string, size : any, extension : any, colonnes : string[],separator:string){
-    const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-    console.log('python python_script/getColumn.py "' + fileName + '" ' + extension + ' "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt())
-    exec('python python_script/getColumn.py "' + fileName + '" ' + extension + ' "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), (error : any, stdout : any, stderr : any) => {
-        
-        if (error) {
-            console.error(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-            return;
-        }
-        let resultat = stdout.replace(/\r\n+/g,'').replace(/' '+/g,"','")
-        let colonnesString = resultat.replace(/'+/g,'').replace("]",'').replace("[",'').replace(/\r\n+/g,'').split(",")
-        console.log(colonnesString)
-        let doc = JSON.stringify({"name":name, "date":date, "size":size, "extension":extension, "colonnes":colonnes, "colonnesString":colonnesString,"separator":separator});
-
-        let nomFichier = aesCipher.encrypt(Buffer.from(name + ".json"));
-        fs.writeFile('uploads/' + userId + '/databaseInfo/' + nomFichier, aesCipher.encrypt(Buffer.from(doc)), function (err) {});
-    });
-    
-    exec('python python_script/fullOverview.py "' + fileName + '" ' + extension + ' "'+separator+'" "'+overviewPath2 +'" '+ aesCipher.getKey() + ' ' + aesCipher.getToEncrypt(), {maxBuffer: 1024 * 100000}, (error : any, stdout : any, stderr : any) => {
-        if (error) {
-            console.error(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-            return;
-        }
-        
-    });   
-}
 
 export const getInfoDatabase : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
     res.send({"liste" : Utils.default.getDataFiles(req.body.userId, 'uploads/' + req.body.userId + '/databaseInfo/',false)});
@@ -155,7 +168,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/database/" + targetBase, function (err) {
             if (err) {
                 console.error(err);
-                res.send("Error while deleting");
+                res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             } else {
                 console.log("File removed:", req.body.path);
             }
@@ -167,7 +180,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/databaseHTML/" + targetBaseHTML, function (err) {
             if (err) {
                 console.error(err);
-                res.send("Error while deleting");
+                res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             } else {
                 console.log("File removed:", req.body.path.split(".")[0] + ".html");
             }
@@ -182,7 +195,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/databaseInfo/" + targetInfo, async function (err) {
             if (err) {
                 console.error(err);
-                res.send("Error while deleting");
+                res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             } else {
                 console.log("File removed:", req.body.path.split(".")[0] + ".json");
                 // Update du stockage de l'utilisateur

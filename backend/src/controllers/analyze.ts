@@ -225,11 +225,13 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
                 exec('python python_script/script.py "' + filename + '" ' + extension + ' "' + features + '" "' + pred + '" ' + list_param + ' ' + analyze_choice + ' ' + algo_choice + ' true ","', (error:any, stdout:any, stderr:any) => {
                     if (error) {
                         console.error(`error: ${error.message}`);
+                        res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
                         return;
                     }
                   
                     if (stderr) {
                         console.error(`stderr: ${stderr}`);
+                        res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
                         return;
                     }
                     if(stdout.split("\n")[0].includes("Error_")){
@@ -245,7 +247,8 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
                     }else{
                     fs.writeFile('uploads/' + "demo" + '/analyse/' + nomFichier + ".csv", stdout, function (err) {
                         if (err) {
-                            res.send('error'); 
+                            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
+
                         } else {
                             res.status(200).json({ "status" :"ok", "name": nomFichier, "category": req.body.category});
                         }
@@ -266,7 +269,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/analyse/" + targetBase, function (err) {
             if (err) {
                 console.error(err);
-                res.send("Error while deleting");
+                res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             } else {
                 console.log("File removed:", req.body.path);
             }
@@ -278,7 +281,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/analyseInfo/" + targetInfo, async function (err) {
             if (err) {
                 console.error(err);
-                res.send("Error while deleting");
+                res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             } else {
                 // Update des analyses utilisées
                 const objectId = new mongoose.Types.ObjectId(req.body.userId);
@@ -295,7 +298,7 @@ export const deleteData : RequestHandler = (req : Request, res : Response, next 
         fs.unlink("uploads/" + req.body.userId + "/analysePreview/" + targetPreview, async function (err) {
             if (err) {
                 console.error(err);
-                res.send("Error while deleting");
+                res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
             } else {
                 // Update des analyse utilisée
                 const objectId = new mongoose.Types.ObjectId(req.body.userId);
@@ -456,14 +459,20 @@ export const sendPreview : RequestHandler = (req : Request, res : Response, next
     dataAnalyse.nameAnalyze= nomFichier;
     fs.writeFile('uploads/' + req.body.userId + '/analysePreview/' + aesCipher.encrypt(Buffer.from(req.body.path + ".txt")), aesCipher.encrypt(Buffer.from(req.body.image)), function (err) {
         if (err) { 
+            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
+            return
         } else {
             console.log("image saved")
             fs.writeFile('uploads/' + req.body.userId + '/analyse/' + aesCipher.encrypt(Buffer.from(req.body.path + ".csv")), aesCipher.encrypt(Buffer.from(req.body.file)), function (err) {
                 if (err) {
+                    res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
+                    return
                 } else {
                     console.log("analyse saved")
                     fs.writeFile('uploads/' + req.body.userId + '/analyseInfo/' + aesCipher.encrypt(Buffer.from(req.body.path + ".json")), aesCipher.encrypt(Buffer.from(JSON.stringify(dataAnalyse))), function (err) {
                         if (err) {
+                            res.status(200).json({ "status" : "401", "message": "Oops an error occurred, please refresh and retry.", "name": "a", "category": "b"});
+                            return
                         } else {
                             console.log("analyse info saved")
                             res.send({"message":"ok"})
