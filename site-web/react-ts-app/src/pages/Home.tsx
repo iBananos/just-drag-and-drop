@@ -9,6 +9,8 @@ import linkedInL from "../assets/linkedinLight.png"
 import python from "../assets/python.png"
 import react from "../assets/react.png"
 import typescript from "../assets/typescript.png"
+import node from "../assets/node.png"
+import chart from "../assets/chartjs.svg"
 const Home = () =>  {
     window.onload= () =>{
         const search = window.location.search; // returns the URL query String
@@ -38,6 +40,7 @@ const Home = () =>  {
                             <td>Nicolas DEMOLIN</td>
                             <td>Christel RALALASOA</td>
                         </tr>
+                        
                         <tr>
                             <td>
                                 <td><a href="https://www.linkedin.com/in/ralph-el-chalfoun-642312188/"><img className="iconeLinkedIn" alt="" src={sourcelinkedIn}/></a></td>
@@ -56,21 +59,30 @@ const Home = () =>  {
                                 <td><a href="https://github.com/christelralalasoa"><img className="iconeGitHub" alt="" src={sourceGit}/></a></td>
                             </td>
                         </tr>
-                        
-                    </table>
-                    Powered by <br /> React, Typescript, Python and Sklearn
-                    
-                    
-                    <table>
                         <tr>
-                        <td><a href="https://github.com/christelralalasoa"><img className="iconeReact" alt="React" src={react}/></a></td>
-                            <td><a href="https://github.com/christelralalasoa"><img className="iconeTypescript" alt="" src={typescript}/></a></td>
-                            <td><a href="https://github.com/christelralalasoa"><img className="iconePython" alt="" src={python}/></a></td>
-                            <td><a href="https://github.com/christelralalasoa"><img className="iconeSklearn" alt="" src={sklearn}/></a></td>
-                            
+                            <td>Full Stack</td>
+                            <td>Cybersecurity</td>
+                            <td>Machine Learning</td>
+                            <td>Machine Learning</td>
                         </tr>
                         
                     </table>
+                    <div className="powered">
+                    Powered by <br /> React, Typescript, Python, Sklearn, NodeJS, ChartJS
+                    
+                    
+                    <table >
+                        <tr>
+                        <td><a href="https://reactjs.org/"><img className="iconeReact" alt="React" src={react}/></a></td>
+                            <td><a href="https://www.typescriptlang.org/"><img className="iconeTypescript" alt="" src={typescript}/></a></td>
+                            <td><a href="https://www.python.org/"><img className="iconePython" alt="" src={python}/></a></td>
+                            <td><a href="https://scikit-learn.org/stable/"><img className="iconeSklearn" alt="" src={sklearn}/></a></td>
+                            <td><a href="https://nodejs.org/en/"><img className="iconeNode" alt="" src={node}/></a></td>
+                            <td><a href="https://www.chartjs.org/"><img className="iconeChart" alt="" src={chart}/></a></td>
+                        </tr>
+                        
+                    </table>
+                    </div>
             </div>
             <BarreLaterale />
             <Navigation />

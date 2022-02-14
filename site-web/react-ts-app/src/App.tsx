@@ -12,7 +12,9 @@ import NotFound from './pages/NotFound';
 import Verification from './pages/Verification';
 import Demo from "./pages/Demo"
 function App() {
+  document.title= "Scanylab"
   return (
+    
     <div className="App">
       
       <Router>
