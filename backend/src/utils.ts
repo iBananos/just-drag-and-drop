@@ -161,9 +161,15 @@ class Utils {
     }
 
     public static getSizeFile(userId : string, path : string) {
-        const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-        let data = JSON.parse(aesCipher.decrypt(fs.readFileSync(path, 'utf8')));
-        return data.size;
+        if(userId!=="demo"){
+            const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
+            let data = JSON.parse(aesCipher.decrypt(fs.readFileSync(path, 'utf8')));
+            return data.size;
+        }else{
+            let data = JSON.parse(fs.readFileSync(path, 'utf8'));
+            return data.size;
+        }
+        
     }
 
     public static async checkUsersFiles() {

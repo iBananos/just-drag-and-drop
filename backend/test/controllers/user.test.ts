@@ -25,7 +25,7 @@ describe('POST /api/auth/signup', () => {
 
         expect(res.statusCode).toBe(401);
         expect(res.type).toBe('application/json');
-        expect(res.body.message).toBe('Il manque des informations.');
+        expect(res.body.message).toBe("Missing some information.");
     });
 
     test('reponse avec code 401 car l\'adresse email n\'est pas valide', async () => {
@@ -41,7 +41,7 @@ describe('POST /api/auth/signup', () => {
 
         expect(res.statusCode).toBe(401);
         expect(res.type).toBe('application/json');
-        expect(res.body.message).toBe('Veuillez entrer une adresse mail valide.');
+        expect(res.body.message).toBe("Please enter a valid email adress.");
     });
 
     test('reponse avec code 401 car le mot de passe n\'est pas assez robuste', async () => {
@@ -57,6 +57,6 @@ describe('POST /api/auth/signup', () => {
 
         expect(res.statusCode).toBe(401);
         expect(res.type).toBe('application/json');
-        expect(res.body.message).toBe('Le mot de passe n\'est pas assez complexe.');
+        expect(res.body.message).toBe("Password is too weak.");
     });
 });

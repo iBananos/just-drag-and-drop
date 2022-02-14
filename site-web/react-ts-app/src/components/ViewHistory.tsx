@@ -13,7 +13,7 @@ const ViewHistory = () => {
                 auto = "false"
             }
             window.open(
-                "/analyzeView?url="+url+"&type="+type+"&history=true"+"&auto="+auto,
+                "/analyzeView?url="+url+"&type="+type+"&history=true&auto="+auto,
                 '_blank' // <- This is what makes it open in a new window.
               );
         }

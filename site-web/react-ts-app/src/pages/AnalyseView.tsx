@@ -174,7 +174,7 @@ const AnalyseView = () => {
         }
     }
 
-    function callbackSend(){
+    function callbackSend(response:Response){
       console.log("Analyse sauvegardée");
       utils.default.doAlert("success","Your analysis has been successfully saved ! It is available in History.");
     }

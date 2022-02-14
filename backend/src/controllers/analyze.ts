@@ -20,7 +20,6 @@ import { RequestHandler, Request, Response, NextFunction, response } from "expre
     const limitedAnalyse = userLimit.limitedAnalyse;
     const currentAnalyse = userLimit.currentAnalyse;
     const newCurrentAnalyse = Utils.default.getNbFiles(req.body.userId, 'uploads/' + req.body.userId+"/analyse/");
-    console.log(newCurrentAnalyse)
 
     if (newCurrentAnalyse > limitedAnalyse) {
         res.status(200).json({ "status": "401", "message": "Vous ne disposez plus d’assez d'analyse, veuillez passer à un abonnement supérieur ou alors supprimer des analyses dans l'historique." }); 
@@ -260,7 +259,6 @@ export const  parametersDemo : RequestHandler = async (req : Request, res : Resp
 };
 
 export const deleteData : RequestHandler = (req : Request, res : Response, next : NextFunction) => {
-    console.log("onveutdelete")
     console.log(req.body.userId+ " uploads/" + req.body.userId + "/analyse/", req.body.path + ".csv")
     let targetBase = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyse/", req.body.path + ".csv");
     console.log(targetBase)
@@ -328,8 +326,7 @@ function checkAnalyze(req:any,demo:boolean){
         
         filename = req.body.database
     }
-    console.log(filename)
-    filename = filename.split(".")[0]
+    
     let analyze_choice = req.body.category;
     let algo_choice = req.body.algo;
     let features = req.body.feature;
@@ -339,6 +336,7 @@ function checkAnalyze(req:any,demo:boolean){
     let listName = Utils.default.getNameFiles(userID, 'uploads/' + userID + '/database/',demo);
     // verif database
     if(typeof filename !== 'string') return "database name is not a file name"
+    filename = filename.split(".")[0]
     if(!listName.includes(filename)) return "database does not exist"
 
     // verif pred
@@ -355,11 +353,11 @@ function checkAnalyze(req:any,demo:boolean){
     // vérif feature
     if(typeof features !== 'object') return "features is not a list"
     let acc :number = 0 
-    features.forEach((element:any) => {
+    for(let i:number =0;i<features.length;i++){
         acc++
-        if(typeof element !== 'string') return "a feature column is not a column name"
-        if(!data.colonnes.includes(element)) return "a feature column does not exist"
-    });
+        if(typeof features[i] !== 'string') return "a feature column is not a column name"
+        if(!data.colonnes.includes(features[i])){ return "a feature column does not exist";}
+    }
     if(acc ===0 ) return "features is empty"
 
     // vérif category
@@ -468,7 +466,7 @@ export const sendPreview : RequestHandler = (req : Request, res : Response, next
                         if (err) {
                         } else {
                             console.log("analyse info saved")
-                            res.send("ok")
+                            res.send({"message":"ok"})
                         }
                     });
                 }
@@ -489,22 +487,17 @@ export const downloadAnalyze : RequestHandler = (req : Request, res : Response, 
         let targetAnalyseJSON = Utils.default.findEncryptedFile(req.body.userId, "uploads/" + req.body.userId + "/analyseInfo/", req.body.path + ".json");
         let data = {"name": req.body.path,"param":aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/analyseInfo/" + targetAnalyseJSON, 'utf8')), "file": aesCipher.decrypt(fs.readFileSync("uploads/" + req.body.userId + "/analyse/" + targetAnalyseCSV, 'utf8'))};
         res.send(data);
-        console.log("okay")
         if(req.body.fromHistory === "false"){
             console.log("uploads/" + req.body.userId + "/analyse/" + targetAnalyseCSV )
             console.log("uploads/" + req.body.userId + "/analyseInfo/" + targetAnalyseJSON )
             fs.unlink("uploads/" + req.body.userId + "/analyseInfo/" + targetAnalyseJSON , async function (err) {
                 if (err) {
                 
-                } else {
-                    console.log("okay111")
                 }
             });
             fs.unlink("uploads/" + req.body.userId + "/analyse/" + targetAnalyseCSV , async function (err) {
                 if (err) {
                 
-                } else {
-                    console.log("okay2222")
                 }
             });
         }

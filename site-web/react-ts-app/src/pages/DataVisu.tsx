@@ -9,7 +9,7 @@ import trashIcone from "../assets/trash.png";
 import trashIconeL from "../assets/trashLight.png";
 import downloadIcone from "../assets/download.png";
 import downloadIconeL from "../assets/downloadLight.png";
-import { callback, color } from 'chart.js/helpers';
+import {  color } from 'chart.js/helpers';
 
 Chart.register(    ArcElement,    LineElement,    BarElement,    PointElement,    BarController,    BubbleController,    DoughnutController,    LineController,    PieController,    PolarAreaController,    RadarController,    ScatterController,    CategoryScale,    LinearScale,    LogarithmicScale,    RadialLinearScale,    TimeScale,    TimeSeriesScale,    Decimation,    Filler,    Legend,    Title,    Tooltip  );
 let id = 0;
@@ -144,7 +144,6 @@ const DataVisu = () =>  {
         let base = (document.getElementById("SelectDB")as HTMLSelectElement).value;
         for(let i: number = 0 ; i < list.length; i++){
             if(list[i].name+"."+list[i].extension === base){
-                let colonnesNoneString = list[i].colonnes;
                 let colonnes = list[i].colonnesString;
                 thirdcolumn.innerHTML = "";
                 let optiondefault3 = document.createElement("option");
@@ -160,7 +159,7 @@ const DataVisu = () =>  {
                 optionNone3.style.color = 'red';
                 thirdcolumn.appendChild(optionNone3);
                 for(let y: number = 0 ; y < colonnes.length; y++){
-                    if(firstcolumn.value !== colonnes[y] && secondcolumn.value !== colonnes[y] /*&& colonnesNoneString.includes(colonnes[y])*/ && colonnes[y]!==""){
+                    if(firstcolumn.value !== colonnes[y] && secondcolumn.value !== colonnes[y] && colonnes[y]!==""){
                         let option = document.createElement("option");
                         option.innerHTML = colonnes[y];
                         option.value = colonnes[y];
@@ -748,13 +747,6 @@ const DataVisu = () =>  {
 
     }
 
-    function getLabelFromSteps(labels:any){
-        let labelSteps : string[] = []
-        for(let i :number = 1; i <= 10 ; i++){
-            labelSteps.push("["+labels[i-1]+","+labels[i]+"]")
-        }
-        return labelSteps
-    }
 
     function hBary(data3:any,label:string){
 

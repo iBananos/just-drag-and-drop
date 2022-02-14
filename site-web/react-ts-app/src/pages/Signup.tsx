@@ -1,5 +1,6 @@
 import Navigation from '../components/Navigation';
-
+import help from "../assets/help.png";
+import helpL from "../assets/helpLight.png";
 import * as utils from "../Utils";
 let pathUrl =  window.location
 let hostname = "";
@@ -11,6 +12,10 @@ if (pathUrl.origin === "http://localhost:3000") {
 
 
 const Signup = () => {
+
+    let sourceHelp;
+    if(!localStorage.getItem("theme") || localStorage.getItem("theme")==='dark'){sourceHelp = help}else{sourceHelp = helpL}
+  
 
     window.onload= function() {
         getSvg();
@@ -94,6 +99,7 @@ const Signup = () => {
                 </div>
                 <div className="box2">
                     <div className="phTitle">Password</div>
+                    <img src={sourceHelp} className="helpMDP" alt="" title="The password must contain at least: 1 upper case, 1 lower case, 1 symbol, 1 number, 10 characters "/>
                     <input type="password" id="mpd1" className="ph" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"></input>
                 </div>
                 <div className="box3">
