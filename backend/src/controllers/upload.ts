@@ -99,7 +99,7 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
             res.status(200).json({ "status" : "401", "message": stdout.split("_")[1], "name": "a", "category": "b"});
             return
         }else{
-            let resultat = stdout.replace(/\r\n+/g,'').replace(/' '+/g,"','")
+            let resultat = stdout.replace(/\n+/g,'').replace(/\r+/g,'').replace(/' '+/g,"','")
             let colonnesString = resultat.replace(/'+/g,'').replace("]",'').replace("[",'').replace(/\r\n+/g,'').split(",")
             console.log(colonnesString)
             let doc = JSON.stringify({"name":name, "date":date, "size":size, "extension":extension, "colonnes":colonnes, "colonnesString":colonnesString,"separator":separator});
