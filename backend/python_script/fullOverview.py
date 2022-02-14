@@ -16,6 +16,8 @@ toEncrypt = sys.argv[6]
 
 
 def parse_data(filename,separator):
+    ''' Cette fonction permet de lire les différentes bases de données csv, txt, xlsx, json
+    '''
     if separator==' ':
         separator=r'\s+'
     if extension == "csv" :
@@ -39,12 +41,13 @@ def parse_data(filename,separator):
     return df
 
 def principal_fonction(data,savepath,separator) :
+    ''' Cette fonction permet de générer notre overview
+    '''
     file=parse_data(data,separator)
     if toEncrypt == "true" :
         file.drop(file.tail(1).index,inplace=True) # drop last n rows
     profile = ProfileReport(file,minimal=True)
     profile.to_file(savepath)
-
     return " "
 
 

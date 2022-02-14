@@ -37,10 +37,12 @@ else :
     toEncrypt = ""
 
 def parse_data(filename,separator):
+    ''' Cette fonction permet de lire les différentes bases de données csv, txt, xlsx, json
+    '''
     if separator==' ':
         separator=r'\s+'
     if extension == "csv" :
-            # Assume that the user uploaded a CSV or TXT file
+      # Assume that the user uploaded a CSV or TXT file
         try:
             df = pd.read_csv(filename,index_col=False, delimiter=separator)
         except:
@@ -60,6 +62,8 @@ def parse_data(filename,separator):
     return df
 
 def autoselection(feature,predict,filename,separator):
+    ''' Cette fonction permet de déterminer le meilleur algorithme de machine learning à utiliser avec ses hyperparamètres
+    '''
     data=parse_data(filename,separator)
     data=data.dropna()
     if len(data)<10:

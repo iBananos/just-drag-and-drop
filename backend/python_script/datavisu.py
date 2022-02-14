@@ -23,7 +23,8 @@ else :
 
     
 def parse_data(filename,separator):
-
+    ''' Cette fonction permet de lire les différentes bases de données csv, txt, xlsx, json
+    '''
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         try:
@@ -44,6 +45,8 @@ def parse_data(filename,separator):
     return df
 
 def principal_fonction(filename,first,second,third,sample,separator) :
+    ''' Cette fonction aide la data visualisation pour récupérer les différentes couleurs à utiliser
+    '''
     df = parse_data(filename,separator)
     if toEncrypt == "true" :
         df.drop(df.tail(1).index,inplace=True) # drop last n rows

@@ -55,8 +55,8 @@ def parse_data(filename,separator):
     return df
 
 ####fonction qui vérifie le type des colonnes et transforme les string en float si possible
-####(cette fonction est appelee dans correlation_matrix et get_describe, si tu veux pas l'utiliser,
-####faudra l'enlever aussi de ces deux fonctions mais tu me diras au pire (nico voulait que je te les envoie au cas ou))
+####cette fonction est appelee dans correlation_matrix et get_describe, si tu veux pas l'utiliser,
+
 
 def check_type(filename,separator) :
     data=parse_data(filename,separator)
@@ -149,6 +149,8 @@ def get_list_parameters(algo_choice,list_parameters) :
 
 
 def principal_fonction(filename,features,pred,list_param,analyze_choice,algo_choice,separator) :
+    ''' Cette fonction permet de calculer et les différents algorithme de machine learning en fonction des paramètre choisis.
+    '''
     df = parse_data(filename,separator)
     X=df[features]
     y=df[pred]

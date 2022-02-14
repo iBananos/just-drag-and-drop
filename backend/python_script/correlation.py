@@ -16,6 +16,8 @@ else :
 
 
 def parse_data(filename,separator):
+    ''' Cette fonction permet de lire les différentes bases de données csv, txt, xlsx, json
+    '''
     if separator==' ':
         separator=r'\s+'
     if extension == "csv" :
@@ -39,6 +41,8 @@ def parse_data(filename,separator):
     return df
 
 def check_type(filename,separator) :
+    ''' Cette fonction va checker l'ensemble des types dans la bases
+    '''
     data=parse_data(filename,separator)
     if toEncrypt == "true" :
         data.drop(data.tail(1).index,inplace=True) # drop last n rows
@@ -53,6 +57,8 @@ def check_type(filename,separator) :
     return True
 
 def correlation_matrix(filename,separator) : 
+    ''' Cette fonction permet calculer la matrice de corrélation et la renvoyer au serveur pour l'affichage
+    '''
     df = parse_data(filename,separator)
     #if check_type(filename,separator) == True : 
     cm = df.corr()
