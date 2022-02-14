@@ -70,14 +70,15 @@ export const saveFile : RequestHandler = async (req : Request, res : Response, n
         //fs.writeFileSync(fileName, aesCipher.encrypt(req.file!.buffer));
         fs.writeFileSync(fileName, aesCipher.encryptToBuffer(req.file!.buffer));
     }
-    let colonnes : string[] = getColonneFromCSV(userId, fileName);
-
+    
     let overviewPath : string = fileNameHTML;
     let overviewPath2 : string =fileNameHTML2;
     let name : string =nomFichier;
     let date : string =req.body.date;
     let size : any = req.file?.size;
     let separator:string =req.body.separator;
+    let colonnes : string[] = getColonneFromCSV(userId, fileName,separator);
+
 
 
     console.log('python python_script/getColumn.py "' + fileName + '" ' + extension + ' "'+separator+'" ' + aesCipher.getKey() + ' ' + aesCipher.getToEncrypt())
@@ -150,9 +151,9 @@ function verifFileName(name : any) {
 }
 
 
-function getColonneFromCSV(userId : string, path : any) {
+function getColonneFromCSV(userId : string, path : any,separator:any) {
     const aesCipher = new AESCipher(userId, `${process.env.KEY_ENCRYPT}`);
-    let colonnes : string[] = aesCipher.decrypt(fs.readFileSync(path, "utf8")).split('\n')[0].replace(/"/g, '').split(",");
+    let colonnes : string[] = aesCipher.decrypt(fs.readFileSync(path, "utf8")).split('\n')[0].replace(/"/g, '').split(separator);
     return colonnes;
 }
 
