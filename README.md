@@ -27,6 +27,14 @@ Protocole de build :
 
 - Se rendre sur : http://localhost:4000
 
+Lancement des tests Jest :
+
+- depuis la racine du projet 
+```
+cd backend
+npm run test
+```
+
 ## Résumé : 
 
 Contexte:
