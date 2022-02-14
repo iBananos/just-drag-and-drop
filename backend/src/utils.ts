@@ -144,7 +144,7 @@ class Utils {
             for(let j = 0; j < sheet['data'].length; j++)
             {
                 row=[]
-                for(let v = 1; v < sheet['data'][j].length; v++)
+                for(let v = 0; v < sheet['data'][j].length; v++)
                 {
                     row.push(sheet['data'][j][v].toString().replace(/,+/g,"."))
                 }

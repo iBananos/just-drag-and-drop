@@ -30,7 +30,7 @@ def parse_data(filename,separator):
         df = pd.read_excel(filename,index_col=False)
     elif extension == 'txt' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
-        df = pd.read_csv(filename, delimiter = r'\s+',index_col=0)
+        df = pd.read_csv(filename, delimiter = r'\s+',index_col=False)
     elif extension == 'json' :
         df = pd.read_json(filename)
     else :
@@ -43,13 +43,13 @@ def principal_fonction(filename,separator) :
         if df=='Error_ Your DataFrame contains only one column please check your separator or change the data ':
             return 'Error_ Your DataFrame contains only one column please check your separator or change the data '
     except:
+        if toEncrypt == "true" :
+                df.drop(df.tail(1).index,inplace=True) # drop last n rows
         for i,j in enumerate(df.columns):
             try:
                 df[j]=df[j].astype(float)
             except:
                 continue
-        if toEncrypt == "true" :
-            df.drop(df.tail(1).index,inplace=True) # drop last n rows
         dataexclude=df.select_dtypes(exclude=['object'])
         obj_df = df.select_dtypes(include=['object']).copy()
         for i in range(len(dataexclude.columns.values)):
@@ -58,8 +58,7 @@ def principal_fonction(filename,separator) :
     return (obj_df.columns.values)
 
 
-def decryptFile(filename,separator) :
-    parse_data(filename,separator)
+def decryptFile(filename) :
     aesCipher = AESCipher(key)
     encryptData = open(filename,'r').read()
     csvPlainText = aesCipher.decrypt(encryptData)
@@ -69,7 +68,7 @@ def decryptFile(filename,separator) :
 
 if __name__ == "__main__":
     if toEncrypt == "true" :
-        data = decryptFile(filename,separator)
+        data = decryptFile(filename)
     else :
         data = filename
     print(principal_fonction(data,separator))
