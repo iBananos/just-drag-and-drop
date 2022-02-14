@@ -35,7 +35,7 @@ ssh projet@134.59.215.240
 mot de passe : à demander aux étudiants, M.Sander ou M.Cyril Tonin
 
 cd just-drag-and-drop/backend
-npm run build
+npm run dev
 ```
 - Se rendre sur : https://134.59.215.240
 
