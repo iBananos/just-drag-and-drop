@@ -16,24 +16,26 @@ else :
 
 
 def parse_data(filename,separator):
-
+    if separator==' ':
+        separator=r'\s+'
     if extension == "csv" :
             # Assume that the user uploaded a CSV or TXT file
         try:
             df = pd.read_csv(filename,index_col=False, delimiter=separator)
         except:
             df = pd.read_csv(filename, delimiter=separator)
+        if len(df.columns)==1:
+            return 'Error_ Your DataFrame contains only one column please check your separator or change the data '
     elif extension == 'xlsx':
-            # Assume that the user uploaded an excel file
+        # Assume that the user uploaded an excel file
         df = pd.read_excel(filename,index_col=False)
     elif extension == 'txt' :
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
-        df = pd.read_csv(filename, delimiter = r'\s+',index_col=0)
+        df = pd.read_csv(filename, delimiter = r'\s+',index_col=False)
     elif extension == 'json' :
         df = pd.read_json(filename)
     else :
         print("There was an error while processing this file")
-    
     return df
 
 def check_type(filename,separator) :

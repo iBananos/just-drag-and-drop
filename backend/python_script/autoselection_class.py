@@ -58,6 +58,7 @@ def parse_data(filename,separator):
     else :
         print("There was an error while processing this file")
     return df
+
 def autoselection(feature,predict,filename,separator):
     data=parse_data(filename,separator)
     data=data.dropna()
