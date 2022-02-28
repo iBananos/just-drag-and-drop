@@ -20,7 +20,7 @@ Protocole de build :
   npm install
   npm run build
   
-  cd ../../backend/python
+  cd ../../backend
   npm install
   npm run dev
   ```
